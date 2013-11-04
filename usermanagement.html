@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Poweradmin - User management</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <p><img src="logo.png"></p>
+        <p>A web-based control panel for PowerDNS</p>
+
+        <p class="view"><a href="https://github.com/poweradmin/poweradmin">View the Project on GitHub <small>poweradmin/poweradmin</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/downloads/poweradmin/poweradmin/poweradmin-2.1.6.tgz">Download <strong>2.1.6 release</strong></a></li>
+          <li><a href="https://github.com/poweradmin/poweradmin/tarball/master">Download <strong>Bleeding edge</strong></a></li>
+          <li><a href="https://github.com/poweradmin/poweradmin">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>User management</h2>
+
+<h3>Improvements</h3>
+
+<p>The current user management setup is fairly new. Because of this, some of the details may not be working as expected. If you have ideas on improving the new user management setup, be sure to discuss them on the mailinglist. These permission templates were introduced in version 2.0.0.</p>
+
+<h3>Basics of user management in Poweradmin</h3>
+
+<p>Basically, it allows you to have two levels of users. You have "ueberusers", which are users that can do anything within the interface and you have users with limited rights.</p>
+
+<p>How much each of the users is allowed to do, can be managed using the permission templates. These templates are build up from a set of permissions. Each of the permissions allows the user one ore more things. One permission allows the user to see the contents of zones the user owns. Another permission allows the user to edit zones he doesn't own. And even another permission allows the users to create new supermasters. By adding or removing those permissions to a template and assigning a template to a user, you can control a users rights.</p>
+
+<p>The permission "user_is_ueberuser" overrules any other permission the user may or may not have been assigned. It gives the user full access to anything that otherwise would require the assignment of some kind of permission. This is normally the kind of permission that an admistrator has - and no one else.</p>
+
+<p>"Ownership" is just a phrase to denote zones the user is marked "owner" for. It does not imply any priviliges for these zones. These privileges are set using one or more of the permissions added to the template the user has been assigned. A user can be owner for one or more zones, but if the user has not been assigned any "view" permissions for "own" zones, these zones won't show up on the users screen. Not that it would make a lot of sense, of course.</p>
+
+<p>Why can't users be assigned partial (edit) access to zones? Poweradmin takes it that if you have edit permissions for a zone, you would have enough rights to break the zone entirely. Even if you would have partial access (which is not possible), such a user would be able create severe damage. Because of this Poweradmin presumes that if a user can be trusted to edit a zone, the user can be trusted to have delete permissions as well.</p>
+
+<h3>Pitfalls</h3>
+
+<p>Be aware that adding the "user_edit_templ_perm", "templ_perm_edit" or "user_add_new" permission to a template will give any user that has this template assigned indirectly "user_is_ueberuser" right. A user that as been assigned one of these three permissions is able to edit his or her own templates or to create a new user with godlike permissions.</p>
+
+<p>Anyone with root shell access to the server running the Poweradmin web interface or the PowerDNS database server, has "ueberuser" rights.</p>
+
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/poweradmin">poweradmin</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
