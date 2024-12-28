@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/getting-started/requirements/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/getting-started/docker-demo/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>System Requirements - Poweradmin Documentation</title>
+    <title>Docker Demo - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "System Requirements";
-        var mkdocs_page_input_path = "getting-started/requirements.md";
-        var mkdocs_page_url = "/getting-started/requirements/";
+        var mkdocs_page_name = "Docker Demo";
+        var mkdocs_page_input_path = "getting-started/docker-demo.md";
+        var mkdocs_page_url = "/getting-started/docker-demo/";
       </script>
     
     <!--[if lt IE 9]>
@@ -48,9 +48,13 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="" href="../overview.md">Overview</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" >Quick Evaluation</a>
-    <ul>
-                <li class="toctree-l2"><a class="reference internal" href="../docker-demo/">Docker Demo</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Quick Evaluation</a>
+    <ul class="current">
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Docker Demo</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#steps-to-evaluate-poweradmin-using-docker">Steps to Evaluate Poweradmin Using Docker</a>
+    </li>
+    </ul>
                 </li>
                 <li class="toctree-l2"><a class="" href="../first-steps.md">First Steps</a>
                 </li>
@@ -58,21 +62,7 @@
                 </li>
     </ul>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">System Requirements</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#minimum-requirements">Minimum Requirements</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#supported-distributions">Supported Distributions</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#bsd-operating-systems">BSD Operating Systems</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#unsupported-distributions">Unsupported Distributions</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#notes">Notes</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../requirements/">System Requirements</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Installation</span></p>
@@ -244,9 +234,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Getting Started</li>
-      <li class="breadcrumb-item active">System Requirements</li>
+          <li class="breadcrumb-item">Quick Evaluation</li>
+      <li class="breadcrumb-item active">Docker Demo</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/getting-started/requirements.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/getting-started/docker-demo.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -254,124 +245,60 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="poweradmin-system-requirements">PowerAdmin System Requirements</h1>
-<h2 id="overview">Overview</h2>
-<p>PowerAdmin requires PHP 8.1 or higher to run. This document outlines the supported Linux and BSD distributions as well as those that are not supported due to PHP version constraints. For the best experience, ensure your system meets or exceeds the recommended requirements.</p>
-<hr />
-<h2 id="minimum-requirements">Minimum Requirements</h2>
-<ul>
-<li><strong>PHP</strong>: 8.1 or higher</li>
-<li><strong>Web Server</strong>: Apache or NGINX</li>
-<li><strong>Operating System</strong>: Linux or BSD</li>
+                <h1 id="docker-demo">Docker Demo</h1>
+<p>The easiest way to evaluate Poweradmin without actually connecting to PowerDNS is to use a Docker image.</p>
+<h2 id="steps-to-evaluate-poweradmin-using-docker">Steps to Evaluate Poweradmin Using Docker</h2>
+<ol>
+<li><strong>Get the Source</strong></li>
+<li>
+<p>Download the release file or use git to clone the repository.</p>
+</li>
+<li>
+<p><strong>Change to the Directory</strong></p>
+</li>
+<li>
+<p>Navigate to the directory where the files are located.</p>
+</li>
+<li>
+<p><strong>Build the Docker Image</strong></p>
+</li>
+<li>
+<p>Run the following command to build the Docker image:
+     <code>sh
+     docker build --no-cache -t poweradmin .</code></p>
+</li>
+<li>
+<p><strong>Run the Docker Container</strong></p>
+</li>
+<li>
+<p>Execute the following command to run the Docker container:
+     <code>sh
+     docker run -d --name poweradmin -p 8080:80 poweradmin</code></p>
+</li>
+<li>
+<p><strong>Access Poweradmin</strong></p>
+</li>
+<li>
+<p>Open your browser and go to <a href="http://localhost:8080">http://localhost:8080</a>.</p>
+</li>
+<li>
+<p><strong>Login</strong></p>
+</li>
+<li>Use the following credentials to log in:<ul>
+<li><strong>Username</strong>: admin</li>
+<li><strong>Password</strong>: testadmin</li>
 </ul>
+</li>
+</ol>
 <blockquote>
-<p><strong>Note</strong>: Other web server software, such as Caddy, might also be supported. However, these are usually not tested by the maintainer and may only work with help from the community.</p>
+<p><strong>Note</strong>: This installation uses SQLite to store all the data.</p>
 </blockquote>
-<hr />
-<h2 id="supported-distributions">Supported Distributions</h2>
-<table>
-<thead>
-<tr>
-<th>Distribution</th>
-<th>PHP Version</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Debian 12.7</td>
-<td>8.2</td>
-<td></td>
-</tr>
-<tr>
-<td>Ubuntu 22.04</td>
-<td>8.1</td>
-<td></td>
-</tr>
-<tr>
-<td>Ubuntu 24.04</td>
-<td>8.3</td>
-<td></td>
-</tr>
-<tr>
-<td>Fedora 40</td>
-<td>8.3</td>
-<td>Apache included by default</td>
-</tr>
-<tr>
-<td>Fedora 41</td>
-<td>8.3</td>
-<td>Apache included by default</td>
-</tr>
-<tr>
-<td>OpenSuse 15.6</td>
-<td>8.2</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="bsd-operating-systems">BSD Operating Systems</h2>
-<p>PowerAdmin is compatible with BSD operating systems that meet the PHP 8.1+ requirement. While not extensively tested, it should work as long as the environment is properly configured.</p>
-<hr />
-<h2 id="unsupported-distributions">Unsupported Distributions</h2>
-<table>
-<thead>
-<tr>
-<th>Distribution</th>
-<th>PHP Version</th>
-<th>Reason for Lack of Support</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Debian 11</td>
-<td>7.4</td>
-<td>PHP below minimum version</td>
-</tr>
-<tr>
-<td>Ubuntu 20.04</td>
-<td>7.4</td>
-<td>PHP below minimum version</td>
-</tr>
-<tr>
-<td>CentOS Stream release 9</td>
-<td>8.0</td>
-<td>PHP below minimum version</td>
-</tr>
-<tr>
-<td>Rocky 8.10</td>
-<td>7.2</td>
-<td>PHP below minimum version</td>
-</tr>
-<tr>
-<td>Rocky 9.4</td>
-<td>8.0</td>
-<td>PHP below minimum version</td>
-</tr>
-<tr>
-<td>Alma 8.10</td>
-<td>7.2</td>
-<td>PHP below minimum version</td>
-</tr>
-<tr>
-<td>Alma 9.4</td>
-<td>8.0</td>
-<td>PHP below minimum version</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="notes">Notes</h2>
-<ul>
-<li>Distributions listed as unsupported can potentially be configured manually with a custom PHP build, but this is not officially supported.</li>
-<li>Upgrade paths are recommended for unsupported distributions to maintain security and compatibility.</li>
-</ul>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../docker-demo/" class="btn btn-neutral float-left" title="Docker Demo"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../.." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../requirements/" class="btn btn-neutral float-right" title="System Requirements">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -398,8 +325,10 @@
         </span>
     
     
-      <span><a href="../docker-demo/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../.." style="color: #fcfcfc">&laquo; Previous</a></span>
     
+    
+      <span><a href="../requirements/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
