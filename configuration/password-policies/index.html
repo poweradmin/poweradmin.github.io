@@ -118,11 +118,11 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#password-reuse-prevention">Password Reuse Prevention</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#account-lockout">Account Lockout</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
     </li>
     </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../security-policies/">Security Policies</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">User Guide</span></p>
@@ -281,15 +281,9 @@ configured in the <code>config/password_policy.php</code> file. Below are the av
 <li><strong>enable_reuse_prevention</strong>: Enable or disable prevention of password reuse. Default: <code>false</code>.</li>
 <li><strong>prevent_reuse</strong>: Number of previous passwords to check against for reuse. Default: <code>5</code>.</li>
 </ul>
-<h2 id="account-lockout">Account Lockout</h2>
-<p><strong>Note:</strong> The following settings are not implemented yet.</p>
-<ul>
-<li><strong>enable_lockout</strong>: Enable or disable account lockout after multiple failed login attempts. Default: <code>false</code>.</li>
-<li><strong>lockout_attempts</strong>: Number of failed login attempts before account is locked. Default: <code>5</code>.</li>
-<li><strong>lockout_duration</strong>: Duration of the lockout in minutes. Default: <code>15</code>.</li>
-</ul>
 <p>These settings can be customized by modifying the <code>config/password_policy.php</code> file. The default values are provided by
-the <a href="https://github.com/poweradmin/poweradmin/blob/b45f03be40b1194863739a44fea91500ff71b25c/lib/Domain/Config/PasswordPolicyDefaults.php">PasswordPolicyDefaults</a> class.</p>
+the <a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Config/PasswordPolicyDefaults.php">PasswordPolicyDefaults</a>
+class.</p>
 <h2 id="example-configuration">Example Configuration</h2>
 <p>To enable the currently defined password policies, you can update the <code>config/password_policy.php</code> file with the
 following content:</p>
@@ -297,14 +291,17 @@ following content:</p>
 
 return [
     'enable_password_rules' =&gt; true,
-    'enable_lockout' =&gt; true,
 ];
 </code></pre>
+<p>When <code>enable_password_rules</code> is set to <code>true</code>, passwords will be required to be at least 6 characters long and contain
+at least one uppercase letter, one lowercase letter, and one number. Special characters are not required by default, but
+when used, they must be from the allowed set: <code>!@#$%^&amp;*()+-=[]{}|;:,.&lt;&gt;?</code></p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../../installation/composer/" class="btn btn-neutral float-left" title="Composer"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../security-policies/" class="btn btn-neutral float-right" title="Security Policies">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -333,6 +330,8 @@ return [
     
       <span><a href="../../installation/composer/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
+    
+      <span><a href="../security-policies/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
