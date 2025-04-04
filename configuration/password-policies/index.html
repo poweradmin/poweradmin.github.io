@@ -114,6 +114,8 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#password-rules">Password Rules</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#password-security-settings">Password Security Settings</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#password-expiration">Password Expiration</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#password-reuse-prevention">Password Reuse Prevention</a>
@@ -255,8 +257,9 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="password-policies">Password Policies</h1>
-<p>Poweradmin allows you to enforce password policies to enhance the security of user accounts. These policies are
-configured in the <code>config/password_policy.php</code> file. Below are the available options:</p>
+<p>Poweradmin allows you to enforce password policies to enhance the security of user accounts. All security
+configurations, including password policies, are now configured in a single <code>config/settings.php</code> file under the
+<code>security</code> section. This consolidates all security-related settings into one location for easier management.</p>
 <h2 id="password-rules">Password Rules</h2>
 <ul>
 <li><strong>enable_password_rules</strong>: Enable or disable password rules enforcement. Default: <code>false</code>.</li>
@@ -266,6 +269,13 @@ configured in the <code>config/password_policy.php</code> file. Below are the av
 <li><strong>require_numbers</strong>: Require at least one numeric digit. Default: <code>true</code>.</li>
 <li><strong>require_special</strong>: Require at least one special character. Default: <code>false</code>.</li>
 <li><strong>special_characters</strong>: List of allowed special characters. Default: <code>!@#$%^&amp;*()+-=[]{}|;:,.&lt;&gt;?</code>.</li>
+</ul>
+<h2 id="password-security-settings">Password Security Settings</h2>
+<p>The following additional security settings are available in the <code>security</code> section:</p>
+<ul>
+<li><strong>password_encryption</strong>: Choose the password hashing algorithm. Options: 'md5', 'md5salt', 'bcrypt', 'argon2i', '
+  argon2id'. Default: <code>bcrypt</code>.</li>
+<li><strong>password_cost</strong>: Cost factor for bcrypt algorithm. Default: <code>12</code>.</li>
 </ul>
 <h2 id="password-expiration">Password Expiration</h2>
 <p><strong>Note:</strong> The following settings are not implemented yet.</p>
@@ -279,21 +289,25 @@ configured in the <code>config/password_policy.php</code> file. Below are the av
 <li><strong>enable_reuse_prevention</strong>: Enable or disable prevention of password reuse. Default: <code>false</code>.</li>
 <li><strong>prevent_reuse</strong>: Number of previous passwords to check against for reuse. Default: <code>5</code>.</li>
 </ul>
-<p>These settings can be customized by modifying the <code>config/password_policy.php</code> file. The default values are provided by
-the <a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Config/PasswordPolicyDefaults.php">PasswordPolicyDefaults</a>
-class.</p>
 <h2 id="example-configuration">Example Configuration</h2>
-<p>To enable the currently defined password policies, you can update the <code>config/password_policy.php</code> file with the
-following content:</p>
+<p>To enable password rules with custom settings, add the following configuration to your <code>config/settings.php</code>:</p>
 <pre><code class="language-php">&lt;?php
 
 return [
-    'enable_password_rules' =&gt; true,
+    'security' =&gt; [
+        'password_encryption' =&gt; 'bcrypt',
+        'password_cost' =&gt; 12,
+        'password_policy' =&gt; [
+            'enable_password_rules' =&gt; true,
+            'min_length' =&gt; 8,
+            'require_special' =&gt; true,
+        ],
+    ],
 ];
 </code></pre>
-<p>When <code>enable_password_rules</code> is set to <code>true</code>, passwords will be required to be at least 6 characters long and contain
-at least one uppercase letter, one lowercase letter, and one number. Special characters are not required by default, but
-when used, they must be from the allowed set: <code>!@#$%^&amp;*()+-=[]{}|;:,.&lt;&gt;?</code></p>
+<p>When <code>enable_password_rules</code> is set to <code>true</code>, passwords will be validated according to the configured rules. In this
+example, passwords must be at least 8 characters long and include special characters, along with the default
+requirements for uppercase letters, lowercase letters, and numbers.</p>
               
             </div>
           </div><footer>

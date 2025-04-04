@@ -253,8 +253,9 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="password-policies">Password Policies</h1>
-<p>Poweradmin allows you to enforce password policies to enhance the security of user accounts. These policies are
-configured in the <code>config/security_policy.php</code> file. Below are the available options:</p>
+<p>Poweradmin allows you to enforce password policies to enhance the security of user accounts. All security
+configurations, including account lockout and IP management policies, are now configured in the <code>config/settings.php</code>
+file under the <code>security</code> section.</p>
 <h2 id="account-lockout">Account Lockout</h2>
 <ul>
 <li><strong>enable_lockout</strong>: Enable or disable account lockout after multiple failed login attempts. Default: <code>false</code>.</li>
@@ -264,26 +265,31 @@ configured in the <code>config/security_policy.php</code> file. Below are the av
 <li><strong>clear_attempts_on_success</strong>: Clear failed attempt counter after successful login. Default: <code>true</code>.</li>
 </ul>
 <h2 id="ip-address-management">IP Address Management</h2>
-<p><strong>Note:</strong> The following settings are not implemented yet.</p>
 <ul>
-<li><strong>whitelist_ip_addresses</strong>: List of IP addresses that are always allowed to access the system. Default: <code>[]</code>.</li>
-<li><strong>blacklist_ip_addresses</strong>: List of IP addresses that are blocked from accessing the system. Default: <code>[]</code>.</li>
+<li><strong>whitelist_ip_addresses</strong>: List of IP addresses that are always allowed to access the system. Supports IPs, CIDRs,
+  and wildcards. Takes priority over blacklist. Default: <code>[]</code>.</li>
+<li><strong>blacklist_ip_addresses</strong>: List of IP addresses that are blocked from accessing the system. Supports IPs, CIDRs, and
+  wildcards. Default: <code>[]</code>.</li>
 </ul>
-<p>These settings can be customized by modifying the <code>config/security_policy.php</code> file. The default values are provided by
-the <a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Config/SecurityPolicyDefaults.php">SecurityPolicyDefaults</a>
-class.</p>
+<p>These settings can be found in the <code>security.account_lockout</code> section of your <code>config/settings.php</code> file.</p>
 <h2 id="example-configuration">Example Configuration</h2>
-<p>To enable the currently defined security policies, you can update the <code>config/security_policy.php</code> file with the
-following content:</p>
+<p>To enable account lockout and configure IP whitelisting, you can use the following configuration in your
+<code>config/settings.php</code>:</p>
 <pre><code class="language-php">&lt;?php
 
 return [
-    'enable_lockout' =&gt; true,
+    'security' =&gt; [
+        'account_lockout' =&gt; [
+            'enable_lockout' =&gt; true,
+            'whitelist_ip_addresses' =&gt; ['192.168.1.0/24', '10.0.0.*'],
+            'blacklist_ip_addresses' =&gt; ['1.2.3.4', '5.6.7.0/24'],
+        ],
+    ],
 ];
 </code></pre>
 <p>When <code>enable_lockout</code> is set to <code>true</code>, an account will be locked for 15 minutes after 5 failed login attempts. The
-system tracks IP addresses by default and resets the failed attempts counter after a successful login. Setting this to
-<code>false</code> disables the entire account lockout mechanism, regardless of other lockout-related settings.</p>
+system tracks IP addresses by default and resets the failed attempts counter after a successful login. Whitelisted IPs
+will never be locked out, while blacklisted IPs will always be blocked.</p>
               
             </div>
           </div><footer>
