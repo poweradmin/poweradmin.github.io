@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/configuration/database/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/configuration/mail/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Database Configuration - Poweradmin Documentation</title>
+    <title>Mail Configuration - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Database Configuration";
-        var mkdocs_page_input_path = "configuration/database.md";
-        var mkdocs_page_url = "/configuration/database/";
+        var mkdocs_page_name = "Mail Configuration";
+        var mkdocs_page_input_path = "configuration/mail.md";
+        var mkdocs_page_url = "/configuration/mail/";
       </script>
     
     <!--[if lt IE 9]>
@@ -104,15 +104,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../dns-settings/">DNS Settings</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Database Configuration</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#database-types">Database Types</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../database/">Database Configuration</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../powerdns-api/">PowerDNS API</a>
                   </li>
@@ -122,7 +114,29 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../ldap/">LDAP Integration</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../mail/">Mail Configuration</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Mail Configuration</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#smtp-settings">SMTP Settings</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sendmail-settings">Sendmail Settings</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#email-templates">Email Templates</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#testing-mail-configuration">Testing Mail Configuration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#security-considerations">Security Considerations</a>
+    </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" >UI Customization</a>
     <ul>
@@ -260,9 +274,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Configuration</li>
-      <li class="breadcrumb-item active">Database Configuration</li>
+      <li class="breadcrumb-item active">Mail Configuration</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/configuration/database.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/configuration/mail.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -270,52 +284,86 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="database-configuration">Database Configuration</h1>
-<p>Poweradmin's database settings are configured in the <code>config/settings.php</code> file under the <code>database</code> section.</p>
+                <h1 id="mail-configuration">Mail Configuration</h1>
+<p>This document describes how to configure email settings in Poweradmin.</p>
+<h2 id="overview">Overview</h2>
+<p>Poweradmin supports sending emails for various purposes:
+- User registration confirmations
+- Password reset requests
+- DNS zone changes notifications
+- System alerts</p>
 <h2 id="configuration-options">Configuration Options</h2>
+<p>The mail settings are configured in the <code>config/settings.php</code> file under the <code>mail</code> section:</p>
 <ul>
-<li><strong>type</strong>: Database type. Options: 'mysql', 'pgsql', 'sqlite'. Default: 'mysql'</li>
-<li><strong>host</strong>: Database server hostname. Default: 'localhost'</li>
-<li><strong>port</strong>: Database server port. Default: '3306'</li>
-<li><strong>name</strong>: Database name. Default: 'powerdns'</li>
-<li><strong>user</strong>: Database username</li>
-<li><strong>password</strong>: Database password</li>
-<li><strong>charset</strong>: Database character set. Options: 'latin1', 'utf8'. Default: 'latin1'</li>
-<li><strong>file</strong>: SQLite database file path (only for SQLite)</li>
-<li><strong>debug</strong>: Enable SQL query debugging. Default: <code>false</code></li>
+<li><strong>enabled</strong>: Enable email functionality. Default: <code>false</code></li>
+<li><strong>from</strong>: Default "from" email address. Default: <code>poweradmin@example.com</code></li>
+<li><strong>from_name</strong>: Default "from" name. Default: empty</li>
+<li><strong>transport</strong>: Transport method. Options: 'smtp', 'sendmail', 'php'. Default: <code>smtp</code></li>
+</ul>
+<h3 id="smtp-settings">SMTP Settings</h3>
+<ul>
+<li><strong>host</strong>: SMTP server hostname. Default: <code>smtp.example.com</code></li>
+<li><strong>port</strong>: SMTP server port. Default: <code>587</code></li>
+<li><strong>username</strong>: SMTP authentication username. Default: empty</li>
+<li><strong>password</strong>: SMTP authentication password. Default: empty</li>
+<li><strong>encryption</strong>: Encryption method. Options: 'tls', 'ssl', empty. Default: <code>tls</code></li>
+<li><strong>auth</strong>: Whether SMTP requires authentication. Default: <code>false</code></li>
+</ul>
+<h3 id="sendmail-settings">Sendmail Settings</h3>
+<ul>
+<li><strong>sendmail_path</strong>: Path to sendmail binary. Default: <code>/usr/sbin/sendmail -bs</code></li>
+</ul>
+<h3 id="email-templates">Email Templates</h3>
+<ul>
+<li><strong>password_email_subject</strong>: Subject for password reset emails. Default: <code>Your new account information</code></li>
+<li><strong>email_signature</strong>: Signature added to emails. Default: <code>DNS Admin</code></li>
+<li><strong>email_title</strong>: Title used in email templates. Default: <code>Your DNS Account Information</code></li>
 </ul>
 <h2 id="example-configuration">Example Configuration</h2>
 <pre><code class="language-php">return [
-    'database' =&gt; [
-        'host' =&gt; 'localhost',
-        'port' =&gt; '3306',
-        'name' =&gt; 'powerdns',
-        'user' =&gt; 'poweradmin',
-        'password' =&gt; 'your_secure_password',
-        'type' =&gt; 'mysql',
-        'charset' =&gt; 'latin1',
-        'file' =&gt; '',
-        'debug' =&gt; false,
+    'mail' =&gt; [
+        'enabled' =&gt; true,
+        'from' =&gt; 'dns@company.com',
+        'from_name' =&gt; 'DNS Administrator',
+        'transport' =&gt; 'smtp',
+        'host' =&gt; 'smtp.company.com',
+        'port' =&gt; 587,
+        'username' =&gt; 'smtp_user',
+        'password' =&gt; 'smtp_password',
+        'encryption' =&gt; 'tls',
+        'auth' =&gt; true,
     ],
 ];
 </code></pre>
-<h2 id="database-types">Database Types</h2>
-<p>Poweradmin supports multiple database backends:</p>
+<h2 id="testing-mail-configuration">Testing Mail Configuration</h2>
+<p>After configuring the mail settings, you can test your configuration by:</p>
+<ol>
+<li>Going to Administration → System Settings</li>
+<li>Clicking "Test Mail Configuration"</li>
+<li>Entering a test email address</li>
+<li>Clicking "Send Test Email"</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Common email issues and solutions:</p>
 <ul>
-<li>MySQL/MariaDB (recommended)</li>
-<li>PostgreSQL</li>
-<li>SQLite</li>
+<li><strong>Emails not sending</strong>: Verify SMTP credentials and server settings</li>
+<li><strong>SSL/TLS errors</strong>: Check encryption settings and port numbers</li>
+<li><strong>Authentication failures</strong>: Verify username and password</li>
+<li><strong>Delayed delivery</strong>: Review mail server queue and spam settings</li>
 </ul>
-<p>For detailed setup instructions for each database type, see:
-- <a href="../database/mysql.md">MySQL/MariaDB Setup</a>
-- <a href="../database/postgresql.md">PostgreSQL Setup</a>
-- <a href="../database/sqlite.md">SQLite Setup</a></p>
+<h2 id="security-considerations">Security Considerations</h2>
+<ul>
+<li>Use TLS encryption when possible</li>
+<li>Use dedicated email accounts for the application</li>
+<li>Regularly rotate SMTP credentials</li>
+<li>Be cautious with email content to avoid potential phishing concerns</li>
+</ul>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../dns-settings/" class="btn btn-neutral float-left" title="DNS Settings"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../powerdns-api/" class="btn btn-neutral float-right" title="PowerDNS API">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../ldap/" class="btn btn-neutral float-left" title="LDAP Integration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../ui/overview/" class="btn btn-neutral float-right" title="Overview">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -342,10 +390,10 @@
         </span>
     
     
-      <span><a href="../dns-settings/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../ldap/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../powerdns-api/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../ui/overview/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

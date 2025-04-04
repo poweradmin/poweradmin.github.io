@@ -106,25 +106,41 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../database/">Database Configuration</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../powerdns-api/">PowerDNS API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dnssec/">DNSSEC</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging Setup</a>
                   </li>
-                  <li class="toctree-l1"><a class="" href="../dnssec.md">DNSSEC Setup</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../ldap/">LDAP Integration</a>
                   </li>
-                  <li class="toctree-l1"><a class="" href="../ldap.md">LDAP Integration</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../mail/">Mail Configuration</a>
                   </li>
-                  <li class="toctree-l1"><a class="" href="../ui-customization.md">UI Customization</a>
-                  </li>
-                  <li class="toctree-l1"><a class="" href="../environment.md">Environment Variables</a>
+                  <li class="toctree-l1"><a class="reference internal" >UI Customization</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../ui/overview/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ui/themes/">Themes</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ui/layout/">Layout</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ui/custom-css/">Custom CSS</a>
+                </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../password-policies/">Password Policies</a>
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Security Policies</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#general-security-settings">General Security Settings</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#account-lockout">Account Lockout</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#ip-address-management">IP Address Management</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#security-best-practices">Security Best Practices</a>
     </li>
     </ul>
                   </li>
@@ -258,44 +274,62 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="password-policies">Password Policies</h1>
-<p>Poweradmin allows you to enforce password policies to enhance the security of user accounts. All security
-configurations, including account lockout and IP management policies, are now configured in the <code>config/settings.php</code>
-file under the <code>security</code> section.</p>
-<h2 id="account-lockout">Account Lockout</h2>
+                <h1 id="security-policies">Security Policies</h1>
+<p>Poweradmin offers various security features to protect your DNS management system. All security configurations are configured in the <code>config/settings.php</code> file under the <code>security</code> section.</p>
+<h2 id="general-security-settings">General Security Settings</h2>
 <ul>
-<li><strong>enable_lockout</strong>: Enable or disable account lockout after multiple failed login attempts. Default: <code>false</code>.</li>
-<li><strong>lockout_attempts</strong>: Number of failed login attempts before account is locked. Default: <code>5</code>.</li>
-<li><strong>lockout_duration</strong>: Duration of the lockout in minutes. Default: <code>15</code>.</li>
-<li><strong>track_ip_address</strong>: Enable tracking of IP addresses for failed login attempts. Default: <code>true</code>.</li>
-<li><strong>clear_attempts_on_success</strong>: Clear failed attempt counter after successful login. Default: <code>true</code>.</li>
+<li><strong>session_key</strong>: A unique key used for session security. Default: <code>change_this_key</code> (you should always change this)</li>
+<li><strong>password_encryption</strong>: Password hashing algorithm. Options: 'md5', 'md5salt', 'bcrypt', 'argon2i', 'argon2id'. Default: <code>bcrypt</code></li>
+<li><strong>password_cost</strong>: Cost factor for bcrypt algorithm. Default: <code>12</code></li>
+<li><strong>login_token_validation</strong>: Enable token validation for login form. Default: <code>true</code></li>
+<li><strong>global_token_validation</strong>: Enable token validation for all forms. Default: <code>true</code></li>
+</ul>
+<h2 id="account-lockout">Account Lockout</h2>
+<p>These settings help prevent brute force attacks by temporarily locking accounts after multiple failed login attempts:</p>
+<ul>
+<li><strong>enable_lockout</strong>: Enable account lockout after failed login attempts. Default: <code>false</code></li>
+<li><strong>lockout_attempts</strong>: Number of failed attempts before account is locked. Default: <code>5</code></li>
+<li><strong>lockout_duration</strong>: Duration of the lockout in minutes. Default: <code>15</code></li>
+<li><strong>track_ip_address</strong>: Lock accounts based on IP address. Default: <code>true</code></li>
+<li><strong>clear_attempts_on_success</strong>: Clear failed attempts after successful login. Default: <code>true</code></li>
 </ul>
 <h2 id="ip-address-management">IP Address Management</h2>
+<p>Control which IP addresses can access the system:</p>
 <ul>
-<li><strong>whitelist_ip_addresses</strong>: List of IP addresses that are always allowed to access the system. Supports IPs, CIDRs,
-  and wildcards. Takes priority over blacklist. Default: <code>[]</code>.</li>
-<li><strong>blacklist_ip_addresses</strong>: List of IP addresses that are blocked from accessing the system. Supports IPs, CIDRs, and
-  wildcards. Default: <code>[]</code>.</li>
+<li><strong>whitelist_ip_addresses</strong>: IP addresses that are always allowed to access the system. Takes priority over blacklist. Supports IPs, CIDRs, and wildcards. Default: <code>[]</code></li>
+<li><strong>blacklist_ip_addresses</strong>: IP addresses that are blocked from accessing the system. Supports IPs, CIDRs, and wildcards. Default: <code>[]</code></li>
 </ul>
-<p>These settings can be found in the <code>security.account_lockout</code> section of your <code>config/settings.php</code> file.</p>
 <h2 id="example-configuration">Example Configuration</h2>
-<p>To enable account lockout and configure IP whitelisting, you can use the following configuration in your
-<code>config/settings.php</code>:</p>
-<pre><code class="language-php">&lt;?php
-
-return [
+<pre><code class="language-php">return [
     'security' =&gt; [
+        'session_key' =&gt; 'random_secure_string_here',
+        'password_encryption' =&gt; 'bcrypt',
+        'password_cost' =&gt; 12,
+        'login_token_validation' =&gt; true,
+        'global_token_validation' =&gt; true,
         'account_lockout' =&gt; [
             'enable_lockout' =&gt; true,
+            'lockout_attempts' =&gt; 3,
+            'lockout_duration' =&gt; 30,
+            'track_ip_address' =&gt; true,
+            'clear_attempts_on_success' =&gt; true,
             'whitelist_ip_addresses' =&gt; ['192.168.1.0/24', '10.0.0.*'],
             'blacklist_ip_addresses' =&gt; ['1.2.3.4', '5.6.7.0/24'],
         ],
     ],
 ];
 </code></pre>
-<p>When <code>enable_lockout</code> is set to <code>true</code>, an account will be locked for 15 minutes after 5 failed login attempts. The
-system tracks IP addresses by default and resets the failed attempts counter after a successful login. Whitelisted IPs
-will never be locked out, while blacklisted IPs will always be blocked.</p>
+<h2 id="security-best-practices">Security Best Practices</h2>
+<ol>
+<li><strong>Always change the default session key</strong> to a unique, random string</li>
+<li>Use a strong password hashing algorithm (bcrypt or argon2id)</li>
+<li>Enable account lockout in production environments</li>
+<li>Implement IP whitelisting for admin access in sensitive environments</li>
+<li>Enable both login and global token validation to prevent CSRF attacks</li>
+<li>Use HTTPS for all production deployments</li>
+<li>Regularly update Poweradmin to get the latest security fixes</li>
+</ol>
+<p>For more information about password policies, see the <a href="../password-policies/">Password Policies documentation</a>.</p>
               
             </div>
           </div><footer>
