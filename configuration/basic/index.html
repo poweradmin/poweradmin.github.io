@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/configuration/logging/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/configuration/basic/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Logging Setup - Poweradmin Documentation</title>
+    <title>Basic Configuration - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Logging Setup";
-        var mkdocs_page_input_path = "configuration/logging.md";
-        var mkdocs_page_url = "/configuration/logging/";
+        var mkdocs_page_name = "Basic Configuration";
+        var mkdocs_page_input_path = "configuration/basic.md";
+        var mkdocs_page_url = "/configuration/basic/";
       </script>
     
     <!--[if lt IE 9]>
@@ -102,7 +102,17 @@
               </ul>
               <p class="caption"><span class="caption-text">Configuration</span></p>
               <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../basic/">Basic Configuration</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Basic Configuration</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#legacy-configuration-format">Legacy Configuration Format</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#modern-configuration-format">Modern Configuration Format</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-sections">Configuration Sections</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#important-notes">Important Notes</a>
+    </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../dns-settings/">DNS Settings</a>
                   </li>
@@ -112,17 +122,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../dnssec/">DNSSEC</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Logging Setup</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#basic-configuration">Basic Configuration</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#syslog-configuration">Syslog Configuration</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#log-levels">Log Levels</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging Setup</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../ldap/">LDAP Integration</a>
                   </li>
@@ -264,9 +264,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Configuration</li>
-      <li class="breadcrumb-item active">Logging Setup</li>
+      <li class="breadcrumb-item active">Basic Configuration</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/configuration/logging.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/configuration/basic.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -274,55 +274,74 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="logging-configuration">Logging Configuration</h1>
-<p>Poweradmin's logging system can be configured through the <code>config/settings.php</code> file under the <code>logging</code> section.</p>
-<h2 id="basic-configuration">Basic Configuration</h2>
-<ul>
-<li><strong>type</strong>: The logging handler to use</li>
-<li><code>null</code>: Disable logging</li>
-<li><code>native</code>: Use PHP's native error logging</li>
-<li><strong>level</strong>: The minimum logging level (see below for options)</li>
-<li><strong>database_enabled</strong>: Enable logging zone and record changes to database. Default: <code>false</code></li>
-</ul>
-<h2 id="syslog-configuration">Syslog Configuration</h2>
-<ul>
-<li><strong>syslog_enabled</strong>: Write authentication attempts to syslog. Default: <code>false</code></li>
-<li><strong>syslog_identity</strong>: Syslog identity string. Default: 'poweradmin'</li>
-<li><strong>syslog_facility</strong>: Syslog facility to use. Default: LOG_USER</li>
-</ul>
-<h2 id="log-levels">Log Levels</h2>
-<p>Available logging levels, in order of increasing severity:</p>
-<ol>
-<li>DEBUG: Detailed debug information</li>
-<li>INFO: Interesting events</li>
-<li>NOTICE: Normal but significant events</li>
-<li>WARNING: Exceptional occurrences that are not errors</li>
-<li>ERROR: Runtime errors that do not require immediate action</li>
-<li>CRITICAL: Critical conditions</li>
-<li>ALERT: Action must be taken immediately</li>
-<li>EMERGENCY: System is unusable</li>
-</ol>
-<h2 id="example-configuration">Example Configuration</h2>
-<pre><code class="language-php">return [
-    'logging' =&gt; [
-        'type' =&gt; 'native',
-        'level' =&gt; 'warning',
-        'database_enabled' =&gt; true,
-        'syslog_enabled' =&gt; true,
-        'syslog_identity' =&gt; 'poweradmin',
-        'syslog_facility' =&gt; LOG_USER,
+                <h1 id="basic-configuration">Basic Configuration</h1>
+<p>Poweradmin supports two configuration formats: legacy (individual PHP variables) and modern (array-based configuration). Both formats are stored in the <code>config/settings.php</code> file.</p>
+<h2 id="legacy-configuration-format">Legacy Configuration Format</h2>
+<p>This is the traditional format, still supported for backwards compatibility:</p>
+<pre><code class="language-php">&lt;?php
+$db_host = 'localhost';
+$db_name = 'powerdns-db';
+$db_user = 'poweradmin-db-user';
+$db_pass = 'poweradmin-db-user-password';
+$db_type = 'mysql';
+
+$session_key = 'generate-some-random-text-here';
+
+$dns_hostmaster = 'hostmaster.example.net';
+$dns_ns1 = 'ns1.example.net';
+$dns_ns2 = 'ns2.example.net';
+</code></pre>
+<h2 id="modern-configuration-format">Modern Configuration Format</h2>
+<p>The recommended modern format uses a PHP array structure:</p>
+<pre><code class="language-php">&lt;?php
+return [
+    'database' =&gt; [
+        'host' =&gt; 'localhost',
+        'name' =&gt; 'powerdns-db',
+        'user' =&gt; 'poweradmin-db-user',
+        'password' =&gt; 'poweradmin-db-user-password',
+        'type' =&gt; 'mysql',
+    ],
+
+    'security' =&gt; [
+        'session_key' =&gt; 'change_this_key',
+    ],
+
+    'dns' =&gt; [
+        'hostmaster' =&gt; 'hostmaster.example.com',
+        'ns1' =&gt; 'ns1.example.com',
+        'ns2' =&gt; 'ns2.example.com',
     ],
 ];
 </code></pre>
-<p>For more advanced logging configuration and analysis, see:
-- <a href="../advanced/logging-config.md">Log Configuration</a>
-- <a href="../advanced/log-analysis.md">Log Analysis</a></p>
+<h2 id="configuration-sections">Configuration Sections</h2>
+<p>The modern configuration format is organized into logical sections:</p>
+<ul>
+<li><strong>database</strong>: Database connection settings</li>
+<li><strong>security</strong>: Security-related settings including password policies and session management</li>
+<li><strong>dns</strong>: DNS-specific configurations including nameserver details</li>
+<li><strong>interface</strong>: UI and display preferences</li>
+<li><strong>logging</strong>: Logging configuration</li>
+<li><strong>pdns_api</strong>: PowerDNS API integration settings</li>
+</ul>
+<p>For detailed information about specific settings, see:
+- <a href="../database/">Database Configuration</a>
+- <a href="../dns-settings/">DNS Settings</a>
+- <a href="../security-policies/">Security Policies</a></p>
+<h2 id="important-notes">Important Notes</h2>
+<ol>
+<li>When using the modern format, all settings should be included in the array structure</li>
+<li>The legacy format is maintained for backward compatibility but new installations should use the modern format</li>
+<li>Never commit sensitive information like passwords to version control</li>
+<li>Always change default values, especially the <code>session_key</code>, in production environments</li>
+<li>Make sure to set appropriate file permissions on your configuration file</li>
+</ol>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../dnssec/" class="btn btn-neutral float-left" title="DNSSEC"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../ldap/" class="btn btn-neutral float-right" title="LDAP Integration">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../installation/composer/" class="btn btn-neutral float-left" title="Composer"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../dns-settings/" class="btn btn-neutral float-right" title="DNS Settings">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -349,10 +368,10 @@
         </span>
     
     
-      <span><a href="../dnssec/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../../installation/composer/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../ldap/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../dns-settings/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
