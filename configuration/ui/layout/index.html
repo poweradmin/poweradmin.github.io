@@ -128,6 +128,8 @@
                 </li>
                 <li class="toctree-l2 current"><a class="reference internal current" href="#">Layout</a>
     <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#custom-header-and-footer">Custom Header and Footer</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#ui-element-positioning">UI Element Positioning</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#form-element-positioning">Form Element Positioning</a>
@@ -143,6 +145,20 @@
     <li class="toctree-l3"><a class="reference internal" href="#zone-editing-features">Zone Editing Features</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#example-full-configuration">Example Full Configuration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#custom-header-and-footer_1">Custom Header and Footer</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#configuration">Configuration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#creating-custom-templates">Creating Custom Templates</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#template-variables">Template Variables</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#notes">Notes</a>
+    </li>
+        </ul>
     </li>
     </ul>
                 </li>
@@ -302,6 +318,8 @@
               
                 <h1 id="layout-customization">Layout Customization</h1>
 <p>Poweradmin allows you to customize various layout aspects to better fit your workflow. These settings are configured in the <code>config/settings.php</code> file under the <code>interface</code> section.</p>
+<h2 id="custom-header-and-footer">Custom Header and Footer</h2>
+<p>In addition to the layout settings below, Poweradmin also supports custom header and footer templates. See <a href="#custom-header-and-footer">Custom Header and Footer</a> section at the end of this document for details.</p>
 <h2 id="ui-element-positioning">UI Element Positioning</h2>
 <h3 id="form-element-positioning">Form Element Positioning</h3>
 <p>Control the positioning of key UI elements:</p>
@@ -386,6 +404,89 @@
     ],
 ];
 </code></pre>
+<h2 id="custom-header-and-footer_1">Custom Header and Footer</h2>
+<p>Poweradmin allows you to personalize the header (logo and title) and footer sections by creating custom template files. This is useful for branding your installation or adding custom navigation elements.</p>
+<h3 id="configuration">Configuration</h3>
+<p>First, you need to enable custom header/footer in the settings file. Create or edit the file <code>config/settings.php</code> with the following configuration:</p>
+<pre><code class="language-php">&lt;?php
+return [
+    // Other existing settings...
+
+    /**
+     * Interface Settings
+     */
+    'interface' =&gt; [
+        // Other interface settings...
+
+        // Custom header and footer settings
+        'custom_header' =&gt; true,  // Enable custom header
+        'custom_footer' =&gt; true,  // Enable custom footer
+
+        // Other interface settings...
+    ],
+
+    // Other existing settings...
+];
+</code></pre>
+<h3 id="creating-custom-templates">Creating Custom Templates</h3>
+<ol>
+<li>Create a directory named <code>custom</code> inside your <code>templates</code> folder:</li>
+</ol>
+<pre><code>mkdir -p templates/custom
+</code></pre>
+<ol>
+<li>Create the following files:</li>
+</ol>
+<h4 id="custom-header-templatescustomheaderhtml">Custom Header (templates/custom/header.html)</h4>
+<pre><code class="language-html">&lt;!-- Your custom header content goes here --&gt;
+&lt;img src=&quot;assets/your-logo.png&quot; height=&quot;32&quot;&gt;
+&lt;span class=&quot;fs-4&quot;&gt;Your Custom Title&lt;/span&gt;
+</code></pre>
+<h4 id="custom-footer-templatescustomfooterhtml">Custom Footer (templates/custom/footer.html)</h4>
+<pre><code class="language-html">&lt;!-- Your custom footer content goes here --&gt;
+&lt;p&gt;© 2025 Your Organization - Powered by &lt;strong&gt;Poweradmin&lt;/strong&gt;&lt;/p&gt;
+</code></pre>
+<p>Here are examples of custom templates in action:</p>
+<h4 id="custom-header-file-structure">Custom Header File Structure</h4>
+<p><img alt="Custom Header Structure" src="../../../screenshots/custom_header.png" /></p>
+<h4 id="custom-footer-example">Custom Footer Example</h4>
+<p><img alt="Custom Footer Example" src="../../../screenshots/custom_footer.png" /></p>
+<h3 id="template-variables">Template Variables</h3>
+<p>The following template variables are available in your custom templates:</p>
+<h4 id="header-template-variables">Header Template Variables</h4>
+<ul>
+<li><code>{{ iface_title }}</code> - Title from configuration settings</li>
+<li><code>{{ iface_style }}</code> - Current theme style (ignite or spark)</li>
+<li><code>{{ file_version }}</code> - File version timestamp for cache busting</li>
+</ul>
+<h4 id="footer-template-variables">Footer Template Variables</h4>
+<ul>
+<li><code>{{ version }}</code> - Poweradmin version</li>
+<li><code>{{ iface_style }}</code> - Current theme style</li>
+<li><code>{{ file_version }}</code> - File version timestamp for cache busting</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<h4 id="corporate-branding-header">Corporate Branding Header</h4>
+<pre><code class="language-html">&lt;img src=&quot;assets/corporate-logo.png&quot; height=&quot;40&quot;&gt;
+&lt;span class=&quot;fs-4 ms-2&quot;&gt;Corporate DNS Management Portal&lt;/span&gt;
+</code></pre>
+<h4 id="extended-footer-with-links">Extended Footer with Links</h4>
+<pre><code class="language-html">&lt;div class=&quot;d-flex flex-column&quot;&gt;
+  &lt;p class=&quot;mb-1&quot;&gt;© 2025 Your Organization - DNS Management&lt;/p&gt;
+  &lt;p class=&quot;mb-0 small&quot;&gt;
+    &lt;a href=&quot;https://support.example.com&quot; class=&quot;text-decoration-none&quot;&gt;Support&lt;/a&gt; |
+    &lt;a href=&quot;https://docs.example.com&quot; class=&quot;text-decoration-none&quot;&gt;Documentation&lt;/a&gt; |
+    &lt;a href=&quot;mailto:dns-admin@example.com&quot; class=&quot;text-decoration-none&quot;&gt;Contact&lt;/a&gt;
+  &lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>The custom templates use Twig templating engine</li>
+<li>Bootstrap 5 classes are available for styling</li>
+<li>Changes may be overwritten during updates - keep backups of your custom files</li>
+<li>You can include custom JavaScript in your header/footer templates if needed</li>
+</ul>
               
             </div>
           </div><footer>
