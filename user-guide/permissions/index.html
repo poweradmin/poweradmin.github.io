@@ -163,17 +163,13 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#zone_meta_edit_others">zone_meta_edit_others</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#zone_comment_edit_own">zone_comment_edit_own</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#zone_comment_edit_others">zone_comment_edit_others</a>
+    <li class="toctree-l4"><a class="reference internal" href="#zone_content_edit_own_as_client">zone_content_edit_own_as_client</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#record-permissions">Record Permissions</a>
+    <li class="toctree-l3"><a class="reference internal" href="#search-permissions">Search Permissions</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#record_comment_edit_own">record_comment_edit_own</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#record_comment_edit_others">record_comment_edit_others</a>
+    <li class="toctree-l4"><a class="reference internal" href="#search">search</a>
     </li>
         </ul>
     </li>
@@ -185,9 +181,13 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#user_edit_others">user_edit_others</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#user_add">user_add</a>
+    <li class="toctree-l4"><a class="reference internal" href="#user_add_new">user_add_new</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#user_is_ueberadmin">user_is_ueberadmin</a>
+    <li class="toctree-l4"><a class="reference internal" href="#user_passwd_edit_others">user_passwd_edit_others</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#user_edit_templ_perm">user_edit_templ_perm</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#user_is_ueberuser">user_is_ueberuser</a>
     </li>
         </ul>
     </li>
@@ -199,27 +199,13 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#zone-template-permissions">Zone Template Permissions</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#zone_templ_add">zone_templ_add</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#zone_templ_edit">zone_templ_edit</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#zone_templ_view">zone_templ_view</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#log-permissions">Log Permissions</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#log_view">log_view</a>
-    </li>
-        </ul>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#supermaster-permissions">Supermaster Permissions</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#supermaster_view">supermaster_view</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#supermaster_add">supermaster_add</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#supermaster_edit">supermaster_edit</a>
     </li>
         </ul>
     </li>
@@ -403,30 +389,18 @@
 <li>Can change owners, zone types, and master server IPs for others' zones</li>
 <li>High-level permission typically reserved for administrators</li>
 </ul>
-<h3 id="zone_comment_edit_own">zone_comment_edit_own</h3>
+<h3 id="zone_content_edit_own_as_client">zone_content_edit_own_as_client</h3>
 <ul>
-<li>Allows the user to add or edit comments for zones they own</li>
-<li>Comments provide documentation and context for zones</li>
-<li>Helps with zone organization and management</li>
+<li>Allows the user to edit record content in zones they own, except SOA and NS records</li>
+<li>Limited permission for users who should only modify certain record types</li>
+<li>Provides restricted zone management capabilities</li>
 </ul>
-<h3 id="zone_comment_edit_others">zone_comment_edit_others</h3>
+<h2 id="search-permissions">Search Permissions</h2>
+<h3 id="search">search</h3>
 <ul>
-<li>Allows the user to add or edit comments for zones owned by other users</li>
-<li>Users can annotate zones they don't own</li>
-<li>Useful for team environments where documentation is shared</li>
-</ul>
-<h2 id="record-permissions">Record Permissions</h2>
-<h3 id="record_comment_edit_own">record_comment_edit_own</h3>
-<ul>
-<li>Allows the user to add or edit comments for records in zones they own</li>
-<li>Comments can provide context for specific DNS records</li>
-<li>Helps with documentation and change tracking</li>
-</ul>
-<h3 id="record_comment_edit_others">record_comment_edit_others</h3>
-<ul>
-<li>Allows the user to add or edit comments for records in zones they don't own</li>
-<li>Users can annotate records in other users' zones</li>
-<li>Useful for collaborative environments</li>
+<li>Allows the user to perform searches across the system</li>
+<li>User can search for zones, records, and other elements</li>
+<li>Basic functionality for finding resources in larger deployments</li>
 </ul>
 <h2 id="user-permissions_1">User Permissions</h2>
 <h3 id="user_view_others">user_view_others</h3>
@@ -447,16 +421,28 @@
 <li>Can modify other users' details and access rights</li>
 <li>High-level administrative permission</li>
 </ul>
-<h3 id="user_add">user_add</h3>
+<h3 id="user_add_new">user_add_new</h3>
 <ul>
 <li>Allows the user to add new users to the system</li>
 <li>Can create accounts for others to access Poweradmin</li>
 <li>Administrative permission for expanding system access</li>
 </ul>
-<h3 id="user_is_ueberadmin">user_is_ueberadmin</h3>
+<h3 id="user_passwd_edit_others">user_passwd_edit_others</h3>
 <ul>
-<li>Grants superuser (ueberadmin) status</li>
-<li>User has full access to all functions in Poweradmin</li>
+<li>Allows the user to change passwords for other users</li>
+<li>Can reset passwords when users are locked out</li>
+<li>Administrative security management permission</li>
+</ul>
+<h3 id="user_edit_templ_perm">user_edit_templ_perm</h3>
+<ul>
+<li>Allows the user to change the permission template assigned to users</li>
+<li>Can modify user access by applying different templates</li>
+<li>Streamlines permission management for administrators</li>
+</ul>
+<h3 id="user_is_ueberuser">user_is_ueberuser</h3>
+<ul>
+<li>Grants superuser status with full access to all functions</li>
+<li>User has unlimited privileges throughout Poweradmin</li>
 <li>Bypasses normal permission checks</li>
 <li>Should be granted very selectively</li>
 </ul>
@@ -473,32 +459,6 @@
 <li>Can modify permission sets used for multiple users</li>
 <li>Useful for maintaining consistent permission groups</li>
 </ul>
-<h2 id="zone-template-permissions">Zone Template Permissions</h2>
-<h3 id="zone_templ_add">zone_templ_add</h3>
-<ul>
-<li>Allows the user to add new zone templates</li>
-<li>Templates provide pre-defined sets of records for new zones</li>
-<li>Helps standardize zone creation</li>
-</ul>
-<h3 id="zone_templ_edit">zone_templ_edit</h3>
-<ul>
-<li>Allows the user to edit existing zone templates</li>
-<li>Can modify the record sets used for new zone creation</li>
-<li>Useful for maintaining standardized zone configurations</li>
-</ul>
-<h3 id="zone_templ_view">zone_templ_view</h3>
-<ul>
-<li>Allows the user to view available zone templates</li>
-<li>Read-only access to template configurations</li>
-<li>Basic permission needed to use templates</li>
-</ul>
-<h2 id="log-permissions">Log Permissions</h2>
-<h3 id="log_view">log_view</h3>
-<ul>
-<li>Allows the user to view system logs</li>
-<li>Can see login attempts and changes to zones/records</li>
-<li>Useful for auditing and troubleshooting</li>
-</ul>
 <h2 id="supermaster-permissions">Supermaster Permissions</h2>
 <h3 id="supermaster_view">supermaster_view</h3>
 <ul>
@@ -511,6 +471,12 @@
 <li>Allows the user to add new supermaster servers</li>
 <li>Can configure authoritative name servers for PowerDNS</li>
 <li>Advanced configuration permission</li>
+</ul>
+<h3 id="supermaster_edit">supermaster_edit</h3>
+<ul>
+<li>Allows the user to edit existing supermaster servers</li>
+<li>Can modify authoritative name server configurations</li>
+<li>Advanced permission for managing DNS infrastructure</li>
 </ul>
 <h2 id="additional-information">Additional Information</h2>
 <p>For more detailed information on implementing these permissions, please refer to the <a href="https://www.poweradmin.org/documentation/">Poweradmin documentation</a>.</p>
