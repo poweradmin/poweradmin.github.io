@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/contributing/testing/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/advanced/logging-config/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Testing - Poweradmin Documentation</title>
+    <title>Log Configuration - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Testing";
-        var mkdocs_page_input_path = "contributing/testing.md";
-        var mkdocs_page_url = "/contributing/testing/";
+        var mkdocs_page_name = "Log Configuration";
+        var mkdocs_page_input_path = "advanced/logging-config.md";
+        var mkdocs_page_url = "/advanced/logging-config/";
       </script>
     
     <!--[if lt IE 9]>
@@ -152,10 +152,50 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Advanced Topics</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" >Logging</a>
-    <ul>
-                <li class="toctree-l2"><a class="reference internal" href="../../advanced/logging-config/">Log Configuration</a>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" >Logging</a>
+    <ul class="current">
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Log Configuration</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#logging-configuration">Logging Configuration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#log-types">Log Types</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#1-native-logging">1. Native Logging</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#2-null-logging">2. Null Logging</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#3-database-logging">3. Database Logging</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#4-syslog-logging">4. Syslog Logging</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#log-levels">Log Levels</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#practical-examples">Practical Examples</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#production-environment-configuration">Production Environment Configuration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#development-environment-configuration">Development Environment Configuration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#minimal-logging-configuration">Minimal Logging Configuration</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#advanced-configuration">Advanced Configuration</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#custom-log-paths">Custom Log Paths</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#log-rotation">Log Rotation</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#database-log-tables">Database Log Tables</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
                 </li>
     </ul>
                   </li>
@@ -183,54 +223,12 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Contributing</span></p>
-              <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../development/">Development Setup</a>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/development/">Development Setup</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../coding-standards/">Coding Standards</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/coding-standards/">Coding Standards</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Testing</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#test-frameworks-tools">Test Frameworks &amp; Tools</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#test-directory-structure">Test Directory Structure</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#types-of-tests">Types of Tests</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#unit-tests">Unit Tests</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#integration-tests">Integration Tests</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#end-to-end-tests">End-to-End Tests</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#main-feature-tests">Main Feature Tests</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#corner-case-tests">Corner Case Tests</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#manual-test-plans">Manual Test Plans</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#running-tests">Running Tests</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#php-tests">PHP Tests</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#cypress-tests">Cypress Tests</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#code-quality-checks">Code Quality Checks</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cicd-integration">CI/CD Integration</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#test-coverage">Test Coverage</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#contributing-tests">Contributing Tests</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/testing/">Testing</a>
                   </li>
               </ul>
       </div>
@@ -247,10 +245,11 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Contributing</li>
-      <li class="breadcrumb-item active">Testing</li>
+          <li class="breadcrumb-item">Advanced Topics</li>
+          <li class="breadcrumb-item">Logging</li>
+      <li class="breadcrumb-item active">Log Configuration</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/contributing/testing.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/advanced/logging-config.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -262,100 +261,125 @@
     Note: This documentation is still in progress, not reviewed properly, and might contain some errors or outdated images. It's intended for the upcoming 4.0.0 release, so configuration settings might be different from previous versions.
   </div>
   
-                <h1 id="poweradmin-testing-guide">PowerAdmin Testing Guide</h1>
-<h2 id="overview">Overview</h2>
-<p>This document outlines the testing strategy and implementation details for the PowerAdmin project.</p>
-<h2 id="test-frameworks-tools">Test Frameworks &amp; Tools</h2>
-<ul>
-<li><strong>PHPUnit</strong>: Primary testing framework for PHP code</li>
-<li><strong>Cypress</strong>: End-to-end testing framework for UI testing</li>
-</ul>
-<p>In addition to these testing frameworks, PowerAdmin uses various code quality tools that are described in detail in the <a href="../coding-standards/">Coding Standards Guide</a>, including PHPStan, PHP_CodeSniffer, Psalm, PHPMD, and PHP-CS-Fixer.</p>
-<h2 id="test-directory-structure">Test Directory Structure</h2>
-<pre><code>/tests
-├── integration - Integration tests
-├── plans       - Test plans documentation
-└── unit        - Unit tests
+                <h1 id="poweradmin-logging-configuration-guide">PowerAdmin Logging Configuration Guide</h1>
+<p>PowerAdmin includes a flexible logging system that supports multiple output methods and log levels. This guide explains how to configure various types of logging in your PowerAdmin installation.</p>
+<h2 id="logging-configuration">Logging Configuration</h2>
+<p>Logging settings are defined in your <code>config/settings.php</code> file. The defaults are provided in <code>config/settings.defaults.php</code>:</p>
+<pre><code class="language-php">'logging' =&gt; [
+    'type' =&gt; 'null',                          // Options: 'null', 'native'
+    'level' =&gt; 'info',                         // Options: 'debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'
+    'database_enabled' =&gt; false,               // Enable logging zone and record changes to the database
 
-/cypress
-├── e2e         - End-to-end test specs by feature
-├── fixtures    - Test data files
-└── support     - Cypress support and custom commands
+    // Syslog Settings
+    'syslog_enabled' =&gt; false,                 // Write authentication attempts to syslog
+    'syslog_identity' =&gt; 'poweradmin',         // Syslog identity
+    'syslog_facility' =&gt; LOG_USER,             // Syslog facility
+],
 </code></pre>
-<h2 id="types-of-tests">Types of Tests</h2>
-<h3 id="unit-tests">Unit Tests</h3>
-<p>Located in <code>/tests/unit</code>, these tests verify individual components in isolation, focusing on:
-- Configuration management
-- DNS record handling and formatting
-- Router functionality
-- IP address validation and handling
-- User authentication and password encryption
-- Various utility and helper functions</p>
-<h3 id="integration-tests">Integration Tests</h3>
-<p>Located in <code>/tests/integration</code>, testing interactions between components, particularly database operations.</p>
-<h3 id="end-to-end-tests">End-to-End Tests</h3>
-<p>Located in <code>/cypress/e2e</code>, organized by feature:</p>
-<h4 id="main-feature-tests">Main Feature Tests</h4>
-<ul>
-<li><strong>Authentication</strong> - Login and form validation</li>
-<li><strong>User Management</strong> - Creating, editing, and deleting users</li>
-<li><strong>Zone Management</strong> - Adding master/slave zones and records</li>
-<li><strong>Record Management</strong> - Adding, editing, and deleting different record types</li>
-<li><strong>Zone Templates</strong> - Template creation and application</li>
-<li><strong>Search</strong> - Zone and record searching</li>
-</ul>
-<h4 id="corner-case-tests">Corner Case Tests</h4>
-<ul>
-<li><strong>Input Validation</strong> - Testing edge cases in form validation</li>
-<li><strong>Error Handling</strong> - Session management, security, and UI edge cases</li>
-</ul>
-<p>The Cypress tests are located in the <code>cypress/e2e</code> directory organized by feature.</p>
-<p>A complete test plan for UI testing is available in <code>tests/plans/cypress-ui-test-plan.md</code>.</p>
-<h3 id="manual-test-plans">Manual Test Plans</h3>
-<p>Documentation in <code>/tests/plans</code> outlining test procedures for:
-- UI testing (<code>tests/plans/cypress-ui-test-plan.md</code>)
-- Installer testing (<code>tests/plans/installer-test-plan.md</code>) - Covers both regular installation flows and corner cases for properly testing the PowerAdmin installation process</p>
-<h2 id="running-tests">Running Tests</h2>
-<h3 id="php-tests">PHP Tests</h3>
-<pre><code class="language-bash"># Run unit tests
-composer tests
-
-# Run integration tests
-composer tests:integration
+<h2 id="log-types">Log Types</h2>
+<p>PowerAdmin supports several logging methods:</p>
+<h3 id="1-native-logging">1. Native Logging</h3>
+<p>Uses PHP's <code>error_log()</code> function to write logs to the configured PHP error log destination.</p>
+<pre><code class="language-php">'logging' =&gt; [
+    'type' =&gt; 'native',
+    'level' =&gt; 'info',
+    // other settings...
+],
 </code></pre>
-<h3 id="cypress-tests">Cypress Tests</h3>
-<pre><code class="language-bash"># Open Cypress Test Runner
-npm run cypress:open
-# or
-yarn cypress:open
-
-# Run Cypress tests headlessly
-npm run cypress:run
-# or
-yarn cypress:run
+<h3 id="2-null-logging">2. Null Logging</h3>
+<p>Disables all application logging (except database logging if enabled separately).</p>
+<pre><code class="language-php">'logging' =&gt; [
+    'type' =&gt; 'null',
+    // other settings...
+],
 </code></pre>
-<h3 id="code-quality-checks">Code Quality Checks</h3>
-<p>For running code quality checks, please refer to the <a href="../coding-standards/">Coding Standards Guide</a> for detailed command usage.</p>
-<h2 id="cicd-integration">CI/CD Integration</h2>
-<p>The test suite is integrated with CI/CD pipelines to ensure code quality and prevent regressions.</p>
-<h2 id="test-coverage">Test Coverage</h2>
-<p>Current test coverage focuses on:
-- Core DNS management functionality
-- User authentication and management
-- Configuration validation
-- UI workflows through Cypress tests</p>
-<h2 id="contributing-tests">Contributing Tests</h2>
-<p>When adding new features or fixing bugs:
-1. Add appropriate unit tests for new classes and methods
-2. Update or add Cypress tests for UI changes
-3. Run the full test suite before submitting PRs
-4. Ensure all code quality checks pass</p>
+<h3 id="3-database-logging">3. Database Logging</h3>
+<p>Logs user actions and zone changes to the PowerAdmin database. This is independent of the main logger type.</p>
+<pre><code class="language-php">'logging' =&gt; [
+    // Can be combined with any type
+    'database_enabled' =&gt; true, 
+    // other settings...
+],
+</code></pre>
+<h3 id="4-syslog-logging">4. Syslog Logging</h3>
+<p>Logs authentication and security events to the system's syslog.</p>
+<pre><code class="language-php">'logging' =&gt; [
+    'syslog_enabled' =&gt; true,
+    'syslog_identity' =&gt; 'poweradmin',    // Program identifier in syslog
+    'syslog_facility' =&gt; LOG_USER,        // Standard PHP syslog facility constant
+    // other settings...
+],
+</code></pre>
+<h2 id="log-levels">Log Levels</h2>
+<p>PowerAdmin supports the standard PSR-3 log levels, from highest to lowest severity:</p>
+<ol>
+<li><code>emergency</code>: System is unusable</li>
+<li><code>alert</code>: Action must be taken immediately</li>
+<li><code>critical</code>: Critical conditions</li>
+<li><code>error</code>: Error conditions</li>
+<li><code>warning</code>: Warning conditions</li>
+<li><code>notice</code>: Normal but significant conditions</li>
+<li><code>info</code>: Informational messages (default)</li>
+<li><code>debug</code>: Debug-level messages</li>
+</ol>
+<p>When you set a specific log level, you will receive logs of that level and all higher severity levels. For example, setting <code>level</code> to <code>warning</code> will log warnings, errors, critical issues, alerts, and emergencies, but not info or debug messages.</p>
+<h2 id="practical-examples">Practical Examples</h2>
+<h3 id="production-environment-configuration">Production Environment Configuration</h3>
+<p>For a standard production environment:</p>
+<pre><code class="language-php">'logging' =&gt; [
+    'type' =&gt; 'native',
+    'level' =&gt; 'warning',        // Only log warning and above
+    'database_enabled' =&gt; true,  // Track user actions and zone changes
+    'syslog_enabled' =&gt; true,    // Log security events to syslog
+    'syslog_identity' =&gt; 'poweradmin',
+    'syslog_facility' =&gt; LOG_LOCAL0,
+],
+</code></pre>
+<h3 id="development-environment-configuration">Development Environment Configuration</h3>
+<p>For a development environment:</p>
+<pre><code class="language-php">'logging' =&gt; [
+    'type' =&gt; 'native',
+    'level' =&gt; 'debug',         // Log everything including debug messages
+    'database_enabled' =&gt; true, // Track changes for debugging
+    'syslog_enabled' =&gt; false,  // Usually not needed in development
+],
+</code></pre>
+<h3 id="minimal-logging-configuration">Minimal Logging Configuration</h3>
+<p>For minimal performance impact:</p>
+<pre><code class="language-php">'logging' =&gt; [
+    'type' =&gt; 'null',            // Disable application logging
+    'database_enabled' =&gt; false, // Disable database logging
+    'syslog_enabled' =&gt; true,    // Keep security logging
+    'syslog_identity' =&gt; 'poweradmin',
+    'syslog_facility' =&gt; LOG_USER,
+],
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Production environments</strong>: Use <code>warning</code> or <code>error</code> levels to avoid excessive logging</li>
+<li><strong>Debug temporary issues</strong>: Temporarily enable <code>debug</code> level, then return to normal settings</li>
+<li><strong>Database logging</strong>: Useful for audit trails but may impact performance on high-traffic systems</li>
+<li><strong>Syslog logging</strong>: Recommended for security events to integrate with system monitoring</li>
+</ol>
+<h2 id="advanced-configuration">Advanced Configuration</h2>
+<h3 id="custom-log-paths">Custom Log Paths</h3>
+<p>If using <code>native</code> logging, you can control the log file location by configuring PHP's <code>error_log</code> setting in your php.ini file.</p>
+<h3 id="log-rotation">Log Rotation</h3>
+<p>For production systems, ensure log rotation is configured at the system level:
+- For syslog: Configure logrotate for your syslog files
+- For PHP error logs: Configure logrotate for your PHP error log files
+- For database logs: Implement periodic pruning of old log entries</p>
+<h3 id="database-log-tables">Database Log Tables</h3>
+<p>When <code>database_enabled</code> is true, logs are stored in:
+- <code>log_users</code> table: Authentication and user management events
+- <code>log_zones</code> table: DNS zone and record changes</p>
               
 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../coding-standards/" class="btn btn-neutral float-left" title="Coding Standards"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../user-guide/ddns/using-curl/" class="btn btn-neutral float-left" title="Using cURL"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../upgrading/" class="btn btn-neutral float-right" title="Overview">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -382,8 +406,10 @@ yarn cypress:run
         </span>
     
     
-      <span><a href="../coding-standards/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../../user-guide/ddns/using-curl/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
+    
+      <span><a href="../../upgrading/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
