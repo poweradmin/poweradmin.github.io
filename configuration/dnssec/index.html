@@ -114,21 +114,29 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">DNSSEC</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a>
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#basic-concepts">Basic Concepts</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a>
+    <li class="toctree-l2"><a class="reference internal" href="#implementation-methods">Implementation Methods</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#option-1-powerdns-api-method-recommended">Option 1: PowerDNS API Method (Recommended)</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
+    <li class="toctree-l3"><a class="reference internal" href="#option-2-pdnsutil-method-legacy">Option 2: pdnsutil Method (Legacy)</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#powerdns-configuration">PowerDNS Configuration</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#verification">Verification</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#migration">Migration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#more-information">More Information</a>
     </li>
     </ul>
                   </li>
@@ -302,8 +310,17 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="dnssec-configuration">DNSSEC Configuration</h1>
-<h2 id="introduction">Introduction</h2>
-<p>DNSSEC (Domain Name System Security Extensions) provides authentication and integrity to DNS data. This guide explains how to configure DNSSEC in Poweradmin.</p>
+<h2 id="overview">Overview</h2>
+<p>PowerAdmin provides comprehensive support for DNSSEC (Domain Name System Security Extensions) through a well-structured implementation that follows domain-driven design principles. The system offers two implementation methods:</p>
+<ol>
+<li><strong>PowerDNS API Integration</strong> (Recommended): Uses the PowerDNS REST API for DNSSEC operations</li>
+<li><strong>pdnsutil Command-line Tool</strong> (Legacy): Uses the pdnsutil command-line utility </li>
+</ol>
+<p>The DNSSEC implementation enables you to:
+- Secure and unsecure zones
+- Manage cryptographic keys (create, activate, deactivate, delete)
+- View DS (Delegation Signer) and DNSKEY records
+- Manage DNSSEC key rollovers</p>
 <h2 id="basic-concepts">Basic Concepts</h2>
 <ul>
 <li><strong>Zone Signing Keys (ZSK)</strong>: Used to sign the actual DNS records</li>
@@ -313,26 +330,57 @@
 </ul>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
+<li>PowerDNS version 4.0.0 or higher</li>
 <li>PowerDNS with DNSSEC support</li>
 <li>Proper database configuration</li>
 <li>API access configured (see <a href="../powerdns-api/">PowerDNS API Configuration</a>)</li>
 </ul>
-<h2 id="configuration-options">Configuration Options</h2>
-<p>The DNSSEC settings are configured in the <code>config/settings.php</code> file under the <code>dnssec</code> section:</p>
-<ul>
-<li><strong>enabled</strong>: Enable DNSSEC functionality. Default: <code>false</code></li>
-<li><strong>debug</strong>: Enable DNSSEC debug logging. Default: <code>false</code></li>
-<li><strong>command</strong>: Path to pdnsutil command. Default: <code>/usr/bin/pdnsutil</code></li>
-</ul>
-<h2 id="example-configuration">Example Configuration</h2>
+<h2 id="implementation-methods">Implementation Methods</h2>
+<h3 id="option-1-powerdns-api-method-recommended">Option 1: PowerDNS API Method (Recommended)</h3>
+<p>To enable DNSSEC using the PowerDNS API:</p>
+<ol>
+<li>Configure your PowerDNS server with API access</li>
+<li>Update your PowerAdmin configuration file with the following settings:</li>
+</ol>
 <pre><code class="language-php">return [
     'dnssec' =&gt; [
         'enabled' =&gt; true,
-        'debug' =&gt; false,
-        'command' =&gt; '/usr/bin/pdnsutil',
+        'use_api' =&gt; true,
+        'api_url' =&gt; 'http://localhost:8081',
+        'api_key' =&gt; 'your-api-key',
     ],
 ];
 </code></pre>
+<p>The API method provides several advantages:
+- No need to configure special permissions for the web server user
+- More secure as it doesn't require shell access
+- Better error handling and feedback
+- Full support for all DNSSEC operations</p>
+<h3 id="option-2-pdnsutil-method-legacy">Option 2: pdnsutil Method (Legacy)</h3>
+<p>If you can't use the API method, you can still use the legacy pdnsutil approach:</p>
+<ol>
+<li>Update your PowerAdmin configuration file:</li>
+</ol>
+<pre><code class="language-php">return [
+    'dnssec' =&gt; [
+        'enabled' =&gt; true,
+        'use_api' =&gt; false,
+        'command' =&gt; '/usr/bin/pdnsutil',
+        'debug' =&gt; false,
+    ],
+];
+</code></pre>
+<ol>
+<li>Configure permissions for the web server user to run pdnsutil:</li>
+</ol>
+<p>For example, on Ubuntu with Apache:</p>
+<pre><code class="language-bash"># Add the web server user to the root group
+adduser www-data root
+
+# Make pdns.conf readable by the web server user
+chmod 640 /etc/powerdns/pdns.conf
+</code></pre>
+<p><strong>Important Note</strong>: The pdnsutil method requires the web server user to have access to the PowerDNS configuration file, which poses security risks. The API method is strongly recommended.</p>
 <h2 id="powerdns-configuration">PowerDNS Configuration</h2>
 <p>Make sure to enable DNSSEC in your PowerDNS configuration:</p>
 <pre><code class="language-conf">dnssec=yes
@@ -344,13 +392,38 @@ api-key=your_api_key
 <pre><code class="language-bash">dig +dnssec example.com SOA
 </code></pre>
 <h2 id="troubleshooting">Troubleshooting</h2>
-<p>If you encounter issues with DNSSEC:</p>
+<p>Common issues:</p>
 <ol>
-<li>Check that both PowerDNS API and DNSSEC are enabled</li>
-<li>Verify the pdnsutil command path is correct</li>
-<li>Check PowerDNS logs for any DNSSEC-related errors</li>
-<li>Enable debug mode temporarily to get more detailed logs</li>
+<li>
+<p><strong>API connection problems</strong>: Ensure the API URL is correct and the API key has the necessary permissions</p>
+</li>
+<li>
+<p><strong>pdnsutil permission errors</strong>: Check that the web server user can access pdns.conf and has permission to execute pdnsutil</p>
+</li>
+<li>
+<p><strong>DNSSEC operations failing</strong>: Check the PowerDNS logs for detailed error messages</p>
+</li>
+<li>
+<p>Check that both PowerDNS API and DNSSEC are enabled</p>
+</li>
+<li>
+<p>Verify the pdnsutil command path is correct</p>
+</li>
+<li>
+<p>Enable debug mode temporarily to get more detailed logs</p>
+</li>
 </ol>
+<h2 id="migration">Migration</h2>
+<p>If you're currently using the pdnsutil method, it's recommended to migrate to the API method:</p>
+<ol>
+<li>Configure the PowerDNS API (see PowerDNS documentation)</li>
+<li>Update your PowerAdmin configuration with API settings</li>
+<li>No data migration is needed - the same DNSSEC keys will be accessible through both methods</li>
+</ol>
+<h2 id="more-information">More Information</h2>
+<p>For more details on DNSSEC and PowerDNS:
+- <a href="https://doc.powerdns.com/authoritative/dnssec/index.html">PowerDNS DNSSEC Documentation</a>
+- <a href="https://doc.powerdns.com/authoritative/http-api/index.html">PowerDNS API Documentation</a></p>
               
             </div>
           </div><footer>
