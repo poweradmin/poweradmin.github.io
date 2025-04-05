@@ -159,9 +159,7 @@
     <ul class="current">
                 <li class="toctree-l2 current"><a class="reference internal current" href="#">Log Configuration</a>
     <ul class="current">
-    <li class="toctree-l3"><a class="reference internal" href="#logging-configuration">Logging Configuration</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#log-types">Log Types</a>
+    <li class="toctree-l3"><a class="reference internal" href="#log-types-in-detail">Log Types in Detail</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#1-native-logging">1. Native Logging</a>
     </li>
@@ -173,9 +171,7 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#log-levels">Log Levels</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#practical-examples">Practical Examples</a>
+    <li class="toctree-l3"><a class="reference internal" href="#environment-specific-configurations">Environment-Specific Configurations</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#production-environment-configuration">Production Environment Configuration</a>
     </li>
@@ -200,6 +196,11 @@
     </ul>
                 </li>
     </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Maintenance</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">Overview</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Upgrading</span></p>
@@ -263,23 +264,10 @@
     Note: This documentation is still in progress, not reviewed properly, and might contain some errors or outdated images. It's intended for the upcoming 4.0.0 release, so configuration settings might be different from previous versions.
   </div>
   
-                <h1 id="poweradmin-logging-configuration-guide">PowerAdmin Logging Configuration Guide</h1>
-<p>PowerAdmin includes a flexible logging system that supports multiple output methods and log levels. This guide explains how to configure various types of logging in your PowerAdmin installation.</p>
-<h2 id="logging-configuration">Logging Configuration</h2>
-<p>Logging settings are defined in your <code>config/settings.php</code> file. The defaults are provided in <code>config/settings.defaults.php</code>:</p>
-<pre><code class="language-php">'logging' =&gt; [
-    'type' =&gt; 'null',                          // Options: 'null', 'native'
-    'level' =&gt; 'info',                         // Options: 'debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'
-    'database_enabled' =&gt; false,               // Enable logging zone and record changes to the database
-
-    // Syslog Settings
-    'syslog_enabled' =&gt; false,                 // Write authentication attempts to syslog
-    'syslog_identity' =&gt; 'poweradmin',         // Syslog identity
-    'syslog_facility' =&gt; LOG_USER,             // Syslog facility
-],
-</code></pre>
-<h2 id="log-types">Log Types</h2>
-<p>PowerAdmin supports several logging methods:</p>
+                <h1 id="advanced-logging-configuration">Advanced Logging Configuration</h1>
+<p>This guide provides detailed information about PowerAdmin's advanced logging capabilities and configuration options. For basic logging setup, see the <a href="../../configuration/logging/">Basic Logging Configuration</a>.</p>
+<h2 id="log-types-in-detail">Log Types in Detail</h2>
+<p>PowerAdmin supports several logging methods that can be combined for comprehensive monitoring:</p>
 <h3 id="1-native-logging">1. Native Logging</h3>
 <p>Uses PHP's <code>error_log()</code> function to write logs to the configured PHP error log destination.</p>
 <pre><code class="language-php">'logging' =&gt; [
@@ -312,20 +300,7 @@
     // other settings...
 ],
 </code></pre>
-<h2 id="log-levels">Log Levels</h2>
-<p>PowerAdmin supports the standard PSR-3 log levels, from highest to lowest severity:</p>
-<ol>
-<li><code>emergency</code>: System is unusable</li>
-<li><code>alert</code>: Action must be taken immediately</li>
-<li><code>critical</code>: Critical conditions</li>
-<li><code>error</code>: Error conditions</li>
-<li><code>warning</code>: Warning conditions</li>
-<li><code>notice</code>: Normal but significant conditions</li>
-<li><code>info</code>: Informational messages (default)</li>
-<li><code>debug</code>: Debug-level messages</li>
-</ol>
-<p>When you set a specific log level, you will receive logs of that level and all higher severity levels. For example, setting <code>level</code> to <code>warning</code> will log warnings, errors, critical issues, alerts, and emergencies, but not info or debug messages.</p>
-<h2 id="practical-examples">Practical Examples</h2>
+<h2 id="environment-specific-configurations">Environment-Specific Configurations</h2>
 <h3 id="production-environment-configuration">Production Environment Configuration</h3>
 <p>For a standard production environment:</p>
 <pre><code class="language-php">'logging' =&gt; [
@@ -381,7 +356,7 @@
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../../user-guide/ddns/using-curl/" class="btn btn-neutral float-left" title="Using cURL"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../../upgrading/" class="btn btn-neutral float-right" title="Overview">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../maintenance/" class="btn btn-neutral float-right" title="Overview">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -411,7 +386,7 @@
       <span><a href="../../user-guide/ddns/using-curl/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../../upgrading/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../../maintenance/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

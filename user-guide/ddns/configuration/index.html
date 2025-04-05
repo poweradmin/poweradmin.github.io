@@ -148,6 +148,12 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#configuring-dns-zone">Configuring DNS Zone</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#server-side-configuration">Server-Side Configuration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#testing-your-configuration">Testing Your Configuration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+    </li>
     </ul>
                 </li>
                 <li class="toctree-l3"><a class="reference internal" href="../client-setup/">Client Setup</a>
@@ -166,6 +172,11 @@
                 <li class="toctree-l2"><a class="reference internal" href="../../../advanced/logging-config/">Log Configuration</a>
                 </li>
     </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Maintenance</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../maintenance/">Overview</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Upgrading</span></p>
@@ -231,7 +242,9 @@
   </div>
   
                 <h1 id="dynamic-dns-configuration">Dynamic DNS Configuration</h1>
+<p>This guide will walk you through the process of setting up Dynamic DNS (DDNS) in Poweradmin.</p>
 <h2 id="setting-up-user-permissions">Setting Up User Permissions</h2>
+<p>You'll need to create a user with specific permissions for DDNS updates:</p>
 <ol>
 <li>Create a permission template:<ul>
 <li>Navigate to <code>Users &gt; Add permission template</code></li>
@@ -256,6 +269,7 @@
 </ol>
 <p><img alt="User Creation" src="../../../screenshots/dynamic_update_02.png" /></p>
 <h2 id="configuring-dns-zone">Configuring DNS Zone</h2>
+<p>After creating a user with appropriate permissions:</p>
 <ol>
 <li>Log in as the new user</li>
 <li>Select "Add master zone"</li>
@@ -265,6 +279,45 @@
 </ol>
 <p><img alt="Zone Creation" src="../../../screenshots/dynamic_update_03.png" />
 <img alt="Record Configuration" src="../../../screenshots/dynamic_update_04.png" /></p>
+<h2 id="server-side-configuration">Server-Side Configuration</h2>
+<p>The Dynamic DNS functionality in Poweradmin is provided by the <code>dynamic_update.php</code> script, which handles DNS record updates when IP addresses change.</p>
+<h3 id="configuration-options">Configuration Options</h3>
+<p>The main configuration is controlled through Poweradmin's settings:</p>
+<pre><code class="language-php">return [
+    'dynamicdns' =&gt; [
+        'enabled' =&gt; true,             // Enable or disable DDNS functionality
+        'ttl' =&gt; 60,                   // Default TTL for dynamic records (in seconds)
+        'allow_auto_detect' =&gt; true,   // Allow automatic IP detection
+        'allow_ipv4' =&gt; true,          // Allow IPv4 updates
+        'allow_ipv6' =&gt; true,          // Allow IPv6 updates
+        'require_authentication' =&gt; true, // Require user authentication
+    ],
+];
+</code></pre>
+<h3 id="security-considerations">Security Considerations</h3>
+<ol>
+<li><strong>Use HTTPS</strong>: Always use HTTPS for DDNS updates to prevent credentials and updates from being intercepted.</li>
+<li><strong>Create dedicated users</strong>: Create specific users for DDNS updates with minimal permissions.</li>
+<li><strong>IP restrictions</strong>: Consider implementing IP restrictions for DDNS user accounts if your update sources have static IP addresses.</li>
+<li><strong>Regular auditing</strong>: Periodically review DDNS activity in logs to detect unusual patterns.</li>
+</ol>
+<h2 id="testing-your-configuration">Testing Your Configuration</h2>
+<p>After setup, you can test your configuration using:</p>
+<pre><code class="language-bash">curl -u username:password &quot;https://yourserver.com/dynamic_update.php?hostname=host.yourdomain.com&amp;myip=auto&quot;
+</code></pre>
+<p>A successful response will look like:</p>
+<pre><code>good 192.168.1.100
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>If you encounter issues with your DDNS setup:</p>
+<ol>
+<li><strong>Check permissions</strong>: Ensure the user has proper permissions for zone editing</li>
+<li><strong>Verify zone ownership</strong>: The user must own or have access to the zone being updated</li>
+<li><strong>Check authentication</strong>: Verify credentials are correctly configured</li>
+<li><strong>Review logs</strong>: Check Poweradmin logs for detailed error messages</li>
+<li><strong>Test manually</strong>: Try manual updates with cURL to isolate client vs. server issues</li>
+</ol>
+<p>For client setup instructions, see <a href="../client-setup/">Client Setup</a>.</p>
               
 
             </div>

@@ -146,9 +146,11 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#features">Features</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#available-scripts">Available Scripts</a>
+    <li class="toctree-l4"><a class="reference internal" href="#implementation-components">Implementation Components</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#security-features">Security Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#getting-started">Getting Started</a>
     </li>
     </ul>
                 </li>
@@ -170,6 +172,11 @@
                 <li class="toctree-l2"><a class="reference internal" href="../../../advanced/logging-config/">Log Configuration</a>
                 </li>
     </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Maintenance</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../maintenance/">Overview</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Upgrading</span></p>
@@ -235,17 +242,14 @@
   </div>
   
                 <h1 id="dynamic-dns-overview">Dynamic DNS Overview</h1>
-<p>Dynamic DNS (DDNS) provides a way to update DNS records when an IP address changes. While the updates are not automatic
-by default, the service can be automated through scheduled tasks (like cron jobs) or scripts that periodically check and
-update the DNS records. This is particularly useful for:</p>
+<p>Dynamic DNS (DDNS) allows you to automatically update DNS records when your IP address changes. This is essential for:</p>
 <ul>
-<li>Hosting services on a connection with a dynamic IP address</li>
+<li>Hosting services on connections with dynamic IP addresses</li>
 <li>Maintaining DNS records for home servers or networks</li>
 <li>Providing consistent domain name access to systems with changing IP addresses</li>
-<li>Remote access to home networks or IoT devices</li>
+<li>Enabling remote access to home networks or IoT devices</li>
 </ul>
-<p>Poweradmin's Dynamic DNS implementation offers a flexible API that can be integrated with various automation tools and
-scripts to keep DNS records up to date. It supports both IPv4 and IPv6 addresses through various update methods.</p>
+<p>Poweradmin's Dynamic DNS implementation offers a flexible API that can be integrated with various automation tools and scripts to keep DNS records up to date. It supports both IPv4 and IPv6 addresses through various update methods.</p>
 <h2 id="requirements">Requirements</h2>
 <p>Before setting up Dynamic DNS, ensure you have:</p>
 <ul>
@@ -261,46 +265,45 @@ scripts to keep DNS records up to date. It supports both IPv4 and IPv6 addresses
 </ul>
 <h2 id="features">Features</h2>
 <ul>
-<li>IPv4 and IPv6 support (dual-stack)</li>
-<li>Multiple IP management capabilities:<ul>
+<li><strong>IPv4 and IPv6 support</strong> (dual-stack)</li>
+<li><strong>Multiple IP management</strong>:<ul>
 <li>Support for comma-separated IP lists</li>
 <li>Simultaneous management of multiple A/AAAA records</li>
 <li>Selective record type updating</li>
 </ul>
 </li>
-<li>Intelligent record synchronization:<ul>
+<li><strong>Intelligent record synchronization</strong>:<ul>
 <li>Automatic cleanup of outdated records</li>
 <li>Database and DNS zone consistency maintenance</li>
 <li>Optional full sync with dual-stack support</li>
 </ul>
 </li>
-<li>Automatic SOA serial updates</li>
-<li>Support for both Basic HTTP Authentication and query parameters</li>
-<li>TTL management (default 60 seconds)</li>
-<li>Verbose response mode for debugging</li>
-<li>Backward compatibility with legacy clients</li>
+<li><strong>Automatic SOA serial updates</strong></li>
+<li><strong>Flexible authentication</strong> (Basic HTTP Authentication and query parameters)</li>
+<li><strong>TTL management</strong> (default 60 seconds)</li>
+<li><strong>Debugging support</strong> with verbose response mode</li>
+<li><strong>Backward compatibility</strong> with legacy clients</li>
 </ul>
-<h2 id="available-scripts">Available Scripts</h2>
-<h3 id="backend-components">Backend Components</h3>
+<h2 id="implementation-components">Implementation Components</h2>
+<h3 id="server-side-components">Server-Side Components</h3>
 <ul>
-<li><code>dynamic_update.php</code> - Main server-side script for processing DNS updates, supporting:<ul>
+<li><code>dynamic_update.php</code> - Main script for processing DNS updates, supporting:<ul>
 <li>Single or multiple IPv4/IPv6 addresses</li>
 <li>Automatic IP detection using 'whatismyip'</li>
 <li>Comma-separated IP lists</li>
 <li>Dual-stack updates</li>
 </ul>
 </li>
-<li><code>addons/clientip.php</code> - Server-side script that provides the client's public IP address</li>
+<li><code>addons/clientip.php</code> - Script that provides the client's public IP address</li>
 </ul>
-<h3 id="client-tools">Client Tools</h3>
+<h3 id="client-side-tools">Client-Side Tools</h3>
 <p>Official client scripts:</p>
 <ul>
-<li><code>addons/dynamic_dns_client.sh</code> - Bash client script for updating IP addresses</li>
-<li><code>addons/dynamic_dns_client.py</code> - Python client script for updating IP addresses</li>
-<li><code>addons/dynamic_dns_client.pl</code> - Perl client script for updating IP addresses</li>
+<li><code>addons/dynamic_dns_client.sh</code> - Bash client script</li>
+<li><code>addons/dynamic_dns_client.py</code> - Python client script</li>
+<li><code>addons/dynamic_dns_client.pl</code> - Perl client script</li>
 </ul>
-<p>You can also use cURL or any HTTP client to update DNS records. See the <a href="../using-curl/">Using cURL</a> guide for examples
-and best practices.</p>
+<p>You can also use cURL or any HTTP client to update DNS records. See the <a href="../using-curl/">Using cURL</a> guide for examples.</p>
 <h2 id="security-features">Security Features</h2>
 <ul>
 <li>Basic HTTP Authentication</li>
@@ -309,7 +312,13 @@ and best practices.</p>
 <li>IP address validation</li>
 <li>Domain ownership verification</li>
 </ul>
-<p>For detailed configuration steps, see the <a href="../configuration/">Configuration</a> section.</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>To set up and use Dynamic DNS with Poweradmin:</p>
+<ol>
+<li><a href="../configuration/">Configure Dynamic DNS</a> - Set up user permissions and DNS zones</li>
+<li><a href="../client-setup/">Set up clients</a> - Configure update clients on your devices</li>
+<li><a href="../using-curl/">Using cURL</a> - For manual updates or custom implementations</li>
+</ol>
               
 
             </div>

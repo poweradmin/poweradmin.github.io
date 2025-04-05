@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/upgrading/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/maintenance/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
     <title>Overview - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../css/theme.css" />
@@ -14,8 +14,8 @@
       <script>
         // Current page data
         var mkdocs_page_name = "Overview";
-        var mkdocs_page_input_path = "upgrading/index.md";
-        var mkdocs_page_url = "/upgrading/";
+        var mkdocs_page_input_path = "maintenance/index.md";
+        var mkdocs_page_url = "/maintenance/";
       </script>
     
     <!--[if lt IE 9]>
@@ -163,35 +163,65 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Maintenance</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../maintenance/">Overview</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Upgrading</span></p>
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Overview</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#general-upgrade-instructions">General Upgrade Instructions</a>
+    <li class="toctree-l2"><a class="reference internal" href="#regular-maintenance-tasks">Regular Maintenance Tasks</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#database-maintenance">Database Maintenance</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#mysqlmariadb">MySQL/MariaDB</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#important-considerations">Important Considerations</a>
+    <li class="toctree-l4"><a class="reference internal" href="#postgresql">PostgreSQL</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#upgrade-path">Upgrade Path</a>
+    <li class="toctree-l4"><a class="reference internal" href="#sqlite">SQLite</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#log-management">Log Management</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#backup-procedures">Backup Procedures</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#database-backup">Database Backup</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#configuration-backup">Configuration Backup</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#security-updates">Security Updates</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#monitoring">Monitoring</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#performance-monitoring">Performance Monitoring</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#error-monitoring">Error Monitoring</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#routine-checks">Routine Checks</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#disaster-recovery">Disaster Recovery</a>
     </li>
     </ul>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="v2.x.x/">v2.x.x</a>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrading</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrading/">Overview</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="v2.1.8/">v2.1.8</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrading/v2.x.x/">v2.x.x</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="v2.1.7/">v2.1.7</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrading/v2.1.8/">v2.1.8</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="v2.1.6/">v2.1.6</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrading/v2.1.7/">v2.1.7</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="v2.1.5/">v2.1.5</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrading/v2.1.6/">v2.1.6</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="v2.1.4/">v2.1.4</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrading/v2.1.5/">v2.1.5</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../upgrading/v2.1.4/">v2.1.4</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Troubleshooting</span></p>
@@ -222,10 +252,10 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Upgrading</li>
+          <li class="breadcrumb-item">Maintenance</li>
       <li class="breadcrumb-item active">Overview</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/upgrading/index.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/maintenance/index.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -237,45 +267,128 @@
     Note: This documentation is still in progress, not reviewed properly, and might contain some errors or outdated images. It's intended for the upcoming 4.0.0 release, so configuration settings might be different from previous versions.
   </div>
   
-                <h1 id="upgrading-poweradmin">Upgrading Poweradmin</h1>
-<h2 id="general-upgrade-instructions">General Upgrade Instructions</h2>
-<p>When upgrading Poweradmin from any version to a newer one, follow these general steps:</p>
+                <h1 id="maintenance-guide">Maintenance Guide</h1>
+<p>This section provides guidance on maintaining your PowerAdmin installation and ensuring its long-term performance and security.</p>
+<h2 id="regular-maintenance-tasks">Regular Maintenance Tasks</h2>
+<h3 id="database-maintenance">Database Maintenance</h3>
+<p>Regular database maintenance helps keep your PowerAdmin installation running smoothly:</p>
+<h4 id="mysqlmariadb">MySQL/MariaDB</h4>
+<pre><code class="language-sql">-- Optimize tables to reclaim space and improve performance
+OPTIMIZE TABLE users;
+OPTIMIZE TABLE zones;
+OPTIMIZE TABLE records;
+OPTIMIZE TABLE domains;
+OPTIMIZE TABLE supermasters;
+OPTIMIZE TABLE domainmetadata;
+
+-- Analyze tables to update statistics for the query optimizer
+ANALYZE TABLE users;
+ANALYZE TABLE zones;
+ANALYZE TABLE records;
+ANALYZE TABLE domains;
+ANALYZE TABLE supermasters;
+ANALYZE TABLE domainmetadata;
+</code></pre>
+<h4 id="postgresql">PostgreSQL</h4>
+<pre><code class="language-sql">-- Update statistics
+VACUUM ANALYZE users;
+VACUUM ANALYZE zones;
+VACUUM ANALYZE records;
+VACUUM ANALYZE domains;
+VACUUM ANALYZE supermasters;
+VACUUM ANALYZE domainmetadata;
+</code></pre>
+<h4 id="sqlite">SQLite</h4>
+<pre><code class="language-sql">-- Rebuild the database to optimize performance
+VACUUM;
+</code></pre>
+<h3 id="log-management">Log Management</h3>
+<p>To prevent logs from consuming excessive disk space:</p>
 <ol>
-<li><strong>Backup your database</strong> - This is critical before any upgrade</li>
-<li><strong>Backup your existing files</strong> - Make a complete backup of your current installation</li>
-<li><strong>Replace files</strong> - Replace all files with the new version's files</li>
-<li><strong>Restore configuration</strong> - Depending on your version:</li>
-<li>For versions &lt; 4.x: Restore <code>inc/config.inc.php</code> from your backup</li>
-<li>For versions ≥ 4.x: Restore <code>config/settings.php</code> from your backup</li>
-<li><strong>Update database structure</strong> - If required by the specific version upgrade</li>
-<li><strong>Test functionality</strong> - Verify all features work correctly after upgrade</li>
+<li>
+<p><strong>Database Logs</strong>: Implement a log rotation strategy for PowerAdmin's database logs:
+   <code>sql
+   -- Example log cleanup (retain only the last 90 days)
+   DELETE FROM log_users WHERE created &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
+   DELETE FROM log_zones WHERE created &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);</code></p>
+</li>
+<li>
+<p><strong>System Logs</strong>: Configure log rotation for your web server and PHP logs:
+   <code># Example logrotate configuration (/etc/logrotate.d/poweradmin)
+   /var/log/apache2/poweradmin-*.log {
+       rotate 14
+       daily
+       compress
+       delaycompress
+       missingok
+       notifempty
+       create 640 www-data adm
+   }</code></p>
+</li>
 </ol>
-<h2 id="important-considerations">Important Considerations</h2>
+<h3 id="backup-procedures">Backup Procedures</h3>
+<h4 id="database-backup">Database Backup</h4>
+<p>Regular database backups are essential:</p>
+<pre><code class="language-bash"># MySQL/MariaDB backup
+mysqldump -u username -p --opt powerdns &gt; powerdns_$(date +%Y%m%d).sql
+
+# PostgreSQL backup
+pg_dump -U username powerdns &gt; powerdns_$(date +%Y%m%d).sql
+
+# SQLite backup
+sqlite3 poweradmin.sqlite .dump &gt; poweradmin_$(date +%Y%m%d).sql
+</code></pre>
+<h4 id="configuration-backup">Configuration Backup</h4>
+<p>Back up your PowerAdmin configuration files:</p>
+<pre><code class="language-bash"># Create a compressed archive of configuration files
+tar -czf poweradmin_config_$(date +%Y%m%d).tar.gz /path/to/poweradmin/inc/config.inc.php /path/to/poweradmin/config/
+</code></pre>
+<h3 id="security-updates">Security Updates</h3>
+<ol>
+<li><strong>PowerAdmin Updates</strong>: Regularly check for and apply updates to PowerAdmin</li>
+<li><strong>Dependency Updates</strong>: Keep PHP, web server, and other components updated</li>
+<li><strong>Security Scans</strong>: Periodically scan for vulnerabilities using tools like OWASP ZAP</li>
+</ol>
+<h2 id="monitoring">Monitoring</h2>
+<h3 id="performance-monitoring">Performance Monitoring</h3>
+<p>Monitor system resource usage:</p>
+<ol>
+<li><strong>Database Query Performance</strong>: Enable slow query logging temporarily to identify performance bottlenecks</li>
+<li><strong>Web Server Performance</strong>: Monitor response times and resource utilization</li>
+<li><strong>Disk Space</strong>: Set up alerts for low disk space conditions</li>
+</ol>
+<h3 id="error-monitoring">Error Monitoring</h3>
+<p>Regularly check error logs for issues:</p>
+<pre><code class="language-bash"># Check PowerAdmin-related PHP errors
+grep -i &quot;poweradmin&quot; /var/log/php/error.log
+
+# Check web server errors
+grep -i &quot;poweradmin&quot; /var/log/apache2/error.log
+</code></pre>
+<h2 id="routine-checks">Routine Checks</h2>
+<p>Establish a routine maintenance schedule:</p>
 <ul>
-<li>Always read the release notes for the version you're upgrading to and any intermediate versions</li>
-<li>Neglecting to follow proper upgrade procedures may result in a non-functioning installation</li>
-<li>It's recommended to perform upgrades in a test environment first before applying to production</li>
-<li>After upgrading, check the system for any warnings or errors</li>
-<li>Verify that zones and records remain accessible and editable</li>
-<li>Report any bugs or issues you encounter during the upgrade process</li>
+<li><strong>Daily</strong>: Check for errors in logs</li>
+<li><strong>Weekly</strong>: Monitor database size and performance</li>
+<li><strong>Monthly</strong>: Run database optimization, prune old logs</li>
+<li><strong>Quarterly</strong>: Test backups by performing a restore</li>
+<li><strong>Bi-annually</strong>: Review user accounts and permissions</li>
 </ul>
-<h2 id="upgrade-path">Upgrade Path</h2>
-<p>If you're upgrading across multiple major versions, it's often safest to upgrade incrementally through each major version rather than jumping directly to the latest version.</p>
-<h2 id="troubleshooting">Troubleshooting</h2>
-<p>If you encounter issues during or after an upgrade:</p>
+<h2 id="disaster-recovery">Disaster Recovery</h2>
+<p>Prepare for potential system failures:</p>
 <ol>
-<li>Check the PHP and web server error logs</li>
-<li>Verify database connectivity and permissions</li>
-<li>Ensure file permissions are set correctly</li>
-<li>Review the specific upgrade instructions for the version you're upgrading to</li>
+<li><strong>Recovery Plan</strong>: Document step-by-step recovery procedures</li>
+<li><strong>Test Restores</strong>: Regularly test your backup and restore procedures</li>
+<li><strong>Alternate Access</strong>: Ensure DNS records can be managed directly via PowerDNS if PowerAdmin becomes unavailable</li>
 </ol>
+<p>For more detailed guidance on specific maintenance tasks, refer to the other sections in this documentation.</p>
               
 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../maintenance/" class="btn btn-neutral float-left" title="Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="v2.x.x/" class="btn btn-neutral float-right" title="v2.x.x">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../advanced/logging-config/" class="btn btn-neutral float-left" title="Log Configuration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../upgrading/" class="btn btn-neutral float-right" title="Overview">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -302,10 +415,10 @@
         </span>
     
     
-      <span><a href="../maintenance/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../advanced/logging-config/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="v2.x.x/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../upgrading/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
