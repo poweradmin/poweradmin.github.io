@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/installation/centos/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/database/postgresql-configuration/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>CentOS/RHEL - Poweradmin Documentation</title>
+    <title>PostgreSQL - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "CentOS/RHEL";
-        var mkdocs_page_input_path = "installation/centos.md";
-        var mkdocs_page_url = "/installation/centos/";
+        var mkdocs_page_name = "PostgreSQL";
+        var mkdocs_page_input_path = "database/postgresql-configuration.md";
+        var mkdocs_page_url = "/database/postgresql-configuration/";
       </script>
     
     <!--[if lt IE 9]>
@@ -62,59 +62,71 @@
               </ul>
               <p class="caption"><span class="caption-text">Installation</span></p>
               <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/">Overview</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" >Operating Systems</a>
-    <ul class="current">
-                <li class="toctree-l2"><a class="reference internal" href="../debian/">Debian</a>
+                  <li class="toctree-l1"><a class="reference internal" >Operating Systems</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/debian/">Debian</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../ubuntu/">Ubuntu</a>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/ubuntu/">Ubuntu</a>
                 </li>
-                <li class="toctree-l2 current"><a class="reference internal current" href="#">CentOS/RHEL</a>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/centos/">CentOS/RHEL</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Database Setup</a>
     <ul class="current">
-    <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+                <li class="toctree-l2"><a class="reference internal" href="../mysql-configuration/">MySQL/MariaDB</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">PostgreSQL</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration-steps">Configuration Steps</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#database-creation">Database Creation</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#database-support">Database Support</a>
+    <li class="toctree-l4"><a class="reference internal" href="#creating-the-database">Creating the Database</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#schema-installation">Schema Installation</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#web-server-configuration">Web Server Configuration</a>
+    <li class="toctree-l3"><a class="reference internal" href="#optimization-guidelines">Optimization Guidelines</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#apache">Apache</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#nginx-configuration">Nginx Configuration</a>
+    <li class="toctree-l4"><a class="reference internal" href="#server-configuration">Server Configuration</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#installing-poweradmin">Installing Poweradmin</a>
+    <li class="toctree-l3"><a class="reference internal" href="#postgresql-specific-considerations">PostgreSQL-Specific Considerations</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#obtain-poweradmin-source-code">Obtain Poweradmin Source Code</a>
+    <li class="toctree-l4"><a class="reference internal" href="#sequences">Sequences</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#deploy-to-web-server">Deploy to Web Server</a>
+    <li class="toctree-l4"><a class="reference internal" href="#case-sensitivity">Case Sensitivity</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#performance-tuning">Performance Tuning</a>
     </li>
         </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#complete-the-installation">Complete the Installation</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#common-issues">Common Issues</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sql-compatibility-notes">SQL Compatibility Notes</a>
     </li>
     </ul>
                 </li>
-    </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" >Database Setup</a>
-    <ul>
-                <li class="toctree-l2"><a class="reference internal" href="../../database/mysql-configuration/">MySQL/MariaDB</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../../database/postgresql-configuration/">PostgreSQL</a>
-                </li>
-                <li class="toctree-l2"><a class="reference internal" href="../../database/sqlite/">SQLite</a>
+                <li class="toctree-l2"><a class="reference internal" href="../sqlite/">SQLite</a>
                 </li>
     </ul>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../manual/">Manual Installation</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/manual/">Manual Installation</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../composer/">Composer</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/composer/">Composer</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Configuration</span></p>
@@ -236,10 +248,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Installation</li>
-          <li class="breadcrumb-item">Operating Systems</li>
-      <li class="breadcrumb-item active">CentOS/RHEL</li>
+          <li class="breadcrumb-item">Database Setup</li>
+      <li class="breadcrumb-item active">PostgreSQL</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/installation/centos.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/database/postgresql-configuration.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -251,147 +263,128 @@
     Note: This documentation is still in progress, not reviewed properly, and might contain some errors or outdated images. It's intended for the upcoming 4.0.0 release, so configuration settings might be different from previous versions.
   </div>
   
-                <h1 id="centosrhel-installation">CentOS/RHEL Installation</h1>
-<p>This guide will help you install Poweradmin on CentOS, RHEL, and other RHEL-based distributions like Rocky Linux or AlmaLinux.</p>
-<h2 id="prerequisites">Prerequisites</h2>
-<p>Ensure you have the following PHP extensions installed:</p>
-<pre><code class="language-bash">dnf install -y php php-intl php-gettext php-pdo php-fpm
-</code></pre>
-<h3 id="database-support">Database Support</h3>
-<p>Install the appropriate PHP database driver based on your preferred database:</p>
-<pre><code class="language-bash"># For MySQL/MariaDB
-dnf install -y php-mysqlnd
-
-# For PostgreSQL
-dnf install -y php-pgsql
-
-# For SQLite (if available in your repositories)
-dnf install -y php-sqlite3
-</code></pre>
-<h2 id="web-server-configuration">Web Server Configuration</h2>
-<h3 id="apache">Apache</h3>
+                <h1 id="postgresql-configuration-for-poweradmin">PostgreSQL Configuration for PowerAdmin</h1>
+<h2 id="overview">Overview</h2>
+<p>This guide explains how to configure PowerAdmin to use PostgreSQL as your database backend.</p>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>PostgreSQL 10.0+</li>
+<li>PHP with PDO PostgreSQL extension enabled</li>
+<li>PostgreSQL user with appropriate privileges</li>
+</ul>
+<h2 id="configuration-steps">Configuration Steps</h2>
 <ol>
-<li>
-<p>Install Apache if not already installed:
-   <code>bash
-   dnf install -y httpd</code></p>
-</li>
-<li>
-<p>Enable and start the Apache service:
-   <code>bash
-   systemctl enable httpd
-   systemctl start httpd</code></p>
-</li>
-<li>
-<p>Configure SELinux if it's enabled:
-   ```bash
-   # Allow Apache to connect to the database
-   setsebool -P httpd_can_network_connect_db 1</p>
-</li>
+<li>Create a configuration file at <code>/config/settings.php</code> based on the example below:</li>
 </ol>
-<p># If using a non-standard directory, set the correct context
-   semanage fcontext -a -t httpd_sys_content_t "/path/to/poweradmin(/.*)?"
-   restorecon -Rv /path/to/poweradmin
-   ```</p>
-<ol>
-<li>Configure your firewall:
-   <code>bash
-   firewall-cmd --permanent --add-service=http
-   firewall-cmd --permanent --add-service=https  # If using HTTPS
-   firewall-cmd --reload</code></li>
-</ol>
-<h3 id="nginx-configuration">Nginx Configuration</h3>
-<p>If you prefer Nginx:</p>
-<ol>
-<li>
-<p>Install Nginx:
-   <code>bash
-   dnf install -y nginx</code></p>
-</li>
-<li>
-<p>Create a configuration file for Poweradmin:</p>
-</li>
-</ol>
-<pre><code class="language-nginx">server {
-    listen 80;
-    server_name localhost; # Replace with your domain
+<pre><code class="language-php">&lt;?php
+/**
+ * PowerAdmin PostgreSQL Configuration
+ */
+return [
+    /**
+     * Database Settings
+     */
+    'database' =&gt; [
+        'type' =&gt; 'pgsql',            // Set database type to PostgreSQL
+        'host' =&gt; 'localhost',        // PostgreSQL server hostname
+        'port' =&gt; '5432',             // Default PostgreSQL port
+        'user' =&gt; 'poweradmin',       // Database username
+        'password' =&gt; 'your_password', // Database password (change this!)
+        'name' =&gt; 'powerdns',         // Database name
+        'charset' =&gt; 'UTF8',          // PostgreSQL uses uppercase charset names
+        'file' =&gt; '',                 // Not used for PostgreSQL
+        'debug' =&gt; false,             // Set to true to see SQL queries for debugging
+    ],
 
-    root /var/www/html; # Path to Poweradmin files
-    index index.php index.html index.htm;
-
-    location / {
-        try_files $uri $uri/ /index.php?$args;
-    }
-
-    location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php-fpm/www.sock;  # RHEL/CentOS path
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        include fastcgi_params;
-        fastcgi_index index.php;
-    }
-
-    # Deny access to .htaccess and .htpasswd files for security reasons
-    location ~ /\.ht {
-        deny all;
-    }
-}
+    // Other configuration sections remain the same as in settings.defaults.php
+];
 </code></pre>
+<h2 id="database-creation">Database Creation</h2>
+<h3 id="creating-the-database">Creating the Database</h3>
+<pre><code class="language-sql">CREATE DATABASE powerdns ENCODING 'UTF8';
+CREATE USER poweradmin WITH ENCRYPTED PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE powerdns TO poweradmin;
+\c powerdns
+GRANT ALL ON SCHEMA public TO poweradmin;
+</code></pre>
+<h3 id="schema-installation">Schema Installation</h3>
+<p>The SQL schema files are located in the <code>sql/</code> directory:</p>
+<ul>
+<li>For a new installation: Use <code>sql/poweradmin-pgsql-db-structure.sql</code></li>
+<li>For PowerDNS schema: Check the appropriate version in <code>sql/pdns/[version]/schema.pgsql.sql</code></li>
+</ul>
+<pre><code class="language-bash">psql -U poweradmin -d powerdns -f sql/poweradmin-pgsql-db-structure.sql
+psql -U poweradmin -d powerdns -f sql/pdns/[version]/schema.pgsql.sql
+</code></pre>
+<h2 id="optimization-guidelines">Optimization Guidelines</h2>
+<h3 id="server-configuration">Server Configuration</h3>
+<p>For better performance with PostgreSQL, consider these settings in your PostgreSQL server configuration:</p>
+<pre><code class="language-ini"># postgresql.conf
+max_connections = 100                # Maximum number of connections
+shared_buffers = 128MB               # Start with 25% of RAM for small servers
+effective_cache_size = 4GB           # Set to about 50-75% of available RAM
+work_mem = 4MB                       # Memory for query operations
+maintenance_work_mem = 64MB          # Memory for maintenance operations
+random_page_cost = 4                 # Lower for SSD (1.1-2.0), higher for HDD
+timezone = 'UTC'                     # Database timezone
+</code></pre>
+<h2 id="postgresql-specific-considerations">PostgreSQL-Specific Considerations</h2>
+<h3 id="sequences">Sequences</h3>
+<p>PostgreSQL uses sequences for auto-incrementing primary keys. If you're migrating from MySQL or experiencing issues with IDs, you may need to reset sequences:</p>
+<pre><code class="language-sql">SELECT setval('sequence_name', (SELECT MAX(id) FROM table_name));
+</code></pre>
+<h3 id="case-sensitivity">Case Sensitivity</h3>
+<p>PostgreSQL is case-sensitive for identifiers unless quoted. All table and column names in PowerAdmin should be accessed in lowercase.</p>
+<h3 id="performance-tuning">Performance Tuning</h3>
 <ol>
 <li>
-<p>Save this file to <code>/etc/nginx/conf.d/poweradmin.conf</code></p>
+<p><strong>VACUUM</strong>: Schedule regular <code>VACUUM ANALYZE</code> operations to maintain database health</p>
 </li>
 <li>
-<p>Enable and start Nginx and PHP-FPM:
-   <code>bash
-   systemctl enable nginx php-fpm
-   systemctl start nginx php-fpm</code></p>
+<p><strong>Indexing</strong>: Consider additional indexes for query patterns specific to your installation</p>
 </li>
 <li>
-<p>Configure SELinux and firewall as with Apache.</p>
+<p><strong>Statement Timeout</strong>: For web applications, consider setting <code>statement_timeout</code> to prevent long-running queries</p>
 </li>
-</ol>
-<h2 id="installing-poweradmin">Installing Poweradmin</h2>
-<h3 id="obtain-poweradmin-source-code">Obtain Poweradmin Source Code</h3>
-<p>Download the latest release (v3.9.2) from <a href="https://github.com/poweradmin/poweradmin/releases">GitHub Releases</a>:</p>
-<pre><code class="language-bash">curl -Lo v3.9.2.zip https://github.com/poweradmin/poweradmin/archive/refs/tags/v3.9.2.zip
-unzip v3.9.2.zip
-</code></pre>
-<p>If you don't have curl or unzip installed:</p>
-<pre><code class="language-bash">dnf install -y curl unzip
-</code></pre>
-<h3 id="deploy-to-web-server">Deploy to Web Server</h3>
-<p>Move the Poweradmin files to your web server's document root:</p>
-<pre><code class="language-bash"># For Apache (default directory)
-cp -r poweradmin-3.9.2/* /var/www/html/
-chown -R apache:apache /var/www/html/
-
-# For Nginx (if using a different directory)
-cp -r poweradmin-3.9.2/* /usr/share/nginx/html/
-chown -R nginx:nginx /usr/share/nginx/html/
-</code></pre>
-<h2 id="complete-the-installation">Complete the Installation</h2>
-<ol>
-<li>Visit http://your-server/install/ in your browser</li>
-<li>Follow the installation steps</li>
-<li>Once installation is complete, remove the <code>install</code> directory for security</li>
-<li>Log in with the admin username and password created during installation</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting</h2>
-<p>If you encounter issues:</p>
-<ul>
-<li>Check PHP error logs: <code>/var/log/php-fpm/www-error.log</code> </li>
-<li>Check web server logs: <code>/var/log/httpd/error_log</code> or <code>/var/log/nginx/error.log</code></li>
-<li>Ensure SELinux permissions are properly set if SELinux is enabled</li>
-<li>Verify all required PHP extensions are installed and enabled</li>
-<li>Check that file permissions are correct for your web server user</li>
-</ul>
+<h3 id="common-issues">Common Issues</h3>
+<ol>
+<li><strong>Connection errors</strong>: </li>
+<li>Verify the host, port, user and password settings</li>
+<li>
+<p>Check pg_hba.conf for client authorization settings</p>
+</li>
+<li>
+<p><strong>Permission problems</strong>: </p>
+</li>
+<li>Ensure the database user has appropriate privileges</li>
+<li>
+<p>Check both database and schema-level permissions</p>
+</li>
+<li>
+<p><strong>Performance issues</strong>:</p>
+</li>
+<li>Run EXPLAIN ANALYZE on slow queries</li>
+<li>Check for missing indexes</li>
+<li>Ensure autovacuum is properly configured</li>
+</ol>
+<h2 id="sql-compatibility-notes">SQL Compatibility Notes</h2>
+<p>When developing custom queries or extensions for PowerAdmin with PostgreSQL, note these differences from MySQL:</p>
+<ol>
+<li>PostgreSQL uses <code>SERIAL</code> instead of <code>AUTO_INCREMENT</code></li>
+<li>String concatenation uses <code>||</code> instead of <code>CONCAT()</code> or <code>+</code></li>
+<li>Use <code>IS NULL</code> and <code>IS NOT NULL</code> instead of <code>= NULL</code> or <code>!= NULL</code></li>
+<li>Date functions differ significantly between MySQL and PostgreSQL</li>
+<li>PostgreSQL is generally stricter about SQL syntax and type casting</li>
+</ol>
               
 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../ubuntu/" class="btn btn-neutral float-left" title="Ubuntu"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../../database/mysql-configuration/" class="btn btn-neutral float-right" title="MySQL/MariaDB">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../mysql-configuration/" class="btn btn-neutral float-left" title="MySQL/MariaDB"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../sqlite/" class="btn btn-neutral float-right" title="SQLite">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -418,10 +411,10 @@ chown -R nginx:nginx /usr/share/nginx/html/
         </span>
     
     
-      <span><a href="../ubuntu/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../mysql-configuration/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../../database/mysql-configuration/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../sqlite/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
