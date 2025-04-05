@@ -145,6 +145,20 @@
                 </li>
                 <li class="toctree-l2 current"><a class="reference internal current" href="#">Permissions</a>
     <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#basics-of-user-management">Basics of User Management</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#permission-templates">Permission Templates</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#understanding-uberuser-status">Understanding Uberuser Status</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zone-ownership">Zone Ownership</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#edit-access-and-zone-integrity">Edit Access and Zone Integrity</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#security-pitfalls">Security Pitfalls</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#zone-permissions">Zone Permissions</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#zone_master_add">zone_master_add</a>
@@ -355,6 +369,39 @@
                 <h1 id="user-permissions">User Permissions</h1>
 <p>This document provides detailed explanations of all user permissions available in Poweradmin. Understanding these
 permissions is crucial for properly configuring user access within the system.</p>
+<h2 id="basics-of-user-management">Basics of User Management</h2>
+<p>Poweradmin implements a permission-based user management system with two primary user levels:</p>
+<ol>
+<li><strong>Uberusers</strong> - Users that can do anything within the interface (administrators)</li>
+<li><strong>Limited users</strong> - Users with restricted permissions based on assigned templates</li>
+</ol>
+<h3 id="permission-templates">Permission Templates</h3>
+<p>Permission templates were introduced in version 2.0.0 and are built from a set of individual permissions. Each
+permission allows users to perform specific actions, such as viewing zone contents, editing zones, or creating
+supermasters. By adding or removing permissions to a template and assigning that template to users, you can control user
+access rights.</p>
+<h3 id="understanding-uberuser-status">Understanding Uberuser Status</h3>
+<p>The <code>user_is_ueberuser</code> permission overrules any other permission the user may or may not have been assigned. It grants
+full access to all features that would otherwise require specific permissions. This is typically reserved for
+administrators.</p>
+<h3 id="zone-ownership">Zone Ownership</h3>
+<p>Ownership is a designation that marks users as "owners" for specific zones. However, ownership alone doesn't grant any
+privileges for these zones. The actual abilities are determined by the permissions in the user's assigned template. For
+example, if a user owns zones but lacks the <code>zone_content_view_own</code> permission, they won't be able to see those zones.</p>
+<h3 id="edit-access-and-zone-integrity">Edit Access and Zone Integrity</h3>
+<p>Poweradmin assumes that users with edit permissions for a zone can be trusted with full access to that zone. This is
+because even partial edit access would allow a user to potentially break the zone's functionality. Therefore, if a user
+can edit a zone, they're also granted delete permissions.</p>
+<h3 id="security-pitfalls">Security Pitfalls</h3>
+<p>Be aware that granting any of these permissions can indirectly give users extensive rights:</p>
+<ul>
+<li><code>user_edit_templ_perm</code></li>
+<li><code>templ_perm_edit</code></li>
+<li><code>user_add_new</code></li>
+</ul>
+<p>Users with these permissions can potentially create or modify templates to grant themselves <code>user_is_ueberuser</code> rights.
+Additionally, anyone with root shell access to the server running Poweradmin or the PowerDNS database server effectively
+has uberuser rights.</p>
 <h2 id="zone-permissions">Zone Permissions</h2>
 <h3 id="zone_master_add">zone_master_add</h3>
 <ul>
