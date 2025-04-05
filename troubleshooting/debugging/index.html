@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/contributing/coding-standards/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/troubleshooting/debugging/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Coding Standards - Poweradmin Documentation</title>
+    <title>Debugging - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Coding Standards";
-        var mkdocs_page_input_path = "contributing/coding-standards.md";
-        var mkdocs_page_url = "/contributing/coding-standards/";
+        var mkdocs_page_name = "Debugging";
+        var mkdocs_page_input_path = "troubleshooting/debugging.md";
+        var mkdocs_page_url = "/troubleshooting/debugging/";
       </script>
     
     <!--[if lt IE 9]>
@@ -178,61 +178,37 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Troubleshooting</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting/debugging/">Debugging</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Contributing</span></p>
               <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../development/">Development Setup</a>
-                  </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Coding Standards</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Debugging</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#standards-overview">Standards Overview</a>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-location">Configuration Location</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#code-quality-tools">Code Quality Tools</a>
+    <li class="toctree-l2"><a class="reference internal" href="#available-debug-settings">Available Debug Settings</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#php_codesniffer-phpcsphpcbf">PHP_CodeSniffer (PHPCS/PHPCBF)</a>
+    <li class="toctree-l3"><a class="reference internal" href="#1-php-error-reporting">1. PHP Error Reporting</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#php-cs-fixer">PHP-CS-Fixer</a>
+    <li class="toctree-l3"><a class="reference internal" href="#2-logger-settings">2. Logger Settings</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#phpstan">PHPStan</a>
+    <li class="toctree-l3"><a class="reference internal" href="#3-database-debugging">3. Database Debugging</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#psalm">Psalm</a>
+    <li class="toctree-l3"><a class="reference internal" href="#4-dnssec-debugging">4. DNSSEC Debugging</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#phpmd-php-mess-detector">PHPMD (PHP Mess Detector)</a>
+    <li class="toctree-l3"><a class="reference internal" href="#5-ldap-debugging">5. LDAP Debugging</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#using-the-tools">Using the Tools</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#running-code-style-checks">Running Code Style Checks</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#auto-fixing-code-style-issues">Auto-Fixing Code Style Issues</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#running-php-cs-fixer">Running PHP-CS-Fixer</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#static-analysis">Static Analysis</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#php-mess-detection">PHP Mess Detection</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#setting-up-your-development-environment">Setting Up Your Development Environment</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#phpstorm">PhpStorm</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#vscode">VSCode</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#pre-commit-hooks">Pre-Commit Hooks</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#additional-resources">Additional Resources</a>
+    <li class="toctree-l2"><a class="reference internal" href="#display-statistics">Display Statistics</a>
     </li>
     </ul>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../testing/">Testing</a>
+              </ul>
+              <p class="caption"><span class="caption-text">Contributing</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/development/">Development Setup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/coding-standards/">Coding Standards</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/testing/">Testing</a>
                   </li>
               </ul>
       </div>
@@ -249,10 +225,10 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Contributing</li>
-      <li class="breadcrumb-item active">Coding Standards</li>
+          <li class="breadcrumb-item">Troubleshooting</li>
+      <li class="breadcrumb-item active">Debugging</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/contributing/coding-standards.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/troubleshooting/debugging.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -264,110 +240,94 @@
     Note: This documentation is still in progress, not reviewed properly, and might contain some errors or outdated images. It's intended for the upcoming 4.0.0 release, so configuration settings might be different from previous versions.
   </div>
   
-                <h1 id="poweradmin-coding-standards">PowerAdmin Coding Standards</h1>
-<p>PowerAdmin follows a set of coding standards based on PSR-12 with some project-specific modifications. This document outlines these standards and how to enforce them.</p>
-<h2 id="standards-overview">Standards Overview</h2>
-<ol>
-<li><strong>Base Standard</strong>: PSR-12</li>
-<li><strong>Modifications</strong>:</li>
-<li>Excludes PSR12.Classes.OpeningBraceSpace rule</li>
-<li>Line length set to 250 characters (instead of PSR-12 default)</li>
-<li><strong>Autoloading</strong>: PSR-4 (as specified in composer.json)</li>
-</ol>
-<h2 id="code-quality-tools">Code Quality Tools</h2>
-<p>PowerAdmin uses several tools to maintain code quality:</p>
-<h3 id="php_codesniffer-phpcsphpcbf">PHP_CodeSniffer (PHPCS/PHPCBF)</h3>
-<ul>
-<li>Checks for coding standard violations</li>
-<li>Can automatically fix many issues with PHPCBF</li>
-</ul>
-<h3 id="php-cs-fixer">PHP-CS-Fixer</h3>
-<ul>
-<li>Additional code style fixing</li>
-<li>Complements PHPCS for more comprehensive style enforcement</li>
-</ul>
-<h3 id="phpstan">PHPStan</h3>
-<ul>
-<li>Static analysis tool</li>
-<li>Detects potential errors and type inconsistencies</li>
-</ul>
-<h3 id="psalm">Psalm</h3>
-<ul>
-<li>Type checker</li>
-<li>Configured with level 2 error reporting</li>
-</ul>
-<h3 id="phpmd-php-mess-detector">PHPMD (PHP Mess Detector)</h3>
-<ul>
-<li>Detects code smells and potential problems</li>
-<li>Helps maintain cleaner, more maintainable code</li>
-</ul>
-<h2 id="using-the-tools">Using the Tools</h2>
-<h3 id="running-code-style-checks">Running Code Style Checks</h3>
-<pre><code class="language-bash"># Check code style for lib directory
-composer check:lib
+                <h1 id="debugging-poweradmin">Debugging Poweradmin</h1>
+<p>To help diagnose issues, you can enable various debug settings in your Poweradmin configuration. Below are the available debug settings and how to enable them.</p>
+<h2 id="configuration-location">Configuration Location</h2>
+<p>Debugging settings should be added to your <code>config/settings.php</code> file. If you're still using the legacy configuration in <code>inc/config.inc.php</code>, consider migrating to the new configuration format using the provided script:</p>
+<pre><code class="language-bash">php scripts/migrate-config.php
+</code></pre>
+<h2 id="available-debug-settings">Available Debug Settings</h2>
+<h3 id="1-php-error-reporting">1. PHP Error Reporting</h3>
+<p>To display PHP errors directly in the browser, add the following lines to your <code>index.php</code> or any other entry point file:</p>
+<pre><code class="language-php">ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+</code></pre>
+<h3 id="2-logger-settings">2. Logger Settings</h3>
+<p>Configure the logging settings in your <code>config/settings.php</code>:</p>
+<pre><code class="language-php">return [
+    // Other settings...
 
-# Check code style for all PHP files
-composer check:all
-</code></pre>
-<h3 id="auto-fixing-code-style-issues">Auto-Fixing Code Style Issues</h3>
-<pre><code class="language-bash"># Fix code style in lib directory
-composer format:lib
+    'logging' =&gt; [
+        'type' =&gt; 'native',    // Options: 'null', 'native'
+        'level' =&gt; 'debug',    // Options: 'debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'
+        // Other logging settings...
+    ],
 
-# Fix code style in all PHP files
-composer format:all
+    // Other settings...
+];
 </code></pre>
-<h3 id="running-php-cs-fixer">Running PHP-CS-Fixer</h3>
-<pre><code class="language-bash"># Check style with PHP-CS-Fixer
-composer style:check
+<p>These settings are primarily used for logging authentication issues and other system events.</p>
+<h3 id="3-database-debugging">3. Database Debugging</h3>
+<p>Enable or disable database debugging to log detailed database operations and errors:</p>
+<pre><code class="language-php">return [
+    // Other settings...
 
-# Fix style with PHP-CS-Fixer
-composer style:fix
-</code></pre>
-<h3 id="static-analysis">Static Analysis</h3>
-<pre><code class="language-bash"># Run PHPStan static analysis
-composer analyse:all
+    'database' =&gt; [
+        // Other database settings...
+        'debug' =&gt; true,    // Show all SQL queries
+    ],
 
-# Run Psalm type checking
-composer check:psalm
+    // Other settings...
+];
 </code></pre>
-<h3 id="php-mess-detection">PHP Mess Detection</h3>
-<pre><code class="language-bash"># Run PHPMD
-composer check:phpmd:lib
+<h3 id="4-dnssec-debugging">4. DNSSEC Debugging</h3>
+<p>Enable or disable DNSSEC debugging to log detailed DNSSEC operations and errors:</p>
+<pre><code class="language-php">return [
+    // Other settings...
+
+    'dnssec' =&gt; [
+        // Other DNSSEC settings...
+        'debug' =&gt; true,    // Enable DNSSEC debug logging
+    ],
+
+    // Other settings...
+];
 </code></pre>
-<h2 id="setting-up-your-development-environment">Setting Up Your Development Environment</h2>
-<p>For a consistent development experience, configure your IDE to use these coding standards:</p>
-<h3 id="phpstorm">PhpStorm</h3>
-<ol>
-<li>Install the PHP_CodeSniffer plugin</li>
-<li>Configure it to use the project's phpcs.xml file</li>
-<li>Enable "Reformat Code" to use PSR-12 with project modifications</li>
-</ol>
-<h3 id="vscode">VSCode</h3>
-<ol>
-<li>Install the PHP Intelephense or PHP CodeSniffer extensions</li>
-<li>Configure them to use the project's phpcs.xml file</li>
-</ol>
-<h2 id="pre-commit-hooks">Pre-Commit Hooks</h2>
-<p>Consider setting up Git pre-commit hooks to automatically check/fix code style before commits:</p>
-<ol>
-<li>Install <a href="https://github.com/typicode/husky">husky</a> and <a href="https://github.com/okonet/lint-staged">lint-staged</a></li>
-<li>Configure lint-staged to run PHP_CodeSniffer or PHP-CS-Fixer on staged PHP files</li>
-</ol>
-<h2 id="additional-resources">Additional Resources</h2>
-<ul>
-<li><a href="https://www.php-fig.org/psr/psr-12/">PSR-12 Documentation</a></li>
-<li><a href="https://github.com/squizlabs/PHP_CodeSniffer/wiki">PHP_CodeSniffer Documentation</a></li>
-<li><a href="https://github.com/FriendsOfPHP/PHP-CS-Fixer">PHP-CS-Fixer Documentation</a></li>
-<li><a href="https://phpstan.org/user-guide/getting-started">PHPStan Documentation</a></li>
-<li><a href="https://psalm.dev/docs/">Psalm Documentation</a></li>
-</ul>
+<h3 id="5-ldap-debugging">5. LDAP Debugging</h3>
+<p>Enable or disable LDAP debugging to log detailed LDAP operations and errors:</p>
+<pre><code class="language-php">return [
+    // Other settings...
+
+    'ldap' =&gt; [
+        // Other LDAP settings...
+        'debug' =&gt; true,    // Enable LDAP debug logging
+    ],
+
+    // Other settings...
+];
+</code></pre>
+<h2 id="display-statistics">Display Statistics</h2>
+<p>To see memory usage and execution time at the bottom of each page, enable the display_stats option:</p>
+<pre><code class="language-php">return [
+    // Other settings...
+
+    'misc' =&gt; [
+        // Other miscellaneous settings...
+        'display_stats' =&gt; true,    // Display memory usage and execution time
+    ],
+
+    // Other settings...
+];
+</code></pre>
+<p>By enabling these settings, you can gain more insight into the application's behavior and troubleshoot issues more effectively.</p>
               
 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../development/" class="btn btn-neutral float-left" title="Development Setup"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../testing/" class="btn btn-neutral float-right" title="Testing">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../upgrading/v2.1.4/" class="btn btn-neutral float-left" title="v2.1.4"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../contributing/development/" class="btn btn-neutral float-right" title="Development Setup">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -394,10 +354,10 @@ composer check:phpmd:lib
         </span>
     
     
-      <span><a href="../development/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../../upgrading/v2.1.4/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../testing/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../../contributing/development/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
