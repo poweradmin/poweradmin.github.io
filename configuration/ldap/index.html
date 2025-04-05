@@ -105,9 +105,11 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">LDAP Integration</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#configuration-settings">Configuration Settings</a>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
+    <li class="toctree-l2"><a class="reference internal" href="#modern-configuration-example">Modern Configuration Example</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ldap-search-filter-examples">LDAP Search Filter Examples</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#basic-setup">Basic Setup</a>
     </li>
@@ -254,20 +256,85 @@
   
                 <h1 id="ldap-integration">LDAP Integration</h1>
 <p>Poweradmin supports LDAP (Lightweight Directory Access Protocol) authentication, allowing you to integrate with your existing directory service such as Active Directory or OpenLDAP.</p>
-<h2 id="configuration-settings">Configuration Settings</h2>
-<p>The LDAP settings are configured in the <code>config/settings.php</code> file under the <code>ldap</code> section:</p>
-<ul>
-<li><strong>enabled</strong>: Enable LDAP authentication. Default: <code>false</code></li>
-<li><strong>debug</strong>: Enable LDAP debug logging. Default: <code>false</code></li>
-<li><strong>uri</strong>: LDAP server URI. Default: <code>ldap://domaincontroller.example.com</code></li>
-<li><strong>base_dn</strong>: Base DN where users are stored. Default: <code>ou=users,dc=example,dc=com</code></li>
-<li><strong>bind_dn</strong>: Bind DN for LDAP authentication. Default: <code>cn=admin,dc=example,dc=com</code></li>
-<li><strong>bind_password</strong>: Bind password for LDAP authentication</li>
-<li><strong>user_attribute</strong>: User attribute (uid for OpenLDAP, sAMAccountName for Active Directory). Default: <code>uid</code></li>
-<li><strong>protocol_version</strong>: LDAP protocol version. Default: <code>3</code></li>
-<li><strong>search_filter</strong>: Additional search filter. Default: empty</li>
-</ul>
-<h2 id="example-configuration">Example Configuration</h2>
+<h2 id="configuration-options">Configuration Options</h2>
+<p>LDAP settings can be configured in the <code>config/settings.php</code> file under the <code>ldap</code> section or through individual variables in the legacy configuration format.</p>
+<table>
+<thead>
+<tr>
+<th>Legacy variable</th>
+<th>Modern equivalent</th>
+<th>Default value</th>
+<th>Description</th>
+<th>Added in version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$ldap_use</td>
+<td>ldap.enabled</td>
+<td>false</td>
+<td>Enable LDAP authentication</td>
+<td>2.1.7</td>
+</tr>
+<tr>
+<td>$ldap_debug</td>
+<td>ldap.debug</td>
+<td>false</td>
+<td>Enable debug for LDAP connection</td>
+<td>2.1.7</td>
+</tr>
+<tr>
+<td>$ldap_uri</td>
+<td>ldap.uri</td>
+<td>ldap://domaincontroller.example.com</td>
+<td>LDAP server URI</td>
+<td>2.1.7</td>
+</tr>
+<tr>
+<td>$ldap_basedn</td>
+<td>ldap.base_dn</td>
+<td>ou=users,dc=example,dc=com</td>
+<td>The top level of the LDAP directory tree</td>
+<td>2.1.7</td>
+</tr>
+<tr>
+<td>$ldap_search_filter</td>
+<td>ldap.search_filter</td>
+<td>no default</td>
+<td>Filter for LDAP search</td>
+<td>2.1.7</td>
+</tr>
+<tr>
+<td>$ldap_binddn</td>
+<td>ldap.bind_dn</td>
+<td>cn=admin,dc=example,dc=com</td>
+<td>LDAP user for binding</td>
+<td>2.1.7</td>
+</tr>
+<tr>
+<td>$ldap_bindpw</td>
+<td>ldap.bind_password</td>
+<td>some_password</td>
+<td>Password for LDAP binding user</td>
+<td>2.1.7</td>
+</tr>
+<tr>
+<td>$ldap_user_attribute</td>
+<td>ldap.user_attribute</td>
+<td>uid</td>
+<td>Username attribute used in LDAP search filter</td>
+<td>2.1.7</td>
+</tr>
+<tr>
+<td>$ldap_proto</td>
+<td>ldap.protocol_version</td>
+<td>3</td>
+<td>LDAP protocol version</td>
+<td>2.1.7</td>
+</tr>
+</tbody>
+</table>
+<h2 id="modern-configuration-example">Modern Configuration Example</h2>
 <pre><code class="language-php">return [
     'ldap' =&gt; [
         'enabled' =&gt; true,
@@ -278,16 +345,31 @@
         'bind_password' =&gt; 'some_password',
         'user_attribute' =&gt; 'uid',
         'protocol_version' =&gt; 3,
-        'search_filter' =&gt; '',
+        'search_filter' =&gt; '(objectClass=account)',
     ],
 ];
+</code></pre>
+<h2 id="ldap-search-filter-examples">LDAP Search Filter Examples</h2>
+<p>The search filter is used to limit which LDAP accounts can authenticate to Poweradmin:</p>
+<pre><code class="language-php">// Only users that are members of the 'powerdns' group
+$ldap_search_filter = '(memberOf=cn=powerdns,ou=groups,dc=poweradmin,dc=org)';
+
+// All accounts
+$ldap_search_filter = '(objectClass=account)';
+
+// Users that are both persons and members of the 'admins' group
+$ldap_search_filter = '(objectClass=person)(memberOf=cn=admins,ou=groups,dc=poweradmin,dc=org)';
+
+// Users with 'admin' in their common name
+$ldap_search_filter = '(cn=*admin*)';
 </code></pre>
 <h2 id="basic-setup">Basic Setup</h2>
 <ol>
 <li>Enable LDAP authentication by setting <code>'enabled' =&gt; true</code> in the configuration array.</li>
 <li>Configure your LDAP server URI and base DN.</li>
+<li>Set appropriate search filters based on your directory structure.</li>
 <li>Set binding credentials if required.</li>
-<li>Adjust the <code>search_filter</code> to match your LDAP schema.</li>
+<li>Specify the user attribute that matches your directory structure.</li>
 </ol>
 <h2 id="advanced-configuration">Advanced Configuration</h2>
 <h3 id="ssltls-connection">SSL/TLS Connection</h3>

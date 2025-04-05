@@ -103,13 +103,13 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Logging Setup</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#basic-configuration">Basic Configuration</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#syslog-configuration">Syslog Configuration</a>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#log-levels">Log Levels</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
+    <li class="toctree-l2"><a class="reference internal" href="#modern-configuration-example">Modern Configuration Example</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#legacy-configuration-example">Legacy Configuration Example</a>
     </li>
     </ul>
                   </li>
@@ -233,21 +233,63 @@
   </div>
   
                 <h1 id="logging-configuration">Logging Configuration</h1>
-<p>Poweradmin's logging system can be configured through the <code>config/settings.php</code> file under the <code>logging</code> section.</p>
-<h2 id="basic-configuration">Basic Configuration</h2>
-<ul>
-<li><strong>type</strong>: The logging handler to use</li>
-<li><code>null</code>: Disable logging</li>
-<li><code>native</code>: Use PHP's native error logging</li>
-<li><strong>level</strong>: The minimum logging level (see below for options)</li>
-<li><strong>database_enabled</strong>: Enable logging zone and record changes to database. Default: <code>false</code></li>
-</ul>
-<h2 id="syslog-configuration">Syslog Configuration</h2>
-<ul>
-<li><strong>syslog_enabled</strong>: Write authentication attempts to syslog. Default: <code>false</code></li>
-<li><strong>syslog_identity</strong>: Syslog identity string. Default: 'poweradmin'</li>
-<li><strong>syslog_facility</strong>: Syslog facility to use. Default: LOG_USER</li>
-</ul>
+<p>Poweradmin's logging system can be configured through the <code>config/settings.php</code> file under the <code>logging</code> section, or through individual variables in the legacy configuration format.</p>
+<h2 id="configuration-options">Configuration Options</h2>
+<table>
+<thead>
+<tr>
+<th>Legacy variable</th>
+<th>Modern equivalent</th>
+<th>Default value</th>
+<th>Description</th>
+<th>Added in version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$logger_type</td>
+<td>logging.type</td>
+<td>null</td>
+<td>Logger type (null, native)</td>
+<td>3.9.0</td>
+</tr>
+<tr>
+<td>$logger_level</td>
+<td>logging.level</td>
+<td>info</td>
+<td>Logging level (debug, info, notice, warning, error, critical, alert, emergency)</td>
+<td>3.9.0</td>
+</tr>
+<tr>
+<td>$syslog_use</td>
+<td>logging.syslog_enabled</td>
+<td>false</td>
+<td>Enable (true) or disable (false) logging of authentication attempts and other operations to syslog</td>
+<td>2.1.6</td>
+</tr>
+<tr>
+<td>$syslog_ident</td>
+<td>logging.syslog_identity</td>
+<td>poweradmin</td>
+<td>Specifies program name which is added to syslog message</td>
+<td>2.1.6</td>
+</tr>
+<tr>
+<td>$syslog_facility</td>
+<td>logging.syslog_facility</td>
+<td>LOG_USER</td>
+<td>Specifies what type of program is logging the message</td>
+<td>2.1.6</td>
+</tr>
+<tr>
+<td>$dblog_use</td>
+<td>logging.database_enabled</td>
+<td>false</td>
+<td>Enable (true) or disable (false) logging to database</td>
+<td>3.2.0</td>
+</tr>
+</tbody>
+</table>
 <h2 id="log-levels">Log Levels</h2>
 <p>Available logging levels, in order of increasing severity:</p>
 <ol>
@@ -260,7 +302,7 @@
 <li>ALERT: Action must be taken immediately</li>
 <li>EMERGENCY: System is unusable</li>
 </ol>
-<h2 id="example-configuration">Example Configuration</h2>
+<h2 id="modern-configuration-example">Modern Configuration Example</h2>
 <pre><code class="language-php">return [
     'logging' =&gt; [
         'type' =&gt; 'native',
@@ -272,9 +314,18 @@
     ],
 ];
 </code></pre>
+<h2 id="legacy-configuration-example">Legacy Configuration Example</h2>
+<pre><code class="language-php">&lt;?php
+// Logging settings
+$logger_type = 'native';
+$logger_level = 'warning';
+$syslog_use = true;
+$syslog_ident = 'poweradmin';
+$syslog_facility = LOG_USER;
+$dblog_use = true;
+</code></pre>
 <p>For more advanced logging configuration and analysis, see:
-- <a href="../../advanced/logging-config/">Log Configuration</a>
-- <a href="../advanced/log-analysis.md">Log Analysis</a></p>
+- <a href="../../advanced/logging-config/">Log Configuration</a></p>
               
 
             </div>

@@ -95,15 +95,13 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">DNS Settings</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#basic-configuration">Basic Configuration</a>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#soa-record-settings">SOA Record Settings</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#zone-settings">Zone Settings</a>
+    <li class="toctree-l2"><a class="reference internal" href="#modern-configuration-example">Modern Configuration Example</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#validation-settings">Validation Settings</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
+    <li class="toctree-l2"><a class="reference internal" href="#legacy-configuration-example">Legacy Configuration Example</a>
     </li>
     </ul>
                   </li>
@@ -235,43 +233,152 @@
   </div>
   
                 <h1 id="dns-settings">DNS Settings</h1>
-<p>DNS settings in Poweradmin are configured through the <code>config/settings.php</code> file under the <code>dns</code> section. These settings define various DNS-related defaults and behaviors.</p>
-<h2 id="basic-configuration">Basic Configuration</h2>
-<ul>
-<li><strong>hostmaster</strong>: The email address of the hostmaster (DNS administrator). Default: <code>hostmaster.example.com</code></li>
-<li><strong>ns1</strong>: Primary nameserver hostname. Default: <code>ns1.example.com</code></li>
-<li><strong>ns2</strong>: Secondary nameserver hostname. Default: <code>ns2.example.com</code></li>
-<li><strong>ns3</strong>: Third nameserver hostname. Default: none</li>
-<li><strong>ns4</strong>: Fourth nameserver hostname. Default: none</li>
-<li><strong>ttl</strong>: Default TTL for new records in seconds. Default: <code>86400</code> (24 hours)</li>
-</ul>
+<p>DNS settings in Poweradmin can be configured through the <code>config/settings.php</code> file under the <code>dns</code> section or through individual variables in the legacy configuration format.</p>
+<h2 id="configuration-options">Configuration Options</h2>
+<table>
+<thead>
+<tr>
+<th>Legacy variable</th>
+<th>Modern equivalent</th>
+<th>Default value</th>
+<th>Description</th>
+<th>Added in version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$dns_hostmaster</td>
+<td>dns.hostmaster</td>
+<td>no default</td>
+<td>The default email address to use for the SOA record (e.g., 'hostmaster.example.net').</td>
+<td></td>
+</tr>
+<tr>
+<td>$dns_ns1</td>
+<td>dns.ns1</td>
+<td>no default</td>
+<td>The default primary nameserver.</td>
+<td></td>
+</tr>
+<tr>
+<td>$dns_ns2</td>
+<td>dns.ns2</td>
+<td>no default</td>
+<td>The default secondary nameserver.</td>
+<td></td>
+</tr>
+<tr>
+<td>$dns_ns3</td>
+<td>dns.ns3</td>
+<td>no default</td>
+<td>The third nameserver.</td>
+<td></td>
+</tr>
+<tr>
+<td>$dns_ns4</td>
+<td>dns.ns4</td>
+<td>no default</td>
+<td>The fourth nameserver.</td>
+<td></td>
+</tr>
+<tr>
+<td>$dns_ttl</td>
+<td>dns.ttl</td>
+<td>86400</td>
+<td>The default TTL for records (in seconds).</td>
+<td></td>
+</tr>
+<tr>
+<td>$dns_soa</td>
+<td>(see below)</td>
+<td>28800 7200 604800 86400</td>
+<td>SOA settings for refresh, retry, expire and minimum</td>
+<td>2.2.3</td>
+</tr>
+<tr>
+<td>-</td>
+<td>dns.soa_refresh</td>
+<td>28800</td>
+<td>SOA refresh time</td>
+<td>2.2.3</td>
+</tr>
+<tr>
+<td>-</td>
+<td>dns.soa_retry</td>
+<td>7200</td>
+<td>SOA retry time</td>
+<td>2.2.3</td>
+</tr>
+<tr>
+<td>-</td>
+<td>dns.soa_expire</td>
+<td>604800</td>
+<td>SOA expire time</td>
+<td>2.2.3</td>
+</tr>
+<tr>
+<td>-</td>
+<td>dns.soa_minimum</td>
+<td>86400</td>
+<td>SOA minimum TTL</td>
+<td>2.2.3</td>
+</tr>
+<tr>
+<td>$dns_strict_tld_check</td>
+<td>dns.strict_tld_check</td>
+<td>false</td>
+<td>If enabled (true), allow official TLDs only.</td>
+<td></td>
+</tr>
+<tr>
+<td>$dns_top_level_tld_check</td>
+<td>dns.top_level_tld_check</td>
+<td>false</td>
+<td>Don't allow creation of top-level TLDs when true.</td>
+<td>2.1.7</td>
+</tr>
+<tr>
+<td>$dns_third_level_check</td>
+<td>dns.third_level_check</td>
+<td>false</td>
+<td>Don't allow creation of third-level domains when true.</td>
+<td>2.1.7</td>
+</tr>
+<tr>
+<td>$dns_txt_auto_quote</td>
+<td>dns.txt_auto_quote</td>
+<td>false</td>
+<td>Automatically quote TXT records when true.</td>
+<td>3.9.2</td>
+</tr>
+<tr>
+<td>$iface_zone_type_default</td>
+<td>dns.zone_type_default</td>
+<td>MASTER</td>
+<td>Default zone type when creating new zones.</td>
+<td>2.1.9</td>
+</tr>
+</tbody>
+</table>
 <h2 id="soa-record-settings">SOA Record Settings</h2>
+<p>In the modern configuration format, the SOA settings are configured as individual parameters:</p>
 <ul>
-<li><strong>soa_refresh</strong>: The time interval before the zone should be refreshed. Default: <code>28800</code> (8 hours)</li>
-<li><strong>soa_retry</strong>: The time interval that should elapse before a failed refresh should be retried. Default: <code>7200</code> (2 hours)</li>
-<li><strong>soa_expire</strong>: The upper limit on the time interval that can elapse before the zone is no longer authoritative. Default: <code>604800</code> (1 week)</li>
-<li><strong>soa_minimum</strong>: The negative result TTL. Default: <code>86400</code> (24 hours)</li>
+<li><strong>refresh</strong>: The time interval before the zone should be refreshed. Default: <code>28800</code> (8 hours)</li>
+<li><strong>retry</strong>: The time interval that should elapse before a failed refresh should be retried. Default: <code>7200</code> (2 hours)</li>
+<li><strong>expire</strong>: The upper limit on the time interval that can elapse before the zone is no longer authoritative. Default: <code>604800</code> (1 week)</li>
+<li><strong>minimum</strong>: The negative result TTL. Default: <code>86400</code> (24 hours)</li>
 </ul>
-<h2 id="zone-settings">Zone Settings</h2>
-<ul>
-<li><strong>zone_type_default</strong>: Default zone type for new zones. Options: 'MASTER', 'NATIVE'. Default: 'MASTER'</li>
-</ul>
-<h2 id="validation-settings">Validation Settings</h2>
-<ul>
-<li><strong>strict_tld_check</strong>: Enable strict validation of TLDs. Default: <code>false</code></li>
-<li><strong>top_level_tld_check</strong>: Prevent creation of top-level domains. Default: <code>false</code></li>
-<li><strong>third_level_check</strong>: Prevent creation of third-level domains. Default: <code>false</code></li>
-<li><strong>txt_auto_quote</strong>: Automatically quote TXT records. Default: <code>false</code></li>
-</ul>
-<h2 id="example-configuration">Example Configuration</h2>
+<p>In the legacy format, these are combined in the <code>$dns_soa</code> variable as a space-separated string.</p>
+<h2 id="modern-configuration-example">Modern Configuration Example</h2>
 <pre><code class="language-php">return [
     'dns' =&gt; [
         'hostmaster' =&gt; 'hostmaster.example.com',
         'ns1' =&gt; 'ns1.example.com',
         'ns2' =&gt; 'ns2.example.com',
-        'ns3' =&gt; '',
-        'ns4' =&gt; '',
+        'ns3' =&gt; 'ns3.example.com',
+        'ns4' =&gt; 'ns4.example.com',
         'ttl' =&gt; 86400,
+        // SOA settings
         'soa_refresh' =&gt; 28800,
         'soa_retry' =&gt; 7200,
         'soa_expire' =&gt; 604800,
@@ -283,6 +390,22 @@
         'txt_auto_quote' =&gt; false,
     ],
 ];
+</code></pre>
+<h2 id="legacy-configuration-example">Legacy Configuration Example</h2>
+<pre><code class="language-php">&lt;?php
+// DNS settings
+$dns_hostmaster = 'hostmaster.example.com';
+$dns_ns1 = 'ns1.example.com';
+$dns_ns2 = 'ns2.example.com';
+$dns_ns3 = 'ns3.example.com';
+$dns_ns4 = 'ns4.example.com';
+$dns_ttl = 86400;
+$dns_soa = '28800 7200 604800 86400';
+$dns_strict_tld_check = false;
+$dns_top_level_tld_check = false;
+$dns_third_level_check = false;
+$dns_txt_auto_quote = false;
+$iface_zone_type_default = 'MASTER';
 </code></pre>
               
 

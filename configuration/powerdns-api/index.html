@@ -105,7 +105,9 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
+    <li class="toctree-l2"><a class="reference internal" href="#modern-configuration-example">Modern Configuration Example</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#legacy-configuration-example">Legacy Configuration Example</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#powerdns-server-setup">PowerDNS Server Setup</a>
     </li>
@@ -250,18 +252,47 @@
 <li>Network connectivity between Poweradmin and PowerDNS API endpoint</li>
 </ul>
 <h2 id="configuration-options">Configuration Options</h2>
-<p>The PowerDNS API settings are configured in the <code>config/settings.php</code> file under the <code>pdns_api</code> section:</p>
-<ul>
-<li><strong>url</strong>: PowerDNS API URL, e.g., 'http://127.0.0.1:8081'. Default: empty</li>
-<li><strong>key</strong>: PowerDNS API key. Default: empty</li>
-</ul>
-<h2 id="example-configuration">Example Configuration</h2>
+<p>PowerDNS API settings can be configured in the <code>config/settings.php</code> file under the <code>pdns_api</code> section or through individual variables in the legacy configuration format.</p>
+<table>
+<thead>
+<tr>
+<th>Legacy variable</th>
+<th>Modern equivalent</th>
+<th>Default value</th>
+<th>Description</th>
+<th>Added in version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$pdns_api_url</td>
+<td>pdns_api.url</td>
+<td>no default</td>
+<td>The endpoint for establishing a connection to the PowerDNS API</td>
+<td>3.7.0</td>
+</tr>
+<tr>
+<td>$pdns_api_key</td>
+<td>pdns_api.key</td>
+<td>no default</td>
+<td>The authentication key required for establishing a connection with the PowerDNS API</td>
+<td>3.7.0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="modern-configuration-example">Modern Configuration Example</h2>
 <pre><code class="language-php">return [
     'pdns_api' =&gt; [
-        'url' =&gt; 'http://localhost:8081',
+        'url' =&gt; 'http://localhost:8081/api/v1',
         'key' =&gt; 'YOUR_API_KEY',
     ],
 ];
+</code></pre>
+<h2 id="legacy-configuration-example">Legacy Configuration Example</h2>
+<pre><code class="language-php">&lt;?php
+// PowerDNS API settings
+$pdns_api_url = 'http://localhost:8081/api/v1';
+$pdns_api_key = 'YOUR_API_KEY';
 </code></pre>
 <h2 id="powerdns-server-setup">PowerDNS Server Setup</h2>
 <p>To enable the API in your PowerDNS configuration, add the following to your PowerDNS configuration file:</p>

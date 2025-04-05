@@ -107,6 +107,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#implementation-methods">Implementation Methods</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#option-1-powerdns-api-method-recommended">Option 1: PowerDNS API Method (Recommended)</a>
@@ -274,6 +276,42 @@
 <li>Proper database configuration</li>
 <li>API access configured (see <a href="../powerdns-api/">PowerDNS API Configuration</a>)</li>
 </ul>
+<h2 id="configuration-options">Configuration Options</h2>
+<p>DNSSEC settings can be configured in the <code>config/settings.php</code> file under the <code>dnssec</code> section or through individual variables in the legacy configuration format.</p>
+<table>
+<thead>
+<tr>
+<th>Legacy variable</th>
+<th>Modern equivalent</th>
+<th>Default value</th>
+<th>Description</th>
+<th>Added in version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$pdnssec_use</td>
+<td>dnssec.enabled</td>
+<td>false</td>
+<td>Enable (true) or disable (false) DNSSEC support</td>
+<td>2.1.7</td>
+</tr>
+<tr>
+<td>$pdnssec_debug</td>
+<td>dnssec.debug</td>
+<td>false</td>
+<td>Enable debug for DNSSEC operations</td>
+<td>2.1.9</td>
+</tr>
+<tr>
+<td>$pdnssec_command</td>
+<td>dnssec.command</td>
+<td>/usr/bin/pdnsutil</td>
+<td>Full path to pdnsutil utility (will be deprecated in the future)</td>
+<td>2.1.7</td>
+</tr>
+</tbody>
+</table>
 <h2 id="implementation-methods">Implementation Methods</h2>
 <h3 id="option-1-powerdns-api-method-recommended">Option 1: PowerDNS API Method (Recommended)</h3>
 <p>To enable DNSSEC using the PowerDNS API:</p>
@@ -284,9 +322,11 @@
 <pre><code class="language-php">return [
     'dnssec' =&gt; [
         'enabled' =&gt; true,
-        'use_api' =&gt; true,
-        'api_url' =&gt; 'http://localhost:8081',
-        'api_key' =&gt; 'your-api-key',
+        'debug' =&gt; false,
+    ],
+    'pdns_api' =&gt; [
+        'url' =&gt; 'http://localhost:8081',
+        'key' =&gt; 'your-api-key',
     ],
 ];
 </code></pre>
@@ -297,21 +337,19 @@
 - Full support for all DNSSEC operations</p>
 <h3 id="option-2-pdnsutil-method-legacy">Option 2: pdnsutil Method (Legacy)</h3>
 <p>If you can't use the API method, you can still use the legacy pdnsutil approach:</p>
-<ol>
-<li>Update your PowerAdmin configuration file:</li>
-</ol>
 <pre><code class="language-php">return [
     'dnssec' =&gt; [
         'enabled' =&gt; true,
-        'use_api' =&gt; false,
-        'command' =&gt; '/usr/bin/pdnsutil',
         'debug' =&gt; false,
+        'command' =&gt; '/usr/bin/pdnsutil',
+    ],
+    'pdns_api' =&gt; [
+        'url' =&gt; '',
+        'key' =&gt; '',
     ],
 ];
 </code></pre>
-<ol>
-<li>Configure permissions for the web server user to run pdnsutil:</li>
-</ol>
+<p>Configure permissions for the web server user to run pdnsutil:</p>
 <p>For example, on Ubuntu with Apache:</p>
 <pre><code class="language-bash"># Add the web server user to the root group
 adduser www-data root
