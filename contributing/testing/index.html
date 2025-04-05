@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/getting-started/docker-demo/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/contributing/testing/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Docker Demo - Poweradmin Documentation</title>
+    <title>Testing - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Docker Demo";
-        var mkdocs_page_input_path = "getting-started/docker-demo.md";
-        var mkdocs_page_url = "/getting-started/docker-demo/";
+        var mkdocs_page_name = "Testing";
+        var mkdocs_page_input_path = "contributing/testing.md";
+        var mkdocs_page_url = "/contributing/testing/";
       </script>
     
     <!--[if lt IE 9]>
@@ -46,22 +46,18 @@
                 </li>
               </ul>
               <p class="caption"><span class="caption-text">Getting Started</span></p>
-              <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../overview/">Overview</a>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/overview/">Overview</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../features/">Features</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/features/">Features</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" >Quick Evaluation</a>
-    <ul class="current">
-                <li class="toctree-l2 current"><a class="reference internal current" href="#">Docker Demo</a>
-    <ul class="current">
-    <li class="toctree-l3"><a class="reference internal" href="#steps-to-evaluate-poweradmin-using-docker">Steps to Evaluate Poweradmin Using Docker</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" >Quick Evaluation</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../getting-started/docker-demo/">Docker Demo</a>
                 </li>
     </ul>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../requirements/">System Requirements</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/requirements/">System Requirements</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Installation</span></p>
@@ -197,12 +193,54 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Contributing</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/development/">Development Setup</a>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../development/">Development Setup</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/coding-standards/">Coding Standards</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../coding-standards/">Coding Standards</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/testing/">Testing</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Testing</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#test-frameworks-tools">Test Frameworks &amp; Tools</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#test-directory-structure">Test Directory Structure</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#types-of-tests">Types of Tests</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#unit-tests">Unit Tests</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#integration-tests">Integration Tests</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#end-to-end-tests">End-to-End Tests</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#main-feature-tests">Main Feature Tests</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#corner-case-tests">Corner Case Tests</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#manual-test-plans">Manual Test Plans</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#running-tests">Running Tests</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#php-tests">PHP Tests</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cypress-tests">Cypress Tests</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#code-quality-checks">Code Quality Checks</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cicd-integration">CI/CD Integration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#test-coverage">Test Coverage</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#contributing-tests">Contributing Tests</a>
+    </li>
+    </ul>
                   </li>
               </ul>
       </div>
@@ -219,11 +257,10 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Getting Started</li>
-          <li class="breadcrumb-item">Quick Evaluation</li>
-      <li class="breadcrumb-item active">Docker Demo</li>
+          <li class="breadcrumb-item">Contributing</li>
+      <li class="breadcrumb-item active">Testing</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/getting-started/docker-demo.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/contributing/testing.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -235,65 +272,100 @@
     Note: This documentation is still in progress, not reviewed properly, and might contain some errors or outdated images. It's intended for the upcoming 4.0.0 release, so configuration settings might be different from previous versions.
   </div>
   
-                <h1 id="docker-demo">Docker Demo</h1>
-<p>The easiest way to evaluate Poweradmin without actually connecting to PowerDNS is to use a Docker image.</p>
-<h2 id="steps-to-evaluate-poweradmin-using-docker">Steps to Evaluate Poweradmin Using Docker</h2>
-<ol>
-<li>
-<p><strong>Get the Source</strong></p>
+                <h1 id="poweradmin-testing-guide">PowerAdmin Testing Guide</h1>
+<h2 id="overview">Overview</h2>
+<p>This document outlines the testing strategy and implementation details for the PowerAdmin project.</p>
+<h2 id="test-frameworks-tools">Test Frameworks &amp; Tools</h2>
 <ul>
-<li>Download the release file or use git to clone the repository.</li>
+<li><strong>PHPUnit</strong>: Primary testing framework for PHP code</li>
+<li><strong>Cypress</strong>: End-to-end testing framework for UI testing</li>
 </ul>
-</li>
-<li>
-<p><strong>Change to the Directory</strong></p>
+<p>In addition to these testing frameworks, PowerAdmin uses various code quality tools that are described in detail in the <a href="../coding-standards/">Coding Standards Guide</a>, including PHPStan, PHP_CodeSniffer, Psalm, PHPMD, and PHP-CS-Fixer.</p>
+<h2 id="test-directory-structure">Test Directory Structure</h2>
+<pre><code>/tests
+├── integration - Integration tests
+├── plans       - Test plans documentation
+└── unit        - Unit tests
+
+/cypress
+├── e2e         - End-to-end test specs by feature
+├── fixtures    - Test data files
+└── support     - Cypress support and custom commands
+</code></pre>
+<h2 id="types-of-tests">Types of Tests</h2>
+<h3 id="unit-tests">Unit Tests</h3>
+<p>Located in <code>/tests/unit</code>, these tests verify individual components in isolation, focusing on:
+- Configuration management
+- DNS record handling and formatting
+- Router functionality
+- IP address validation and handling
+- User authentication and password encryption
+- Various utility and helper functions</p>
+<h3 id="integration-tests">Integration Tests</h3>
+<p>Located in <code>/tests/integration</code>, testing interactions between components, particularly database operations.</p>
+<h3 id="end-to-end-tests">End-to-End Tests</h3>
+<p>Located in <code>/cypress/e2e</code>, organized by feature:</p>
+<h4 id="main-feature-tests">Main Feature Tests</h4>
 <ul>
-<li>Navigate to the directory where the files are located.</li>
+<li><strong>Authentication</strong> - Login and form validation</li>
+<li><strong>User Management</strong> - Creating, editing, and deleting users</li>
+<li><strong>Zone Management</strong> - Adding master/slave zones and records</li>
+<li><strong>Record Management</strong> - Adding, editing, and deleting different record types</li>
+<li><strong>Zone Templates</strong> - Template creation and application</li>
+<li><strong>Search</strong> - Zone and record searching</li>
 </ul>
-</li>
-<li>
-<p><strong>Build the Docker Image</strong></p>
+<h4 id="corner-case-tests">Corner Case Tests</h4>
 <ul>
-<li>Run the following command to build the Docker image:
-  <code>sh
-  docker build --no-cache -t poweradmin .</code></li>
+<li><strong>Input Validation</strong> - Testing edge cases in form validation</li>
+<li><strong>Error Handling</strong> - Session management, security, and UI edge cases</li>
 </ul>
-</li>
-<li>
-<p><strong>Run the Docker Container</strong></p>
-<ul>
-<li>Execute the following command to run the Docker container:
-  <code>sh
-  docker run -d --name poweradmin -p 8080:80 poweradmin</code></li>
-</ul>
-</li>
-<li>
-<p><strong>Access Poweradmin</strong></p>
-<ul>
-<li>Open your browser and go to <a href="http://localhost:8080">http://localhost:8080</a>.</li>
-</ul>
-</li>
-<li>
-<p><strong>Login</strong></p>
-<ul>
-<li>Use the following credentials to log in:<ul>
-<li><strong>Username</strong>: admin</li>
-<li><strong>Password</strong>: testadmin</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-<blockquote>
-<p><strong>Note</strong>: This installation uses SQLite to store all the data.</p>
-</blockquote>
+<p>The Cypress tests are located in the <code>cypress/e2e</code> directory organized by feature.</p>
+<p>A complete test plan for UI testing is available in <code>tests/plans/cypress-ui-test-plan.md</code>.</p>
+<h3 id="manual-test-plans">Manual Test Plans</h3>
+<p>Documentation in <code>/tests/plans</code> outlining test procedures for:
+- UI testing (<code>tests/plans/cypress-ui-test-plan.md</code>)
+- Installer testing (<code>tests/plans/installer-test-plan.md</code>) - Covers both regular installation flows and corner cases for properly testing the PowerAdmin installation process</p>
+<h2 id="running-tests">Running Tests</h2>
+<h3 id="php-tests">PHP Tests</h3>
+<pre><code class="language-bash"># Run unit tests
+composer tests
+
+# Run integration tests
+composer tests:integration
+</code></pre>
+<h3 id="cypress-tests">Cypress Tests</h3>
+<pre><code class="language-bash"># Open Cypress Test Runner
+npm run cypress:open
+# or
+yarn cypress:open
+
+# Run Cypress tests headlessly
+npm run cypress:run
+# or
+yarn cypress:run
+</code></pre>
+<h3 id="code-quality-checks">Code Quality Checks</h3>
+<p>For running code quality checks, please refer to the <a href="../coding-standards/">Coding Standards Guide</a> for detailed command usage.</p>
+<h2 id="cicd-integration">CI/CD Integration</h2>
+<p>The test suite is integrated with CI/CD pipelines to ensure code quality and prevent regressions.</p>
+<h2 id="test-coverage">Test Coverage</h2>
+<p>Current test coverage focuses on:
+- Core DNS management functionality
+- User authentication and management
+- Configuration validation
+- UI workflows through Cypress tests</p>
+<h2 id="contributing-tests">Contributing Tests</h2>
+<p>When adding new features or fixing bugs:
+1. Add appropriate unit tests for new classes and methods
+2. Update or add Cypress tests for UI changes
+3. Run the full test suite before submitting PRs
+4. Ensure all code quality checks pass</p>
               
 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../features/" class="btn btn-neutral float-left" title="Features"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../requirements/" class="btn btn-neutral float-right" title="System Requirements">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../coding-standards/" class="btn btn-neutral float-left" title="Coding Standards"><span class="icon icon-circle-arrow-left"></span> Previous</a>
     </div>
 
   <hr/>
@@ -320,10 +392,8 @@
         </span>
     
     
-      <span><a href="../features/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../coding-standards/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
-    
-      <span><a href="../requirements/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
