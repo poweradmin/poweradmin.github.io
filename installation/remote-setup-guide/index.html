@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/installation/debian/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/installation/remote-setup-guide/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Debian - Poweradmin Documentation</title>
+    <title>Remote Setup - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Debian";
-        var mkdocs_page_input_path = "installation/debian.md";
-        var mkdocs_page_url = "/installation/debian/";
+        var mkdocs_page_name = "Remote Setup";
+        var mkdocs_page_input_path = "installation/remote-setup-guide.md";
+        var mkdocs_page_url = "/installation/remote-setup-guide/";
       </script>
     
     <!--[if lt IE 9]>
@@ -64,37 +64,9 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" >Operating Systems</a>
-    <ul class="current">
-                <li class="toctree-l2 current"><a class="reference internal current" href="#">Debian</a>
-    <ul class="current">
-    <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#database-support">Database Support</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#web-server-configuration">Web Server Configuration</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#apache-default-on-debian">Apache (Default on Debian)</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#nginx-configuration">Nginx Configuration</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#installing-poweradmin">Installing Poweradmin</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#obtain-poweradmin-source-code">Obtain Poweradmin Source Code</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#deploy-to-web-server">Deploy to Web Server</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#complete-the-installation">Complete the Installation</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" >Operating Systems</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../debian/">Debian</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../ubuntu/">Ubuntu</a>
                 </li>
@@ -116,7 +88,33 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../composer/">Composer</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../remote-setup-guide/">Remote Setup</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Remote Setup</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#architecture-overview">Architecture Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-1-install-poweradmin-on-the-admin-server">Step 1: Install PowerAdmin on the Admin Server</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-2-configure-database-connection">Step 2: Configure Database Connection</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-3-configure-powerdns-api-access">Step 3: Configure PowerDNS API Access</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-4-configure-dnssec-optional">Step 4: Configure DNSSEC (Optional)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-5-network-security-considerations">Step 5: Network Security Considerations</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-6-test-the-connection">Step 6: Test the Connection</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#limitations">Limitations</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#security-best-practices">Security Best Practices</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a>
+    </li>
+    </ul>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Configuration</span></p>
@@ -245,10 +243,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Installation</li>
-          <li class="breadcrumb-item">Operating Systems</li>
-      <li class="breadcrumb-item active">Debian</li>
+      <li class="breadcrumb-item active">Remote Setup</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/installation/debian.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/installation/remote-setup-guide.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -260,103 +257,224 @@
     Note: This documentation is still in progress, not reviewed properly, and might contain some errors or outdated images. It's intended for the upcoming 4.0.0 release, so configuration settings might be different from previous versions.
   </div>
   
-                <h1 id="debian-installation">Debian Installation</h1>
-<p>This guide will help you install Poweradmin on Debian systems (Debian 12 or later recommended).</p>
+                <h1 id="remote-poweradmin-setup-guide">Remote PowerAdmin Setup Guide</h1>
+<p>This guide details how to set up PowerAdmin on a separate server from your PowerDNS installation, allowing you to maintain a dedicated admin interface without needing to install PowerDNS on the same machine.</p>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>Ensure you have the following PHP extensions installed:</p>
-<pre><code class="language-bash">apt install php php-intl php-php-gettext php-tokenizer php-fpm
+<ul>
+<li>A server for PowerAdmin (referred to as "admin server")</li>
+<li>A server running PowerDNS (referred to as "DNS server")</li>
+<li>MySQL/MariaDB, PostgreSQL, or SQLite database access from the admin server to the PowerDNS database</li>
+<li>Network connectivity between both servers</li>
+<li>PHP 7.4+ with required extensions on the admin server</li>
+<li>Web server software (Apache, Nginx, etc.) on the admin server</li>
+</ul>
+<h2 id="architecture-overview">Architecture Overview</h2>
+<p>In a remote setup:</p>
+<ol>
+<li>PowerAdmin is installed on the admin server</li>
+<li>PowerDNS runs on the DNS server</li>
+<li>PowerAdmin connects to the PowerDNS database remotely</li>
+<li>For DNSSEC operations, PowerAdmin uses the PowerDNS API</li>
+</ol>
+<pre><code>┌────────────────┐        ┌────────────────┐
+│                │        │                │
+│  Admin Server  │        │   DNS Server   │
+│                │        │                │
+│  ┌──────────┐  │        │  ┌──────────┐  │
+│  │PowerAdmin│  │◄──────►│  │ PowerDNS │  │
+│  └──────────┘  │  API   │  └──────────┘  │
+│                │        │                │
+└───────┬────────┘        └───────┬────────┘
+        │                         │
+        │    ┌──────────────┐     │
+        └───►│ PowerDNS DB  │◄────┘
+             └──────────────┘
 </code></pre>
-<h3 id="database-support">Database Support</h3>
-<p>Install the appropriate PHP database driver based on your preferred database:</p>
-<pre><code class="language-bash"># For MySQL/MariaDB
-apt install php-mysql
-
-# For PostgreSQL
-apt install php-pgsql
-
-# For SQLite
-apt install php-sqlite3
-</code></pre>
-<blockquote>
-<p><strong>Note:</strong> <code>php-fpm</code> is required only if you plan to use Nginx or choose not to use <code>mod_php</code> with Apache.</p>
-</blockquote>
-<h2 id="web-server-configuration">Web Server Configuration</h2>
-<h3 id="apache-default-on-debian">Apache (Default on Debian)</h3>
-<p>Apache is usually pre-installed and configured on Debian systems. You'll need to:</p>
+<h2 id="step-1-install-poweradmin-on-the-admin-server">Step 1: Install PowerAdmin on the Admin Server</h2>
 <ol>
 <li>
-<p>Enable the required Apache modules:
+<p>Clone or download PowerAdmin:
    <code>bash
-   a2enmod rewrite</code></p>
+   git clone https://github.com/poweradmin/poweradmin.git
+   cd poweradmin</code></p>
 </li>
 <li>
-<p>Either place Poweradmin in the default webroot (<code>/var/www/html/</code>) or create a virtual host configuration.</p>
+<p>Install dependencies:
+   <code>bash
+   composer install --no-dev</code></p>
+</li>
+<li>
+<p>Configure your web server to serve PowerAdmin (directory configuration examples for Apache/Nginx not shown here).</p>
 </li>
 </ol>
-<h3 id="nginx-configuration">Nginx Configuration</h3>
-<p>If you prefer Nginx, create a configuration file like this:</p>
-<pre><code class="language-nginx">server {
-    listen 80;
-    server_name localhost; # Replace with your domain
-
-    root /var/www/html; # Path to Poweradmin files
-    index index.php index.html index.htm;
-
-    location / {
-        try_files $uri $uri/ /index.php?$args;
-    }
-
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php-fpm.sock;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        include fastcgi_params;
-    }
-
-    # Deny access to .htaccess and .htpasswd files for security reasons
-    location ~ /\.ht {
-        deny all;
-    }
-}
-</code></pre>
-<p>Save this configuration to <code>/etc/nginx/sites-available/poweradmin</code> and enable it:</p>
-<pre><code class="language-bash">ln -s /etc/nginx/sites-available/poweradmin /etc/nginx/sites-enabled/
-nginx -t  # Test the configuration
-systemctl reload nginx
-</code></pre>
-<h2 id="installing-poweradmin">Installing Poweradmin</h2>
-<h3 id="obtain-poweradmin-source-code">Obtain Poweradmin Source Code</h3>
-<p>Download the latest release (v3.9.2) from <a href="https://github.com/poweradmin/poweradmin/releases">GitHub Releases</a>:</p>
-<pre><code class="language-bash">wget https://github.com/poweradmin/poweradmin/archive/refs/tags/v3.9.2.zip
-unzip v3.9.2.zip
-</code></pre>
-<p>Or download directly from your browser and transfer the files to your server.</p>
-<h3 id="deploy-to-web-server">Deploy to Web Server</h3>
-<p>Move the Poweradmin files to your web server's document root:</p>
-<pre><code class="language-bash">cp -r poweradmin-3.9.2/* /var/www/html/
-chown -R www-data:www-data /var/www/html/
-</code></pre>
-<h2 id="complete-the-installation">Complete the Installation</h2>
+<h2 id="step-2-configure-database-connection">Step 2: Configure Database Connection</h2>
 <ol>
-<li>Visit http://your-server/install/ in your browser</li>
-<li>Follow the installation steps</li>
-<li>Once installation is complete, remove the <code>install</code> directory for security</li>
-<li>Log in with the admin username and password created during installation</li>
+<li>
+<p>Create a database user on your PowerDNS database server with appropriate permissions:
+   <code>sql
+   -- For MySQL/MariaDB (execute on DNS server's database)
+   CREATE USER 'poweradmin'@'admin_server_ip' IDENTIFIED BY 'secure_password';
+   GRANT SELECT, INSERT, UPDATE, DELETE ON powerdns.* TO 'poweradmin'@'admin_server_ip';
+   FLUSH PRIVILEGES;</code></p>
+</li>
+<li>
+<p>Configure PowerAdmin to connect to the remote database:</p>
+</li>
+<li>Copy <code>config/settings.defaults.php</code> to <code>config/settings.php</code></li>
+<li>Edit the database connection settings:</li>
+</ol>
+<p><code>php
+   'database' =&gt; [
+       'host' =&gt; 'dns_server_ip',  // IP address of your PowerDNS server
+       'port' =&gt; '3306',           // Database port (MySQL default: 3306, PostgreSQL: 5432)
+       'user' =&gt; 'poweradmin',     // The database user created in step 1
+       'password' =&gt; 'secure_password',
+       'name' =&gt; 'powerdns',       // The PowerDNS database name
+       'type' =&gt; 'mysql',          // mysql, pgsql, or sqlite
+   ],</code></p>
+<h2 id="step-3-configure-powerdns-api-access">Step 3: Configure PowerDNS API Access</h2>
+<p>For DNSSEC management and certain operations, PowerAdmin requires access to the PowerDNS API:</p>
+<ol>
+<li>
+<p>Enable the API on your PowerDNS server by editing <code>/etc/powerdns/pdns.conf</code>:
+   <code>api=yes
+   api-key=your_secure_api_key
+   webserver=yes
+   webserver-address=0.0.0.0  # Or restrict to admin_server_ip
+   webserver-port=8081
+   webserver-allow-from=admin_server_ip/32</code></p>
+</li>
+<li>
+<p>Configure PowerAdmin to use the API by editing your <code>settings.php</code>:
+   <code>php
+   'pdns_api' =&gt; [
+       'url' =&gt; 'http://dns_server_ip:8081',  // PowerDNS API URL
+       'key' =&gt; 'your_secure_api_key',        // PowerDNS API key
+   ],</code></p>
+</li>
+</ol>
+<h2 id="step-4-configure-dnssec-optional">Step 4: Configure DNSSEC (Optional)</h2>
+<p>If you're using DNSSEC, enable it in your settings:</p>
+<pre><code class="language-php">'dnssec' =&gt; [
+    'enabled' =&gt; true,
+    'debug' =&gt; false,  // Set to true for troubleshooting
+],
+</code></pre>
+<p>Note: The PowerDNS API method is strongly recommended over the legacy pdnsutil method. When configured with the API settings above, Poweradmin will automatically use the API for DNSSEC operations.</p>
+<h2 id="step-5-network-security-considerations">Step 5: Network Security Considerations</h2>
+<p>Since you're running PowerAdmin on a separate server:</p>
+<ol>
+<li>PowerDNS Server Configuration:</li>
+<li>Edit your PowerDNS configuration to allow external connections:
+   <code>conf
+   # In /etc/powerdns/pdns.conf
+   webserver-address=0.0.0.0  # Allow connections from any IP (consider restricting to admin_server_ip)
+   webserver-allow-from=admin_server_ip/32  # Replace with your admin server's IP</code></li>
+<li>
+<p>By default, PowerDNS API only binds to localhost (127.0.0.1), so this change is necessary</p>
+</li>
+<li>
+<p>Firewall Configuration:</p>
+</li>
+<li>Allow connections from the admin server to the DNS server on:<ul>
+<li>Database port (MySQL: 3306, PostgreSQL: 5432)</li>
+<li>PowerDNS API port (typically 8081)</li>
+</ul>
+</li>
+<li>Consider using SSH tunneling or VPN for additional security</li>
+<li>
+<p>Example with UFW (Ubuntu):
+   <code>bash
+   # On PowerDNS server
+   sudo ufw allow from admin_server_ip to any port 8081 proto tcp
+   sudo ufw allow from admin_server_ip to any port 3306 proto tcp</code></p>
+</li>
+<li>
+<p>TLS/SSL:</p>
+</li>
+<li>Consider using SSL/TLS for database connections</li>
+<li>Use HTTPS for PowerAdmin's web interface</li>
+<li>Consider using HTTPS for the PowerDNS API</li>
+</ol>
+<h2 id="step-6-test-the-connection">Step 6: Test the Connection</h2>
+<ol>
+<li>Complete the PowerAdmin installation wizard if running for the first time</li>
+<li>Log in to PowerAdmin</li>
+<li>Verify you can view and modify zones</li>
+<li>Test DNSSEC operations if enabled</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting</h2>
-<p>If you encounter issues:</p>
-<ul>
-<li>Check PHP error logs: <code>/var/log/apache2/error.log</code> or <code>/var/log/nginx/error.log</code></li>
-<li>Ensure all required PHP extensions are installed and enabled</li>
-<li>Verify file permissions are set correctly for your web server user</li>
-</ul>
+<p>If you encounter connection issues:</p>
+<ol>
+<li>Database Connection Problems:</li>
+<li>Verify database credentials</li>
+<li>Check that the remote database user has proper permissions</li>
+<li>Confirm the database server allows remote connections</li>
+<li>Check for firewall restrictions</li>
+<li>
+<p>For MySQL, verify that the user is allowed to connect from the admin server's IP:
+     <code>sql
+     -- Check and update permissions if needed
+     SELECT user, host FROM mysql.user WHERE user = 'poweradmin';
+     -- If needed, create a new user with the correct host
+     CREATE USER 'poweradmin'@'admin_server_ip' IDENTIFIED BY 'secure_password';
+     GRANT SELECT, INSERT, UPDATE, DELETE ON powerdns.* TO 'poweradmin'@'admin_server_ip';</code></p>
+</li>
+<li>
+<p>API Connection Problems:</p>
+</li>
+<li>Verify API credentials</li>
+<li>Ensure the PowerDNS API is enabled and accessible</li>
+<li>Check for firewall restrictions on the API port</li>
+<li>Verify that PowerDNS is listening on the correct network interface:
+     <code>bash
+     # Check if PowerDNS API is listening on the correct interface
+     ss -lntp | grep 8081</code></li>
+<li>
+<p>If the API is only listening on 127.0.0.1, update the PowerDNS configuration:
+     <code>conf
+     webserver-address=0.0.0.0  # Allow connections from any IP
+     webserver-allow-from=admin_server_ip/32  # Replace with your admin server's IP</code></p>
+</li>
+<li>
+<p>DNSSEC Issues:</p>
+</li>
+<li>Verify API credentials are correct</li>
+<li>Ensure the PowerDNS version supports DNSSEC</li>
+<li>Check PowerDNS logs for API-related errors</li>
+<li>Enable debug mode in your PowerAdmin configuration:
+     <code>php
+     'dnssec' =&gt; [
+         'enabled' =&gt; true,
+         'debug' =&gt; true,  // Enable debug mode
+     ],</code></li>
+</ol>
+<h2 id="limitations">Limitations</h2>
+<p>When running PowerAdmin remotely, be aware of these limitations:</p>
+<ol>
+<li>Increased latency for database operations</li>
+<li>Network dependency (if the network connection fails, PowerAdmin cannot manage zones)</li>
+<li>Some advanced operations may be slower due to API calls</li>
+<li>Limited to features available through the PowerDNS API and database</li>
+</ol>
+<h2 id="security-best-practices">Security Best Practices</h2>
+<ol>
+<li>Use a dedicated database user with minimum required permissions</li>
+<li>Implement IP restrictions for database and API access</li>
+<li>Use strong, unique passwords for all components</li>
+<li>Consider using a VPN or SSH tunneling for connections between servers</li>
+<li>Keep both PowerAdmin and PowerDNS updated to the latest versions</li>
+<li>Regularly audit access logs on both servers</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>Running PowerAdmin on a separate server from PowerDNS is fully supported and offers advantages in terms of separation of concerns and security. By following proper configuration steps and security practices, you can create a robust remote management setup for your DNS infrastructure.</p>
               
 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../" class="btn btn-neutral float-left" title="Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../ubuntu/" class="btn btn-neutral float-right" title="Ubuntu">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../composer/" class="btn btn-neutral float-left" title="Composer"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../configuration/basic/" class="btn btn-neutral float-right" title="Basic Configuration">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -383,10 +501,10 @@ chown -R www-data:www-data /var/www/html/
         </span>
     
     
-      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../composer/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../ubuntu/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../../configuration/basic/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
