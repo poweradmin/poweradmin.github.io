@@ -185,6 +185,16 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#upgrade-instructions">Upgrade Instructions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#mysql">MySQL</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#postgresql">PostgreSQL</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sqlite">SQLite</a>
+    </li>
+        </ul>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../v2.1.6/">v2.1.6</a>
@@ -240,7 +250,76 @@
                 <h1 id="upgrading-to-v217">Upgrading to v2.1.7</h1>
 <h2 id="overview">Overview</h2>
 <p>Version 2.1.7 introduces several bug fixes and usability improvements, particularly for zone management and DNSSEC handling.</p>
-<p><em>Detailed upgrade instructions will be added later.</em></p>
+<h2 id="upgrade-instructions">Upgrade Instructions</h2>
+<ol>
+<li>Download latest tarball from GitHub</li>
+<li>Backup old files, replace everything with content from downloaded file</li>
+<li>From backup restore only inc/config.inc.php</li>
+<li>Backup your database</li>
+<li>Update database structure</li>
+</ol>
+<p><strong>Note: There is a possibility that this script will not work correctly, so instead use migration script from version 2.2.1.</strong></p>
+<ol>
+<li>Execute migration script http://YOUR_HOSTNAME/migrations/201405302318_add_relations_to_zone_templates.php.
+   Later you can remove this file.</li>
+</ol>
+<h3 id="mysql">MySQL</h3>
+<p>Read some notes on migration to <a href="../../database/mysql-configuration/">InnoDB Migration</a></p>
+<pre><code class="language-sql">ALTER TABLE users ADD use_ldap BOOLEAN NOT NULL;
+
+ALTER TABLE users ENGINE=InnoDB;
+ALTER TABLE perm_items ENGINE=InnoDB;
+ALTER TABLE perm_templ ENGINE=InnoDB;
+ALTER TABLE perm_templ_items ENGINE=InnoDB;
+ALTER TABLE zones ENGINE=InnoDB;
+ALTER TABLE zone_templ ENGINE=InnoDB;
+ALTER TABLE zone_templ_records ENGINE=InnoDB;
+ALTER TABLE domainmetadata ENGINE=InnoDB;
+ALTER TABLE cryptokeys ENGINE=InnoDB;
+ALTER TABLE tsigkeys ENGINE=InnoDB;
+ALTER TABLE domains ENGINE=InnoDB;
+ALTER TABLE records ENGINE=InnoDB;
+ALTER TABLE supermasters ENGINE=InnoDB;
+
+CREATE TABLE records_zone_templ (
+    domain_id INTEGER NOT NULL,
+    record_id INTEGER NOT NULL,
+    zone_templ_id INTEGER NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE migrations (
+    version VARCHAR(255) NOT NULL,
+    apply_time INTEGER NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+</code></pre>
+<h3 id="postgresql">PostgreSQL</h3>
+<pre><code class="language-sql">ALTER TABLE users ADD COLUMN use_ldap smallint NOT NULL DEFAULT 0;
+
+CREATE TABLE records_zone_templ (
+    domain_id integer NOT NULL,
+    record_id integer NOT NULL,
+    zone_templ_id integer NOT NULL
+);
+
+CREATE TABLE migrations (
+    version varchar(255) NOT NULL,
+    apply_time integer NOT NULL
+);
+</code></pre>
+<h3 id="sqlite">SQLite</h3>
+<pre><code class="language-sql">ALTER TABLE users ADD use_ldap BOOLEAN NOT NULL DEFAULT 0;
+
+CREATE TABLE records_zone_templ (
+    domain_id int(11) NOT NULL,
+    record_id int(11) NOT NULL,
+    zone_templ_id int(11) NOT NULL
+);
+
+CREATE TABLE migrations (
+    version varchar(255) NOT NULL,
+    apply_time int(11) NOT NULL
+);
+</code></pre>
               
 
             </div>

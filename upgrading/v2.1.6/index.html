@@ -187,6 +187,14 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#upgrade-instructions">Upgrade Instructions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#mysql">MySQL</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#postgresql">PostgreSQL</a>
+    </li>
+        </ul>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../v2.1.5/">v2.1.5</a>
@@ -240,7 +248,21 @@
                 <h1 id="upgrading-to-v216">Upgrading to v2.1.6</h1>
 <h2 id="overview">Overview</h2>
 <p>Version 2.1.6 focuses on performance improvements and adds better support for record types and search functionality.</p>
-<p><em>Detailed upgrade instructions will be added later.</em></p>
+<h2 id="upgrade-instructions">Upgrade Instructions</h2>
+<ol>
+<li>Download latest tarball from <a href="https://github.com/downloads/poweradmin/poweradmin/poweradmin-2.1.6.tgz">GitHub</a></li>
+<li>Backup old files, replace everything with content from downloaded file</li>
+<li>From backup restore only inc/config.inc.php</li>
+<li>Update database structure:</li>
+</ol>
+<h3 id="mysql">MySQL</h3>
+<pre><code class="language-sql">ALTER TABLE users MODIFY username VARCHAR(64) NOT NULL DEFAULT '0';
+ALTER TABLE users MODIFY password VARCHAR(128) NOT NULL DEFAULT '0';
+</code></pre>
+<h3 id="postgresql">PostgreSQL</h3>
+<pre><code class="language-sql">ALTER TABLE users ALTER COLUMN username TYPE VARCHAR(64);
+ALTER TABLE users ALTER COLUMN password TYPE VARCHAR(128);
+</code></pre>
               
 
             </div>

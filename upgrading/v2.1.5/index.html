@@ -189,6 +189,14 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#upgrade-instructions">Upgrade Instructions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#mysql">MySQL</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#postgresql">PostgreSQL</a>
+    </li>
+        </ul>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../v2.1.4/">v2.1.4</a>
@@ -240,7 +248,22 @@
                 <h1 id="upgrading-to-v215">Upgrading to v2.1.5</h1>
 <h2 id="overview">Overview</h2>
 <p>Version 2.1.5 adds improved LDAP integration and fixes several issues related to user management and zone permissions.</p>
-<p><em>Detailed upgrade instructions will be added later.</em></p>
+<h2 id="upgrade-instructions">Upgrade Instructions</h2>
+<ol>
+<li>Download latest tarball from <a href="https://github.com/downloads/poweradmin/poweradmin/poweradmin-2.1.5.tgz">GitHub</a></li>
+<li>Backup old files, replace everything with content from downloaded file</li>
+<li>From backup restore only inc/config.inc.php</li>
+<li>Update database structure:</li>
+</ol>
+<h3 id="mysql">MySQL</h3>
+<pre><code class="language-sql">ALTER TABLE `zones` ADD `zone_templ_id` INT( 11 ) NOT NULL;
+ALTER TABLE zones ENGINE = InnoDB;
+ALTER TABLE zone_templ ENGINE = InnoDB;
+ALTER TABLE zone_templ_records ENGINE = InnoDB;
+</code></pre>
+<h3 id="postgresql">PostgreSQL</h3>
+<pre><code class="language-sql">ALTER TABLE zones ADD zone_templ_id INT DEFAULT NULL;
+</code></pre>
               
 
             </div>
