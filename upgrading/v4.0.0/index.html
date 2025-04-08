@@ -109,6 +109,8 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../configuration/mail/">Mail Configuration</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/record-types/">Record Type Customization</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" >UI Customization</a>
     <ul>
                 <li class="toctree-l2"><a class="reference internal" href="../../configuration/ui/overview/">Overview</a>
@@ -138,6 +140,8 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" >DNS Management</a>
     <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/record-types/">Record Types</a>
+                </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../user-guide/reverse-dns/">Reverse DNS (PTR)</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" >Dynamic DNS</a>
@@ -200,6 +204,8 @@
     <li class="toctree-l2"><a class="reference internal" href="#manual-migration-steps">Manual Migration Steps</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#post-upgrade-tasks">Post-Upgrade Tasks</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#new-feature-dns-record-type-customization">New Feature: DNS Record Type Customization</a>
     </li>
     </ul>
                   </li>
@@ -268,6 +274,7 @@
 <li>Database schema updates</li>
 <li>New theming system</li>
 <li>Updated permission system</li>
+<li>Customizable DNS record types</li>
 </ul>
 <h2 id="migrating-from-legacy-configuration">Migrating from Legacy Configuration</h2>
 <p>If you're upgrading from an older version of Poweradmin (pre-4.0.0), you need to migrate your legacy configuration:</p>
@@ -314,6 +321,18 @@ $db_type = 'mysql';
 <li>Test functionality thoroughly</li>
 <li>Update custom scripts that might reference the old configuration format</li>
 </ol>
+<h2 id="new-feature-dns-record-type-customization">New Feature: DNS Record Type Customization</h2>
+<p>Version 4.0.0 introduces the ability to customize which DNS record types are available in the interface. This feature helps simplify the user interface by showing only the record types that are relevant to your specific DNS needs.</p>
+<p>To configure this feature, add the following to your <code>config/settings.php</code> file:</p>
+<pre><code class="language-php">'dns' =&gt; [
+    // Other DNS settings...
+
+    // Record Type Settings
+    'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT'], // For forward zones
+    'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA'],                            // For reverse zones
+]
+</code></pre>
+<p>For full documentation on this feature, see <a href="../../configuration/record-types/">Record Type Customization</a>.</p>
               
 
             </div>
