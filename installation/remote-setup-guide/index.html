@@ -94,7 +94,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#architecture-overview">Architecture Overview</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#step-1-install-poweradmin-on-the-admin-server">Step 1: Install PowerAdmin on the Admin Server</a>
+    <li class="toctree-l2"><a class="reference internal" href="#step-1-install-poweradmin-on-the-admin-server">Step 1: Install Poweradmin on the Admin Server</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#step-2-configure-database-connection">Step 2: Configure Database Connection</a>
     </li>
@@ -307,12 +307,12 @@
     Note: This documentation is still in progress, not reviewed properly, and might contain some errors or outdated images. It's intended for the upcoming 4.0.0 release, so configuration settings might be different from previous versions.
   </div>
   
-                <h1 id="remote-poweradmin-setup-guide">Remote PowerAdmin Setup Guide</h1>
-<p>This guide details how to set up PowerAdmin on a separate server from your PowerDNS installation, allowing you to
+                <h1 id="remote-poweradmin-setup-guide">Remote Poweradmin Setup Guide</h1>
+<p>This guide details how to set up Poweradmin on a separate server from your PowerDNS installation, allowing you to
 maintain a dedicated admin interface without needing to install PowerDNS on the same machine.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
-<li>A server for PowerAdmin (referred to as "admin server")</li>
+<li>A server for Poweradmin (referred to as "admin server")</li>
 <li>A server running PowerDNS (referred to as "DNS server")</li>
 <li>MySQL/MariaDB, PostgreSQL, or SQLite database access from the admin server to the PowerDNS database</li>
 <li>Network connectivity between both servers</li>
@@ -322,17 +322,17 @@ maintain a dedicated admin interface without needing to install PowerDNS on the 
 <h2 id="architecture-overview">Architecture Overview</h2>
 <p>In a remote setup:</p>
 <ol>
-<li>PowerAdmin is installed on the admin server</li>
+<li>Poweradmin is installed on the admin server</li>
 <li>PowerDNS runs on the DNS server</li>
-<li>PowerAdmin connects to the PowerDNS database remotely</li>
-<li>For DNSSEC operations, PowerAdmin uses the PowerDNS API</li>
+<li>Poweradmin connects to the PowerDNS database remotely</li>
+<li>For DNSSEC operations, Poweradmin uses the PowerDNS API</li>
 </ol>
 <pre><code>┌────────────────┐        ┌────────────────┐
 │                │        │                │
 │  Admin Server  │        │   DNS Server   │
 │                │        │                │
 │  ┌──────────┐  │        │  ┌──────────┐  │
-│  │PowerAdmin│  │◄──────►│  │ PowerDNS │  │
+│  │Poweradmin│  │◄──────►│  │ PowerDNS │  │
 │  └──────────┘  │  API   │  └──────────┘  │
 │                │        │                │
 └───────┬────────┘        └───────┬────────┘
@@ -341,9 +341,9 @@ maintain a dedicated admin interface without needing to install PowerDNS on the 
         └───►│ PowerDNS DB  │◄────┘
              └──────────────┘
 </code></pre>
-<h2 id="step-1-install-poweradmin-on-the-admin-server">Step 1: Install PowerAdmin on the Admin Server</h2>
+<h2 id="step-1-install-poweradmin-on-the-admin-server">Step 1: Install Poweradmin on the Admin Server</h2>
 <ol>
-<li>Clone or download PowerAdmin:</li>
+<li>Clone or download Poweradmin:</li>
 </ol>
 <pre><code class="language-bash">git clone https://github.com/poweradmin/poweradmin.git
 cd poweradmin
@@ -354,7 +354,7 @@ cd poweradmin
 <pre><code class="language-bash">composer install --no-dev
 </code></pre>
 <ol>
-<li>Configure your web server to serve PowerAdmin (directory configuration examples for Apache/Nginx not shown here).</li>
+<li>Configure your web server to serve Poweradmin (directory configuration examples for Apache/Nginx not shown here).</li>
 </ol>
 <h2 id="step-2-configure-database-connection">Step 2: Configure Database Connection</h2>
 <ol>
@@ -374,7 +374,7 @@ FLUSH
 PRIVILEGES;
 </code></pre>
 <ol>
-<li>Configure PowerAdmin to connect to the remote database:<ul>
+<li>Configure Poweradmin to connect to the remote database:<ul>
 <li>Copy <code>config/settings.defaults.php</code> to <code>config/settings.php</code></li>
 <li>Edit the database connection settings:</li>
 </ul>
@@ -390,7 +390,7 @@ PRIVILEGES;
 ],
 </code></pre>
 <h2 id="step-3-configure-powerdns-api-access">Step 3: Configure PowerDNS API Access</h2>
-<p>For DNSSEC management and certain operations, PowerAdmin requires access to the PowerDNS API:</p>
+<p>For DNSSEC management and certain operations, Poweradmin requires access to the PowerDNS API:</p>
 <ol>
 <li>
 <p>Enable the API on your PowerDNS server by editing <code>/etc/powerdns/pdns.conf</code>:
@@ -402,7 +402,7 @@ PRIVILEGES;
    webserver-allow-from=admin_server_ip/32</code></p>
 </li>
 <li>
-<p>Configure PowerAdmin to use the API by editing your <code>settings.php</code>:</p>
+<p>Configure Poweradmin to use the API by editing your <code>settings.php</code>:</p>
 </li>
 </ol>
 <pre><code class="language-php">'pdns_api' =&gt; [
@@ -420,7 +420,7 @@ PRIVILEGES;
 <p>Note: The PowerDNS API method is strongly recommended over the legacy pdnsutil method. When configured with the API
 settings above, Poweradmin will automatically use the API for DNSSEC operations.</p>
 <h2 id="step-5-network-security-considerations">Step 5: Network Security Considerations</h2>
-<p>Since you're running PowerAdmin on a separate server:</p>
+<p>Since you're running Poweradmin on a separate server:</p>
 <ol>
 <li>PowerDNS Server Configuration:<ul>
 <li>Edit your PowerDNS configuration to allow external connections:</li>
@@ -455,15 +455,15 @@ sudo ufw allow from admin_server_ip to any port 3306 proto tcp
 <ol>
 <li>TLS/SSL:<ul>
 <li>Consider using SSL/TLS for database connections</li>
-<li>Use HTTPS for PowerAdmin's web interface</li>
+<li>Use HTTPS for Poweradmin's web interface</li>
 <li>Consider using HTTPS for the PowerDNS API</li>
 </ul>
 </li>
 </ol>
 <h2 id="step-6-test-the-connection">Step 6: Test the Connection</h2>
 <ol>
-<li>Complete the PowerAdmin installation wizard if running for the first time</li>
-<li>Log in to PowerAdmin</li>
+<li>Complete the Poweradmin installation wizard if running for the first time</li>
+<li>Log in to Poweradmin</li>
 <li>Verify you can view and modify zones</li>
 <li>Test DNSSEC operations if enabled</li>
 </ol>
@@ -521,7 +521,7 @@ webserver-allow-from=admin_server_ip/32  # Replace with your admin server's IP
 <li>Verify API credentials are correct</li>
 <li>Ensure the PowerDNS version supports DNSSEC</li>
 <li>Check PowerDNS logs for API-related errors</li>
-<li>Enable debug mode in your PowerAdmin configuration:</li>
+<li>Enable debug mode in your Poweradmin configuration:</li>
 </ul>
 </li>
 </ol>
@@ -531,10 +531,10 @@ webserver-allow-from=admin_server_ip/32  # Replace with your admin server's IP
 ],
 </code></pre>
 <h2 id="limitations">Limitations</h2>
-<p>When running PowerAdmin remotely, be aware of these limitations:</p>
+<p>When running Poweradmin remotely, be aware of these limitations:</p>
 <ol>
 <li>Increased latency for database operations</li>
-<li>Network dependency (if the network connection fails, PowerAdmin cannot manage zones)</li>
+<li>Network dependency (if the network connection fails, Poweradmin cannot manage zones)</li>
 <li>Some advanced operations may be slower due to API calls</li>
 <li>Limited to features available through the PowerDNS API and database</li>
 </ol>
@@ -544,11 +544,11 @@ webserver-allow-from=admin_server_ip/32  # Replace with your admin server's IP
 <li>Implement IP restrictions for database and API access</li>
 <li>Use strong, unique passwords for all components</li>
 <li>Consider using a VPN or SSH tunneling for connections between servers</li>
-<li>Keep both PowerAdmin and PowerDNS updated to the latest versions</li>
+<li>Keep both Poweradmin and PowerDNS updated to the latest versions</li>
 <li>Regularly audit access logs on both servers</li>
 </ol>
 <h2 id="conclusion">Conclusion</h2>
-<p>Running PowerAdmin on a separate server from PowerDNS is fully supported and offers advantages in terms of separation of
+<p>Running Poweradmin on a separate server from PowerDNS is fully supported and offers advantages in terms of separation of
 concerns and security. By following proper configuration steps and security practices, you can create a robust remote
 management setup for your DNS infrastructure.</p>
               

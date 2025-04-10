@@ -181,6 +181,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#key-changes">Key Changes</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#upgrade-instructions">Upgrade Instructions</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#migrating-from-legacy-configuration">Migrating from Legacy Configuration</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#configuration-changes">Configuration Changes</a>
@@ -201,9 +203,23 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#manual-migration-steps">Manual Migration Steps</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#database-schema-updates">Database Schema Updates</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#mysql">MySQL</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#postgresql">PostgreSQL</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sqlite">SQLite</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#post-upgrade-tasks">Post-Upgrade Tasks</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#new-feature-dns-record-type-customization">New Feature: DNS Record Type Customization</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#enhanced-security-with-account-lockout">Enhanced Security with Account Lockout</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#notes">Notes</a>
     </li>
     </ul>
                   </li>
@@ -313,15 +329,23 @@
   
                 <h1 id="upgrading-to-version-400">Upgrading to Version 4.0.0</h1>
 <h2 id="overview">Overview</h2>
-<p>Version 4.0.0 introduces significant changes to the configuration system and file structure. This guide will help you migrate from older versions.</p>
+<p>Version 4.0.0 represents a major update to Poweradmin with significant architectural improvements, enhanced security features, and a new configuration system. This guide will help you migrate from older versions.</p>
 <h2 id="key-changes">Key Changes</h2>
 <ul>
 <li>Configuration file format and location have changed</li>
-<li>Database schema updates</li>
+<li>Database schema updates including new login_attempts table</li>
 <li>New theming system</li>
 <li>Updated permission system</li>
+<li>Enhanced security with account lockout features</li>
 <li>Customizable DNS record types</li>
+<li>Improved object-oriented architecture with proper separation of concerns</li>
 </ul>
+<h2 id="upgrade-instructions">Upgrade Instructions</h2>
+<ol>
+<li>Download latest tarball from <a href="https://github.com/poweradmin/poweradmin/releases/tag/v4.0.0">GitHub</a></li>
+<li><strong>Backup your files and database before proceeding</strong> - this is especially important for a major version upgrade</li>
+<li>Replace all files with content from the downloaded archive</li>
+</ol>
 <h2 id="migrating-from-legacy-configuration">Migrating from Legacy Configuration</h2>
 <p>If you're upgrading from an older version of Poweradmin (pre-4.0.0), you need to migrate your legacy configuration:</p>
 <pre><code class="language-bash">php scripts/migrate-config.php
@@ -360,9 +384,57 @@ $db_type = 'mysql';
 <li>Map your old settings to the new format</li>
 <li>Test the configuration</li>
 </ol>
+<h2 id="database-schema-updates">Database Schema Updates</h2>
+<p>Version 4.0.0 requires database schema updates. Run the following SQL statements for your database type:</p>
+<h3 id="mysql">MySQL</h3>
+<pre><code class="language-sql">CREATE TABLE `login_attempts` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `user_id` int(11) NULL,
+    `ip_address` varchar(45) NOT NULL,
+    `timestamp` int(11) NOT NULL,
+    `successful` tinyint(1) NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `idx_user_id` (`user_id`),
+    KEY `idx_ip_address` (`ip_address`),
+    KEY `idx_timestamp` (`timestamp`),
+    CONSTRAINT `fk_login_attempts_users`
+        FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+        ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+</code></pre>
+<h3 id="postgresql">PostgreSQL</h3>
+<pre><code class="language-sql">CREATE TABLE login_attempts (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NULL,
+    ip_address VARCHAR(45) NOT NULL,
+    &quot;timestamp&quot; INTEGER NOT NULL,
+    successful BOOLEAN NOT NULL,
+    CONSTRAINT fk_login_attempts_users
+        FOREIGN KEY (user_id) REFERENCES users(id)
+        ON DELETE SET NULL
+);
+
+CREATE INDEX idx_login_attempts_user_id ON login_attempts(user_id);
+CREATE INDEX idx_login_attempts_ip_address ON login_attempts(ip_address);
+CREATE INDEX idx_login_attempts_timestamp ON login_attempts(&quot;timestamp&quot;);
+</code></pre>
+<h3 id="sqlite">SQLite</h3>
+<pre><code class="language-sql">CREATE TABLE login_attempts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NULL,
+    ip_address VARCHAR(45) NOT NULL,
+    timestamp INTEGER NOT NULL,
+    successful BOOLEAN NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+        ON DELETE SET NULL
+);
+
+CREATE INDEX idx_login_attempts_user_id ON login_attempts(user_id);
+CREATE INDEX idx_login_attempts_ip_address ON login_attempts(ip_address);
+CREATE INDEX idx_login_attempts_timestamp ON login_attempts(timestamp);
+</code></pre>
 <h2 id="post-upgrade-tasks">Post-Upgrade Tasks</h2>
 <ol>
-<li>Update database structure if necessary</li>
 <li>Check for any new required settings</li>
 <li>Test functionality thoroughly</li>
 <li>Update custom scripts that might reference the old configuration format</li>
@@ -379,6 +451,42 @@ $db_type = 'mysql';
 ]
 </code></pre>
 <p>For full documentation on this feature, see <a href="../../configuration/record-types/">Record Type Customization</a>.</p>
+<h2 id="enhanced-security-with-account-lockout">Enhanced Security with Account Lockout</h2>
+<p>Version 4.0.0 includes a new security feature to protect against brute force attacks:</p>
+<ul>
+<li>Login attempt tracking system with database support (using the new login_attempts table)</li>
+<li>Configurable account lockout after failed login attempts</li>
+<li>IP address-based tracking and lockouts</li>
+<li>Whitelist and blacklist support for IP addresses (includes CIDR support)</li>
+</ul>
+<p>To configure these security features, add the following to your <code>config/settings.php</code> file:</p>
+<pre><code class="language-php">'security' =&gt; [
+    // Maximum number of failed attempts before lockout
+    'max_login_attempts' =&gt; 5,
+
+    // Time window in minutes for counting failed attempts
+    'login_attempt_timeframe' =&gt; 30,
+
+    // Lockout duration in minutes after max failed attempts
+    'lockout_duration' =&gt; 30,
+
+    // IP address whitelist (never locked out)
+    'ip_whitelist' =&gt; ['127.0.0.1', '192.168.1.0/24'],
+
+    // IP address blacklist (always blocked)
+    'ip_blacklist' =&gt; [],
+],
+</code></pre>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Legacy configuration format (<code>inc/config.inc.php</code>) is still supported but will be removed in a future version</li>
+<li>You can have both configuration files during the transition period</li>
+<li>The new configuration system offers more flexibility and better organization</li>
+<li>Review security settings after upgrade to take advantage of new account lockout features</li>
+<li>This is a significant update that lays groundwork for future improvements</li>
+<li>Consider testing in a staging environment before applying to production</li>
+</ul>
+<p>For detailed information about all new settings and options, refer to <code>config/settings.defaults.php</code> which contains comprehensive documentation in comments.</p>
               
 
             </div>

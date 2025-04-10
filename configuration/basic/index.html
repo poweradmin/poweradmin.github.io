@@ -372,6 +372,10 @@ return [
 <li><strong>interface</strong>: UI and display preferences</li>
 <li><strong>logging</strong>: Logging configuration</li>
 <li><strong>pdns_api</strong>: PowerDNS API integration settings</li>
+<li><strong>mail</strong>: Email configuration for notifications</li>
+<li><strong>dnssec</strong>: DNSSEC functionality settings</li>
+<li><strong>ldap</strong>: LDAP authentication settings</li>
+<li><strong>misc</strong>: Miscellaneous settings like timezone and edit conflict handling</li>
 </ul>
 <h2 id="configuration-variables">Configuration Variables</h2>
 <p>The following configuration variables are available in the legacy format, with their modern array format equivalents:</p>
@@ -452,9 +456,9 @@ return [
 </tr>
 <tr>
 <td>$pdns_db_name</td>
-<td>database.pdns_name</td>
+<td>database.pdns_db_name</td>
 <td>powerdns</td>
-<td>Used for a separate database for PowerDNS (experimental feature)</td>
+<td>Used for a separate database for PowerDNS</td>
 <td>3.8.0</td>
 </tr>
 </tbody>
@@ -991,24 +995,52 @@ $ldap_search_filter = '(cn=*admin*)';
 <tbody>
 <tr>
 <td>$display_stats</td>
-<td>display_stats</td>
+<td>misc.display_stats</td>
 <td>false</td>
 <td>Displays the memory consumption and execution time of an application</td>
 <td></td>
 </tr>
 <tr>
 <td>$experimental_edit_conflict_resolution</td>
-<td>edit_conflict_resolution</td>
+<td>misc.edit_conflict_resolution</td>
 <td>last_writer_wins</td>
 <td>Controls how concurrent updates are handled (last_writer_wins, only_latest_version, 3_way_merge)</td>
 <td></td>
 </tr>
 <tr>
 <td>$record_comments_sync</td>
-<td>record_comments_sync</td>
+<td>misc.record_comments_sync</td>
 <td>false</td>
 <td>Enable bidirectional comment synchronization between A and PTR records</td>
 <td>3.9.0</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>misc.timezone</td>
+<td>UTC</td>
+<td>Default timezone for the application</td>
+<td></td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>dns.txt_auto_quote</td>
+<td>false</td>
+<td>Automatically quote TXT records</td>
+<td>3.9.2</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>dns.domain_record_types</td>
+<td>null</td>
+<td>Customizes which record types are shown for domain zones</td>
+<td>4.0.0</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>dns.reverse_record_types</td>
+<td>null</td>
+<td>Customizes which record types are shown for reverse zones</td>
+<td>4.0.0</td>
 </tr>
 </tbody>
 </table>
