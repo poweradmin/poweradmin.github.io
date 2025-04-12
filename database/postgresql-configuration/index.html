@@ -94,12 +94,6 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#optimization-guidelines">Optimization Guidelines</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#server-configuration">Server Configuration</a>
-    </li>
-        </ul>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#postgresql-specific-considerations">PostgreSQL-Specific Considerations</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#sequences">Sequences</a>
@@ -435,18 +429,6 @@ GRANT ALL ON SCHEMA public TO poweradmin;
 <pre><code class="language-bash">psql -U poweradmin -d powerdns -f sql/poweradmin-pgsql-db-structure.sql
 psql -U poweradmin -d powerdns -f sql/pdns/[version]/schema.pgsql.sql
 </code></pre>
-<h2 id="optimization-guidelines">Optimization Guidelines</h2>
-<h3 id="server-configuration">Server Configuration</h3>
-<p>For better performance with PostgreSQL, consider these settings in your PostgreSQL server configuration:</p>
-<pre><code class="language-ini"># postgresql.conf
-max_connections = 100                # Maximum number of connections
-shared_buffers = 128MB               # Start with 25% of RAM for small servers
-effective_cache_size = 4GB           # Set to about 50-75% of available RAM
-work_mem = 4MB                       # Memory for query operations
-maintenance_work_mem = 64MB          # Memory for maintenance operations
-random_page_cost = 4                 # Lower for SSD (1.1-2.0), higher for HDD
-timezone = 'UTC'                     # Database timezone
-</code></pre>
 <h2 id="postgresql-specific-considerations">PostgreSQL-Specific Considerations</h2>
 <h3 id="sequences">Sequences</h3>
 <p>PostgreSQL uses sequences for auto-incrementing primary keys. If you're migrating from MySQL or experiencing issues with IDs, you may need to reset sequences:</p>
@@ -478,15 +460,7 @@ timezone = 'UTC'                     # Database timezone
 <p><strong>Permission problems</strong>: </p>
 </li>
 <li>Ensure the database user has appropriate privileges</li>
-<li>
-<p>Check both database and schema-level permissions</p>
-</li>
-<li>
-<p><strong>Performance issues</strong>:</p>
-</li>
-<li>Run EXPLAIN ANALYZE on slow queries</li>
-<li>Check for missing indexes</li>
-<li>Ensure autovacuum is properly configured</li>
+<li>Check both database and schema-level permissions</li>
 </ol>
 <h2 id="sql-compatibility-notes">SQL Compatibility Notes</h2>
 <p>When developing custom queries or extensions for Poweradmin with PostgreSQL, note these differences from MySQL:</p>

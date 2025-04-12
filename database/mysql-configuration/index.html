@@ -92,16 +92,6 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#optimization-guidelines">Optimization Guidelines</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#server-configuration">Server Configuration</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#innodb-migration">InnoDB Migration</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#performance-considerations">Performance Considerations</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#common-issues">Common Issues</a>
@@ -426,37 +416,6 @@ FLUSH PRIVILEGES;
 <pre><code class="language-bash">mysql -u poweradmin -p powerdns &lt; sql/poweradmin-mysql-db-structure.sql
 mysql -u poweradmin -p powerdns &lt; sql/pdns/[version]/schema.mysql.sql
 </code></pre>
-<h2 id="optimization-guidelines">Optimization Guidelines</h2>
-<h3 id="server-configuration">Server Configuration</h3>
-<p>For better performance with MySQL, consider these settings in your MySQL server configuration:</p>
-<pre><code class="language-ini"># my.cnf or my.ini
-[mysqld]
-innodb_buffer_pool_size = 128M       # Increase for better performance (adjust based on server RAM)
-max_connections = 100                # Maximum number of connections
-wait_timeout = 28800                 # Timeout for idle connections (in seconds)
-character_set_server = utf8mb4       # For complete Unicode support
-collation_server = utf8mb4_general_ci # Case-insensitive collation
-innodb_flush_log_at_trx_commit = 1   # 1 = Most durable but slower, 2 = Good compromise
-</code></pre>
-<h3 id="innodb-migration">InnoDB Migration</h3>
-<p>Poweradmin works best with InnoDB tables. If you're using an older installation with MyISAM tables, consider migrating to InnoDB. See <code>sql/InnoDB-migration.md</code> for detailed migration steps.</p>
-<h2 id="performance-considerations">Performance Considerations</h2>
-<ol>
-<li>
-<p><strong>Indexes</strong>: Ensure indexes are properly set up, especially on frequently queried fields</p>
-</li>
-<li>
-<p><strong>Query optimization</strong>: When experiencing slow performance, enable debug mode to review and optimize SQL queries</p>
-</li>
-<li>
-<p><strong>Connection pooling</strong>: For high-traffic installations, consider implementing connection pooling</p>
-</li>
-<li>
-<p><strong>Regular maintenance</strong>: </p>
-</li>
-<li>Run <code>OPTIMIZE TABLE</code> periodically on tables with frequent deletions</li>
-<li>Consider setting up a maintenance plan for database backups</li>
-</ol>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="common-issues">Common Issues</h3>
 <ol>
@@ -469,12 +428,6 @@ innodb_flush_log_at_trx_commit = 1   # 1 = Most durable but slower, 2 = Good com
 <li>
 <p><strong>Permission problems</strong>: Ensure the database user has appropriate privileges</p>
 </li>
-<li>
-<p><strong>Performance issues</strong>:</p>
-</li>
-<li>Increase buffer pool size</li>
-<li>Check slow query log</li>
-<li>Ensure proper indexing</li>
 </ol>
               
 
