@@ -389,6 +389,38 @@
 <li><strong>PostgreSQL</strong>: Provides advanced features and strict SQL standard compliance</li>
 <li><strong>SQLite</strong>: Lightweight option for small deployments or testing</li>
 </ul>
+<p>Poweradmin uses PowerDNS's own database tables for zones and records. It directly queries the PowerDNS tables like domains and records, while maintaining its own tables for user permissions and metadata. The system will display all zones in the PowerDNS database, regardless of how they were created (through Poweradmin UI or via REST API).</p>
+<pre><code>┌─────────────────────┐            ┌─────────────────────┐
+│                     │            │                     │
+│    Poweradmin       │            │     PowerDNS        │
+│    Application      │            │     Server          │
+│                     │            │                     │
+└──────────┬──────────┘            └──────────┬──────────┘
+           │                                  │
+           │                                  │
+           │                                  │
+           │      ┌────────────────────┐      │
+           │      │                    │      │
+           └─────►│ Database Server    │◄─────┘
+                  │                    │
+                  │ ┌──────────────┐   │
+                  │ │ PowerDNS     │   │
+                  │ │ Tables       │   │
+                  │ │ - domains    │   │
+                  │ │ - records    │   │
+                  │ │ - ...        │   │
+                  │ └──────────────┘   │
+                  │                    │
+                  │ ┌──────────────┐   │
+                  │ │ Poweradmin   │   │
+                  │ │ Tables       │   │
+                  │ │ - users      │   │
+                  │ │ - permissions│   │
+                  │ │ - ...        │   │
+                  │ └──────────────┘   │
+                  │                    │
+                  └────────────────────┘
+</code></pre>
 <h2 id="database-specific-setup-guides">Database-Specific Setup Guides</h2>
 <p>For detailed setup instructions for each database type, including schema creation, permissions, and optimization tips, see:</p>
 <ul>
