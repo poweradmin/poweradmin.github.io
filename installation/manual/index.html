@@ -116,6 +116,16 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#web-server-configuration">Web Server Configuration</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#apache-configuration">Apache Configuration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#nginx-configuration">Nginx Configuration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#caddy-configuration">Caddy Configuration</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#post-installation-steps">Post-Installation Steps</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
@@ -457,6 +467,73 @@ return [
 <li>Remove the <code>install</code> directory after installation</li>
 <li>Change the default admin password immediately after first login</li>
 </ul>
+<h2 id="web-server-configuration">Web Server Configuration</h2>
+<h3 id="apache-configuration">Apache Configuration</h3>
+<p>For a basic Apache configuration, you can use the following settings:</p>
+<pre><code class="language-apache">&lt;VirtualHost *:80&gt;
+    ServerName your-domain.com
+    DocumentRoot /path/to/poweradmin
+
+    &lt;Directory /path/to/poweradmin&gt;
+        Options -Indexes +FollowSymLinks
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+
+    # For DDNS update functionality
+    RewriteEngine On
+    RewriteRule ^/update(.*)$ /dynamic_update.php [L]
+    RewriteRule ^/nic/update(.*)$ /dynamic_update.php [L]
+&lt;/VirtualHost&gt;
+</code></pre>
+<h3 id="nginx-configuration">Nginx Configuration</h3>
+<p>For Nginx servers, use the following configuration:</p>
+<pre><code class="language-nginx">server {
+    listen 80;
+    server_name your-domain.com;
+    root /path/to/poweradmin;
+    index index.php index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # For DDNS update functionality
+    location ~ ^/update {
+        rewrite ^/update(.*)$ /dynamic_update.php last;
+    }
+
+    location ~ ^/nic/update {
+        rewrite ^/nic/update(.*)$ /dynamic_update.php last;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+    }
+}
+</code></pre>
+<h3 id="caddy-configuration">Caddy Configuration</h3>
+<p>The following Caddy configuration has been suggested by community members. Note that this configuration is not actively used by the maintainers but has been reported to work:</p>
+<pre><code class="language-caddy">:80 {
+    log {
+        output file /var/log/caddy/caddy.log {
+        }
+    }
+
+    # Set this path to your site's directory.
+    root * /srv/www
+
+    rewrite /update /dynamic_update.php
+    rewrite /nic/update /dynamic_update.php
+
+    php_fastcgi * unix//run/php/php-fpm.sock {
+    }
+
+    file_server * {
+    }
+}
+</code></pre>
 <h2 id="post-installation-steps">Post-Installation Steps</h2>
 <ol>
 <li>Configure web server permissions</li>
