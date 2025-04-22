@@ -102,6 +102,24 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#post-installation-steps">Post-Installation Steps</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#creating-the-initial-admin-user-manually">Creating the Initial Admin User Manually</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-generate-a-password-hash">1. Generate a password hash</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-insert-the-admin-user-into-the-database">2. Insert the admin user into the database</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#for-mysqlmariadb">For MySQL/MariaDB:</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#for-postgresql">For PostgreSQL:</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#for-sqlite">For SQLite:</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-verify-user-creation">3. Verify user creation</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
     </li>
     </ul>
@@ -453,12 +471,51 @@ that might be required (such as database migrations).</p>
 just like when you initially installed the project.</p>
 <h2 id="post-installation-steps">Post-Installation Steps</h2>
 <ol>
-<li>Set up the database schema (see <a href="../database/mysql.md">MySQL/MariaDB</a>, <a href="../database/postgresql.md">PostgreSQL</a>,
+<li>Set up the database schema (see <a href="../../database/mysql-configuration/">MySQL/MariaDB</a>, <a href="../../database/postgresql-configuration/">PostgreSQL</a>,
    or <a href="../../database/sqlite/">SQLite</a> setup)</li>
 <li>Configure web server permissions</li>
-<li>Set up initial admin user</li>
+<li>Set up initial admin user (see instructions below)</li>
 <li>Configure PowerDNS connection</li>
 </ol>
+<h2 id="creating-the-initial-admin-user-manually">Creating the Initial Admin User Manually</h2>
+<p>If you're not using the web installer or prefer to set up your admin user directly in the database, follow these steps:</p>
+<h3 id="1-generate-a-password-hash">1. Generate a password hash</h3>
+<p>You'll need to create a secure password hash. You can use PHP from the command line to generate one:</p>
+<pre><code class="language-sh">php -r 'echo password_hash(&quot;your_secure_password&quot;, PASSWORD_DEFAULT) . &quot;\n&quot;;'
+</code></pre>
+<p>Copy the resulting hash which will look something like:</p>
+<pre><code>$2y$10$abcdefghijklmnopqrstuOzxLkPHAUXTCg9vRMf/Q4WrCQI3K.0jK
+</code></pre>
+<h3 id="2-insert-the-admin-user-into-the-database">2. Insert the admin user into the database</h3>
+<h4 id="for-mysqlmariadb">For MySQL/MariaDB:</h4>
+<pre><code class="language-sql">INSERT INTO users 
+(username, password, fullname, email, description, perm_templ, active, use_ldap) 
+VALUES 
+('admin', 'THE_PASSWORD_HASH_YOU_GENERATED', 'Administrator', 'admin@example.com', 'System Administrator', 1, 1, 0);
+
+-- Make the user a super-admin
+INSERT INTO perm_items (user_id, perm_id) VALUES (1, 1);
+</code></pre>
+<h4 id="for-postgresql">For PostgreSQL:</h4>
+<pre><code class="language-sql">INSERT INTO users 
+(username, password, fullname, email, description, perm_templ, active, use_ldap) 
+VALUES 
+('admin', 'THE_PASSWORD_HASH_YOU_GENERATED', 'Administrator', 'admin@example.com', 'System Administrator', 1, 1, 0);
+
+-- Make the user a super-admin
+INSERT INTO perm_items (user_id, perm_id) VALUES (1, 1);
+</code></pre>
+<h4 id="for-sqlite">For SQLite:</h4>
+<pre><code class="language-sql">INSERT INTO users 
+(username, password, fullname, email, description, perm_templ, active, use_ldap) 
+VALUES 
+('admin', 'THE_PASSWORD_HASH_YOU_GENERATED', 'Administrator', 'admin@example.com', 'System Administrator', 1, 1, 0);
+
+-- Make the user a super-admin
+INSERT INTO perm_items (user_id, perm_id) VALUES (1, 1);
+</code></pre>
+<h3 id="3-verify-user-creation">3. Verify user creation</h3>
+<p>You should now be able to log in to the PowerAdmin interface with the username 'admin' and the password you created.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <p>For common installation issues and solutions, see <a href="../troubleshooting/common-issues.md">Common Issues</a>.</p>
               
