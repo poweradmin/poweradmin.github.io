@@ -163,6 +163,14 @@
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#permissions">Permissions</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#zone-template-operations">Zone Template Operations</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#applying-templates-to-zones">Applying Templates to Zones</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#permission-templates">Permission Templates</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a>
     </li>
@@ -422,10 +430,25 @@
 <h3 id="no-automatic-sync-indicators">No Automatic Sync Indicators</h3>
 <p>PowerAdmin does not currently provide interface indicators showing which zones are "out of sync" with their templates. Administrators must manually track when template changes need to be applied to existing zones.</p>
 <h2 id="permissions">Permissions</h2>
-<p>Template management requires specific permissions:</p>
+<h3 id="zone-template-operations">Zone Template Operations</h3>
+<p>Different template operations require different permissions:</p>
 <ul>
-<li><strong>Zone template operations</strong> require <code>zone_master_add</code> permission</li>
-<li><strong>Changing zone templates</strong> requires <code>zone_meta_edit_own</code> along with <code>zone_master_add</code> and <code>zone_content_edit_own</code> permissions</li>
+<li><strong>Creating zone templates</strong>: Requires <code>zone_master_add</code> permission</li>
+<li><strong>Listing zone templates</strong>: Requires <code>zone_master_add</code> permission</li>
+<li><strong>Editing/deleting zone templates</strong>: Requires <code>user_is_ueberuser</code> OR (<code>zone_master_add</code> AND template ownership)</li>
+<li><strong>Adding/editing template records</strong>: Requires <code>user_is_ueberuser</code> OR (<code>zone_master_add</code> AND template ownership)</li>
+</ul>
+<h3 id="applying-templates-to-zones">Applying Templates to Zones</h3>
+<ul>
+<li><strong>Creating zones with templates</strong>: Requires <code>zone_master_add</code> OR <code>zone_slave_add</code> permission</li>
+<li><strong>Changing existing zone templates</strong>: Requires zone editing permissions (<code>zone_content_edit_own</code> for owned zones or <code>zone_content_edit_others</code> for other zones)</li>
+</ul>
+<h3 id="permission-templates">Permission Templates</h3>
+<p>PowerAdmin also supports permission templates (different from zone templates):</p>
+<ul>
+<li><strong>Adding permission templates</strong>: Requires <code>templ_perm_add</code> permission</li>
+<li><strong>Editing permission templates</strong>: Requires <code>templ_perm_edit</code> permission</li>
+<li><strong>Deleting permission templates</strong>: Requires <code>user_edit_templ_perm</code> permission</li>
 </ul>
 <h2 id="configuration">Configuration</h2>
 <p>Template display in zone listings can be controlled via the <code>interface.zonelist_template</code> setting in your configuration file.</p>
