@@ -82,8 +82,6 @@
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#apache">Apache</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#nginx-configuration">Nginx Configuration</a>
-    </li>
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#installing-poweradmin">Installing Poweradmin</a>
@@ -394,46 +392,44 @@ dnf install -y php-sqlite3
 <h2 id="web-server-configuration">Web Server Configuration</h2>
 <h3 id="apache">Apache</h3>
 <ol>
-<li>
-<p>Install Apache if not already installed:
-   <code>bash
-   dnf install -y httpd</code></p>
-</li>
-<li>
-<p>Enable and start the Apache service:
-   <code>bash
-   systemctl enable httpd
-   systemctl start httpd</code></p>
-</li>
-<li>
-<p>Configure SELinux if it's enabled:
-   ```bash
-   # Allow Apache to connect to the database
-   setsebool -P httpd_can_network_connect_db 1</p>
-</li>
+<li>Install Apache if not already installed:</li>
 </ol>
-<p># If using a non-standard directory, set the correct context
-   semanage fcontext -a -t httpd_sys_content_t "/path/to/poweradmin(/.*)?"
-   restorecon -Rv /path/to/poweradmin
-   ```</p>
+<pre><code class="language-bash">dnf install -y httpd
+</code></pre>
 <ol>
-<li>Configure your firewall:
-   <code>bash
-   firewall-cmd --permanent --add-service=http
-   firewall-cmd --permanent --add-service=https  # If using HTTPS
-   firewall-cmd --reload</code></li>
+<li>Enable and start the Apache service:</li>
 </ol>
-<h3 id="nginx-configuration">Nginx Configuration</h3>
-<p>If you prefer Nginx:</p>
+<pre><code class="language-bash">systemctl enable httpd
+systemctl start httpd
+</code></pre>
 <ol>
-<li>
-<p>Install Nginx:
-   <code>bash
-   dnf install -y nginx</code></p>
-</li>
-<li>
-<p>Create a configuration file for Poweradmin:</p>
-</li>
+<li>Configure SELinux if it's enabled:</li>
+</ol>
+<pre><code class="language-bash"># Allow Apache to connect to the database
+setsebool -P httpd_can_network_connect_db 1
+
+# If using a non-standard directory, set the correct context
+semanage fcontext -a -t httpd_sys_content_t &quot;/path/to/poweradmin(/.*)?&quot;
+restorecon -Rv /path/to/poweradmin
+</code></pre>
+<ol>
+<li>Configure your firewall:</li>
+</ol>
+<pre><code class="language-bash">firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https  # If using HTTPS
+firewall-cmd --reload
+   ```
+
+### Nginx Configuration
+
+If you prefer Nginx:
+
+1. Install Nginx:
+```bash
+dnf install -y nginx
+</code></pre>
+<ol>
+<li>Create a configuration file for Poweradmin:</li>
 </ol>
 <pre><code class="language-nginx">server {
     listen 80;
@@ -464,14 +460,14 @@ dnf install -y php-sqlite3
 <p>Save this file to <code>/etc/nginx/conf.d/poweradmin.conf</code></p>
 </li>
 <li>
-<p>Enable and start Nginx and PHP-FPM:
-   <code>bash
-   systemctl enable nginx php-fpm
-   systemctl start nginx php-fpm</code></p>
+<p>Enable and start Nginx and PHP-FPM:</p>
 </li>
-<li>
-<p>Configure SELinux and firewall as with Apache.</p>
-</li>
+</ol>
+<pre><code class="language-bash">systemctl enable nginx php-fpm
+systemctl start nginx php-fpm
+</code></pre>
+<ol>
+<li>Configure SELinux and firewall as with Apache.</li>
 </ol>
 <h2 id="installing-poweradmin">Installing Poweradmin</h2>
 <h3 id="obtain-poweradmin-source-code">Obtain Poweradmin Source Code</h3>
