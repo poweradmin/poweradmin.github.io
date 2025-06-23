@@ -378,11 +378,13 @@
 <p>DNS templates in PowerAdmin allow you to create standardized sets of DNS records that can be applied to multiple zones, streamlining zone management and ensuring consistency across domains.</p>
 <h2 id="template-management">Template Management</h2>
 <p>Templates are managed through the PowerAdmin interface and stored in the database. Each template can contain multiple DNS records of various types (A, CNAME, MX, etc.) that will be applied when the template is used.</p>
-<p>Templates support placeholders that are automatically substituted:
-* <code>[ZONE]</code> - replaced with the actual domain name
-* <code>[SERIAL]</code> - replaced with current date + sequence (YYYYMMDD00)
-* <code>[NS1]</code>, <code>[NS2]</code>, etc. - replaced with configured nameservers
-* <code>[HOSTMASTER]</code> - replaced with configured hostmaster email</p>
+<p>Templates support placeholders that are automatically substituted:</p>
+<ul>
+<li><code>[ZONE]</code> - replaced with the actual domain name</li>
+<li><code>[SERIAL]</code> - replaced with current date + sequence (YYYYMMDD00)</li>
+<li><code>[NS1]</code>, <code>[NS2]</code>, etc. - replaced with configured nameservers</li>
+<li><code>[HOSTMASTER]</code> - replaced with configured hostmaster email</li>
+</ul>
 <h2 id="zone-template-application">Zone Template Application</h2>
 <h3 id="when-changing-a-zones-template">When Changing a Zone's Template</h3>
 <p>When you change a zone's template on the edit page:</p>
@@ -393,10 +395,12 @@
 <li><strong>SOA records are handled specially</strong> - existing serial numbers are preserved and incremented appropriately</li>
 </ul>
 <h3 id="how-poweradmin-tracks-template-records">How PowerAdmin Tracks Template Records</h3>
-<p>PowerAdmin maintains a database table (<code>records_zone_templ</code>) that tracks which DNS records were created from templates. This allows the system to:
-* Identify which records can be safely replaced during template updates
-* Preserve manually added records during template changes
-* Maintain the relationship between zones and their source templates</p>
+<p>PowerAdmin maintains a database table (<code>records_zone_templ</code>) that tracks which DNS records were created from templates. This allows the system to:</p>
+<ul>
+<li>Identify which records can be safely replaced during template updates</li>
+<li>Preserve manually added records during template changes</li>
+<li>Maintain the relationship between zones and their source templates</li>
+</ul>
 <h2 id="template-synchronization">Template Synchronization</h2>
 <h3 id="manual-updates-only">Manual Updates Only</h3>
 <p><strong>Important</strong>: Zones do NOT automatically update when templates are modified. This is by design to give administrators explicit control over when changes are applied.</p>
