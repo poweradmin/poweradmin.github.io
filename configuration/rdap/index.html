@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/configuration/password-policies/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/configuration/rdap/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Password Policies - Poweradmin Documentation</title>
+    <title>RDAP Configuration - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Password Policies";
-        var mkdocs_page_input_path = "configuration/password-policies.md";
-        var mkdocs_page_url = "/configuration/password-policies/";
+        var mkdocs_page_name = "RDAP Configuration";
+        var mkdocs_page_input_path = "configuration/rdap.md";
+        var mkdocs_page_url = "/configuration/rdap/";
       </script>
     
     <!--[if lt IE 9]>
@@ -123,19 +123,7 @@
                 </li>
     </ul>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Password Policies</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#password-rules">Password Rules</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#password-security-settings">Password Security Settings</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#password-expiration">Password Expiration</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#password-reuse-prevention">Password Reuse Prevention</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../password-policies/">Password Policies</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../security-policies/">Security Policies</a>
                   </li>
@@ -143,7 +131,43 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../whois/">WHOIS Configuration</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../rdap/">RDAP Configuration</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">RDAP Configuration</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-example">Configuration Example</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#rdap-vs-whois">RDAP vs WHOIS</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#supported-tlds">Supported TLDs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#security-features">Security Features</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-best-practices">Configuration Best Practices</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#production-environment">Production Environment</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#development-environment">Development Environment</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#rdap-server-bootstrap">RDAP Server Bootstrap</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#common-issues">Common Issues</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#network-requirements">Network Requirements</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#performance-optimization">Performance Optimization</a>
+    </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../user-agreements/">User Agreements</a>
                   </li>
@@ -351,9 +375,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Configuration</li>
-      <li class="breadcrumb-item active">Password Policies</li>
+      <li class="breadcrumb-item active">RDAP Configuration</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/configuration/password-policies.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/configuration/rdap.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -365,65 +389,168 @@
     Note: This documentation is still in progress, not reviewed properly, and might contain some errors or outdated images. It's intended for the upcoming 4.0.0 release, so configuration settings might be different from previous versions.
   </div>
   
-                <h1 id="password-policies">Password Policies</h1>
-<p>Poweradmin allows you to enforce password policies to enhance the security of user accounts. All security
-configurations, including password policies, are now configured in a single <code>config/settings.php</code> file under the
-<code>security</code> section. This consolidates all security-related settings into one location for easier management.</p>
-<h2 id="password-rules">Password Rules</h2>
-<ul>
-<li><strong>enable_password_rules</strong>: Enable or disable password rules enforcement. Default: <code>false</code>.</li>
-<li><strong>min_length</strong>: Minimum length of the password. Default: <code>6</code>.</li>
-<li><strong>require_uppercase</strong>: Require at least one uppercase letter. Default: <code>true</code>.</li>
-<li><strong>require_lowercase</strong>: Require at least one lowercase letter. Default: <code>true</code>.</li>
-<li><strong>require_numbers</strong>: Require at least one numeric digit. Default: <code>true</code>.</li>
-<li><strong>require_special</strong>: Require at least one special character. Default: <code>false</code>.</li>
-<li><strong>special_characters</strong>: List of allowed special characters. Default: <code>!@#$%^&amp;*()+-=[]{}|;:,.&lt;&gt;?</code>.</li>
-</ul>
-<h2 id="password-security-settings">Password Security Settings</h2>
-<p>The following additional security settings are available in the <code>security</code> section:</p>
-<ul>
-<li><strong>password_encryption</strong>: Choose the password hashing algorithm. Options: 'md5', 'md5salt', 'bcrypt', 'argon2i', '
-  argon2id'. Default: <code>bcrypt</code>.</li>
-<li><strong>password_cost</strong>: Cost factor for bcrypt algorithm. Default: <code>12</code>.</li>
-</ul>
-<h2 id="password-expiration">Password Expiration</h2>
-<p><strong>Note:</strong> The following settings are not implemented yet.</p>
-<ul>
-<li><strong>enable_expiration</strong>: Enable or disable password expiration. Default: <code>false</code>.</li>
-<li><strong>max_age_days</strong>: Maximum age of the password in days before it expires. Default: <code>90</code>.</li>
-</ul>
-<h2 id="password-reuse-prevention">Password Reuse Prevention</h2>
-<p><strong>Note:</strong> The following settings are not implemented yet.</p>
-<ul>
-<li><strong>enable_reuse_prevention</strong>: Enable or disable prevention of password reuse. Default: <code>false</code>.</li>
-<li><strong>prevent_reuse</strong>: Number of previous passwords to check against for reuse. Default: <code>5</code>.</li>
-</ul>
-<h2 id="example-configuration">Example Configuration</h2>
-<p>To enable password rules with custom settings, add the following configuration to your <code>config/settings.php</code>:</p>
-<pre><code class="language-php">&lt;?php
-
-return [
-    'security' =&gt; [
-        'password_encryption' =&gt; 'bcrypt',
-        'password_cost' =&gt; 12,
-        'password_policy' =&gt; [
-            'enable_password_rules' =&gt; true,
-            'min_length' =&gt; 8,
-            'require_special' =&gt; true,
-        ],
+                <h1 id="rdap-configuration">RDAP Configuration</h1>
+<h2 id="overview">Overview</h2>
+<p>RDAP (Registration Data Access Protocol) is the modern replacement for WHOIS. Poweradmin supports RDAP lookups for domain registration information with structured JSON responses and better internationalization support.</p>
+<h2 id="configuration-options">Configuration Options</h2>
+<p>RDAP settings can be configured in the <code>config/settings.php</code> file under the <code>rdap</code> section.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td><code>false</code></td>
+<td>Enable RDAP lookup functionality</td>
+</tr>
+<tr>
+<td><code>default_server</code></td>
+<td><code>''</code></td>
+<td>Optional default RDAP server URL (empty to use server from RDAP database)</td>
+</tr>
+<tr>
+<td><code>request_timeout</code></td>
+<td><code>10</code></td>
+<td>HTTP request timeout in seconds for RDAP queries</td>
+</tr>
+<tr>
+<td><code>restrict_to_admin</code></td>
+<td><code>true</code></td>
+<td>Only allow administrators (user_is_ueberuser) to use RDAP functionality</td>
+</tr>
+</tbody>
+</table>
+<h2 id="configuration-example">Configuration Example</h2>
+<pre><code class="language-php">return [
+    'rdap' =&gt; [
+        'enabled' =&gt; true,
+        'default_server' =&gt; 'https://rdap.verisign.com/com/v1/',
+        'request_timeout' =&gt; 15,
+        'restrict_to_admin' =&gt; true,
     ],
 ];
 </code></pre>
-<p>When <code>enable_password_rules</code> is set to <code>true</code>, passwords will be validated according to the configured rules. In this
-example, passwords must be at least 8 characters long and include special characters, along with the default
-requirements for uppercase letters, lowercase letters, and numbers.</p>
+<h2 id="rdap-vs-whois">RDAP vs WHOIS</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>WHOIS</th>
+<th>RDAP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Protocol</td>
+<td>Plain text</td>
+<td>JSON over HTTPS</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>No encryption</td>
+<td>HTTPS encryption</td>
+</tr>
+<tr>
+<td>Internationalization</td>
+<td>Limited</td>
+<td>Full Unicode support</td>
+</tr>
+<tr>
+<td>Machine readable</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Rate limiting</td>
+<td>Basic</td>
+<td>Standardized</td>
+</tr>
+<tr>
+<td>Authentication</td>
+<td>None</td>
+<td>OAuth2 support</td>
+</tr>
+</tbody>
+</table>
+<h2 id="usage">Usage</h2>
+<p>When enabled, RDAP lookups provide:</p>
+<ol>
+<li><strong>Structured data</strong> - JSON responses with consistent formatting</li>
+<li><strong>Enhanced security</strong> - HTTPS-based queries</li>
+<li><strong>Better performance</strong> - HTTP-based protocol with caching support</li>
+<li><strong>Internationalization</strong> - Full Unicode domain support</li>
+</ol>
+<h2 id="supported-tlds">Supported TLDs</h2>
+<p>RDAP supports lookups for:</p>
+<ul>
+<li>All major gTLDs (.com, .net, .org, .info, etc.)</li>
+<li>Many ccTLDs with RDAP servers</li>
+<li>New gTLDs with RDAP implementation</li>
+</ul>
+<h2 id="security-features">Security Features</h2>
+<ul>
+<li><strong>HTTPS encryption</strong> - All queries use encrypted connections</li>
+<li><strong>Admin restriction</strong> - Access limited to administrators by default</li>
+<li><strong>Rate limiting compliance</strong> - Respects RDAP server rate limits</li>
+<li><strong>Input validation</strong> - Domain names are validated before queries</li>
+</ul>
+<h2 id="configuration-best-practices">Configuration Best Practices</h2>
+<h3 id="production-environment">Production Environment</h3>
+<pre><code class="language-php">'rdap' =&gt; [
+    'enabled' =&gt; true,
+    'default_server' =&gt; '', // Use automatic server detection
+    'request_timeout' =&gt; 30, // Longer timeout for reliability
+    'restrict_to_admin' =&gt; true,
+],
+</code></pre>
+<h3 id="development-environment">Development Environment</h3>
+<pre><code class="language-php">'rdap' =&gt; [
+    'enabled' =&gt; true,
+    'default_server' =&gt; 'https://rdap.verisign.com/com/v1/',
+    'request_timeout' =&gt; 10,
+    'restrict_to_admin' =&gt; false, // Allow all users for testing
+],
+</code></pre>
+<h2 id="rdap-server-bootstrap">RDAP Server Bootstrap</h2>
+<p>RDAP uses a bootstrap mechanism to determine the correct server for each TLD:</p>
+<ol>
+<li><strong>Automatic detection</strong> - Queries IANA bootstrap registry</li>
+<li><strong>Cached mappings</strong> - Server mappings are cached for performance</li>
+<li><strong>Fallback servers</strong> - Default server used if bootstrap fails</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<ol>
+<li><strong>SSL certificate errors</strong>: Verify RDAP server certificates</li>
+<li><strong>Timeout issues</strong>: Increase <code>request_timeout</code> value</li>
+<li><strong>Access denied</strong>: Check administrator privileges</li>
+<li><strong>Server not found</strong>: Verify TLD supports RDAP</li>
+</ol>
+<h3 id="network-requirements">Network Requirements</h3>
+<ul>
+<li>Outbound HTTPS connections (port 443)</li>
+<li>DNS resolution for RDAP servers</li>
+<li>Valid SSL/TLS certificates</li>
+</ul>
+<h2 id="performance-optimization">Performance Optimization</h2>
+<ul>
+<li><strong>Caching</strong>: RDAP responses can be cached</li>
+<li><strong>Connection pooling</strong>: Reuse HTTP connections</li>
+<li><strong>Timeout tuning</strong>: Balance between reliability and performance</li>
+<li><strong>Error handling</strong>: Graceful fallback to WHOIS if RDAP fails</li>
+</ul>
               
 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../ui/custom-css/" class="btn btn-neutral float-left" title="Custom CSS"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../security-policies/" class="btn btn-neutral float-right" title="Security Policies">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../whois/" class="btn btn-neutral float-left" title="WHOIS Configuration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../user-agreements/" class="btn btn-neutral float-right" title="User Agreements">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -450,10 +577,10 @@ requirements for uppercase letters, lowercase letters, and numbers.</p>
         </span>
     
     
-      <span><a href="../ui/custom-css/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../whois/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../security-policies/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../user-agreements/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

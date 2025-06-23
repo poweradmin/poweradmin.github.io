@@ -137,7 +137,25 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#security-best-practices">Security Best Practices</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#multi-factor-authentication-mfa">Multi-Factor Authentication (MFA)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#password-reset">Password Reset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#google-recaptcha">Google reCAPTCHA</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#setting-up-google-recaptcha">Setting up Google reCAPTCHA</a>
+    </li>
+        </ul>
+    </li>
     </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../api/">API Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../whois/">WHOIS Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../rdap/">RDAP Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../user-agreements/">User Agreements</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">User Guide</span></p>
@@ -399,6 +417,27 @@
             'whitelist_ip_addresses' =&gt; ['192.168.1.0/24', '10.0.0.*'],
             'blacklist_ip_addresses' =&gt; ['1.2.3.4', '5.6.7.0/24'],
         ],
+        'mfa' =&gt; [
+            'enabled' =&gt; true,
+            'app_enabled' =&gt; true,
+            'email_enabled' =&gt; true,
+            'recovery_codes' =&gt; 8,
+            'recovery_code_length' =&gt; 10,
+        ],
+        'password_reset' =&gt; [
+            'enabled' =&gt; true,
+            'token_lifetime' =&gt; 3600,
+            'rate_limit_attempts' =&gt; 5,
+            'rate_limit_window' =&gt; 3600,
+            'min_time_between_requests' =&gt; 60,
+        ],
+        'recaptcha' =&gt; [
+            'enabled' =&gt; true,
+            'site_key' =&gt; 'your_site_key_here',
+            'secret_key' =&gt; 'your_secret_key_here',
+            'version' =&gt; 'v3',
+            'v3_threshold' =&gt; 0.5,
+        ],
     ],
 ];
 </code></pre>
@@ -412,6 +451,49 @@
 <li>Use HTTPS for all production deployments</li>
 <li>Regularly update Poweradmin to get the latest security fixes</li>
 </ol>
+<h2 id="multi-factor-authentication-mfa">Multi-Factor Authentication (MFA)</h2>
+<p>Poweradmin supports multi-factor authentication to add an extra layer of security:</p>
+<ul>
+<li><strong>enabled</strong>: Enable MFA functionality. Default: <code>false</code></li>
+<li><strong>app_enabled</strong>: Enable authenticator app option (TOTP). Default: <code>true</code></li>
+<li><strong>email_enabled</strong>: Enable email verification option. Default: <code>true</code></li>
+<li><strong>recovery_codes</strong>: Number of recovery codes to generate. Default: <code>8</code></li>
+<li><strong>recovery_code_length</strong>: Length of recovery codes. Default: <code>10</code></li>
+</ul>
+<h2 id="password-reset">Password Reset</h2>
+<p>Secure password reset functionality with rate limiting:</p>
+<ul>
+<li><strong>enabled</strong>: Enable/disable password reset functionality. Default: <code>false</code></li>
+<li><strong>token_lifetime</strong>: Token validity in seconds. Default: <code>3600</code> (1 hour)</li>
+<li><strong>rate_limit_attempts</strong>: Maximum reset attempts per time window. Default: <code>5</code></li>
+<li><strong>rate_limit_window</strong>: Rate limit window in seconds. Default: <code>3600</code> (1 hour)</li>
+<li><strong>min_time_between_requests</strong>: Minimum seconds between requests. Default: <code>60</code> (1 minute)</li>
+</ul>
+<h2 id="google-recaptcha">Google reCAPTCHA</h2>
+<p>Protect login forms from automated attacks using Google reCAPTCHA:</p>
+<ul>
+<li><strong>enabled</strong>: Enable reCAPTCHA on login form. Default: <code>false</code></li>
+<li><strong>site_key</strong>: Your reCAPTCHA site key (public key). Default: <code>''</code></li>
+<li><strong>secret_key</strong>: Your reCAPTCHA secret key (private key). Default: <code>''</code></li>
+<li><strong>version</strong>: reCAPTCHA version: 'v2' or 'v3'. Default: <code>'v3'</code></li>
+<li><strong>v3_threshold</strong>: Score threshold for v3 (0.0 - 1.0). Default: <code>0.5</code></li>
+</ul>
+<h3 id="setting-up-google-recaptcha">Setting up Google reCAPTCHA</h3>
+<ol>
+<li>Visit <a href="https://www.google.com/recaptcha/admin">Google reCAPTCHA Admin Console</a></li>
+<li>Create a new site and get your site key and secret key</li>
+<li>Configure the keys in your settings:</li>
+</ol>
+<pre><code class="language-php">'security' =&gt; [
+    'recaptcha' =&gt; [
+        'enabled' =&gt; true,
+        'site_key' =&gt; 'your_site_key_here',
+        'secret_key' =&gt; 'your_secret_key_here',
+        'version' =&gt; 'v3',
+        'v3_threshold' =&gt; 0.5,
+    ],
+],
+</code></pre>
 <p>For more information about password policies, see the <a href="../password-policies/">Password Policies documentation</a>.</p>
               
 
@@ -419,7 +501,7 @@
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../password-policies/" class="btn btn-neutral float-left" title="Password Policies"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../../user-guide/users-roles/" class="btn btn-neutral float-right" title="Users and Roles">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../api/" class="btn btn-neutral float-right" title="API Configuration">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -449,7 +531,7 @@
       <span><a href="../password-policies/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../../user-guide/users-roles/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../api/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

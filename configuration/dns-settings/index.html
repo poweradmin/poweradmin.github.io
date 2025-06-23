@@ -101,6 +101,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#soa-record-settings">SOA Record Settings</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#record-type-configuration">Record Type Configuration</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#modern-configuration-example">Modern Configuration Example</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#legacy-configuration-example">Legacy Configuration Example</a>
@@ -136,6 +138,14 @@
                   <li class="toctree-l1"><a class="reference internal" href="../password-policies/">Password Policies</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../security-policies/">Security Policies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../api/">API Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../whois/">WHOIS Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../rdap/">RDAP Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../user-agreements/">User Agreements</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">User Guide</span></p>
@@ -481,6 +491,27 @@
 <td>Default zone type when creating new zones.</td>
 <td>2.1.9</td>
 </tr>
+<tr>
+<td>-</td>
+<td>dns.prevent_duplicate_ptr</td>
+<td>true</td>
+<td>Prevent creation of multiple PTR records for same IP in batch operations.</td>
+<td>4.0.0</td>
+</tr>
+<tr>
+<td>-</td>
+<td>dns.domain_record_types</td>
+<td>null</td>
+<td>Custom record types for domain zones (null uses defaults).</td>
+<td>4.0.0</td>
+</tr>
+<tr>
+<td>-</td>
+<td>dns.reverse_record_types</td>
+<td>null</td>
+<td>Custom record types for reverse zones (null uses defaults).</td>
+<td>4.0.0</td>
+</tr>
 </tbody>
 </table>
 <h2 id="soa-record-settings">SOA Record Settings</h2>
@@ -492,6 +523,18 @@
 <li><strong>minimum</strong>: The negative result TTL. Default: <code>86400</code> (24 hours)</li>
 </ul>
 <p>In the legacy format, these are combined in the <code>$dns_soa</code> variable as a space-separated string.</p>
+<h2 id="record-type-configuration">Record Type Configuration</h2>
+<p>You can customize which record types are available in the zone editing interface:</p>
+<ul>
+<li><strong>domain_record_types</strong>: Array of record types for domain zones. Set to <code>null</code> to use defaults.</li>
+<li><strong>reverse_record_types</strong>: Array of record types for reverse zones. Set to <code>null</code> to use defaults.</li>
+</ul>
+<p>Example custom configuration:</p>
+<pre><code class="language-php">'dns' =&gt; [
+    'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT', 'SRV', 'CAA'],
+    'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA', 'TXT', 'CNAME'],
+],
+</code></pre>
 <h2 id="modern-configuration-example">Modern Configuration Example</h2>
 <pre><code class="language-php">return [
     'dns' =&gt; [
@@ -511,6 +554,9 @@
         'top_level_tld_check' =&gt; false,
         'third_level_check' =&gt; false,
         'txt_auto_quote' =&gt; false,
+        'prevent_duplicate_ptr' =&gt; true,
+        'domain_record_types' =&gt; null, // Uses default types
+        'reverse_record_types' =&gt; null, // Uses default types
     ],
 ];
 </code></pre>

@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/configuration/password-policies/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/configuration/api/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Password Policies - Poweradmin Documentation</title>
+    <title>API Configuration - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Password Policies";
-        var mkdocs_page_input_path = "configuration/password-policies.md";
-        var mkdocs_page_url = "/configuration/password-policies/";
+        var mkdocs_page_name = "API Configuration";
+        var mkdocs_page_input_path = "configuration/api.md";
+        var mkdocs_page_url = "/configuration/api/";
       </script>
     
     <!--[if lt IE 9]>
@@ -123,23 +123,73 @@
                 </li>
     </ul>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Password Policies</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#password-rules">Password Rules</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#password-security-settings">Password Security Settings</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#password-expiration">Password Expiration</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#password-reuse-prevention">Password Reuse Prevention</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../password-policies/">Password Policies</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../security-policies/">Security Policies</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../api/">API Configuration</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">API Configuration</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-example">Configuration Example</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#authentication-methods">Authentication Methods</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#api-key-authentication">API Key Authentication</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#using-api-keys">Using API Keys</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#http-basic-authentication">HTTP Basic Authentication</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#api-endpoints">API Endpoints</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#zone-management">Zone Management</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#record-management">Record Management</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#user-management">User Management</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#api-documentation">API Documentation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#security-considerations">Security Considerations</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#production-setup">Production Setup</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#security-best-practices">Security Best Practices</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#requestresponse-format">Request/Response Format</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#request-format">Request Format</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#response-format">Response Format</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#error-response">Error Response</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#rate-limiting">Rate Limiting</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#client-libraries">Client Libraries</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#common-issues">Common Issues</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#debugging">Debugging</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../whois/">WHOIS Configuration</a>
                   </li>
@@ -351,9 +401,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Configuration</li>
-      <li class="breadcrumb-item active">Password Policies</li>
+      <li class="breadcrumb-item active">API Configuration</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/configuration/password-policies.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/configuration/api.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -365,65 +415,206 @@
     Note: This documentation is still in progress, not reviewed properly, and might contain some errors or outdated images. It's intended for the upcoming 4.0.0 release, so configuration settings might be different from previous versions.
   </div>
   
-                <h1 id="password-policies">Password Policies</h1>
-<p>Poweradmin allows you to enforce password policies to enhance the security of user accounts. All security
-configurations, including password policies, are now configured in a single <code>config/settings.php</code> file under the
-<code>security</code> section. This consolidates all security-related settings into one location for easier management.</p>
-<h2 id="password-rules">Password Rules</h2>
-<ul>
-<li><strong>enable_password_rules</strong>: Enable or disable password rules enforcement. Default: <code>false</code>.</li>
-<li><strong>min_length</strong>: Minimum length of the password. Default: <code>6</code>.</li>
-<li><strong>require_uppercase</strong>: Require at least one uppercase letter. Default: <code>true</code>.</li>
-<li><strong>require_lowercase</strong>: Require at least one lowercase letter. Default: <code>true</code>.</li>
-<li><strong>require_numbers</strong>: Require at least one numeric digit. Default: <code>true</code>.</li>
-<li><strong>require_special</strong>: Require at least one special character. Default: <code>false</code>.</li>
-<li><strong>special_characters</strong>: List of allowed special characters. Default: <code>!@#$%^&amp;*()+-=[]{}|;:,.&lt;&gt;?</code>.</li>
-</ul>
-<h2 id="password-security-settings">Password Security Settings</h2>
-<p>The following additional security settings are available in the <code>security</code> section:</p>
-<ul>
-<li><strong>password_encryption</strong>: Choose the password hashing algorithm. Options: 'md5', 'md5salt', 'bcrypt', 'argon2i', '
-  argon2id'. Default: <code>bcrypt</code>.</li>
-<li><strong>password_cost</strong>: Cost factor for bcrypt algorithm. Default: <code>12</code>.</li>
-</ul>
-<h2 id="password-expiration">Password Expiration</h2>
-<p><strong>Note:</strong> The following settings are not implemented yet.</p>
-<ul>
-<li><strong>enable_expiration</strong>: Enable or disable password expiration. Default: <code>false</code>.</li>
-<li><strong>max_age_days</strong>: Maximum age of the password in days before it expires. Default: <code>90</code>.</li>
-</ul>
-<h2 id="password-reuse-prevention">Password Reuse Prevention</h2>
-<p><strong>Note:</strong> The following settings are not implemented yet.</p>
-<ul>
-<li><strong>enable_reuse_prevention</strong>: Enable or disable prevention of password reuse. Default: <code>false</code>.</li>
-<li><strong>prevent_reuse</strong>: Number of previous passwords to check against for reuse. Default: <code>5</code>.</li>
-</ul>
-<h2 id="example-configuration">Example Configuration</h2>
-<p>To enable password rules with custom settings, add the following configuration to your <code>config/settings.php</code>:</p>
-<pre><code class="language-php">&lt;?php
-
-return [
-    'security' =&gt; [
-        'password_encryption' =&gt; 'bcrypt',
-        'password_cost' =&gt; 12,
-        'password_policy' =&gt; [
-            'enable_password_rules' =&gt; true,
-            'min_length' =&gt; 8,
-            'require_special' =&gt; true,
-        ],
+                <h1 id="api-configuration">API Configuration</h1>
+<h2 id="overview">Overview</h2>
+<p>Poweradmin includes a RESTful API that allows external applications to interact with DNS records and zones programmatically. The API supports both API key authentication and HTTP Basic Authentication.</p>
+<h2 id="configuration-options">Configuration Options</h2>
+<p>API settings can be configured in the <code>config/settings.php</code> file under the <code>api</code> section.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td><code>false</code></td>
+<td>Enable API functionality (including API keys)</td>
+</tr>
+<tr>
+<td><code>basic_auth_enabled</code></td>
+<td><code>false</code></td>
+<td>Enable HTTP Basic Authentication for public API endpoints</td>
+</tr>
+<tr>
+<td><code>basic_auth_realm</code></td>
+<td><code>Poweradmin API</code></td>
+<td>Realm name for HTTP Basic Authentication</td>
+</tr>
+<tr>
+<td><code>log_requests</code></td>
+<td><code>false</code></td>
+<td>Log all API requests</td>
+</tr>
+<tr>
+<td><code>docs_enabled</code></td>
+<td><code>false</code></td>
+<td>Enable API documentation at /api/docs endpoint</td>
+</tr>
+</tbody>
+</table>
+<h2 id="configuration-example">Configuration Example</h2>
+<pre><code class="language-php">return [
+    'api' =&gt; [
+        'enabled' =&gt; true,
+        'basic_auth_enabled' =&gt; true,
+        'basic_auth_realm' =&gt; 'DNS Management API',
+        'log_requests' =&gt; true,
+        'docs_enabled' =&gt; true,
     ],
 ];
 </code></pre>
-<p>When <code>enable_password_rules</code> is set to <code>true</code>, passwords will be validated according to the configured rules. In this
-example, passwords must be at least 8 characters long and include special characters, along with the default
-requirements for uppercase letters, lowercase letters, and numbers.</p>
+<h2 id="authentication-methods">Authentication Methods</h2>
+<h3 id="api-key-authentication">API Key Authentication</h3>
+<p>API keys provide secure, token-based authentication:</p>
+<ol>
+<li><strong>Generate API keys</strong> - Create keys for each application</li>
+<li><strong>Rate limiting</strong> - Control request rates per key</li>
+<li><strong>Permissions</strong> - Restrict access to specific operations</li>
+<li><strong>Revocation</strong> - Easily revoke compromised keys</li>
+</ol>
+<h4 id="using-api-keys">Using API Keys</h4>
+<pre><code class="language-bash">curl -H &quot;X-API-Key: your-api-key-here&quot; \
+     -H &quot;Content-Type: application/json&quot; \
+     https://your-domain.com/api/v1/zones
+</code></pre>
+<h3 id="http-basic-authentication">HTTP Basic Authentication</h3>
+<p>Traditional username/password authentication:</p>
+<pre><code class="language-bash">curl -u username:password \
+     -H &quot;Content-Type: application/json&quot; \
+     https://your-domain.com/api/v1/zones
+</code></pre>
+<h2 id="api-endpoints">API Endpoints</h2>
+<h3 id="zone-management">Zone Management</h3>
+<ul>
+<li><code>GET /api/v1/zones</code> - List all zones</li>
+<li><code>GET /api/v1/zones/{id}</code> - Get zone details</li>
+<li><code>POST /api/v1/zones</code> - Create new zone</li>
+<li><code>PUT /api/v1/zones/{id}</code> - Update zone</li>
+<li><code>DELETE /api/v1/zones/{id}</code> - Delete zone</li>
+</ul>
+<h3 id="record-management">Record Management</h3>
+<ul>
+<li><code>GET /api/v1/zones/{id}/records</code> - List zone records</li>
+<li><code>GET /api/v1/records/{id}</code> - Get record details</li>
+<li><code>POST /api/v1/zones/{id}/records</code> - Create record</li>
+<li><code>PUT /api/v1/records/{id}</code> - Update record</li>
+<li><code>DELETE /api/v1/records/{id}</code> - Delete record</li>
+</ul>
+<h3 id="user-management">User Management</h3>
+<ul>
+<li><code>GET /api/v1/users</code> - List users (admin only)</li>
+<li><code>GET /api/v1/users/{id}</code> - Get user details</li>
+<li><code>POST /api/v1/users</code> - Create user (admin only)</li>
+<li><code>PUT /api/v1/users/{id}</code> - Update user</li>
+<li><code>DELETE /api/v1/users/{id}</code> - Delete user (admin only)</li>
+</ul>
+<h2 id="api-documentation">API Documentation</h2>
+<p>When <code>docs_enabled</code> is true, interactive API documentation is available at <code>/api/docs</code>. This provides:</p>
+<ul>
+<li><strong>Interactive testing</strong> - Test API endpoints directly</li>
+<li><strong>Request/response examples</strong> - See data formats</li>
+<li><strong>Authentication guide</strong> - Learn how to authenticate</li>
+<li><strong>Error codes</strong> - Understand error responses</li>
+</ul>
+<h2 id="security-considerations">Security Considerations</h2>
+<h3 id="production-setup">Production Setup</h3>
+<pre><code class="language-php">'api' =&gt; [
+    'enabled' =&gt; true,
+    'basic_auth_enabled' =&gt; false, // Use API keys only
+    'log_requests' =&gt; true,        // Enable audit logging
+    'docs_enabled' =&gt; false,       // Disable docs in production
+],
+</code></pre>
+<h3 id="security-best-practices">Security Best Practices</h3>
+<ol>
+<li><strong>Use HTTPS only</strong> - Never expose API over HTTP</li>
+<li><strong>API key rotation</strong> - Regularly rotate API keys</li>
+<li><strong>Rate limiting</strong> - Implement request rate limits</li>
+<li><strong>Input validation</strong> - Validate all API inputs</li>
+<li><strong>Access control</strong> - Restrict API access by IP if possible</li>
+<li><strong>Audit logging</strong> - Log all API requests and responses</li>
+</ol>
+<h2 id="requestresponse-format">Request/Response Format</h2>
+<h3 id="request-format">Request Format</h3>
+<pre><code class="language-json">{
+    &quot;name&quot;: &quot;example.com&quot;,
+    &quot;type&quot;: &quot;A&quot;,
+    &quot;content&quot;: &quot;192.168.1.100&quot;,
+    &quot;ttl&quot;: 3600
+}
+</code></pre>
+<h3 id="response-format">Response Format</h3>
+<pre><code class="language-json">{
+    &quot;success&quot;: true,
+    &quot;data&quot;: {
+        &quot;id&quot;: 123,
+        &quot;name&quot;: &quot;example.com&quot;,
+        &quot;type&quot;: &quot;A&quot;,
+        &quot;content&quot;: &quot;192.168.1.100&quot;,
+        &quot;ttl&quot;: 3600,
+        &quot;created_at&quot;: &quot;2023-01-01T12:00:00Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-01-01T12:00:00Z&quot;
+    }
+}
+</code></pre>
+<h3 id="error-response">Error Response</h3>
+<pre><code class="language-json">{
+    &quot;success&quot;: false,
+    &quot;error&quot;: {
+        &quot;code&quot;: &quot;VALIDATION_ERROR&quot;,
+        &quot;message&quot;: &quot;Invalid record type&quot;,
+        &quot;details&quot;: {
+            &quot;field&quot;: &quot;type&quot;,
+            &quot;value&quot;: &quot;INVALID&quot;
+        }
+    }
+}
+</code></pre>
+<h2 id="rate-limiting">Rate Limiting</h2>
+<p>API requests are subject to rate limiting:</p>
+<ul>
+<li><strong>Default limits</strong>: 1000 requests per hour per API key</li>
+<li><strong>Burst limits</strong>: 100 requests per minute</li>
+<li><strong>Headers</strong>: Rate limit information in response headers</li>
+</ul>
+<pre><code>X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1640995200
+</code></pre>
+<h2 id="client-libraries">Client Libraries</h2>
+<p>Official and community client libraries:</p>
+<ul>
+<li><strong>PHP</strong>: Poweradmin PHP SDK</li>
+<li><strong>Python</strong>: python-poweradmin</li>
+<li><strong>JavaScript</strong>: poweradmin-js</li>
+<li><strong>Go</strong>: go-poweradmin</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<ol>
+<li><strong>401 Unauthorized</strong>: Invalid API key or credentials</li>
+<li><strong>403 Forbidden</strong>: Insufficient permissions</li>
+<li><strong>429 Too Many Requests</strong>: Rate limit exceeded</li>
+<li><strong>500 Internal Server Error</strong>: Server configuration issue</li>
+</ol>
+<h3 id="debugging">Debugging</h3>
+<p>Enable request logging for troubleshooting:</p>
+<pre><code class="language-php">'api' =&gt; [
+    'log_requests' =&gt; true,
+],
+</code></pre>
+<p>Check logs in your configured logging destination for detailed request/response information.</p>
               
 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../ui/custom-css/" class="btn btn-neutral float-left" title="Custom CSS"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../security-policies/" class="btn btn-neutral float-right" title="Security Policies">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../security-policies/" class="btn btn-neutral float-left" title="Security Policies"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../whois/" class="btn btn-neutral float-right" title="WHOIS Configuration">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -450,10 +641,10 @@ requirements for uppercase letters, lowercase letters, and numbers.</p>
         </span>
     
     
-      <span><a href="../ui/custom-css/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../security-policies/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../security-policies/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../whois/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
