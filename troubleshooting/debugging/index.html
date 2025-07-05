@@ -332,6 +332,12 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#display-statistics">Display Statistics</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#common-configuration-issues">Common Configuration Issues</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#password-character-issues">Password Character Issues</a>
+    </li>
+        </ul>
+    </li>
     </ul>
                   </li>
               </ul>
@@ -454,6 +460,28 @@ error_reporting(E_ALL);
 ];
 </code></pre>
 <p>By enabling these settings, you can gain more insight into the application's behavior and troubleshoot issues more effectively.</p>
+<h2 id="common-configuration-issues">Common Configuration Issues</h2>
+<h3 id="password-character-issues">Password Character Issues</h3>
+<p>If you experience PHP syntax errors when generating configuration files during installation, check your passwords for problematic characters:</p>
+<p><strong>Symptoms:</strong>
+- Installation fails with PHP parse errors
+- Configuration file cannot be parsed
+- "Access denied for user" errors after successful installation test</p>
+<p><strong>Solution:</strong>
+Avoid these characters in database, LDAP, and SMTP passwords:
+- Single quotes (<code>'</code>)
+- Double quotes (<code>"</code>)
+- Backslashes (<code>\</code>)
+- Line breaks</p>
+<p><strong>Example Error:</strong></p>
+<pre><code>Parse error: syntax error, unexpected 'password' in config/settings.php on line 42
+</code></pre>
+<p><strong>Debugging Steps:</strong>
+1. Check your password for the problematic characters listed above
+2. Use <code>var_dump((new AppConfiguration())-&gt;getAll())</code> to inspect parsed configuration values
+3. Look for missing quotes or escape characters in the output
+4. Change the password to use only alphanumeric characters and basic symbols</p>
+<p>This issue occurs because the configuration file generator does not properly escape special PHP characters in password values during installation.</p>
               
 
             </div>
