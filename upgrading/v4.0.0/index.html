@@ -211,11 +211,15 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#database-schema-updates">Database Schema Updates</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#mysql">MySQL</a>
+    <li class="toctree-l4"><a class="reference internal" href="#new-tables-added-in-v400">New Tables Added in v4.0.0</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#postgresql">PostgreSQL</a>
+    <li class="toctree-l4"><a class="reference internal" href="#database-migration-files">Database Migration Files</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#sqlite">SQLite</a>
+    <li class="toctree-l4"><a class="reference internal" href="#migration-prerequisites">Migration Prerequisites</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#verify-database-migration-completeness">Verify Database Migration Completeness</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#upgrading-from-older-versions">Upgrading from Older Versions</a>
     </li>
         </ul>
     </li>
@@ -412,6 +416,8 @@
 <li>Download latest tarball from <a href="https://github.com/poweradmin/poweradmin/releases/tag/v4.0.0">GitHub</a></li>
 <li><strong>Backup your files and database before proceeding</strong> - this is especially important for a major version upgrade</li>
 <li>Replace all files with content from the downloaded archive</li>
+<li>Run the database migration (see Database Schema Updates section below)</li>
+<li>Migrate your configuration (see Configuration Changes section below)</li>
 </ol>
 <h2 id="migrating-from-legacy-configuration">Migrating from Legacy Configuration</h2>
 <p>If you're upgrading from an older version of Poweradmin (pre-4.0.0), you need to migrate your legacy configuration:</p>
@@ -452,54 +458,65 @@ $db_type = 'mysql';
 <li>Test the configuration</li>
 </ol>
 <h2 id="database-schema-updates">Database Schema Updates</h2>
-<p>Version 4.0.0 requires database schema updates. Run the following SQL statements for your database type:</p>
-<h3 id="mysql">MySQL</h3>
-<pre><code class="language-sql">CREATE TABLE `login_attempts` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `user_id` int(11) NULL,
-    `ip_address` varchar(45) NOT NULL,
-    `timestamp` int(11) NOT NULL,
-    `successful` tinyint(1) NOT NULL,
-    PRIMARY KEY (`id`),
-    KEY `idx_user_id` (`user_id`),
-    KEY `idx_ip_address` (`ip_address`),
-    KEY `idx_timestamp` (`timestamp`),
-    CONSTRAINT `fk_login_attempts_users`
-        FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-        ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+<p>Version 4.0.0 introduces significant database schema changes including multiple new tables for enhanced security, API management, user preferences, and multi-factor authentication.</p>
+<h3 id="new-tables-added-in-v400">New Tables Added in v4.0.0</h3>
+<ul>
+<li><code>login_attempts</code> - Login attempt tracking for security</li>
+<li><code>migrations</code> - Database migration tracking</li>
+<li><code>api_keys</code> - API access management  </li>
+<li><code>user_mfa</code> - Multi-factor authentication support</li>
+<li><code>user_preferences</code> - User preferences and settings</li>
+<li><code>zone_template_sync</code> - Zone template synchronization</li>
+<li><code>password_reset_tokens</code> - Password reset functionality</li>
+<li><code>user_agreements</code> - User agreement tracking</li>
+</ul>
+<h3 id="database-migration-files">Database Migration Files</h3>
+<p><strong>Important</strong>: Instead of running individual SQL statements, use the dedicated migration files from the Poweradmin repository:</p>
+<p><strong>MySQL:</strong></p>
+<pre><code class="language-bash">mysql -u [username] -p [database_name] &lt; sql/poweradmin-mysql-update-to-4.0.0.sql
 </code></pre>
-<h3 id="postgresql">PostgreSQL</h3>
-<pre><code class="language-sql">CREATE TABLE login_attempts (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NULL,
-    ip_address VARCHAR(45) NOT NULL,
-    &quot;timestamp&quot; INTEGER NOT NULL,
-    successful BOOLEAN NOT NULL,
-    CONSTRAINT fk_login_attempts_users
-        FOREIGN KEY (user_id) REFERENCES users(id)
-        ON DELETE SET NULL
-);
-
-CREATE INDEX idx_login_attempts_user_id ON login_attempts(user_id);
-CREATE INDEX idx_login_attempts_ip_address ON login_attempts(ip_address);
-CREATE INDEX idx_login_attempts_timestamp ON login_attempts(&quot;timestamp&quot;);
+<p>Download: <a href="https://github.com/poweradmin/poweradmin/blob/master/sql/poweradmin-mysql-update-to-4.0.0.sql">poweradmin-mysql-update-to-4.0.0.sql</a></p>
+<p><strong>PostgreSQL:</strong></p>
+<pre><code class="language-bash">psql -U [username] -d [database_name] -f sql/poweradmin-pgsql-update-to-4.0.0.sql
 </code></pre>
-<h3 id="sqlite">SQLite</h3>
-<pre><code class="language-sql">CREATE TABLE login_attempts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NULL,
-    ip_address VARCHAR(45) NOT NULL,
-    timestamp INTEGER NOT NULL,
-    successful BOOLEAN NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-        ON DELETE SET NULL
-);
-
-CREATE INDEX idx_login_attempts_user_id ON login_attempts(user_id);
-CREATE INDEX idx_login_attempts_ip_address ON login_attempts(ip_address);
-CREATE INDEX idx_login_attempts_timestamp ON login_attempts(timestamp);
+<p>Download: <a href="https://github.com/poweradmin/poweradmin/blob/master/sql/poweradmin-pgsql-update-to-4.0.0.sql">poweradmin-pgsql-update-to-4.0.0.sql</a></p>
+<p><strong>SQLite:</strong></p>
+<pre><code class="language-bash">sqlite3 [database_file] &lt; sql/poweradmin-sqlite-update-to-4.0.0.sql
 </code></pre>
+<p>Download: <a href="https://github.com/poweradmin/poweradmin/blob/master/sql/poweradmin-sqlite-update-to-4.0.0.sql">poweradmin-sqlite-update-to-4.0.0.sql</a></p>
+<h3 id="migration-prerequisites">Migration Prerequisites</h3>
+<p><strong>Note</strong>: Users upgrading from versions earlier than v3.9.0 should first upgrade to v3.9.0 and run those migrations before upgrading to v4.0.0.</p>
+<h3 id="verify-database-migration-completeness">Verify Database Migration Completeness</h3>
+<p>After running the migration, verify your database has all required tables for v4.0.0:</p>
+<p><strong>Core Tables (should exist from previous versions):</strong>
+- <code>users</code>, <code>zones</code>, <code>zone_templ</code>, <code>zone_templ_records</code>
+- <code>log_users</code>, <code>log_zones</code> (added in v3.2.0)
+- <code>records_zone_templ</code> (added in v2.1.7)</p>
+<p><strong>New Tables for v4.0.0:</strong>
+- <code>login_attempts</code> - Login tracking for security
+- <code>migrations</code> - Database migration tracking
+- <code>api_keys</code> - API access management<br />
+- <code>user_mfa</code> - Multi-factor authentication support
+- <code>user_preferences</code> - User preferences and settings
+- <code>zone_template_sync</code> - Zone template synchronization
+- <code>password_reset_tokens</code> - Password reset functionality
+- <code>user_agreements</code> - User agreement tracking</p>
+<p><strong>Verification Query (MySQL):</strong></p>
+<pre><code class="language-sql">SELECT TABLE_NAME FROM information_schema.TABLES 
+WHERE TABLE_SCHEMA = 'your_database_name' 
+AND TABLE_NAME IN ('users', 'zones', 'zone_templ', 'zone_templ_records', 'log_users', 'log_zones', 'records_zone_templ', 'migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user_preferences', 'zone_template_sync', 'password_reset_tokens', 'user_agreements');
+</code></pre>
+<p><strong>Expected Result:</strong> You should see all 16 tables listed above.</p>
+<p>If any core tables are missing, you may need to run previous version migrations first.</p>
+<h3 id="upgrading-from-older-versions">Upgrading from Older Versions</h3>
+<p>If you're upgrading from a version earlier than v3.9.0, you should upgrade incrementally:</p>
+<ol>
+<li><strong>From v2.x.x</strong>: First upgrade to v3.0.0 (see <a href="../v3.0.0/">v3.0.0 upgrade guide</a>)</li>
+<li><strong>From v3.0.x to v3.1.x</strong>: Upgrade to v3.2.0 (see <a href="../v3.2.0/">v3.2.0 upgrade guide</a>)  </li>
+<li><strong>From v3.2.x to v3.8.x</strong>: Upgrade to v3.9.0 (see <a href="../v3.9.0/">v3.9.0 upgrade guide</a>)</li>
+<li><strong>From v3.9.x</strong>: Follow this guide to upgrade to v4.0.0</li>
+</ol>
+<p>This incremental approach ensures all database migrations are applied correctly and configurations are properly migrated.</p>
 <h2 id="post-upgrade-tasks">Post-Upgrade Tasks</h2>
 <ol>
 <li>Check for any new required settings</li>
