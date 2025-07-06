@@ -227,7 +227,25 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#new-feature-dns-record-type-customization">New Feature: DNS Record Type Customization</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#enhanced-security-with-account-lockout">Enhanced Security with Account Lockout</a>
+    <li class="toctree-l3"><a class="reference internal" href="#new-features-in-v400">New Features in v4.0.0</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#enhanced-security-features">Enhanced Security Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#api-management">API Management</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#user-experience-improvements">User Experience Improvements</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#lookup-and-integration-features">Lookup and Integration Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#email-system-enhancements">Email System Enhancements</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zone-management-features">Zone Management Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#administrative-features">Administrative Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#configuration-examples">Configuration Examples</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a>
     </li>
@@ -404,11 +422,15 @@
 <h2 id="key-changes">Key Changes</h2>
 <ul>
 <li>Configuration file format and location have changed</li>
-<li>Database schema updates including new login_attempts table</li>
-<li>New theming system</li>
-<li>Updated permission system</li>
-<li>Enhanced security with account lockout features</li>
-<li>Customizable DNS record types</li>
+<li>Database schema updates including 8 new tables for enhanced functionality</li>
+<li>New theming system with light/dark mode support</li>
+<li>Enhanced security with multi-factor authentication (MFA)</li>
+<li>Advanced account lockout and password reset features</li>
+<li>API key management system</li>
+<li>User preferences and agreements system</li>
+<li>Google reCAPTCHA integration</li>
+<li>WHOIS and RDAP lookup functionality</li>
+<li>Enhanced email system with multiple transport options</li>
 <li>Improved object-oriented architecture with proper separation of concerns</li>
 </ul>
 <h2 id="upgrade-instructions">Upgrade Instructions</h2>
@@ -488,10 +510,6 @@ $db_type = 'mysql';
 <p><strong>Note</strong>: Users upgrading from versions earlier than v3.9.0 should first upgrade to v3.9.0 and run those migrations before upgrading to v4.0.0.</p>
 <h3 id="verify-database-migration-completeness">Verify Database Migration Completeness</h3>
 <p>After running the migration, verify your database has all required tables for v4.0.0:</p>
-<p><strong>Core Tables (should exist from previous versions):</strong>
-- <code>users</code>, <code>zones</code>, <code>zone_templ</code>, <code>zone_templ_records</code>
-- <code>log_users</code>, <code>log_zones</code> (added in v3.2.0)
-- <code>records_zone_templ</code> (added in v2.1.7)</p>
 <p><strong>New Tables for v4.0.0:</strong>
 - <code>login_attempts</code> - Login tracking for security
 - <code>migrations</code> - Database migration tracking
@@ -504,10 +522,10 @@ $db_type = 'mysql';
 <p><strong>Verification Query (MySQL):</strong></p>
 <pre><code class="language-sql">SELECT TABLE_NAME FROM information_schema.TABLES 
 WHERE TABLE_SCHEMA = 'your_database_name' 
-AND TABLE_NAME IN ('users', 'zones', 'zone_templ', 'zone_templ_records', 'log_users', 'log_zones', 'records_zone_templ', 'migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user_preferences', 'zone_template_sync', 'password_reset_tokens', 'user_agreements');
+AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user_preferences', 'zone_template_sync', 'password_reset_tokens', 'user_agreements');
 </code></pre>
-<p><strong>Expected Result:</strong> You should see all 16 tables listed above.</p>
-<p>If any core tables are missing, you may need to run previous version migrations first.</p>
+<p><strong>Expected Result:</strong> You should see all 8 new tables listed above.</p>
+<p>If any new tables are missing, the migration may have failed. Check the migration logs for errors.</p>
 <h3 id="upgrading-from-older-versions">Upgrading from Older Versions</h3>
 <p>If you're upgrading from a version earlier than v3.9.0, you should upgrade incrementally:</p>
 <ol>
@@ -535,30 +553,119 @@ AND TABLE_NAME IN ('users', 'zones', 'zone_templ', 'zone_templ_records', 'log_us
 ]
 </code></pre>
 <p>For full documentation on this feature, see <a href="../../configuration/record-types/">Record Type Customization</a>.</p>
-<h2 id="enhanced-security-with-account-lockout">Enhanced Security with Account Lockout</h2>
-<p>Version 4.0.0 includes a new security feature to protect against brute force attacks:</p>
-<ul>
-<li>Login attempt tracking system with database support (using the new login_attempts table)</li>
-<li>Configurable account lockout after failed login attempts</li>
-<li>IP address-based tracking and lockouts</li>
-<li>Whitelist and blacklist support for IP addresses (includes CIDR support)</li>
-</ul>
-<p>To configure these security features, add the following to your <code>config/settings.php</code> file:</p>
+<h2 id="new-features-in-v400">New Features in v4.0.0</h2>
+<h3 id="enhanced-security-features">Enhanced Security Features</h3>
+<p><strong>Multi-Factor Authentication (MFA)</strong>
+- Support for authenticator apps (TOTP)
+- Email-based verification
+- Recovery codes for account recovery
+- Configurable recovery code generation</p>
+<p><strong>Advanced Account Lockout</strong>
+- Login attempt tracking with database support
+- Configurable lockout attempts and duration
+- IP address-based tracking and lockouts
+- Whitelist and blacklist support (supports IPs, CIDRs, wildcards)</p>
+<p><strong>Password Reset System</strong>
+- Secure password reset via email
+- Configurable token lifetime and rate limiting
+- Protection against brute force attacks</p>
+<p><strong>Google reCAPTCHA Integration</strong>
+- Support for reCAPTCHA v2 and v3
+- Configurable score thresholds for v3
+- Login form protection</p>
+<p><strong>Enhanced Password Policies</strong>
+- Configurable minimum length requirements
+- Character type requirements (uppercase, lowercase, numbers, special)
+- Custom special character sets</p>
+<h3 id="api-management">API Management</h3>
+<p><strong>API Key System</strong>
+- Generate and manage API keys for external integrations
+- Key-based authentication for API endpoints
+- Request logging and monitoring
+- API documentation endpoints</p>
+<h3 id="user-experience-improvements">User Experience Improvements</h3>
+<p><strong>Theming System</strong>
+- Light and dark mode support
+- Customizable theme base paths
+- Theme selection per user preference</p>
+<p><strong>User Preferences</strong>
+- Personalized user settings storage
+- Individual user customization options</p>
+<p><strong>Enhanced Interface Options</strong>
+- Display full names instead of usernames in zone lists
+- Improved reverse zone sorting (natural or hierarchical)
+- PowerDNS server status integration
+- Database consistency checks page
+- Email template previews</p>
+<h3 id="lookup-and-integration-features">Lookup and Integration Features</h3>
+<p><strong>WHOIS Lookup</strong>
+- Built-in WHOIS query functionality
+- Configurable WHOIS servers
+- Socket timeout controls
+- Admin-only access controls</p>
+<p><strong>RDAP Lookup</strong>
+- Registration Data Access Protocol support
+- HTTP-based domain information queries
+- Configurable RDAP servers
+- Request timeout controls</p>
+<h3 id="email-system-enhancements">Email System Enhancements</h3>
+<p><strong>Multiple Transport Options</strong>
+- SMTP with authentication and encryption
+- Sendmail binary support
+- PHP mail() function
+- Configurable return paths</p>
+<h3 id="zone-management-features">Zone Management Features</h3>
+<p><strong>Zone Template Synchronization</strong>
+- Automatic synchronization of zone templates
+- Template change tracking
+- Batch operations support</p>
+<p><strong>User Agreements System</strong>
+- Version-controlled user agreements
+- Automatic re-acceptance on version changes
+- Compliance tracking</p>
+<h3 id="administrative-features">Administrative Features</h3>
+<p><strong>Enhanced Logging</strong>
+- Improved logging levels and types
+- Database activity logging
+- API request logging
+- Syslog integration</p>
+<p><strong>Improved PowerDNS Integration</strong>
+- Enhanced API connectivity
+- Server status monitoring
+- Better error handling</p>
+<h3 id="configuration-examples">Configuration Examples</h3>
+<p><strong>Enable MFA:</strong></p>
 <pre><code class="language-php">'security' =&gt; [
-    // Maximum number of failed attempts before lockout
-    'max_login_attempts' =&gt; 5,
-
-    // Time window in minutes for counting failed attempts
-    'login_attempt_timeframe' =&gt; 30,
-
-    // Lockout duration in minutes after max failed attempts
-    'lockout_duration' =&gt; 30,
-
-    // IP address whitelist (never locked out)
-    'ip_whitelist' =&gt; ['127.0.0.1', '192.168.1.0/24'],
-
-    // IP address blacklist (always blocked)
-    'ip_blacklist' =&gt; [],
+    'mfa' =&gt; [
+        'enabled' =&gt; true,
+        'app_enabled' =&gt; true,
+        'email_enabled' =&gt; true,
+        'recovery_codes' =&gt; 8,
+    ],
+],
+</code></pre>
+<p><strong>Configure Account Lockout:</strong></p>
+<pre><code class="language-php">'security' =&gt; [
+    'account_lockout' =&gt; [
+        'enable_lockout' =&gt; true,
+        'lockout_attempts' =&gt; 5,
+        'lockout_duration' =&gt; 15,
+        'whitelist_ip_addresses' =&gt; ['127.0.0.1', '192.168.1.0/24'],
+    ],
+],
+</code></pre>
+<p><strong>Enable API with reCAPTCHA:</strong></p>
+<pre><code class="language-php">'api' =&gt; [
+    'enabled' =&gt; true,
+    'docs_enabled' =&gt; true,
+],
+'security' =&gt; [
+    'recaptcha' =&gt; [
+        'enabled' =&gt; true,
+        'site_key' =&gt; 'your_site_key',
+        'secret_key' =&gt; 'your_secret_key',
+        'version' =&gt; 'v3',
+    ],
 ],
 </code></pre>
 <h2 id="notes">Notes</h2>
