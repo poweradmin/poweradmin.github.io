@@ -507,33 +507,29 @@ return [
     RewriteRule ^/nic/update(.*)$ /dynamic_update.php [L]
 &lt;/VirtualHost&gt;
 </code></pre>
-<h3 id="nginx-configuration">Nginx Configuration</h3>
-<p>For Nginx servers, use the following configuration:</p>
-<pre><code class="language-nginx">server {
-    listen 80;
-    server_name your-domain.com;
-    root /path/to/poweradmin;
-    index index.php index.html;
+<p>!!! important "Apache .htaccess File"
+    The <a href="https://github.com/poweradmin/poweradmin/blob/master/.htaccess">.htaccess file</a> in the root directory is <strong>essential</strong> for the API to work properly. This file contains:</p>
+<pre><code>- URL rewriting rules for RESTful API endpoints
+- Security configurations protecting sensitive directories and files
+- CORS headers for API access
 
-    location / {
-        try_files $uri $uri/ =404;
-    }
-
-    # For DDNS update functionality
-    location ~ ^/update {
-        rewrite ^/update(.*)$ /dynamic_update.php last;
-    }
-
-    location ~ ^/nic/update {
-        rewrite ^/nic/update(.*)$ /dynamic_update.php last;
-    }
-
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-    }
-}
+Ensure that `AllowOverride All` is set in your Apache configuration to allow the .htaccess file to function properly.
 </code></pre>
+<h3 id="nginx-configuration">Nginx Configuration</h3>
+<p>For Nginx servers, use the complete configuration example provided in the Poweradmin repository:</p>
+<p><strong><a href="https://github.com/poweradmin/poweradmin/blob/master/nginx.conf.example">nginx.conf.example</a></strong></p>
+<p>This configuration includes:
+- Complete RESTful API routing for users, zones, and records
+- API documentation endpoints<br />
+- CORS headers for API access
+- Enhanced security restrictions
+- Static asset caching
+- PHP 8.2 FPM configuration
+- HTTP Authorization header forwarding for API authentication</p>
+<p>Make sure to adjust the following settings for your environment:
+- <code>server_name</code> - Set to your domain name
+- <code>root</code> - Set to your Poweradmin installation path
+- <code>fastcgi_pass</code> - Adjust PHP-FPM socket/TCP configuration as needed</p>
 <h3 id="caddy-configuration">Caddy Configuration</h3>
 <p>The following Caddy configuration has been suggested by community members. Note that this configuration is not actively used by the maintainers but has been reported to work:</p>
 <pre><code class="language-caddy">:80 {

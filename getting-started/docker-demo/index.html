@@ -55,7 +55,43 @@
     <ul class="current">
                 <li class="toctree-l2 current"><a class="reference internal current" href="#">Docker Demo</a>
     <ul class="current">
-    <li class="toctree-l3"><a class="reference internal" href="#steps-to-evaluate-poweradmin-using-docker">Steps to Evaluate Poweradmin Using Docker</a>
+    <li class="toctree-l3"><a class="reference internal" href="#quick-demo">Quick Demo</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#1-get-the-docker-image">1. Get the Docker Image</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#2-run-the-container">2. Run the Container</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#3-access-poweradmin">3. Access Poweradmin</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#demo-with-external-database">Demo with External Database</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#mysql-demo">MySQL Demo</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#postgresql-demo">PostgreSQL Demo</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#demo-with-docker-compose">Demo with Docker Compose</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#basic-demo">Basic Demo</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#complete-demo-with-mysql">Complete Demo with MySQL</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#building-from-source">Building from Source</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#environment-variables-demo-examples">Environment Variables (Demo Examples)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#api-demo">API Demo</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#next-steps">Next Steps</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
     </li>
     </ul>
                 </li>
@@ -359,55 +395,169 @@
   </div>
   
                 <h1 id="docker-demo">Docker Demo</h1>
-<p>The easiest way to evaluate Poweradmin without actually connecting to PowerDNS is to use a Docker image.</p>
-<h2 id="steps-to-evaluate-poweradmin-using-docker">Steps to Evaluate Poweradmin Using Docker</h2>
-<ol>
-<li>
-<p><strong>Get the Source</strong></p>
-<ul>
-<li>Download the release file or use git to clone the repository.</li>
-</ul>
-</li>
-<li>
-<p><strong>Change to the Directory</strong></p>
-<ul>
-<li>Navigate to the directory where the files are located.</li>
-</ul>
-</li>
-<li>
-<p><strong>Build the Docker Image</strong></p>
-</li>
-<li>Run the following command to build the Docker image:</li>
-</ol>
-<pre><code class="language-sh">docker build --no-cache -t poweradmin .
+<p>The easiest way to evaluate Poweradmin is to use the Docker image, which provides a complete environment with FrankenPHP and SQLite database.</p>
+<h2 id="quick-demo">Quick Demo</h2>
+<h3 id="1-get-the-docker-image">1. Get the Docker Image</h3>
+<pre><code class="language-bash">docker pull poweradmin/poweradmin:latest
 </code></pre>
-<ol>
-<li><strong>Run the Docker Container</strong></li>
-<li>Execute the following command to run the Docker container:</li>
-</ol>
-<pre><code class="language-sh">docker run -d --name poweradmin -p 8080:80 poweradmin
+<h3 id="2-run-the-container">2. Run the Container</h3>
+<pre><code class="language-bash">docker run -d --name poweradmin -p 80:80 poweradmin/poweradmin:latest
 </code></pre>
-<ol>
-<li>
-<p><strong>Access Poweradmin</strong></p>
+<h3 id="3-access-poweradmin">3. Access Poweradmin</h3>
 <ul>
-<li>Open your browser and go to <a href="http://localhost:8080">http://localhost:8080</a>.</li>
+<li>Open your browser and go to <a href="http://localhost">http://localhost</a></li>
+<li>Username: <code>admin</code></li>
+<li>Password: <code>testadmin</code></li>
 </ul>
-</li>
-<li>
-<p><strong>Login</strong></p>
-<ul>
-<li>Use the following credentials to log in:<ul>
-<li><strong>Username</strong>: admin</li>
-<li><strong>Password</strong>: testadmin</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
 <blockquote>
-<p><strong>Note</strong>: This installation uses SQLite to store all the data.</p>
+<p><strong>Note</strong>: This demo uses SQLite with pre-configured test data.</p>
 </blockquote>
+<h2 id="architecture">Architecture</h2>
+<p>The Docker image is based on <a href="https://frankenphp.dev/">FrankenPHP</a>, providing:</p>
+<ul>
+<li><strong>High Performance</strong>: Persistent worker mode for better performance</li>
+<li><strong>Modern HTTP</strong>: Native HTTP/2 and HTTP/3 support</li>
+<li><strong>Built-in Features</strong>: Automatic HTTPS, real-time capabilities</li>
+<li><strong>Caddy Integration</strong>: Built on Caddy web server</li>
+</ul>
+<h2 id="demo-with-external-database">Demo with External Database</h2>
+<h3 id="mysql-demo">MySQL Demo</h3>
+<pre><code class="language-bash">docker run -d --name poweradmin -p 80:80 \
+  -e DB_TYPE=mysql \
+  -e DB_HOST=your-mysql-host \
+  -e DB_USER=poweradmin \
+  -e DB_PASS=password \
+  -e DB_NAME=poweradmin \
+  -e DNS_NS1=ns1.yourdomain.com \
+  -e DNS_NS2=ns2.yourdomain.com \
+  -e DNS_HOSTMASTER=hostmaster.yourdomain.com \
+  poweradmin/poweradmin:latest
+</code></pre>
+<h3 id="postgresql-demo">PostgreSQL Demo</h3>
+<pre><code class="language-bash">docker run -d --name poweradmin -p 80:80 \
+  -e DB_TYPE=pgsql \
+  -e DB_HOST=your-postgres-host \
+  -e DB_USER=poweradmin \
+  -e DB_PASS=password \
+  -e DB_NAME=poweradmin \
+  -e DNS_NS1=ns1.yourdomain.com \
+  -e DNS_NS2=ns2.yourdomain.com \
+  -e DNS_HOSTMASTER=hostmaster.yourdomain.com \
+  poweradmin/poweradmin:latest
+</code></pre>
+<h2 id="demo-with-docker-compose">Demo with Docker Compose</h2>
+<h3 id="basic-demo">Basic Demo</h3>
+<pre><code class="language-yaml">version: '3.8'
+services:
+  poweradmin:
+    image: poweradmin/poweradmin:latest
+    ports:
+      - &quot;80:80&quot;
+</code></pre>
+<h3 id="complete-demo-with-mysql">Complete Demo with MySQL</h3>
+<pre><code class="language-yaml">version: '3.8'
+services:
+  poweradmin:
+    image: poweradmin/poweradmin:latest
+    ports:
+      - &quot;80:80&quot;
+    environment:
+      - DB_TYPE=mysql
+      - DB_HOST=mysql
+      - DB_USER=poweradmin
+      - DB_PASS=password
+      - DB_NAME=poweradmin
+      - DNS_NS1=ns1.yourdomain.com
+      - DNS_NS2=ns2.yourdomain.com
+      - DNS_HOSTMASTER=hostmaster.yourdomain.com
+      - PA_API_ENABLED=true
+      - PA_API_DOCS_ENABLED=true
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=poweradmin
+      - MYSQL_USER=poweradmin
+      - MYSQL_PASSWORD=password
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+</code></pre>
+<h2 id="building-from-source">Building from Source</h2>
+<p>If you want to build the Docker image from source:</p>
+<pre><code class="language-bash"># Clone the repository
+git clone https://github.com/poweradmin/poweradmin.git
+cd poweradmin
+
+# Build the image
+docker build --no-cache -t poweradmin .
+
+# Run the container
+docker run -d --name poweradmin -p 80:80 poweradmin
+</code></pre>
+<h2 id="environment-variables-demo-examples">Environment Variables (Demo Examples)</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DB_TYPE</code></td>
+<td>Database type</td>
+<td><code>sqlite</code>, <code>mysql</code>, <code>pgsql</code></td>
+</tr>
+<tr>
+<td><code>PA_API_ENABLED</code></td>
+<td>Enable API</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>PA_API_DOCS_ENABLED</code></td>
+<td>Enable API docs</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>PA_APP_TITLE</code></td>
+<td>Application title</td>
+<td><code>My DNS Demo</code></td>
+</tr>
+<tr>
+<td><code>PA_MAIL_ENABLED</code></td>
+<td>Enable email</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="api-demo">API Demo</h2>
+<p>Enable the API to test RESTful endpoints:</p>
+<pre><code class="language-bash">docker run -d --name poweradmin -p 80:80 \
+  -e PA_API_ENABLED=true \
+  -e PA_API_DOCS_ENABLED=true \
+  poweradmin/poweradmin:latest
+</code></pre>
+<p>Visit <a href="http://localhost/api/docs">http://localhost/api/docs</a> to explore the API documentation.</p>
+<h2 id="next-steps">Next Steps</h2>
+<p>After evaluating the demo:</p>
+<ol>
+<li><strong>Production Deployment</strong>: See <a href="../deployment/docker.md">Docker Deployment Guide</a> for production configurations</li>
+<li><strong>Manual Installation</strong>: Follow <a href="../../installation/manual/">Manual Installation</a> for traditional setups</li>
+<li><strong>Configuration</strong>: Learn about <a href="../../configuration/basic/">Configuration Options</a></li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong>Port conflicts</strong>: Use <code>-p 8080:80</code> if port 80 is in use</li>
+<li><strong>View logs</strong>: <code>docker logs poweradmin</code></li>
+<li><strong>Container access</strong>: <code>docker exec -it poweradmin /bin/sh</code></li>
+</ul>
               
 
             </div>
