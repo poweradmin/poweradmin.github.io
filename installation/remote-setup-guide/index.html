@@ -106,13 +106,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#step-6-test-the-connection">Step 6: Test the Connection</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#limitations">Limitations</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#security-best-practices">Security Best Practices</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a>
     </li>
     </ul>
                   </li>
@@ -538,90 +532,14 @@ sudo ufw allow from admin_server_ip to any port 3306 proto tcp
 <li>Verify you can view and modify zones</li>
 <li>Test DNSSEC operations if enabled</li>
 </ol>
-<h2 id="troubleshooting">Troubleshooting</h2>
-<p>If you encounter connection issues:</p>
-<ol>
-<li>
-<p>Database Connection Problems:</p>
-<ul>
-<li>Verify database credentials</li>
-<li>Check that the remote database user has proper permissions</li>
-<li>Confirm the database server allows remote connections</li>
-<li>Check for firewall restrictions</li>
-</ul>
-</li>
-<li>
-<p>For MySQL, verify that the user is allowed to connect from the admin server's IP:</p>
-</li>
-</ol>
-<pre><code class="language-sql">-- Check and update permissions if needed
-SELECT user, host
-FROM mysql.user
-WHERE user = 'poweradmin';
--- If needed, create a new user with the correct host
-CREATE
-USER 'poweradmin'@'admin_server_ip' IDENTIFIED BY 'secure_password';
-GRANT
-SELECT,
-INSERT
-,
-UPDATE,
-DELETE
-ON powerdns.* TO 'poweradmin'@'admin_server_ip';
-</code></pre>
-<ol>
-<li>API Connection Problems:<ul>
-<li>Verify API credentials</li>
-<li>Ensure the PowerDNS API is enabled and accessible</li>
-<li>Check for firewall restrictions on the API port</li>
-<li>Verify that PowerDNS is listening on the correct network interface:</li>
-</ul>
-</li>
-</ol>
-<pre><code class="language-bash"># Check if PowerDNS API is listening on the correct interface
-ss -lntp | grep 8081
-</code></pre>
-<ul>
-<li>If the API is only listening on 127.0.0.1, update the PowerDNS configuration:</li>
-</ul>
-<pre><code class="language-conf">webserver-address=0.0.0.0  # Allow connections from any IP
-webserver-allow-from=admin_server_ip/32  # Replace with your admin server's IP
-</code></pre>
-<ol>
-<li>DNSSEC Issues:<ul>
-<li>Verify API credentials are correct</li>
-<li>Ensure the PowerDNS version supports DNSSEC</li>
-<li>Check PowerDNS logs for API-related errors</li>
-<li>Enable debug mode in your Poweradmin configuration:</li>
-</ul>
-</li>
-</ol>
-<pre><code class="language-php">'dnssec' =&gt; [
-   'enabled' =&gt; true,
-   'debug' =&gt; true,  // Enable debug mode
-],
-</code></pre>
-<h2 id="limitations">Limitations</h2>
-<p>When running Poweradmin remotely, be aware of these limitations:</p>
-<ol>
-<li>Increased latency for database operations</li>
-<li>Network dependency (if the network connection fails, Poweradmin cannot manage zones)</li>
-<li>Some advanced operations may be slower due to API calls</li>
-<li>Limited to features available through the PowerDNS API and database</li>
-</ol>
 <h2 id="security-best-practices">Security Best Practices</h2>
 <ol>
 <li>Use a dedicated database user with minimum required permissions</li>
 <li>Implement IP restrictions for database and API access</li>
 <li>Use strong, unique passwords for all components</li>
-<li>Consider using a VPN or SSH tunneling for connections between servers</li>
 <li>Keep both Poweradmin and PowerDNS updated to the latest versions</li>
 <li>Regularly audit access logs on both servers</li>
 </ol>
-<h2 id="conclusion">Conclusion</h2>
-<p>Running Poweradmin on a separate server from PowerDNS is fully supported and offers advantages in terms of separation of
-concerns and security. By following proper configuration steps and security practices, you can create a robust remote
-management setup for your DNS infrastructure.</p>
               
 
             </div>
