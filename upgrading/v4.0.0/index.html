@@ -223,8 +223,6 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#post-upgrade-tasks">Post-Upgrade Tasks</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#new-feature-dns-record-type-customization">New Feature: DNS Record Type Customization</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#new-features-in-v400">New Features in v4.0.0</a>
@@ -436,7 +434,7 @@
 <h2 id="upgrade-instructions">Upgrade Instructions</h2>
 <ol>
 <li>Download latest tarball from <a href="https://github.com/poweradmin/poweradmin/releases/tag/v4.0.0">GitHub</a></li>
-<li><strong>Backup your files and database before proceeding</strong> - this is especially important for a major version upgrade</li>
+<li><strong>Backup your files and database before proceeding</strong> * this is especially important for a major version upgrade</li>
 <li>Replace all files with content from the downloaded archive</li>
 <li>Run the database migration (see Database Schema Updates section below)</li>
 <li>Migrate your configuration (see Configuration Changes section below)</li>
@@ -483,14 +481,14 @@ $db_type = 'mysql';
 <p>Version 4.0.0 introduces significant database schema changes including multiple new tables for enhanced security, API management, user preferences, and multi-factor authentication.</p>
 <h3 id="new-tables-added-in-v400">New Tables Added in v4.0.0</h3>
 <ul>
-<li><code>login_attempts</code> - Login attempt tracking for security</li>
-<li><code>migrations</code> - Database migration tracking</li>
-<li><code>api_keys</code> - API access management  </li>
-<li><code>user_mfa</code> - Multi-factor authentication support</li>
-<li><code>user_preferences</code> - User preferences and settings</li>
-<li><code>zone_template_sync</code> - Zone template synchronization</li>
-<li><code>password_reset_tokens</code> - Password reset functionality</li>
-<li><code>user_agreements</code> - User agreement tracking</li>
+<li><code>login_attempts</code> * Login attempt tracking for security</li>
+<li><code>migrations</code> * Database migration tracking</li>
+<li><code>api_keys</code> * API access management  </li>
+<li><code>user_mfa</code> * Multi-factor authentication support</li>
+<li><code>user_preferences</code> * User preferences and settings</li>
+<li><code>zone_template_sync</code> * Zone template synchronization</li>
+<li><code>password_reset_tokens</code> * Password reset functionality</li>
+<li><code>user_agreements</code> * User agreement tracking</li>
 </ul>
 <h3 id="database-migration-files">Database Migration Files</h3>
 <p><strong>Important</strong>: Instead of running individual SQL statements, use the dedicated migration files from the Poweradmin repository:</p>
@@ -511,14 +509,14 @@ $db_type = 'mysql';
 <h3 id="verify-database-migration-completeness">Verify Database Migration Completeness</h3>
 <p>After running the migration, verify your database has all required tables for v4.0.0:</p>
 <p><strong>New Tables for v4.0.0:</strong>
-- <code>login_attempts</code> - Login tracking for security
-- <code>migrations</code> - Database migration tracking
-- <code>api_keys</code> - API access management<br />
-- <code>user_mfa</code> - Multi-factor authentication support
-- <code>user_preferences</code> - User preferences and settings
-- <code>zone_template_sync</code> - Zone template synchronization
-- <code>password_reset_tokens</code> - Password reset functionality
-- <code>user_agreements</code> - User agreement tracking</p>
+* <code>login_attempts</code> * Login tracking for security
+* <code>migrations</code> * Database migration tracking
+* <code>api_keys</code> * API access management<br />
+* <code>user_mfa</code> * Multi-factor authentication support
+* <code>user_preferences</code> * User preferences and settings
+* <code>zone_template_sync</code> * Zone template synchronization
+* <code>password_reset_tokens</code> * Password reset functionality
+* <code>user_agreements</code> * User agreement tracking</p>
 <p><strong>Verification Query (MySQL):</strong></p>
 <pre><code class="language-sql">SELECT TABLE_NAME FROM information_schema.TABLES 
 WHERE TABLE_SCHEMA = 'your_database_name' 
@@ -535,12 +533,6 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
 <li><strong>From v3.9.x</strong>: Follow this guide to upgrade to v4.0.0</li>
 </ol>
 <p>This incremental approach ensures all database migrations are applied correctly and configurations are properly migrated.</p>
-<h2 id="post-upgrade-tasks">Post-Upgrade Tasks</h2>
-<ol>
-<li>Check for any new required settings</li>
-<li>Test functionality thoroughly</li>
-<li>Update custom scripts that might reference the old configuration format</li>
-</ol>
 <h2 id="new-feature-dns-record-type-customization">New Feature: DNS Record Type Customization</h2>
 <p>Version 4.0.0 introduces the ability to customize which DNS record types are available in the interface. This feature helps simplify the user interface by showing only the record types that are relevant to your specific DNS needs.</p>
 <p>To configure this feature, add the following to your <code>config/settings.php</code> file:</p>
@@ -556,83 +548,83 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
 <h2 id="new-features-in-v400">New Features in v4.0.0</h2>
 <h3 id="enhanced-security-features">Enhanced Security Features</h3>
 <p><strong>Multi-Factor Authentication (MFA)</strong>
-- Support for authenticator apps (TOTP)
-- Email-based verification
-- Recovery codes for account recovery
-- Configurable recovery code generation</p>
+* Support for authenticator apps (TOTP)
+* Email-based verification
+* Recovery codes for account recovery
+* Configurable recovery code generation</p>
 <p><strong>Advanced Account Lockout</strong>
-- Login attempt tracking with database support
-- Configurable lockout attempts and duration
-- IP address-based tracking and lockouts
-- Whitelist and blacklist support (supports IPs, CIDRs, wildcards)</p>
+* Login attempt tracking with database support
+* Configurable lockout attempts and duration
+* IP address-based tracking and lockouts
+* Whitelist and blacklist support (supports IPs, CIDRs, wildcards)</p>
 <p><strong>Password Reset System</strong>
-- Secure password reset via email
-- Configurable token lifetime and rate limiting
-- Protection against brute force attacks</p>
+* Secure password reset via email
+* Configurable token lifetime and rate limiting
+* Protection against brute force attacks</p>
 <p><strong>Google reCAPTCHA Integration</strong>
-- Support for reCAPTCHA v2 and v3
-- Configurable score thresholds for v3
-- Login form protection</p>
+* Support for reCAPTCHA v2 and v3
+* Configurable score thresholds for v3
+* Login form protection</p>
 <p><strong>Enhanced Password Policies</strong>
-- Configurable minimum length requirements
-- Character type requirements (uppercase, lowercase, numbers, special)
-- Custom special character sets</p>
+* Configurable minimum length requirements
+* Character type requirements (uppercase, lowercase, numbers, special)
+* Custom special character sets</p>
 <h3 id="api-management">API Management</h3>
 <p><strong>API Key System</strong>
-- Generate and manage API keys for external integrations
-- Key-based authentication for API endpoints
-- Request logging and monitoring
-- API documentation endpoints</p>
+* Generate and manage API keys for external integrations
+* Key-based authentication for API endpoints
+* Request logging and monitoring
+* API documentation endpoints</p>
 <h3 id="user-experience-improvements">User Experience Improvements</h3>
 <p><strong>Theming System</strong>
-- Light and dark mode support
-- Customizable theme base paths
-- Theme selection per user preference</p>
+* Light and dark mode support
+* Customizable theme base paths
+* Theme selection per user preference</p>
 <p><strong>User Preferences</strong>
-- Personalized user settings storage
-- Individual user customization options</p>
+* Personalized user settings storage
+* Individual user customization options</p>
 <p><strong>Enhanced Interface Options</strong>
-- Display full names instead of usernames in zone lists
-- Improved reverse zone sorting (natural or hierarchical)
-- PowerDNS server status integration
-- Database consistency checks page
-- Email template previews</p>
+* Display full names instead of usernames in zone lists
+* Improved reverse zone sorting (natural or hierarchical)
+* PowerDNS server status integration
+* Database consistency checks page
+* Email template previews</p>
 <h3 id="lookup-and-integration-features">Lookup and Integration Features</h3>
 <p><strong>WHOIS Lookup</strong>
-- Built-in WHOIS query functionality
-- Configurable WHOIS servers
-- Socket timeout controls
-- Admin-only access controls</p>
+* Built-in WHOIS query functionality
+* Configurable WHOIS servers
+* Socket timeout controls
+* Admin-only access controls</p>
 <p><strong>RDAP Lookup</strong>
-- Registration Data Access Protocol support
-- HTTP-based domain information queries
-- Configurable RDAP servers
-- Request timeout controls</p>
+* Registration Data Access Protocol support
+* HTTP-based domain information queries
+* Configurable RDAP servers
+* Request timeout controls</p>
 <h3 id="email-system-enhancements">Email System Enhancements</h3>
 <p><strong>Multiple Transport Options</strong>
-- SMTP with authentication and encryption
-- Sendmail binary support
-- PHP mail() function
-- Configurable return paths</p>
+* SMTP with authentication and encryption
+* Sendmail binary support
+* PHP mail() function
+* Configurable return paths</p>
 <h3 id="zone-management-features">Zone Management Features</h3>
 <p><strong>Zone Template Synchronization</strong>
-- Automatic synchronization of zone templates
-- Template change tracking
-- Batch operations support</p>
+* Automatic synchronization of zone templates
+* Template change tracking
+* Batch operations support</p>
 <p><strong>User Agreements System</strong>
-- Version-controlled user agreements
-- Automatic re-acceptance on version changes
-- Compliance tracking</p>
+* Version-controlled user agreements
+* Automatic re-acceptance on version changes
+* Compliance tracking</p>
 <h3 id="administrative-features">Administrative Features</h3>
 <p><strong>Enhanced Logging</strong>
-- Improved logging levels and types
-- Database activity logging
-- API request logging
-- Syslog integration</p>
+* Improved logging levels and types
+* Database activity logging
+* API request logging
+* Syslog integration</p>
 <p><strong>Improved PowerDNS Integration</strong>
-- Enhanced API connectivity
-- Server status monitoring
-- Better error handling</p>
+* Enhanced API connectivity
+* Server status monitoring
+* Better error handling</p>
 <h3 id="configuration-examples">Configuration Examples</h3>
 <p><strong>Enable MFA:</strong></p>
 <pre><code class="language-php">'security' =&gt; [
