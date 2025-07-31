@@ -642,6 +642,21 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
 <li>PowerDNS server status integration</li>
 <li>Database consistency checks page</li>
 <li>Email template previews</li>
+<li>Display hostname only in zone edit forms (strips zone suffix)</li>
+<li>Prevent duplicate PTR records in batch operations</li>
+<li>Configurable display of generated passwords</li>
+<li>PHP error display control for development/production</li>
+</ul>
+</li>
+<li>
+<p><strong>Advanced Workflow Configuration</strong></p>
+<ul>
+<li><strong>Edit Conflict Resolution</strong>: Three strategies for handling concurrent edits:<ul>
+<li><code>last_writer_wins</code> (default): Latest changes override previous ones</li>
+<li><code>only_latest_version</code>: Prevent editing of outdated versions</li>
+<li><code>3_way_merge</code>: Attempt to merge conflicting changes</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -678,12 +693,28 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
 </ul>
 <h3 id="zone-management-features">Zone Management Features</h3>
 <ul>
-<li><strong>Zone Template Enhancements</strong><ul>
+<li>
+<p><strong>Zone Template Enhancements</strong></p>
+<ul>
 <li><strong>Template Ownership Tracking</strong>: New <code>created_by</code> field tracks who created each template</li>
-<li><strong>Enhanced Permissions</strong>: New permissions <code>zone_templ_add</code> and <code>zone_templ_edit</code> for granular access control</li>
+<li><strong>Enhanced Permissions</strong>: New granular permissions system with two new permissions:<ul>
+<li><code>zone_templ_add</code>: "User is allowed to add new zone templates"</li>
+<li><code>zone_templ_edit</code>: "User is allowed to edit existing zone templates"</li>
+</ul>
+</li>
 <li><strong>Template-Zone Synchronization</strong>: New <code>zone_template_sync</code> table tracks sync status between templates and zones</li>
 <li><strong>Change Detection</strong>: System detects when templates need to be re-synchronized with zones</li>
+<li><strong>Template Unlinking</strong>: Ability to unlink zones from templates when needed</li>
 <li><strong>Batch Operations</strong>: Support for bulk template operations and zone updates</li>
+</ul>
+</li>
+<li>
+<p><strong>Bulk Operations Suite</strong></p>
+<ul>
+<li><strong>Bulk Record Addition</strong>: Add multiple DNS records at once to existing zones</li>
+<li><strong>Bulk Zone Registration</strong>: Register multiple zones simultaneously with templates</li>
+<li><strong>Batch PTR Record Creation</strong>: Automated batch creation of reverse DNS records</li>
+<li><strong>Bulk Zone Management</strong>: Streamlined operations for managing large numbers of zones</li>
 </ul>
 </li>
 </ul>
@@ -701,6 +732,15 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
 </ul>
 <h3 id="administrative-features">Administrative Features</h3>
 <ul>
+<li>
+<p><strong>Advanced Administrative Tools</strong></p>
+<ul>
+<li><strong>Database Consistency Checker</strong>: Automated database integrity checks and repair tools</li>
+<li><strong>Migrations Management Interface</strong>: Web-based database migration management</li>
+<li><strong>Email Template Preview System</strong>: Administrators can preview email templates before sending</li>
+<li><strong>PowerDNS Status Integration</strong>: Real-time server monitoring and status display</li>
+</ul>
+</li>
 <li>
 <p><strong>Enhanced Logging</strong></p>
 <ul>
@@ -759,6 +799,31 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
     'enabled' =&gt; true,                           // Enable user agreement system
     'current_version' =&gt; '2.0',                  // Current agreement version
     'require_on_version_change' =&gt; true,         // Force re-acceptance on version updates
+],
+</code></pre>
+<p><strong>Enable Administrative Tools:</strong></p>
+<pre><code class="language-php">'interface' =&gt; [
+    'enable_consistency_checks' =&gt; true,        // Enable database consistency checker
+    'show_migrations' =&gt; true,                  // Show migrations management interface
+    'show_pdns_status' =&gt; true,                 // Show PowerDNS server status page
+],
+'misc' =&gt; [
+    'email_previews_enabled' =&gt; true,           // Enable email template previews
+    'edit_conflict_resolution' =&gt; 'only_latest_version', // Prevent concurrent edit conflicts
+],
+</code></pre>
+<p><strong>Configure Enhanced Interface Options:</strong></p>
+<pre><code class="language-php">'interface' =&gt; [
+    'display_hostname_only' =&gt; true,            // Strip zone suffix in edit forms
+    'display_fullname_in_zone_list' =&gt; true,    // Show full names instead of usernames
+    'reverse_zone_sort' =&gt; 'hierarchical',      // Use hierarchical reverse zone sorting
+],
+'dns' =&gt; [
+    'prevent_duplicate_ptr' =&gt; true,            // Prevent duplicate PTR records in batch ops
+],
+'misc' =&gt; [
+    'show_generated_passwords' =&gt; false,        // Hide generated passwords for security
+    'display_errors' =&gt; false,                  // Disable PHP error display for production
 ],
 </code></pre>
 <h2 id="notes">Notes</h2>
