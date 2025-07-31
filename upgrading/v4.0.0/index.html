@@ -233,6 +233,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#zone-management-features">Zone Management Features</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#user-management-features">User Management Features</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#administrative-features">Administrative Features</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#configuration-examples">Configuration Examples</a>
@@ -240,6 +242,20 @@
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#post-upgrade-configuration">Post-Upgrade Configuration</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#security-features-configuration">Security Features Configuration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#user-management-features_1">User Management Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#communication-features">Communication Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#external-services-integration">External Services Integration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#api-and-development-features">API and Development Features</a>
+    </li>
+        </ul>
     </li>
     </ul>
                 </li>
@@ -662,20 +678,24 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
 </ul>
 <h3 id="zone-management-features">Zone Management Features</h3>
 <ul>
-<li>
-<p><strong>Zone Template Synchronization</strong></p>
-<ul>
-<li>Automatic synchronization of zone templates</li>
-<li>Template change tracking</li>
-<li>Batch operations support</li>
+<li><strong>Zone Template Enhancements</strong><ul>
+<li><strong>Template Ownership Tracking</strong>: New <code>created_by</code> field tracks who created each template</li>
+<li><strong>Enhanced Permissions</strong>: New permissions <code>zone_templ_add</code> and <code>zone_templ_edit</code> for granular access control</li>
+<li><strong>Template-Zone Synchronization</strong>: New <code>zone_template_sync</code> table tracks sync status between templates and zones</li>
+<li><strong>Change Detection</strong>: System detects when templates need to be re-synchronized with zones</li>
+<li><strong>Batch Operations</strong>: Support for bulk template operations and zone updates</li>
 </ul>
 </li>
-<li>
-<p><strong>User Agreements System</strong></p>
+</ul>
+<h3 id="user-management-features">User Management Features</h3>
 <ul>
-<li>Version-controlled user agreements</li>
-<li>Automatic re-acceptance on version changes</li>
-<li>Compliance tracking</li>
+<li><strong>User Agreements System</strong><ul>
+<li>Version-controlled user agreements with database tracking</li>
+<li>IP address and user agent logging for compliance</li>
+<li>Automatic re-acceptance requirement on version changes</li>
+<li>Custom agreement content per theme</li>
+<li>Admin-controlled versioning and enforcement</li>
+<li>Graceful handling when disabled (users bypass agreement screen)</li>
 </ul>
 </li>
 </ul>
@@ -734,6 +754,13 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
     ],
 ],
 </code></pre>
+<p><strong>Configure User Agreement System:</strong></p>
+<pre><code class="language-php">'user_agreement' =&gt; [
+    'enabled' =&gt; true,                           // Enable user agreement system
+    'current_version' =&gt; '2.0',                  // Current agreement version
+    'require_on_version_change' =&gt; true,         // Force re-acceptance on version updates
+],
+</code></pre>
 <h2 id="notes">Notes</h2>
 <ul>
 <li>Legacy configuration format (<code>inc/config.inc.php</code>) is still supported but will be removed in a future version</li>
@@ -742,6 +769,35 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
 <li>Review security settings after upgrade to take advantage of new account lockout features</li>
 <li>This is a significant update that lays groundwork for future improvements</li>
 <li>Consider testing in a staging environment before applying to production</li>
+</ul>
+<h2 id="post-upgrade-configuration">Post-Upgrade Configuration</h2>
+<p>Many of the new v4.0.0 features require additional configuration to enable. Here are the key areas to configure after upgrading:</p>
+<h3 id="security-features-configuration">Security Features Configuration</h3>
+<ul>
+<li><strong>Multi-Factor Authentication</strong>: See <a href="../../configuration/security-policies/">Security Policies</a> for MFA setup</li>
+<li><strong>Account Lockout Protection</strong>: Configure in <a href="../../configuration/security-policies/">Security Policies</a></li>
+<li><strong>Enhanced Password Policies</strong>: Detailed configuration in <a href="../../configuration/password-policies/">Password Policies</a></li>
+<li><strong>Password Reset System</strong>: Setup instructions in <a href="../../configuration/security-policies/">Security Policies</a></li>
+</ul>
+<h3 id="user-management-features_1">User Management Features</h3>
+<ul>
+<li><strong>User Agreement System</strong>: Complete setup guide in <a href="../../configuration/user-agreements/">User Agreements</a></li>
+<li><strong>User Preferences System</strong>: Individual user customization options (automatically available once upgraded)</li>
+</ul>
+<h3 id="communication-features">Communication Features</h3>
+<ul>
+<li><strong>Enhanced Email System</strong>: New Twig-based templates covered in <a href="../../configuration/mail/">Mail Configuration</a></li>
+<li><strong>Email Template Previews</strong>: Enable administrator preview functionality in <a href="../../configuration/mail/">Mail Configuration</a></li>
+</ul>
+<h3 id="external-services-integration">External Services Integration</h3>
+<ul>
+<li><strong>WHOIS Lookup</strong>: Configuration details in <a href="../../configuration/whois/">WHOIS Configuration</a></li>
+<li><strong>RDAP Lookup</strong>: Setup instructions in <a href="../../configuration/rdap/">RDAP Configuration</a></li>
+</ul>
+<h3 id="api-and-development-features">API and Development Features</h3>
+<ul>
+<li><strong>API Key Management</strong>: Setup covered in <a href="../../configuration/api/">API Configuration</a></li>
+<li><strong>Enhanced Logging</strong>: Advanced logging options in <a href="../../configuration/logging/">Logging Configuration</a></li>
 </ul>
 <p>For detailed information about all new settings and options, refer to <code>config/settings.defaults.php</code> which contains comprehensive documentation in comments.</p>
               
