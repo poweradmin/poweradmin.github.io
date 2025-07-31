@@ -195,19 +195,15 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#upgrade-instructions">Upgrade Instructions</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#migrating-from-legacy-configuration">Migrating from Legacy Configuration</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#configuration-changes">Configuration Changes</a>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration-migration">Configuration Migration</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#old-configuration-location">Old Configuration Location</a>
+    <li class="toctree-l4"><a class="reference internal" href="#automatic-migration-recommended">Automatic Migration (Recommended)</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#new-configuration-location">New Configuration Location</a>
+    <li class="toctree-l4"><a class="reference internal" href="#configuration-changes-overview">Configuration Changes Overview</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#configuration-format">Configuration Format</a>
+    <li class="toctree-l4"><a class="reference internal" href="#manual-migration-steps">Manual Migration Steps</a>
     </li>
         </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#manual-migration-steps">Manual Migration Steps</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#database-schema-updates">Database Schema Updates</a>
         <ul>
@@ -215,11 +211,9 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#database-migration-files">Database Migration Files</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#migration-prerequisites">Migration Prerequisites</a>
+    <li class="toctree-l4"><a class="reference internal" href="#migration-prerequisites-and-upgrading-from-older-versions">Migration Prerequisites and Upgrading from Older Versions</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#verify-database-migration-completeness">Verify Database Migration Completeness</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#upgrading-from-older-versions">Upgrading from Older Versions</a>
     </li>
         </ul>
     </li>
@@ -439,26 +433,43 @@
 <li>Run the database migration (see Database Schema Updates section below)</li>
 <li>Migrate your configuration (see Configuration Changes section below)</li>
 </ol>
-<h2 id="migrating-from-legacy-configuration">Migrating from Legacy Configuration</h2>
-<p>If you're upgrading from an older version of Poweradmin (pre-4.0.0), you need to migrate your legacy configuration:</p>
+<h2 id="configuration-migration">Configuration Migration</h2>
+<h3 id="automatic-migration-recommended">Automatic Migration (Recommended)</h3>
+<p>If you're upgrading from an older version of Poweradmin (pre-4.0.0), use the automatic migration script:</p>
 <pre><code class="language-bash">php scripts/migrate-config.php
 </code></pre>
 <p>This will convert your old <code>inc/config.inc.php</code> settings to the new <code>config/settings.php</code> format.</p>
-<h2 id="configuration-changes">Configuration Changes</h2>
-<h3 id="old-configuration-location">Old Configuration Location</h3>
-<p><code>inc/config.inc.php</code></p>
-<h3 id="new-configuration-location">New Configuration Location</h3>
-<p><code>config/settings.php</code></p>
-<h3 id="configuration-format">Configuration Format</h3>
-<p>The configuration format has changed from direct variable assignments to a structured array format:</p>
-<h4 id="old-format-pre-400">Old Format (pre-4.0.0)</h4>
+<h3 id="configuration-changes-overview">Configuration Changes Overview</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Old (pre-4.0.0)</th>
+<th>New (4.0.0+)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Location</strong></td>
+<td><code>inc/config.inc.php</code></td>
+<td><code>config/settings.php</code></td>
+</tr>
+<tr>
+<td><strong>Format</strong></td>
+<td>Direct variable assignments</td>
+<td>Structured array format</td>
+</tr>
+</tbody>
+</table>
+<h4 id="configuration-format-examples">Configuration Format Examples</h4>
+<p><strong>Old Format (pre-4.0.0):</strong></p>
 <pre><code class="language-php">$db_host = 'localhost';
 $db_user = 'poweradmin';
 $db_pass = 'password';
 $db_name = 'powerdns';
 $db_type = 'mysql';
 </code></pre>
-<h4 id="new-format-400">New Format (4.0.0+)</h4>
+<p><strong>New Format (4.0.0+):</strong></p>
 <pre><code class="language-php">return [
     'database' =&gt; [
         'host' =&gt; 'localhost',
@@ -469,13 +480,13 @@ $db_type = 'mysql';
     ],
 ];
 </code></pre>
-<h2 id="manual-migration-steps">Manual Migration Steps</h2>
-<p>If the automatic migration script doesn't work for your setup, follow these steps:</p>
+<h3 id="manual-migration-steps">Manual Migration Steps</h3>
+<p>If the automatic migration script doesn't work for your setup:</p>
 <ol>
 <li>Create a new <code>config/settings.php</code> file</li>
 <li>Refer to <code>config/settings.defaults.php</code> for available options</li>
-<li>Map your old settings to the new format</li>
-<li>Test the configuration</li>
+<li>Map your old settings to the new format using the examples above</li>
+<li>Test the configuration thoroughly</li>
 </ol>
 <h2 id="database-schema-updates">Database Schema Updates</h2>
 <p>Version 4.0.0 introduces significant database schema changes including multiple new tables for enhanced security, API management, user preferences, and multi-factor authentication.</p>
@@ -504,20 +515,8 @@ $db_type = 'mysql';
 <pre><code class="language-bash">sqlite3 [database_file] &lt; sql/poweradmin-sqlite-update-to-4.0.0.sql
 </code></pre>
 <p>Download: <a href="https://github.com/poweradmin/poweradmin/blob/master/sql/poweradmin-sqlite-update-to-4.0.0.sql">poweradmin-sqlite-update-to-4.0.0.sql</a></p>
-<h3 id="migration-prerequisites">Migration Prerequisites</h3>
-<p><strong>Note</strong>: Users upgrading from versions earlier than v3.9.0 should first upgrade to v3.9.0 and run those migrations before upgrading to v4.0.0.</p>
-<h3 id="verify-database-migration-completeness">Verify Database Migration Completeness</h3>
-<p>After running the migration, verify your database has all required tables for v4.0.0:</p>
-<p>After running the migration, verify your database contains all 8 new tables listed in the "New Tables Added in v4.0.0" section above.</p>
-<p><strong>Verification Query (MySQL):</strong></p>
-<pre><code class="language-sql">SELECT TABLE_NAME FROM information_schema.TABLES 
-WHERE TABLE_SCHEMA = 'your_database_name' 
-AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user_preferences', 'zone_template_sync', 'password_reset_tokens', 'user_agreements');
-</code></pre>
-<p><strong>Expected Result:</strong> You should see all 8 new tables listed above.</p>
-<p>If any new tables are missing, the migration may have failed. Check the migration logs for errors.</p>
-<h3 id="upgrading-from-older-versions">Upgrading from Older Versions</h3>
-<p>If you're upgrading from a version earlier than v3.9.0, you should upgrade incrementally:</p>
+<h3 id="migration-prerequisites-and-upgrading-from-older-versions">Migration Prerequisites and Upgrading from Older Versions</h3>
+<p><strong>Important</strong>: If you're upgrading from a version earlier than v3.9.0, you must upgrade incrementally:</p>
 <ol>
 <li><strong>From v2.x.x</strong>: First upgrade to v3.0.0 (see <a href="../v3.0.0/">v3.0.0 upgrade guide</a>)</li>
 <li><strong>From v3.0.x to v3.1.x</strong>: Upgrade to v3.2.0 (see <a href="../v3.2.0/">v3.2.0 upgrade guide</a>)  </li>
@@ -525,6 +524,15 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
 <li><strong>From v3.9.x</strong>: Follow this guide to upgrade to v4.0.0</li>
 </ol>
 <p>This incremental approach ensures all database migrations are applied correctly and configurations are properly migrated.</p>
+<h3 id="verify-database-migration-completeness">Verify Database Migration Completeness</h3>
+<p>After running the migration, verify your database contains all 8 new tables:</p>
+<p><strong>Verification Query (MySQL):</strong></p>
+<pre><code class="language-sql">SELECT TABLE_NAME FROM information_schema.TABLES 
+WHERE TABLE_SCHEMA = 'your_database_name' 
+AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user_preferences', 'zone_template_sync', 'password_reset_tokens', 'user_agreements');
+</code></pre>
+<p><strong>Expected Result:</strong> You should see all 8 tables listed in the "New Tables Added in v4.0.0" section above.</p>
+<p>If any tables are missing, the migration may have failed. Check the migration logs for errors.</p>
 <h2 id="new-feature-dns-record-type-customization">New Feature: DNS Record Type Customization</h2>
 <p>Version 4.0.0 introduces the ability to customize which DNS record types are available in the interface. This feature helps simplify the user interface by showing only the record types that are relevant to your specific DNS needs.</p>
 <p>To configure this feature, add the following to your <code>config/settings.php</code> file:</p>
