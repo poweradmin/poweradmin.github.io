@@ -120,6 +120,8 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#apache-configuration">Apache Configuration</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#important-apache-htaccess-file">Important: Apache .htaccess File</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#nginx-configuration">Nginx Configuration</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#caddy-configuration">Caddy Configuration</a>
@@ -490,7 +492,7 @@ return [
 </ul>
 <h2 id="web-server-configuration">Web Server Configuration</h2>
 <h3 id="apache-configuration">Apache Configuration</h3>
-<p>For a basic Apache configuration, you can use the following settings:</p>
+<p>For a basic Apache configuration (without API support), you can use the following settings:</p>
 <pre><code class="language-apache">&lt;VirtualHost *:80&gt;
     ServerName your-domain.com
     DocumentRoot /path/to/poweradmin
@@ -499,7 +501,7 @@ return [
         Options -Indexes +FollowSymLinks
         AllowOverride All
         Require all granted
-    &lt;/Directory&gt;
+    &lt;/Directory&gt;    
 
     # For DDNS update functionality
     RewriteEngine On
@@ -507,14 +509,19 @@ return [
     RewriteRule ^/nic/update(.*)$ /dynamic_update.php [L]
 &lt;/VirtualHost&gt;
 </code></pre>
-<p>!!! important "Apache .htaccess File"
-    The <a href="https://github.com/poweradmin/poweradmin/blob/master/.htaccess">.htaccess file</a> in the root directory is <strong>essential</strong> for the API to work properly. This file contains:</p>
-<pre><code>- URL rewriting rules for RESTful API endpoints
-- Security configurations protecting sensitive directories and files
-- CORS headers for API access
-
-Ensure that `AllowOverride All` is set in your Apache configuration to allow the .htaccess file to function properly.
-</code></pre>
+<h3 id="important-apache-htaccess-file">Important: Apache .htaccess File</h3>
+<p>The <code>.htaccess</code> file in the root directory is <strong>essential</strong> for the API to work properly. This file contains:</p>
+<ul>
+<li>URL rewriting rules for RESTful API endpoints</li>
+<li>Security configurations protecting sensitive directories and files</li>
+<li>CORS headers for API access</li>
+</ul>
+<p><strong>Version-specific .htaccess files:</strong></p>
+<ul>
+<li><strong>For Poweradmin 4.0.x with API support</strong>: Use the <a href="https://github.com/poweradmin/poweradmin/blob/release/4.0.x/.htaccess">.htaccess from release/4.0.x branch</a></li>
+<li><strong>For other Poweradmin 4.x versions</strong>: Use the latest <a href="https://github.com/poweradmin/poweradmin/blob/master/.htaccess">.htaccess from master branch</a></li>
+</ul>
+<p>Ensure that <code>AllowOverride All</code> is set in your Apache configuration to allow the .htaccess file to function properly.</p>
 <h3 id="nginx-configuration">Nginx Configuration</h3>
 <p>For Nginx servers, use the complete configuration example provided in the Poweradmin repository:</p>
 <p><strong><a href="https://github.com/poweradmin/poweradmin/blob/master/nginx.conf.example">nginx.conf.example</a></strong></p>
