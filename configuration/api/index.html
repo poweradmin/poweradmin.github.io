@@ -191,6 +191,40 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#powerdns-metrics-api-v403">PowerDNS Metrics API (v4.0.3+)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#basic-authentication-for-metrics-v403">Basic Authentication for Metrics (v4.0.3+)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pagination-v401">Pagination (v4.0.1+)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#optional-pagination-parameters">Optional Pagination Parameters</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pagination-response">Pagination Response</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#version-history">Version History</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#v410">v4.1.0</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#v404">v4.0.4</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#v403">v4.0.3</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#v402">v4.0.2</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#v401">v4.0.1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#v400">v4.0.0</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#related-documentation">Related Documentation</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../whois/">WHOIS Configuration</a>
@@ -251,6 +285,8 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" >v4.x Series</a>
     <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.1.0/">v4.1.0</a>
+                </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.0/">v4.0.0</a>
                 </li>
     </ul>
@@ -608,6 +644,104 @@
 ],
 </code></pre>
 <p>Check logs in your configured logging destination for detailed request/response information.</p>
+<h2 id="powerdns-metrics-api-v403">PowerDNS Metrics API <em>(v4.0.3+)</em></h2>
+<p>Poweradmin can integrate with PowerDNS metrics endpoints for monitoring and status information.</p>
+<h3 id="configuration">Configuration</h3>
+<pre><code class="language-php">'pdns' =&gt; [
+    'api_url' =&gt; 'http://localhost:8081/api/v1',
+    'api_key' =&gt; 'your-powerdns-api-key',
+    'server_id' =&gt; 'localhost',
+    'metrics' =&gt; [
+        'enabled' =&gt; true,
+        'basic_auth' =&gt; [
+            'username' =&gt; 'admin',
+            'password' =&gt; 'your-password',
+        ],
+    ],
+],
+</code></pre>
+<h3 id="basic-authentication-for-metrics-v403">Basic Authentication for Metrics <em>(v4.0.3+)</em></h3>
+<p>Starting with v4.0.3, Poweradmin supports Basic Authentication for accessing PowerDNS metrics endpoints (issue #800). This is useful when your PowerDNS API is protected with Basic Auth in addition to API keys.</p>
+<p><strong>Example configuration:</strong></p>
+<pre><code class="language-php">'pdns' =&gt; [
+    'metrics' =&gt; [
+        'enabled' =&gt; true,
+        'basic_auth' =&gt; [
+            'username' =&gt; 'metrics_user',
+            'password' =&gt; 'secure_password',
+        ],
+    ],
+],
+</code></pre>
+<h2 id="pagination-v401">Pagination <em>(v4.0.1+)</em></h2>
+<h3 id="optional-pagination-parameters">Optional Pagination Parameters</h3>
+<p>Starting with v4.0.1, pagination is optional for zones and users endpoints (issue #803). You can now request all records without pagination limits.</p>
+<p><strong>Without pagination (returns all results):</strong></p>
+<pre><code class="language-bash">GET /api/v1/zones
+GET /api/v1/users
+</code></pre>
+<p><strong>With pagination:</strong></p>
+<pre><code class="language-bash">GET /api/v1/zones?page=1&amp;limit=50
+GET /api/v1/users?page=2&amp;limit=25
+</code></pre>
+<h3 id="pagination-response">Pagination Response</h3>
+<pre><code class="language-json">{
+    &quot;success&quot;: true,
+    &quot;data&quot;: [...],
+    &quot;pagination&quot;: {
+        &quot;total&quot;: 150,
+        &quot;page&quot;: 1,
+        &quot;limit&quot;: 50,
+        &quot;pages&quot;: 3
+    }
+}
+</code></pre>
+<h2 id="version-history">Version History</h2>
+<h3 id="v410">v4.1.0</h3>
+<ul>
+<li>Improved API stability and error handling</li>
+</ul>
+<h3 id="v404">v4.0.4</h3>
+<ul>
+<li><strong>Fixed:</strong> Basic Auth TypeError when LDAP authentication is enabled (issue #799)</li>
+<li>Resolves compatibility issues between Basic Auth and LDAP</li>
+<li>Properly handles authentication context</li>
+</ul>
+<h3 id="v403">v4.0.3</h3>
+<ul>
+<li><strong>Added:</strong> Basic Auth support for PowerDNS metrics endpoint (issue #800)</li>
+<li>Enables authentication for metrics API calls</li>
+<li>Supports username/password in addition to API keys</li>
+</ul>
+<h3 id="v402">v4.0.2</h3>
+<ul>
+<li><strong>Fixed:</strong> Routing and method validation issues (issue #767)</li>
+<li><strong>Fixed:</strong> Graceful handling of missing optional fields (issue #818)</li>
+</ul>
+<h3 id="v401">v4.0.1</h3>
+<ul>
+<li><strong>Added:</strong> Optional pagination for zones and users endpoints (issue #803)</li>
+<li>Can now request all records without pagination</li>
+<li>Backward compatible with paginated requests</li>
+<li><strong>Fixed:</strong> SOA serial updates on all record operations (issue #804)</li>
+<li>Ensures zone serial increments properly</li>
+<li>Maintains DNS propagation consistency</li>
+</ul>
+<h3 id="v400">v4.0.0</h3>
+<ul>
+<li>Initial API implementation</li>
+<li>API key management system</li>
+<li>RESTful endpoints for zones, records, users</li>
+<li>Permission template management</li>
+<li>Interactive API documentation</li>
+<li>Request logging and audit trails</li>
+</ul>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="../security-policies/">Security Policies</a> - API authentication and authorization</li>
+<li><a href="powerdns-integration.md">PowerDNS Integration</a> - PowerDNS API configuration</li>
+<li><a href="../logging/">Logging Configuration</a> - API request logging setup</li>
+</ul>
               
 
             </div>

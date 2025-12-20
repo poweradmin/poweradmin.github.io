@@ -121,6 +121,34 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#email-debug-logging-v403">Email Debug Logging (v4.0.3+)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#tlsstarttls-issues-fixed-in-v410">TLS/STARTTLS Issues (Fixed in v4.1.0)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#email-rejection-due-to-long-lines-fixed-in-v403">Email Rejection Due to Long Lines (Fixed in v4.0.3)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#common-smtp-authentication-issues">Common SMTP Authentication Issues</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#email-not-being-delivered">Email Not Being Delivered</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#version-history">Version History</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#v410">v4.1.0</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#v403">v4.0.3</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#v402">v4.0.2</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#v400">v4.0.0</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#related-documentation">Related Documentation</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../record-types/">Record Type Customization</a>
@@ -201,6 +229,8 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" >v4.x Series</a>
     <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.1.0/">v4.1.0</a>
+                </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.0/">v4.0.0</a>
                 </li>
     </ul>
@@ -392,6 +422,7 @@
 <li><strong>password</strong>: SMTP authentication password. Default: empty</li>
 <li><strong>encryption</strong>: Encryption method. Options: 'tls', 'ssl', empty. Default: <code>tls</code></li>
 <li><strong>auth</strong>: Whether SMTP requires authentication. Default: <code>false</code></li>
+<li><strong>debug</strong>: Enable debug logging for email operations. Default: <code>false</code> <em>(Added in v4.0.3)</em></li>
 </ul>
 <h3 id="sendmail-settings">Sendmail Settings</h3>
 <ul>
@@ -405,15 +436,127 @@
         'from_name' =&gt; 'DNS Administrator',
         'return_path' =&gt; 'dns@example.com',
         'transport' =&gt; 'smtp',
-        'host' =&gt; 'smtp.example.com',
-        'port' =&gt; 587,
-        'username' =&gt; 'smtp_user',
-        'password' =&gt; 'smtp_password',
-        'encryption' =&gt; 'tls',
-        'auth' =&gt; true,
+        'smtp' =&gt; [
+            'host' =&gt; 'smtp.example.com',
+            'port' =&gt; 587,
+            'username' =&gt; 'smtp_user',
+            'password' =&gt; 'smtp_password',
+            'encryption' =&gt; 'tls',  // 'tls', 'ssl', or null
+            'auth' =&gt; true,
+        ],
+        'debug' =&gt; false,  // Set to true for detailed logging (v4.0.3+)
     ],
 ];
 </code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="email-debug-logging-v403">Email Debug Logging <em>(v4.0.3+)</em></h3>
+<p>Enable detailed debug logging to troubleshoot email delivery issues:</p>
+<pre><code class="language-php">'mail' =&gt; [
+    'debug' =&gt; true,  // Enable comprehensive debug logging
+],
+</code></pre>
+<p>When enabled, Poweradmin logs:
+- SMTP connection attempts and responses
+- Authentication process
+- Email composition and sending operations
+- Detailed error messages</p>
+<p>Check your web server error log or PHP error log for debug output.</p>
+<h3 id="tlsstarttls-issues-fixed-in-v410">TLS/STARTTLS Issues <em>(Fixed in v4.1.0)</em></h3>
+<p><strong>Problem:</strong> Email sending fails with TLS/STARTTLS errors in versions prior to v4.1.0.</p>
+<p><strong>Solution:</strong> Upgrade to v4.1.0 or later, which includes proper TLS/STARTTLS connection handling.</p>
+<p>If you're experiencing issues with TLS encryption:</p>
+<ol>
+<li>
+<p><strong>Verify encryption setting:</strong>
+   <code>php
+   'encryption' =&gt; 'tls',  // For STARTTLS on port 587
+   // or
+   'encryption' =&gt; 'ssl',  // For SMTPS on port 465
+   // or
+   'encryption' =&gt; null,   // For unencrypted connections (not recommended)</code></p>
+</li>
+<li>
+<p><strong>Common port and encryption combinations:</strong></p>
+</li>
+<li><strong>Port 587</strong> with <code>'encryption' =&gt; 'tls'</code> (STARTTLS) - Most common</li>
+<li><strong>Port 465</strong> with <code>'encryption' =&gt; 'ssl'</code> (SMTPS) - Older systems</li>
+<li><strong>Port 25</strong> with <code>'encryption' =&gt; null</code> - Not recommended</li>
+</ol>
+<h3 id="email-rejection-due-to-long-lines-fixed-in-v403">Email Rejection Due to Long Lines <em>(Fixed in v4.0.3)</em></h3>
+<p><strong>Problem:</strong> Some SMTP servers reject emails with lines longer than 998 characters (RFC 5322 limit).</p>
+<p><strong>Solution:</strong> Upgrade to v4.0.3 or later, which implements proper line wrapping for email content.</p>
+<p>This particularly affects:
+- Long DKIM signatures
+- Extensive HTML email templates
+- Large text blocks in password reset emails</p>
+<h3 id="common-smtp-authentication-issues">Common SMTP Authentication Issues</h3>
+<p><strong>Problem:</strong> SMTP authentication fails even with correct credentials.</p>
+<p><strong>Troubleshooting steps:</strong></p>
+<ol>
+<li><strong>Verify credentials:</strong> Double-check username and password</li>
+<li><strong>Test SMTP connectivity:</strong>
+   <code>bash
+   telnet smtp.example.com 587</code></li>
+<li><strong>Check firewall rules:</strong> Ensure outbound SMTP ports are open</li>
+<li><strong>Review server logs:</strong> Enable <code>'debug' =&gt; true</code> for detailed logging</li>
+<li><strong>Try alternative ports:</strong> Test port 465 (SSL) or 25 if 587 fails</li>
+</ol>
+<h3 id="email-not-being-delivered">Email Not Being Delivered</h3>
+<p><strong>Common causes:</strong></p>
+<ol>
+<li><strong>Incorrect "from" address:</strong> Some SMTP servers require matching authentication username</li>
+<li><strong>SPF/DKIM issues:</strong> Ensure your server's IP is authorized to send from the domain</li>
+<li><strong>Blacklisted IP:</strong> Check if your server's IP is on spam blacklists</li>
+<li><strong>Rate limiting:</strong> SMTP server may be throttling connections</li>
+</ol>
+<p><strong>Debugging steps:</strong></p>
+<ol>
+<li>Enable debug logging: <code>'debug' =&gt; true</code></li>
+<li>Check mail server logs</li>
+<li>Verify email appears in sent items (if using external SMTP)</li>
+<li>Test with a simple mail client using same credentials</li>
+</ol>
+<h2 id="version-history">Version History</h2>
+<h3 id="v410">v4.1.0</h3>
+<ul>
+<li><strong>Fixed:</strong> TLS/STARTTLS connection handling (issue #861)</li>
+<li>Properly handles different encryption modes</li>
+<li>Resolves connection failures with certain SMTP servers</li>
+</ul>
+<h3 id="v403">v4.0.3</h3>
+<ul>
+<li><strong>Added:</strong> Comprehensive debug and operational logging</li>
+<li>Detailed SMTP transaction logging</li>
+<li>Authentication process visibility</li>
+<li>Error message improvements</li>
+<li><strong>Fixed:</strong> Email rejection due to long lines (issue #798)</li>
+<li>Implements RFC 5322 compliant line wrapping</li>
+<li>Prevents SMTP server rejections</li>
+</ul>
+<h3 id="v402">v4.0.2</h3>
+<ul>
+<li><strong>Fixed:</strong> Invalid SMTP headers causing server rejections (issue #774)</li>
+<li>Removed non-standard headers</li>
+<li>Improved RFC compliance</li>
+<li><strong>Fixed:</strong> SMTP authentication and response parsing issues</li>
+<li>Better error handling</li>
+<li>More reliable authentication</li>
+</ul>
+<h3 id="v400">v4.0.0</h3>
+<ul>
+<li>New Twig-based email template system</li>
+<li>Support for custom email templates</li>
+<li>Dark mode email templates</li>
+<li>Plain text body support</li>
+<li>Template preview functionality</li>
+<li>Multiple transport options (SMTP, sendmail, PHP mail)</li>
+</ul>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="password-reset.md">Password Reset Configuration</a> - Password reset email settings</li>
+<li><a href="../security-policies/">Security Policies</a> - MFA email verification</li>
+<li><a href="../user-agreements/">User Agreements</a> - Agreement acceptance notifications</li>
+</ul>
               
 
             </div>
