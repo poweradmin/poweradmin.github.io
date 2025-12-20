@@ -199,6 +199,8 @@
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#automatic-migration-recommended">Automatic Migration (Recommended)</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#post-migration-cleanup">Post-Migration Cleanup</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#configuration-changes-overview">Configuration Changes Overview</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#manual-migration-steps">Manual Migration Steps</a>
@@ -455,6 +457,30 @@
 <pre><code class="language-bash">php config/migrate-config.php
 </code></pre>
 <p>This will convert your old <code>inc/config.inc.php</code> settings to the new <code>config/settings.php</code> format.</p>
+<h3 id="post-migration-cleanup">Post-Migration Cleanup</h3>
+<p>After successfully running the migration script and verifying your new configuration works:</p>
+<ol>
+<li><strong>If you answered "y" to rename the old config during migration:</strong></li>
+<li>The script renamed <code>inc/config.inc.php</code> to <code>inc/config.inc.php.bak</code></li>
+<li>Keep this backup temporarily while testing</li>
+<li>
+<p>Delete it once you're confident everything works: <code>rm inc/config.inc.php.bak</code></p>
+</li>
+<li>
+<p><strong>If you kept the original file (answered "n"):</strong>
+   <code>bash
+   # Backup and remove the old config
+   mv inc/config.inc.php inc/config.inc.php.backup
+   # Store it safely outside the web root
+   mv inc/config.inc.php.backup ~/poweradmin-backups/config.inc.php.$(date +%Y%m%d)</code></p>
+</li>
+<li>
+<p><strong>Clean up other legacy files:</strong></p>
+</li>
+<li>You can safely remove <code>.old</code>, <code>.bak</code>, or other backup files from the <code>inc/</code> directory</li>
+<li>These are typically leftover from previous installations</li>
+</ol>
+<p><strong>Important:</strong> Having both <code>inc/config.inc.php</code> and <code>config/settings.php</code> active can cause conflicts. The application may read outdated settings from the legacy file (e.g., removed themes), leading to errors. Remove or rename the old configuration file after confirming migration was successful.</p>
 <h3 id="configuration-changes-overview">Configuration Changes Overview</h3>
 <table>
 <thead>
@@ -827,8 +853,9 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
 </code></pre>
 <h2 id="notes">Notes</h2>
 <ul>
-<li>Legacy configuration format (<code>inc/config.inc.php</code>) is still supported but will be removed in a future version</li>
-<li>You can have both configuration files during the transition period</li>
+<li><strong>Legacy configuration cleanup required</strong>: After migrating to the new configuration format, remove or rename <code>inc/config.inc.php</code> to prevent conflicts</li>
+<li>Legacy configuration format (<code>inc/config.inc.php</code>) is supported in v4.0.0 but <strong>will be completely removed in the next major release</strong></li>
+<li>Having both configuration files active can cause unexpected behavior (e.g., crashes from removed theme references)</li>
 <li>The new configuration system offers more flexibility and better organization</li>
 <li>Review security settings after upgrade to take advantage of new account lockout features</li>
 <li>This is a significant update that lays groundwork for future improvements</li>
