@@ -189,6 +189,18 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#patch-version-upgrades-eg-40x-40y">Patch Version Upgrades (e.g., 4.0.x → 4.0.y)</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#important-considerations">Important Considerations</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#upgrade-path">Upgrade Path</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#recommended-path-from-200-to-410">Recommended Path from 2.0.0 to 4.1.0</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#critical-versions-with-sql-migrations">Critical Versions with SQL Migrations</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" >v4.x Series</a>
@@ -381,17 +393,14 @@
 <li><strong>Replace all application files</strong> - Extract the new release over your existing installation</li>
 <li><strong>Preserve your configuration</strong> - Your <code>config/settings.php</code> (or <code>inc/config.inc.php</code> for older versions) remains unchanged</li>
 <li><strong>Check release notes for SQL updates</strong> - Only run database migration scripts if explicitly mentioned in the release notes for that version</li>
-<li>
-<p><strong>Clear PHP opcache</strong> - If your environment uses opcache, restart PHP-FPM or your web server to clear cached bytecode:</p>
-<p>```bash
-sudo systemctl restart php-fpm</p>
-<h1 id="or">or</h1>
-<p>sudo systemctl restart apache2
-```</p>
-</li>
-<li>
-<p><strong>Verify functionality</strong> - Test login and basic operations</p>
-</li>
+<li><strong>Clear PHP opcache</strong> - If your environment uses opcache, restart PHP-FPM or your web server to clear cached bytecode:</li>
+</ol>
+<pre><code class="language-bash">sudo systemctl restart php-fpm
+# or
+sudo systemctl restart apache2
+</code></pre>
+<ol>
+<li><strong>Verify functionality</strong> - Test login and basic operations</li>
 </ol>
 <p><strong>Key points for patch releases:</strong></p>
 <ul>
