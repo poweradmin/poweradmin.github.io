@@ -194,29 +194,7 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#log-management">Log Management</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#backup-procedures">Backup Procedures</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#database-backup">Database Backup</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#configuration-backup">Configuration Backup</a>
-    </li>
         </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#security-updates">Security Updates</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#monitoring">Monitoring</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#performance-monitoring">Performance Monitoring</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#error-monitoring">Error Monitoring</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#routine-checks">Routine Checks</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#disaster-recovery">Disaster Recovery</a>
     </li>
     </ul>
                   </li>
@@ -433,17 +411,18 @@ VACUUM;
 <h3 id="log-management">Log Management</h3>
 <p>To prevent logs from consuming excessive disk space:</p>
 <ol>
-<li><strong>Database Logs</strong>: Implement a log rotation strategy for Poweradmin's database logs:</li>
-</ol>
-<pre><code class="language-sql">-- Example log cleanup (retain only the last 90 days)
+<li>
+<p><strong>Database Logs</strong>: Implement a log rotation strategy for Poweradmin's database logs:</p>
+<p><code>sql
+-- Example log cleanup (retain only the last 90 days)
 DELETE FROM log_users WHERE created &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
-DELETE FROM log_zones WHERE created &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
-</code></pre>
-<ol>
-<li><strong>System Logs</strong>: Configure log rotation for your web server and PHP logs:</li>
-</ol>
-<pre><code># Example logrotate configuration (/etc/logrotate.d/poweradmin)
-/var/log/apache2/poweradmin-*.log {
+DELETE FROM log_zones WHERE created &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);</code></p>
+</li>
+<li>
+<p><strong>System Logs</strong>: Configure log rotation for your web server and PHP logs:</p>
+<p>```</p>
+<h1 id="example-logrotate-configuration-etclogrotatedpoweradmin">Example logrotate configuration (/etc/logrotate.d/poweradmin)</h1>
+<p>/var/log/apache2/poweradmin-*.log {
     rotate 14
     daily
     compress
@@ -452,7 +431,9 @@ DELETE FROM log_zones WHERE created &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
     notifempty
     create 640 www-data adm
 }
-</code></pre>
+```</p>
+</li>
+</ol>
 <h3 id="backup-procedures">Backup Procedures</h3>
 <h4 id="database-backup">Database Backup</h4>
 <p>Regular database backups are essential:</p>
