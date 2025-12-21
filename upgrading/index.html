@@ -187,6 +187,8 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#general-upgrade-instructions">General Upgrade Instructions</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#patch-version-upgrades-eg-40x-40y">Patch Version Upgrades (e.g., 4.0.x → 4.0.y)</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#important-considerations">Important Considerations</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#upgrade-path">Upgrade Path</a>
@@ -384,6 +386,39 @@
 <li><strong>Update database structure</strong> - If required by the specific version upgrade</li>
 <li><strong>Test functionality</strong> - Verify all features work correctly after upgrade</li>
 </ol>
+<h2 id="patch-version-upgrades-eg-40x-40y">Patch Version Upgrades (e.g., 4.0.x → 4.0.y)</h2>
+<p>For patch releases within the same minor version (e.g., 4.0.0 → 4.0.3, or 4.0.3 → 4.0.4), the upgrade process is straightforward:</p>
+<ol>
+<li><strong>Backup your database and files</strong> - Always a good practice</li>
+<li><strong>Replace all application files</strong> - Extract the new release over your existing installation</li>
+<li><strong>Preserve your configuration</strong> - Your <code>config/settings.php</code> (or <code>inc/config.inc.php</code> for older versions) remains unchanged</li>
+<li><strong>Check release notes for SQL updates</strong> - Only run database migration scripts if explicitly mentioned in the release notes for that version</li>
+<li><strong>Clear PHP opcache</strong> - If your environment uses opcache, restart PHP-FPM or your web server to clear cached bytecode:
+   <code>bash
+   sudo systemctl restart php-fpm
+   # or
+   sudo systemctl restart apache2</code></li>
+<li><strong>Verify functionality</strong> - Test login and basic operations</li>
+</ol>
+<p><strong>Key points for patch releases:</strong></p>
+<ul>
+<li>Patch releases maintain backward compatibility - no breaking changes</li>
+<li>Configuration format remains the same</li>
+<li>Database schema changes are rare in patch releases (but always check release notes)</li>
+<li>The same file replacement process applies as major upgrades</li>
+</ul>
+<p><strong>Alternative: Symlink Strategy</strong></p>
+<p>For easier rollbacks, consider using symlinks:</p>
+<pre><code class="language-bash"># Extract new version to versioned directory
+tar -xzf poweradmin-4.0.4.tar.gz -C /var/www/
+
+# Update symlink to point to new version
+ln -sfn /var/www/poweradmin-4.0.4 /var/www/poweradmin
+
+# Keep config outside versioned directories
+ln -s /etc/poweradmin/settings.php /var/www/poweradmin/config/settings.php
+</code></pre>
+<p>This allows quick rollback by simply changing the symlink back to the previous version.</p>
 <h2 id="important-considerations">Important Considerations</h2>
 <ul>
 <li>Always read the release notes for the version you're upgrading to and any intermediate versions</li>
