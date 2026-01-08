@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/configuration/oidc/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>OIDC Authentication - Poweradmin Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "OIDC Authentication";
+        var mkdocs_page_input_path = "configuration/oidc.md";
+        var mkdocs_page_url = "/configuration/oidc/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/php.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Poweradmin Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/overview/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/features/">Features</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Quick Evaluation</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../getting-started/docker-demo/">Docker Demo</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/requirements/">System Requirements</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Installation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Docker</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/docker/">Docker Installation</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/docker-secrets/">Docker Secrets</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Operating Systems</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/debian/">Debian</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/ubuntu/">Ubuntu</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/centos/">CentOS/RHEL</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Database Setup</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/mysql-configuration/">MySQL/MariaDB</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/postgresql-configuration/">PostgreSQL</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/sqlite/">SQLite</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/schema/">Database Schema</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/manual/">Manual Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/composer/">Composer</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/remote-setup-guide/">Remote Setup</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Configuration</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../basic/">Basic Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dns-settings/">DNS Settings</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dns-wizards/">DNS Wizards</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../database/">Database Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../powerdns-api/">PowerDNS API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dnssec/">DNSSEC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging Setup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ldap/">LDAP Integration</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">OIDC Authentication</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#global-settings">Global Settings</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#permission-template-mapping">Permission Template Mapping</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#provider-configuration">Provider Configuration</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#azure-ad-microsoft">Azure AD (Microsoft)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#google">Google</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#keycloak">Keycloak</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#okta">Okta</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#authentik">Authentik</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#auth0">Auth0</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#generic-oidc-provider">Generic OIDC Provider</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#user-mapping">User Mapping</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#docker-configuration">Docker Configuration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#multiple-providers">Multiple Providers</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#security-considerations">Security Considerations</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#login-redirects-fail">Login redirects fail</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#user-not-created-after-login">User not created after login</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#groups-not-mapped">Groups not mapped</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#invalid-state-error">"Invalid state" error</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#related-documentation">Related Documentation</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../saml/">SAML Authentication</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mail/">Mail Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../record-types/">Record Type Customization</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >UI Customization</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../ui/overview/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ui/themes/">Themes</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ui/layout/">Layout</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ui/custom-css/">Custom CSS</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../password-policies/">Password Policies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../security-policies/">Security Policies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../api/">API Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../whois/">WHOIS Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../rdap/">RDAP Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../user-agreements/">User Agreements</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../username-recovery/">Username Recovery</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../avatars/">Avatar System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../database-logging/">Database Logging</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../legacy-configuration/">Legacy Configuration (v3.x)</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >User Management</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/users-roles/">Users and Roles</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/permissions/">Permissions</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >DNS Management</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/dns-templates/">DNS Templates</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/reverse-dns/">Reverse DNS (PTR)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Dynamic DNS</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/overview/">Overview</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/configuration/">Configuration</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/client-setup/">Client Setup</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/using-curl/">Using cURL</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Advanced Topics</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >Logging</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../advanced/logging-config/">Log Configuration</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Maintenance</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">Overview</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrading</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrading/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >v4.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.1.0/">v4.1.0</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.0/">v4.0.0</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >v3.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >v3.9.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.3/">v3.9.3</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.2/">v3.9.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.1/">v3.9.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.0/">v3.9.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.8.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.8.1/">v3.8.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.8.0/">v3.8.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.7.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.7.0/">v3.7.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.6.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.6.1/">v3.6.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.6.0/">v3.6.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.5.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.5.1/">v3.5.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.5.0/">v3.5.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.4.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.2/">v3.4.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.1/">v3.4.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.0/">v3.4.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.3.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.3.0/">v3.3.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.2.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.2.0/">v3.2.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.1.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.1.0/">v3.1.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.0.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.0.0/">v3.0.0</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >v2.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >v2.2.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.2/">v2.2.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.1/">v2.2.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.0/">v2.2.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v2.1.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.9/">v2.1.9</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.8/">v2.1.8</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.7/">v2.1.7</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.6/">v2.1.6</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.5/">v2.1.5</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.4/">v2.1.4</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.3/">v2.1.3</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.2/">v2.1.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.1/">v2.1.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.0/">v2.1.0</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Troubleshooting</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting/debugging/">Debugging</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Contributing</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/development/">Development Setup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/coding-standards/">Coding Standards</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/testing/">Testing</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Poweradmin Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Configuration</li>
+      <li class="breadcrumb-item active">OIDC Authentication</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/configuration/oidc.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+  <div class="announcement">
+    This documentation covers Poweradmin 4.x. Some sections are still being expanded.
+  </div>
+  
+                <h1 id="openid-connect-oidc-authentication">OpenID Connect (OIDC) Authentication</h1>
+<p>Poweradmin supports OpenID Connect (OIDC) for single sign-on (SSO) authentication with identity providers like Azure AD, Google, Keycloak, Okta, Authentik, and Auth0.</p>
+<h2 id="overview">Overview</h2>
+<p>OIDC allows users to authenticate using their existing identity provider credentials. When enabled, users see additional "Sign in with..." buttons on the login page.</p>
+<p>Key features:</p>
+<ul>
+<li>Automatic user provisioning from OIDC provider</li>
+<li>Link OIDC accounts to existing users by email</li>
+<li>Sync user information (name, email) from provider</li>
+<li>Map OIDC groups to Poweradmin permission templates</li>
+<li>Support for multiple providers simultaneously</li>
+<li>PKCE (Proof Key for Code Exchange) for enhanced security</li>
+</ul>
+<h2 id="global-settings">Global Settings</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>oidc.enabled</code></td>
+<td>false</td>
+<td>Enable OIDC authentication</td>
+</tr>
+<tr>
+<td><code>oidc.auto_provision</code></td>
+<td>true</td>
+<td>Auto-create users from OIDC provider</td>
+</tr>
+<tr>
+<td><code>oidc.link_by_email</code></td>
+<td>true</td>
+<td>Link OIDC accounts to existing users by email</td>
+</tr>
+<tr>
+<td><code>oidc.sync_user_info</code></td>
+<td>true</td>
+<td>Sync user info (name, email) on each login</td>
+</tr>
+<tr>
+<td><code>oidc.default_permission_template</code></td>
+<td>""</td>
+<td>Default permission template for new users</td>
+</tr>
+</tbody>
+</table>
+<h2 id="permission-template-mapping">Permission Template Mapping</h2>
+<p>Map OIDC groups to Poweradmin permission templates for automatic role assignment:</p>
+<pre><code class="language-php">'oidc' =&gt; [
+    'enabled' =&gt; true,
+    'permission_template_mapping' =&gt; [
+        'poweradmin-admins' =&gt; 'Administrator',
+        'dns-operators' =&gt; 'DNS Operator',
+        'dns-viewers' =&gt; 'Read Only',
+    ],
+],
+</code></pre>
+<p>When a user logs in, their OIDC groups are matched against this mapping. The first match determines their permission template.</p>
+<h2 id="provider-configuration">Provider Configuration</h2>
+<p>Each provider requires specific configuration. All providers share these common fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Yes</td>
+<td>Internal provider identifier</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Yes</td>
+<td>Text shown on login button</td>
+</tr>
+<tr>
+<td><code>client_id</code></td>
+<td>Yes</td>
+<td>OAuth client ID from provider</td>
+</tr>
+<tr>
+<td><code>client_secret</code></td>
+<td>Yes</td>
+<td>OAuth client secret from provider</td>
+</tr>
+<tr>
+<td><code>auto_discovery</code></td>
+<td>No</td>
+<td>Use OpenID Connect Discovery (default: true)</td>
+</tr>
+<tr>
+<td><code>metadata_url</code></td>
+<td>Conditional</td>
+<td>OpenID Configuration endpoint (if auto_discovery)</td>
+</tr>
+<tr>
+<td><code>scopes</code></td>
+<td>No</td>
+<td>OAuth scopes (default: openid profile email)</td>
+</tr>
+<tr>
+<td><code>logout_url</code></td>
+<td>No</td>
+<td>Provider logout endpoint</td>
+</tr>
+<tr>
+<td><code>user_mapping</code></td>
+<td>No</td>
+<td>Map OIDC claims to user fields</td>
+</tr>
+</tbody>
+</table>
+<h3 id="azure-ad-microsoft">Azure AD (Microsoft)</h3>
+<ol>
+<li>Register an application in Azure Portal &gt; App registrations</li>
+<li>Add a redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></li>
+<li>Create a client secret</li>
+<li>Configure optional claims for groups if needed</li>
+</ol>
+<pre><code class="language-php">'oidc' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'azure' =&gt; [
+            'name' =&gt; 'Microsoft Azure AD',
+            'display_name' =&gt; 'Sign in with Microsoft',
+            'client_id' =&gt; 'your-client-id',
+            'client_secret' =&gt; 'your-client-secret',
+            'tenant' =&gt; 'your-tenant-id',  // or 'common' for multi-tenant
+            'auto_discovery' =&gt; true,
+            'metadata_url' =&gt; 'https://login.microsoftonline.com/{tenant}/v2.0/.well-known/openid-configuration',
+            'logout_url' =&gt; 'https://login.microsoftonline.com/{tenant}/oauth2/v2.0/logout',
+            'scopes' =&gt; 'openid profile email',
+            'user_mapping' =&gt; [
+                'username' =&gt; 'email',
+                'email' =&gt; 'email',
+                'first_name' =&gt; 'given_name',
+                'last_name' =&gt; 'family_name',
+                'display_name' =&gt; 'name',
+                'groups' =&gt; 'groups',
+            ],
+        ],
+    ],
+],
+</code></pre>
+<p><strong>Note</strong>: For group claims, configure "Group claims" in Azure AD App &gt; Token configuration.</p>
+<h3 id="google">Google</h3>
+<ol>
+<li>Go to Google Cloud Console &gt; APIs &amp; Services &gt; Credentials</li>
+<li>Create an OAuth 2.0 Client ID</li>
+<li>Add authorized redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></li>
+</ol>
+<pre><code class="language-php">'oidc' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'google' =&gt; [
+            'name' =&gt; 'Google',
+            'display_name' =&gt; 'Sign in with Google',
+            'client_id' =&gt; 'your-client-id.apps.googleusercontent.com',
+            'client_secret' =&gt; 'your-client-secret',
+            'auto_discovery' =&gt; true,
+            'metadata_url' =&gt; 'https://accounts.google.com/.well-known/openid-configuration',
+            'logout_url' =&gt; 'https://accounts.google.com/logout',
+            'scopes' =&gt; 'openid profile email',
+            'user_mapping' =&gt; [
+                'username' =&gt; 'email',
+                'email' =&gt; 'email',
+                'first_name' =&gt; 'given_name',
+                'last_name' =&gt; 'family_name',
+                'display_name' =&gt; 'name',
+            ],
+        ],
+    ],
+],
+</code></pre>
+<h3 id="keycloak">Keycloak</h3>
+<ol>
+<li>Create a client in Keycloak Admin Console</li>
+<li>Set Access Type to "confidential"</li>
+<li>Add valid redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></li>
+<li>Enable "groups" scope if using group mapping</li>
+</ol>
+<pre><code class="language-php">'oidc' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'keycloak' =&gt; [
+            'name' =&gt; 'Keycloak',
+            'display_name' =&gt; 'Sign in with Keycloak',
+            'client_id' =&gt; 'poweradmin',
+            'client_secret' =&gt; 'your-client-secret',
+            'base_url' =&gt; 'https://keycloak.example.com',
+            'realm' =&gt; 'master',
+            'auto_discovery' =&gt; true,
+            'metadata_url' =&gt; '{base_url}/realms/{realm}/.well-known/openid-configuration',
+            'logout_url' =&gt; '{base_url}/realms/{realm}/protocol/openid-connect/logout',
+            'scopes' =&gt; 'openid profile email groups',
+            'user_mapping' =&gt; [
+                'username' =&gt; 'preferred_username',
+                'email' =&gt; 'email',
+                'first_name' =&gt; 'given_name',
+                'last_name' =&gt; 'family_name',
+                'display_name' =&gt; 'name',
+                'groups' =&gt; 'groups',
+            ],
+        ],
+    ],
+],
+</code></pre>
+<h3 id="okta">Okta</h3>
+<ol>
+<li>Create an OIDC application in Okta Admin Console</li>
+<li>Set Sign-in redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></li>
+<li>Note your Okta domain (e.g., your-org.okta.com)</li>
+</ol>
+<pre><code class="language-php">'oidc' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'okta' =&gt; [
+            'name' =&gt; 'Okta',
+            'display_name' =&gt; 'Sign in with Okta',
+            'client_id' =&gt; 'your-client-id',
+            'client_secret' =&gt; 'your-client-secret',
+            'domain' =&gt; 'your-org.okta.com',
+            'auto_discovery' =&gt; true,
+            'metadata_url' =&gt; 'https://{domain}/.well-known/openid-configuration',
+            'logout_url' =&gt; 'https://{domain}/oauth2/v1/logout',
+            'scopes' =&gt; 'openid profile email groups',
+            'user_mapping' =&gt; [
+                'username' =&gt; 'preferred_username',
+                'email' =&gt; 'email',
+                'first_name' =&gt; 'given_name',
+                'last_name' =&gt; 'family_name',
+                'display_name' =&gt; 'name',
+                'groups' =&gt; 'groups',
+            ],
+        ],
+    ],
+],
+</code></pre>
+<h3 id="authentik">Authentik</h3>
+<ol>
+<li>Create an OAuth2/OpenID Provider in Authentik</li>
+<li>Create an Application linked to the provider</li>
+<li>Add redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></li>
+</ol>
+<pre><code class="language-php">'oidc' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'authentik' =&gt; [
+            'name' =&gt; 'Authentik',
+            'display_name' =&gt; 'Sign in with Authentik',
+            'client_id' =&gt; 'your-client-id',
+            'client_secret' =&gt; 'your-client-secret',
+            'base_url' =&gt; 'https://authentik.example.com',
+            'application_slug' =&gt; 'poweradmin',
+            'auto_discovery' =&gt; true,
+            'metadata_url' =&gt; '{base_url}/application/o/{application_slug}/.well-known/openid-configuration',
+            'logout_url' =&gt; '{base_url}/application/o/{application_slug}/end-session/',
+            'scopes' =&gt; 'openid profile email',
+            'user_mapping' =&gt; [
+                'username' =&gt; 'preferred_username',
+                'email' =&gt; 'email',
+                'first_name' =&gt; 'given_name',
+                'last_name' =&gt; 'family_name',
+                'display_name' =&gt; 'name',
+                'groups' =&gt; 'groups',
+            ],
+        ],
+    ],
+],
+</code></pre>
+<h3 id="auth0">Auth0</h3>
+<ol>
+<li>Create an application in Auth0 Dashboard</li>
+<li>Set Application Type to "Regular Web Application"</li>
+<li>Add callback URL: <code>https://your-poweradmin.com/oidc/callback</code></li>
+</ol>
+<pre><code class="language-php">'oidc' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'auth0' =&gt; [
+            'name' =&gt; 'Auth0',
+            'display_name' =&gt; 'Sign in with Auth0',
+            'client_id' =&gt; 'your-client-id',
+            'client_secret' =&gt; 'your-client-secret',
+            'domain' =&gt; 'your-tenant.auth0.com',
+            'auto_discovery' =&gt; true,
+            'metadata_url' =&gt; 'https://{domain}/.well-known/openid-configuration',
+            'logout_url' =&gt; 'https://{domain}/v2/logout',
+            'scopes' =&gt; 'openid profile email',
+            'user_mapping' =&gt; [
+                'username' =&gt; 'nickname',
+                'email' =&gt; 'email',
+                'first_name' =&gt; 'given_name',
+                'last_name' =&gt; 'family_name',
+                'display_name' =&gt; 'name',
+                'groups' =&gt; 'groups',
+            ],
+        ],
+    ],
+],
+</code></pre>
+<h3 id="generic-oidc-provider">Generic OIDC Provider</h3>
+<p>For providers not listed above, use manual endpoint configuration:</p>
+<pre><code class="language-php">'oidc' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'custom' =&gt; [
+            'name' =&gt; 'Custom OIDC',
+            'display_name' =&gt; 'Sign in with SSO',
+            'client_id' =&gt; 'your-client-id',
+            'client_secret' =&gt; 'your-client-secret',
+            'auto_discovery' =&gt; false,
+            'authorize_url' =&gt; 'https://provider.example.com/oauth/authorize',
+            'token_url' =&gt; 'https://provider.example.com/oauth/token',
+            'userinfo_url' =&gt; 'https://provider.example.com/oauth/userinfo',
+            'logout_url' =&gt; 'https://provider.example.com/oauth/logout',
+            'scopes' =&gt; 'openid profile email',
+            'user_mapping' =&gt; [
+                'username' =&gt; 'preferred_username',
+                'email' =&gt; 'email',
+                'first_name' =&gt; 'given_name',
+                'last_name' =&gt; 'family_name',
+                'display_name' =&gt; 'name',
+                'groups' =&gt; 'groups',
+            ],
+        ],
+    ],
+],
+</code></pre>
+<h2 id="user-mapping">User Mapping</h2>
+<p>The <code>user_mapping</code> array maps OIDC claims to Poweradmin user fields:</p>
+<table>
+<thead>
+<tr>
+<th>Poweradmin Field</th>
+<th>Common OIDC Claims</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>username</code></td>
+<td>preferred_username, email</td>
+<td>User's login name</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>email</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td><code>first_name</code></td>
+<td>given_name</td>
+<td>First name</td>
+</tr>
+<tr>
+<td><code>last_name</code></td>
+<td>family_name</td>
+<td>Last name</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>name</td>
+<td>Display name</td>
+</tr>
+<tr>
+<td><code>groups</code></td>
+<td>groups</td>
+<td>Group memberships</td>
+</tr>
+<tr>
+<td><code>avatar</code></td>
+<td>picture</td>
+<td>Profile picture URL</td>
+</tr>
+</tbody>
+</table>
+<h2 id="docker-configuration">Docker Configuration</h2>
+<p>Use environment variables with the <code>PA_OIDC_</code> prefix:</p>
+<pre><code class="language-yaml">environment:
+  PA_OIDC_ENABLED: &quot;true&quot;
+  PA_OIDC_AUTO_PROVISION: &quot;true&quot;
+  PA_OIDC_KEYCLOAK_CLIENT_ID: &quot;poweradmin&quot;
+  PA_OIDC_KEYCLOAK_CLIENT_SECRET: &quot;your-secret&quot;
+  PA_OIDC_KEYCLOAK_BASE_URL: &quot;https://keycloak.example.com&quot;
+  PA_OIDC_KEYCLOAK_REALM: &quot;master&quot;
+</code></pre>
+<p>For secrets, use the <code>__FILE</code> suffix:</p>
+<pre><code class="language-yaml">secrets:
+  oidc_client_secret:
+    file: ./secrets/oidc_client_secret.txt
+
+services:
+  poweradmin:
+    environment:
+      PA_OIDC_KEYCLOAK_CLIENT_SECRET__FILE: /run/secrets/oidc_client_secret
+    secrets:
+      - oidc_client_secret
+</code></pre>
+<h2 id="multiple-providers">Multiple Providers</h2>
+<p>You can configure multiple OIDC providers. Users will see all enabled providers on the login page:</p>
+<pre><code class="language-php">'oidc' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'azure' =&gt; [
+            // Azure AD configuration...
+        ],
+        'google' =&gt; [
+            // Google configuration...
+        ],
+    ],
+],
+</code></pre>
+<h2 id="security-considerations">Security Considerations</h2>
+<ol>
+<li><strong>Use HTTPS</strong>: OIDC requires HTTPS for redirect URIs in production</li>
+<li><strong>Protect client secrets</strong>: Use Docker secrets or environment variables, never commit secrets to version control</li>
+<li><strong>Validate redirect URIs</strong>: Configure exact redirect URIs in your identity provider</li>
+<li><strong>PKCE</strong>: Poweradmin uses PKCE (Proof Key for Code Exchange) automatically for enhanced security</li>
+<li><strong>State validation</strong>: CSRF protection via state parameter is enabled by default</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="login-redirects-fail">Login redirects fail</h3>
+<ul>
+<li>Verify the redirect URI in your provider matches exactly: <code>https://your-poweradmin.com/oidc/callback</code></li>
+<li>Check that your Poweradmin URL is accessible from the user's browser</li>
+<li>For reverse proxy setups, ensure <code>X-Forwarded-Proto</code> header is set</li>
+</ul>
+<h3 id="user-not-created-after-login">User not created after login</h3>
+<ul>
+<li>Check <code>auto_provision</code> is enabled</li>
+<li>Verify the user mapping includes required fields (username, email)</li>
+<li>Check application logs for provisioning errors</li>
+</ul>
+<h3 id="groups-not-mapped">Groups not mapped</h3>
+<ul>
+<li>Ensure the <code>groups</code> scope is requested</li>
+<li>Verify your provider returns groups in the expected claim</li>
+<li>Check the <code>user_mapping.groups</code> matches your provider's claim name</li>
+<li>In Azure AD, configure Group claims in Token configuration</li>
+</ul>
+<h3 id="invalid-state-error">"Invalid state" error</h3>
+<ul>
+<li>Clear browser cookies and try again</li>
+<li>Check session configuration in Poweradmin</li>
+<li>Verify server time is synchronized (NTP)</li>
+</ul>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="../saml/">SAML Authentication</a></li>
+<li><a href="../ldap/">LDAP Integration</a></li>
+<li><a href="../security-policies/">Security Policies</a></li>
+</ul>
+              
+
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ldap/" class="btn btn-neutral float-left" title="LDAP Integration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../saml/" class="btn btn-neutral float-right" title="SAML Authentication">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/poweradmin/poweradmin-docs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../ldap/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../saml/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

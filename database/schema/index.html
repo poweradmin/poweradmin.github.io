@@ -61,8 +61,16 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Installation</span></p>
-              <ul>
+              <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../../installation/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Docker</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/docker/">Docker Installation</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/docker-secrets/">Docker Secrets</a>
+                </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" >Operating Systems</a>
     <ul>
@@ -74,13 +82,113 @@
                 </li>
     </ul>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" >Database Setup</a>
-    <ul>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Database Setup</a>
+    <ul class="current">
                 <li class="toctree-l2"><a class="reference internal" href="../mysql-configuration/">MySQL/MariaDB</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../postgresql-configuration/">PostgreSQL</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../sqlite/">SQLite</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Database Schema</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#database-requirements">Database Requirements</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#powerdns-tables">PowerDNS Tables</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#domains">domains</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#records">records</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#supermasters">supermasters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#comments">comments</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#domainmetadata">domainmetadata</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cryptokeys">cryptokeys</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#tsigkeys">tsigkeys</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#poweradmin-core-tables">Poweradmin Core Tables</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#users">users</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#perm_items">perm_items</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#perm_templ">perm_templ</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#perm_templ_items">perm_templ_items</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zones">zones</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zone_templ">zone_templ</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zone_templ_records">zone_templ_records</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#records_zone_templ">records_zone_templ</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#security-tables">Security Tables</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#login_attempts">login_attempts</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#api_keys">api_keys</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#user_mfa">user_mfa</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#password_reset_tokens">password_reset_tokens</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#username_recovery_requests">username_recovery_requests</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#authentication-provider-tables">Authentication Provider Tables</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#oidc_user_links">oidc_user_links</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#saml_user_links">saml_user_links</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#user-data-tables">User Data Tables</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#user_preferences">user_preferences</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#user_agreements">user_agreements</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#zone-management-tables">Zone Management Tables</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#zone_template_sync">zone_template_sync</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#logging-tables">Logging Tables</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#log_users">log_users</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#log_zones">log_zones</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#default-permission-templates">Default Permission Templates</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#table-relationships">Table Relationships</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#key-relationships">Key Relationships</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#version-history">Version History</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#backup-considerations">Backup Considerations</a>
+    </li>
+    </ul>
                 </li>
     </ul>
                   </li>
@@ -109,6 +217,10 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../configuration/ldap/">LDAP Integration</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/oidc/">OIDC Authentication</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/saml/">SAML Authentication</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../configuration/mail/">Mail Configuration</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../configuration/record-types/">Record Type Customization</a>
@@ -136,6 +248,14 @@
                   <li class="toctree-l1"><a class="reference internal" href="../../configuration/rdap/">RDAP Configuration</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../configuration/user-agreements/">User Agreements</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/username-recovery/">Username Recovery</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/avatars/">Avatar System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/database-logging/">Database Logging</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/legacy-configuration/">Legacy Configuration (v3.x)</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">User Guide</span></p>
@@ -342,6 +462,8 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Installation</li>
+          <li class="breadcrumb-item">Database Setup</li>
       <li class="breadcrumb-item active">Database Schema</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/database/schema.md" class="icon icon-github"> Edit on GitHub</a>
@@ -672,8 +794,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="poweradmin-tables">Poweradmin Tables</h2>
-<p>These tables are added by the Poweradmin schema and provide user management, permissions, logging, and enhanced functionality:</p>
+<h2 id="poweradmin-core-tables">Poweradmin Core Tables</h2>
 <h3 id="users"><code>users</code></h3>
 <p>Stores user accounts and authentication information.</p>
 <table>
@@ -692,12 +813,12 @@
 </tr>
 <tr>
 <td><code>username</code></td>
-<td>varchar(16)</td>
+<td>varchar(64)</td>
 <td>Username</td>
 </tr>
 <tr>
 <td><code>password</code></td>
-<td>varchar(255)</td>
+<td>varchar(128)</td>
 <td>Encrypted password</td>
 </tr>
 <tr>
@@ -712,23 +833,28 @@
 </tr>
 <tr>
 <td><code>description</code></td>
-<td>text</td>
+<td>varchar(1024)</td>
 <td>User description</td>
 </tr>
 <tr>
 <td><code>perm_templ</code></td>
-<td>tinyint</td>
+<td>int</td>
 <td>Permission template ID</td>
 </tr>
 <tr>
 <td><code>active</code></td>
-<td>tinyint</td>
+<td>int</td>
 <td>Active status</td>
 </tr>
 <tr>
 <td><code>use_ldap</code></td>
-<td>tinyint</td>
+<td>int</td>
 <td>Use LDAP authentication</td>
+</tr>
+<tr>
+<td><code>auth_method</code></td>
+<td>varchar(20)</td>
+<td>Authentication method (sql, ldap, oidc, saml)</td>
 </tr>
 </tbody>
 </table>
@@ -745,7 +871,7 @@
 <tbody>
 <tr>
 <td><code>id</code></td>
-<td>tinyint</td>
+<td>int</td>
 <td>Primary key</td>
 </tr>
 <tr>
@@ -773,7 +899,7 @@
 <tbody>
 <tr>
 <td><code>id</code></td>
-<td>tinyint</td>
+<td>int</td>
 <td>Primary key</td>
 </tr>
 <tr>
@@ -806,12 +932,12 @@
 </tr>
 <tr>
 <td><code>templ_id</code></td>
-<td>tinyint</td>
+<td>int</td>
 <td>Foreign key to perm_templ.id</td>
 </tr>
 <tr>
 <td><code>perm_id</code></td>
-<td>tinyint</td>
+<td>int</td>
 <td>Foreign key to perm_items.id</td>
 </tr>
 </tbody>
@@ -844,7 +970,7 @@
 </tr>
 <tr>
 <td><code>comment</code></td>
-<td>text</td>
+<td>varchar(1024)</td>
 <td>Zone comment</td>
 </tr>
 <tr>
@@ -885,6 +1011,11 @@
 <td>int</td>
 <td>Foreign key to users.id</td>
 </tr>
+<tr>
+<td><code>created_by</code></td>
+<td>int</td>
+<td>Foreign key to users.id (creator)</td>
+</tr>
 </tbody>
 </table>
 <h3 id="zone_templ_records"><code>zone_templ_records</code></h3>
@@ -920,7 +1051,7 @@
 </tr>
 <tr>
 <td><code>content</code></td>
-<td>varchar(255)</td>
+<td>varchar(2048)</td>
 <td>Record content template</td>
 </tr>
 <tr>
@@ -947,6 +1078,11 @@
 </thead>
 <tbody>
 <tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
 <td><code>domain_id</code></td>
 <td>int</td>
 <td>Foreign key to domains.id</td>
@@ -963,8 +1099,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="version-400-new-tables">Version 4.0.0 New Tables</h2>
-<p>The following tables were added in Poweradmin v4.0.0:</p>
+<h2 id="security-tables">Security Tables</h2>
 <h3 id="login_attempts"><code>login_attempts</code></h3>
 <p>Tracks login attempts for security purposes.</p>
 <table>
@@ -982,9 +1117,9 @@
 <td>Primary key</td>
 </tr>
 <tr>
-<td><code>username</code></td>
-<td>varchar(255)</td>
-<td>Username attempted</td>
+<td><code>user_id</code></td>
+<td>int</td>
+<td>Foreign key to users.id (nullable)</td>
 </tr>
 <tr>
 <td><code>ip_address</code></td>
@@ -992,52 +1127,14 @@
 <td>IP address</td>
 </tr>
 <tr>
-<td><code>attempted_at</code></td>
-<td>timestamp</td>
-<td>Attempt timestamp</td>
+<td><code>timestamp</code></td>
+<td>int</td>
+<td>Attempt timestamp (Unix)</td>
 </tr>
 <tr>
 <td><code>successful</code></td>
 <td>tinyint</td>
 <td>Success flag</td>
-</tr>
-</tbody>
-</table>
-<h3 id="migrations"><code>migrations</code></h3>
-<p>Tracks database migrations.</p>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>version</code></td>
-<td>varchar(180)</td>
-<td>Migration version</td>
-</tr>
-<tr>
-<td><code>migration_name</code></td>
-<td>varchar(100)</td>
-<td>Migration name</td>
-</tr>
-<tr>
-<td><code>start_time</code></td>
-<td>timestamp</td>
-<td>Start time</td>
-</tr>
-<tr>
-<td><code>end_time</code></td>
-<td>timestamp</td>
-<td>End time</td>
-</tr>
-<tr>
-<td><code>breakpoint</code></td>
-<td>tinyint</td>
-<td>Breakpoint flag</td>
 </tr>
 </tbody>
 </table>
@@ -1058,29 +1155,19 @@
 <td>Primary key</td>
 </tr>
 <tr>
-<td><code>user_id</code></td>
-<td>int</td>
-<td>Foreign key to users.id</td>
-</tr>
-<tr>
 <td><code>name</code></td>
 <td>varchar(255)</td>
 <td>Key name</td>
 </tr>
 <tr>
-<td><code>key_hash</code></td>
+<td><code>secret_key</code></td>
 <td>varchar(255)</td>
 <td>Hashed API key</td>
 </tr>
 <tr>
-<td><code>last_used_at</code></td>
-<td>timestamp</td>
-<td>Last usage timestamp</td>
-</tr>
-<tr>
-<td><code>expires_at</code></td>
-<td>timestamp</td>
-<td>Expiration timestamp</td>
+<td><code>created_by</code></td>
+<td>int</td>
+<td>Foreign key to users.id</td>
 </tr>
 <tr>
 <td><code>created_at</code></td>
@@ -1088,9 +1175,19 @@
 <td>Creation timestamp</td>
 </tr>
 <tr>
-<td><code>updated_at</code></td>
+<td><code>last_used_at</code></td>
 <td>timestamp</td>
-<td>Update timestamp</td>
+<td>Last usage timestamp</td>
+</tr>
+<tr>
+<td><code>disabled</code></td>
+<td>tinyint</td>
+<td>Disabled flag</td>
+</tr>
+<tr>
+<td><code>expires_at</code></td>
+<td>timestamp</td>
+<td>Expiration timestamp</td>
 </tr>
 </tbody>
 </table>
@@ -1116,6 +1213,11 @@
 <td>Foreign key to users.id</td>
 </tr>
 <tr>
+<td><code>enabled</code></td>
+<td>tinyint</td>
+<td>MFA enabled flag</td>
+</tr>
+<tr>
 <td><code>secret</code></td>
 <td>varchar(255)</td>
 <td>MFA secret</td>
@@ -1126,9 +1228,154 @@
 <td>Recovery codes</td>
 </tr>
 <tr>
-<td><code>enabled</code></td>
+<td><code>type</code></td>
+<td>varchar(20)</td>
+<td>MFA type (app, email)</td>
+</tr>
+<tr>
+<td><code>last_used_at</code></td>
+<td>datetime</td>
+<td>Last usage timestamp</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>datetime</td>
+<td>Creation timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>datetime</td>
+<td>Update timestamp</td>
+</tr>
+<tr>
+<td><code>verification_data</code></td>
+<td>text</td>
+<td>Verification data</td>
+</tr>
+</tbody>
+</table>
+<h3 id="password_reset_tokens"><code>password_reset_tokens</code></h3>
+<p>Stores password reset tokens.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>varchar(255)</td>
+<td>User email</td>
+</tr>
+<tr>
+<td><code>token</code></td>
+<td>varchar(64)</td>
+<td>Reset token</td>
+</tr>
+<tr>
+<td><code>expires_at</code></td>
+<td>timestamp</td>
+<td>Expiration timestamp</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Creation timestamp</td>
+</tr>
+<tr>
+<td><code>used</code></td>
 <td>tinyint</td>
-<td>MFA enabled flag</td>
+<td>Token used flag</td>
+</tr>
+<tr>
+<td><code>ip_address</code></td>
+<td>varchar(45)</td>
+<td>Request IP address</td>
+</tr>
+</tbody>
+</table>
+<h3 id="username_recovery_requests"><code>username_recovery_requests</code></h3>
+<p>Tracks username recovery requests for rate limiting.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>varchar(255)</td>
+<td>Email address</td>
+</tr>
+<tr>
+<td><code>ip_address</code></td>
+<td>varchar(45)</td>
+<td>Request IP address</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Request timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="authentication-provider-tables">Authentication Provider Tables</h2>
+<h3 id="oidc_user_links"><code>oidc_user_links</code></h3>
+<p>Links users to OpenID Connect providers.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>int</td>
+<td>Foreign key to users.id</td>
+</tr>
+<tr>
+<td><code>provider_id</code></td>
+<td>varchar(50)</td>
+<td>OIDC provider identifier</td>
+</tr>
+<tr>
+<td><code>oidc_subject</code></td>
+<td>varchar(255)</td>
+<td>OIDC subject claim</td>
+</tr>
+<tr>
+<td><code>username</code></td>
+<td>varchar(255)</td>
+<td>Username from provider</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>varchar(255)</td>
+<td>Email from provider</td>
 </tr>
 <tr>
 <td><code>created_at</code></td>
@@ -1142,6 +1389,60 @@
 </tr>
 </tbody>
 </table>
+<h3 id="saml_user_links"><code>saml_user_links</code></h3>
+<p>Links users to SAML providers.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>int</td>
+<td>Foreign key to users.id</td>
+</tr>
+<tr>
+<td><code>provider_id</code></td>
+<td>varchar(50)</td>
+<td>SAML provider identifier</td>
+</tr>
+<tr>
+<td><code>saml_subject</code></td>
+<td>varchar(255)</td>
+<td>SAML NameID</td>
+</tr>
+<tr>
+<td><code>username</code></td>
+<td>varchar(255)</td>
+<td>Username from provider</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>varchar(255)</td>
+<td>Email from provider</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Creation timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>timestamp</td>
+<td>Update timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="user-data-tables">User Data Tables</h2>
 <h3 id="user_preferences"><code>user_preferences</code></h3>
 <p>Stores user preferences and settings.</p>
 <table>
@@ -1165,114 +1466,13 @@
 </tr>
 <tr>
 <td><code>preference_key</code></td>
-<td>varchar(255)</td>
+<td>varchar(100)</td>
 <td>Preference key</td>
 </tr>
 <tr>
 <td><code>preference_value</code></td>
 <td>text</td>
 <td>Preference value</td>
-</tr>
-<tr>
-<td><code>created_at</code></td>
-<td>timestamp</td>
-<td>Creation timestamp</td>
-</tr>
-<tr>
-<td><code>updated_at</code></td>
-<td>timestamp</td>
-<td>Update timestamp</td>
-</tr>
-</tbody>
-</table>
-<h3 id="zone_template_sync"><code>zone_template_sync</code></h3>
-<p>Tracks zone template synchronization.</p>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>int</td>
-<td>Primary key</td>
-</tr>
-<tr>
-<td><code>zone_templ_id</code></td>
-<td>int</td>
-<td>Foreign key to zone_templ.id</td>
-</tr>
-<tr>
-<td><code>domain_id</code></td>
-<td>int</td>
-<td>Foreign key to domains.id</td>
-</tr>
-<tr>
-<td><code>last_sync</code></td>
-<td>timestamp</td>
-<td>Last sync timestamp</td>
-</tr>
-<tr>
-<td><code>sync_status</code></td>
-<td>varchar(50)</td>
-<td>Sync status</td>
-</tr>
-<tr>
-<td><code>created_at</code></td>
-<td>timestamp</td>
-<td>Creation timestamp</td>
-</tr>
-<tr>
-<td><code>updated_at</code></td>
-<td>timestamp</td>
-<td>Update timestamp</td>
-</tr>
-</tbody>
-</table>
-<h3 id="password_reset_tokens"><code>password_reset_tokens</code></h3>
-<p>Stores password reset tokens.</p>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>int</td>
-<td>Primary key</td>
-</tr>
-<tr>
-<td><code>user_id</code></td>
-<td>int</td>
-<td>Foreign key to users.id</td>
-</tr>
-<tr>
-<td><code>token</code></td>
-<td>varchar(255)</td>
-<td>Reset token</td>
-</tr>
-<tr>
-<td><code>expires_at</code></td>
-<td>timestamp</td>
-<td>Expiration timestamp</td>
-</tr>
-<tr>
-<td><code>used</code></td>
-<td>tinyint</td>
-<td>Token used flag</td>
-</tr>
-<tr>
-<td><code>created_at</code></td>
-<td>timestamp</td>
-<td>Creation timestamp</td>
 </tr>
 </tbody>
 </table>
@@ -1312,6 +1512,65 @@
 <td>varchar(45)</td>
 <td>IP address</td>
 </tr>
+<tr>
+<td><code>user_agent</code></td>
+<td>text</td>
+<td>Browser user agent</td>
+</tr>
+</tbody>
+</table>
+<h2 id="zone-management-tables">Zone Management Tables</h2>
+<h3 id="zone_template_sync"><code>zone_template_sync</code></h3>
+<p>Tracks zone template synchronization.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>zone_id</code></td>
+<td>int</td>
+<td>Foreign key to zones.id</td>
+</tr>
+<tr>
+<td><code>zone_templ_id</code></td>
+<td>int</td>
+<td>Foreign key to zone_templ.id</td>
+</tr>
+<tr>
+<td><code>last_synced</code></td>
+<td>timestamp</td>
+<td>Last sync timestamp</td>
+</tr>
+<tr>
+<td><code>template_last_modified</code></td>
+<td>timestamp</td>
+<td>Template modification time</td>
+</tr>
+<tr>
+<td><code>needs_sync</code></td>
+<td>tinyint</td>
+<td>Sync needed flag</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Creation timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>timestamp</td>
+<td>Update timestamp</td>
+</tr>
 </tbody>
 </table>
 <h2 id="logging-tables">Logging Tables</h2>
@@ -1332,24 +1591,19 @@
 <td>Primary key</td>
 </tr>
 <tr>
-<td><code>timestamp</code></td>
+<td><code>event</code></td>
+<td>varchar(2048)</td>
+<td>Event description</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
 <td>timestamp</td>
-<td>Activity timestamp</td>
+<td>Event timestamp</td>
 </tr>
 <tr>
-<td><code>user_id</code></td>
+<td><code>priority</code></td>
 <td>int</td>
-<td>Foreign key to users.id</td>
-</tr>
-<tr>
-<td><code>action</code></td>
-<td>varchar(255)</td>
-<td>Action performed</td>
-</tr>
-<tr>
-<td><code>data</code></td>
-<td>text</td>
-<td>Action data</td>
+<td>Log priority level</td>
 </tr>
 </tbody>
 </table>
@@ -1370,29 +1624,56 @@
 <td>Primary key</td>
 </tr>
 <tr>
-<td><code>timestamp</code></td>
+<td><code>event</code></td>
+<td>varchar(2048)</td>
+<td>Event description</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
 <td>timestamp</td>
-<td>Activity timestamp</td>
+<td>Event timestamp</td>
 </tr>
 <tr>
-<td><code>user_id</code></td>
+<td><code>priority</code></td>
 <td>int</td>
-<td>Foreign key to users.id</td>
+<td>Log priority level</td>
 </tr>
 <tr>
-<td><code>domain_id</code></td>
+<td><code>zone_id</code></td>
 <td>int</td>
-<td>Foreign key to domains.id</td>
+<td>Related zone ID</td>
+</tr>
+</tbody>
+</table>
+<h2 id="default-permission-templates">Default Permission Templates</h2>
+<p>Poweradmin includes default permission templates:</p>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Administrator</td>
+<td>Full access (user_is_ueberuser)</td>
 </tr>
 <tr>
-<td><code>action</code></td>
-<td>varchar(255)</td>
-<td>Action performed</td>
+<td>Zone Manager</td>
+<td>Full management of own zones</td>
 </tr>
 <tr>
-<td><code>data</code></td>
-<td>text</td>
-<td>Action data</td>
+<td>DNS Editor</td>
+<td>Edit records (no SOA/NS)</td>
+</tr>
+<tr>
+<td>Read Only</td>
+<td>View-only access</td>
+</tr>
+<tr>
+<td>No Access</td>
+<td>No permissions</td>
 </tr>
 </tbody>
 </table>
@@ -1404,16 +1685,35 @@
 <li><strong>User Permissions</strong>: <code>users.perm_templ</code> → <code>perm_templ.id</code></li>
 <li><strong>Permission Templates</strong>: <code>perm_templ_items.templ_id</code> → <code>perm_templ.id</code>, <code>perm_templ_items.perm_id</code> → <code>perm_items.id</code></li>
 <li><strong>Zone Templates</strong>: <code>zone_templ_records.zone_templ_id</code> → <code>zone_templ.id</code></li>
-<li><strong>API Keys</strong>: <code>api_keys.user_id</code> → <code>users.id</code></li>
+<li><strong>API Keys</strong>: <code>api_keys.created_by</code> → <code>users.id</code></li>
 <li><strong>MFA</strong>: <code>user_mfa.user_id</code> → <code>users.id</code></li>
 <li><strong>User Preferences</strong>: <code>user_preferences.user_id</code> → <code>users.id</code></li>
+<li><strong>OIDC Links</strong>: <code>oidc_user_links.user_id</code> → <code>users.id</code></li>
+<li><strong>SAML Links</strong>: <code>saml_user_links.user_id</code> → <code>users.id</code></li>
 </ol>
-<h3 id="database-constraints">Database Constraints</h3>
-<ul>
-<li><strong>Foreign Key Constraints</strong>: Ensure referential integrity between related tables</li>
-<li><strong>Unique Constraints</strong>: Prevent duplicate usernames, domain names, etc.</li>
-<li><strong>Index Constraints</strong>: Optimize query performance on frequently accessed columns</li>
-</ul>
+<h2 id="version-history">Version History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4.2.0</td>
+<td>Added <code>oidc_user_links</code>, <code>saml_user_links</code>, <code>username_recovery_requests</code>; Added <code>auth_method</code> to users; Added zone deletion permissions</td>
+</tr>
+<tr>
+<td>4.1.0</td>
+<td>Performance indexes added</td>
+</tr>
+<tr>
+<td>4.0.0</td>
+<td>Added <code>login_attempts</code>, <code>api_keys</code>, <code>user_mfa</code>, <code>user_preferences</code>, <code>zone_template_sync</code>, <code>password_reset_tokens</code>, <code>user_agreements</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="backup-considerations">Backup Considerations</h2>
 <p>When backing up Poweradmin, ensure you backup:</p>
 <ol>
@@ -1421,13 +1721,6 @@
 <li><strong>Poweradmin Tables</strong>: Contains users, permissions, and configuration</li>
 <li><strong>Configuration Files</strong>: <code>config/settings.php</code> and related files</li>
 </ol>
-<h2 id="migration-notes">Migration Notes</h2>
-<ul>
-<li>Always backup your database before running migrations</li>
-<li>Use the provided SQL migration files for version upgrades</li>
-<li>Test migrations in a staging environment first</li>
-<li>Verify all tables exist after migration using the verification queries in the upgrade documentation</li>
-</ul>
 <p>For more information about database setup and migration, see:
 - <a href="../mysql-configuration/">Database Configuration</a>
 - <a href="../../upgrading/v4.0.0/">Upgrading to v4.0.0</a></p>
@@ -1435,6 +1728,10 @@
 
             </div>
           </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../sqlite/" class="btn btn-neutral float-left" title="SQLite"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../installation/manual/" class="btn btn-neutral float-right" title="Manual Installation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
 
   <hr/>
 
@@ -1460,6 +1757,10 @@
         </span>
     
     
+      <span><a href="../sqlite/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../installation/manual/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

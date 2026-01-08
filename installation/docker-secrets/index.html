@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/installation/docker-secrets/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Docker Secrets - Poweradmin Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Docker Secrets";
+        var mkdocs_page_input_path = "installation/docker-secrets.md";
+        var mkdocs_page_url = "/installation/docker-secrets/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/php.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Poweradmin Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/overview/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/features/">Features</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Quick Evaluation</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../getting-started/docker-demo/">Docker Demo</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/requirements/">System Requirements</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Installation</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Docker</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../docker/">Docker Installation</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Docker Secrets</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#docker-compose-example">Docker Compose Example</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#docker-swarm-example">Docker Swarm Example</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#supported-secret-variables">Supported Secret Variables</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#database">Database</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#powerdns-api">PowerDNS API</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#mailsmtp">Mail/SMTP</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#security">Security</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ldap">LDAP</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#oidc">OIDC</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#saml">SAML</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#admin-user">Admin User</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#multi-line-secrets">Multi-line Secrets</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#security-best-practices">Security Best Practices</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration-priority">Configuration Priority</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#error-handling">Error Handling</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#check-secret-loading">Check secret loading</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#enable-debug-mode">Enable debug mode</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#common-issues">Common issues</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#directory-structure">Directory Structure</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#related-documentation">Related Documentation</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Operating Systems</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../debian/">Debian</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ubuntu/">Ubuntu</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../centos/">CentOS/RHEL</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Database Setup</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/mysql-configuration/">MySQL/MariaDB</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/postgresql-configuration/">PostgreSQL</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/sqlite/">SQLite</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/schema/">Database Schema</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../manual/">Manual Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../composer/">Composer</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../remote-setup-guide/">Remote Setup</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Configuration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/basic/">Basic Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/dns-settings/">DNS Settings</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/dns-wizards/">DNS Wizards</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/database/">Database Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/powerdns-api/">PowerDNS API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/dnssec/">DNSSEC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/logging/">Logging Setup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/ldap/">LDAP Integration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/oidc/">OIDC Authentication</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/saml/">SAML Authentication</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/mail/">Mail Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/record-types/">Record Type Customization</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >UI Customization</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../configuration/ui/overview/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../configuration/ui/themes/">Themes</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../configuration/ui/layout/">Layout</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../configuration/ui/custom-css/">Custom CSS</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/password-policies/">Password Policies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/security-policies/">Security Policies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/api/">API Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/whois/">WHOIS Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/rdap/">RDAP Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/user-agreements/">User Agreements</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/username-recovery/">Username Recovery</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/avatars/">Avatar System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/database-logging/">Database Logging</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/legacy-configuration/">Legacy Configuration (v3.x)</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >User Management</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/users-roles/">Users and Roles</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/permissions/">Permissions</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >DNS Management</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/dns-templates/">DNS Templates</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/reverse-dns/">Reverse DNS (PTR)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Dynamic DNS</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/overview/">Overview</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/configuration/">Configuration</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/client-setup/">Client Setup</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/using-curl/">Using cURL</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Advanced Topics</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >Logging</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../advanced/logging-config/">Log Configuration</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Maintenance</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">Overview</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrading</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrading/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >v4.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.1.0/">v4.1.0</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.0/">v4.0.0</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >v3.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >v3.9.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.3/">v3.9.3</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.2/">v3.9.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.1/">v3.9.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.0/">v3.9.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.8.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.8.1/">v3.8.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.8.0/">v3.8.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.7.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.7.0/">v3.7.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.6.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.6.1/">v3.6.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.6.0/">v3.6.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.5.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.5.1/">v3.5.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.5.0/">v3.5.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.4.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.2/">v3.4.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.1/">v3.4.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.0/">v3.4.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.3.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.3.0/">v3.3.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.2.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.2.0/">v3.2.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.1.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.1.0/">v3.1.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.0.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.0.0/">v3.0.0</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >v2.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >v2.2.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.2/">v2.2.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.1/">v2.2.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.0/">v2.2.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v2.1.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.9/">v2.1.9</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.8/">v2.1.8</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.7/">v2.1.7</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.6/">v2.1.6</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.5/">v2.1.5</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.4/">v2.1.4</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.3/">v2.1.3</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.2/">v2.1.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.1/">v2.1.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.0/">v2.1.0</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Troubleshooting</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting/debugging/">Debugging</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Contributing</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/development/">Development Setup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/coding-standards/">Coding Standards</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/testing/">Testing</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Poweradmin Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Installation</li>
+          <li class="breadcrumb-item">Docker</li>
+      <li class="breadcrumb-item active">Docker Secrets</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/installation/docker-secrets.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+  <div class="announcement">
+    This documentation covers Poweradmin 4.x. Some sections are still being expanded.
+  </div>
+  
+                <h1 id="docker-secrets">Docker Secrets</h1>
+<p>For production deployments, use Docker secrets to securely manage sensitive configuration values instead of plain environment variables.</p>
+<h2 id="overview">Overview</h2>
+<p>Any Poweradmin environment variable can be provided via a file by appending <code>__FILE</code> to the variable name. The container reads the file contents and uses them as the actual value.</p>
+<pre><code class="language-bash"># Instead of this:
+-e DB_PASS=mySecretPassword
+
+# Use this:
+-e DB_PASS__FILE=/run/secrets/db_password
+</code></pre>
+<h2 id="docker-compose-example">Docker Compose Example</h2>
+<pre><code class="language-yaml">version: '3.8'
+
+services:
+  poweradmin:
+    image: poweradmin/poweradmin:stable
+    ports:
+      - &quot;80:80&quot;
+    environment:
+      DB_TYPE: mysql
+      DB_HOST: mysql
+      DB_USER: poweradmin
+      DB_PASS__FILE: /run/secrets/db_password
+      DB_NAME: poweradmin
+      PA_PDNS_API_KEY__FILE: /run/secrets/pdns_api_key
+      PA_SMTP_PASSWORD__FILE: /run/secrets/smtp_password
+    secrets:
+      - db_password
+      - pdns_api_key
+      - smtp_password
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_DATABASE: poweradmin
+      MYSQL_USER: poweradmin
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - mysql_root_password
+      - db_password
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
+  pdns_api_key:
+    file: ./secrets/pdns_api_key.txt
+  smtp_password:
+    file: ./secrets/smtp_password.txt
+</code></pre>
+<h2 id="docker-swarm-example">Docker Swarm Example</h2>
+<pre><code class="language-yaml">version: '3.8'
+
+services:
+  poweradmin:
+    image: poweradmin/poweradmin:stable
+    ports:
+      - &quot;80:80&quot;
+    environment:
+      DB_TYPE: mysql
+      DB_HOST: mysql
+      DB_USER: poweradmin
+      DB_PASS__FILE: /run/secrets/db_password
+      DB_NAME: poweradmin
+    secrets:
+      - db_password
+    deploy:
+      replicas: 2
+
+secrets:
+  db_password:
+    external: true
+</code></pre>
+<p>Create external secrets:</p>
+<pre><code class="language-bash">echo &quot;mySecretPassword&quot; | docker secret create db_password -
+echo &quot;pdns_api_key_12345&quot; | docker secret create pdns_api_key -
+</code></pre>
+<h2 id="supported-secret-variables">Supported Secret Variables</h2>
+<h3 id="database">Database</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DB_PASS__FILE</code></td>
+<td>Database password</td>
+</tr>
+<tr>
+<td><code>DB_USER__FILE</code></td>
+<td>Database username</td>
+</tr>
+</tbody>
+</table>
+<h3 id="powerdns-api">PowerDNS API</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA_PDNS_API_KEY__FILE</code></td>
+<td>PowerDNS API key</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mailsmtp">Mail/SMTP</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA_SMTP_PASSWORD__FILE</code></td>
+<td>SMTP password</td>
+</tr>
+<tr>
+<td><code>PA_SMTP_USER__FILE</code></td>
+<td>SMTP username</td>
+</tr>
+</tbody>
+</table>
+<h3 id="security">Security</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA_SESSION_KEY__FILE</code></td>
+<td>Session encryption key</td>
+</tr>
+<tr>
+<td><code>PA_RECAPTCHA_SECRET_KEY__FILE</code></td>
+<td>reCAPTCHA secret key</td>
+</tr>
+<tr>
+<td><code>PA_RECAPTCHA_SITE_KEY__FILE</code></td>
+<td>reCAPTCHA site key</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ldap">LDAP</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA_LDAP_BIND_PASSWORD__FILE</code></td>
+<td>LDAP bind password</td>
+</tr>
+<tr>
+<td><code>PA_LDAP_BIND_DN__FILE</code></td>
+<td>LDAP bind DN</td>
+</tr>
+</tbody>
+</table>
+<h3 id="oidc">OIDC</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA_OIDC_AZURE_CLIENT_SECRET__FILE</code></td>
+<td>Azure AD client secret</td>
+</tr>
+<tr>
+<td><code>PA_OIDC_GOOGLE_CLIENT_SECRET__FILE</code></td>
+<td>Google client secret</td>
+</tr>
+<tr>
+<td><code>PA_OIDC_KEYCLOAK_CLIENT_SECRET__FILE</code></td>
+<td>Keycloak client secret</td>
+</tr>
+<tr>
+<td><code>PA_OIDC_OKTA_CLIENT_SECRET__FILE</code></td>
+<td>Okta client secret</td>
+</tr>
+</tbody>
+</table>
+<h3 id="saml">SAML</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA_SAML_SP_PRIVATE_KEY__FILE</code></td>
+<td>SAML SP private key</td>
+</tr>
+<tr>
+<td><code>PA_SAML_AZURE_X509_CERT__FILE</code></td>
+<td>Azure AD IdP certificate</td>
+</tr>
+<tr>
+<td><code>PA_SAML_OKTA_X509_CERT__FILE</code></td>
+<td>Okta IdP certificate</td>
+</tr>
+</tbody>
+</table>
+<h3 id="admin-user">Admin User</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA_ADMIN_PASSWORD__FILE</code></td>
+<td>Initial admin password</td>
+</tr>
+</tbody>
+</table>
+<h2 id="multi-line-secrets">Multi-line Secrets</h2>
+<p>For certificates and private keys, create files with the full content:</p>
+<pre><code class="language-bash"># Create certificate secret
+cat &gt; ./secrets/saml_cert.txt &lt;&lt; 'EOF'
+MIICnTCCAYUCBgF...
+...certificate content...
+EOF
+
+# Create private key secret
+cat &gt; ./secrets/saml_key.txt &lt;&lt; 'EOF'
+-----BEGIN PRIVATE KEY-----
+MIIEvgIBADANBg...
+...key content...
+-----END PRIVATE KEY-----
+EOF
+</code></pre>
+<h2 id="security-best-practices">Security Best Practices</h2>
+<ol>
+<li><strong>File permissions</strong>: Set restrictive permissions on secret files</li>
+</ol>
+<pre><code class="language-bash">chmod 600 ./secrets/*
+</code></pre>
+<ol>
+<li><strong>Read-only mounts</strong>: Mount secrets as read-only</li>
+</ol>
+<pre><code class="language-yaml">volumes:
+  - ./secrets/db_password.txt:/run/secrets/db_password:ro
+</code></pre>
+<ol>
+<li><strong>Exclude from version control</strong>: Add secrets to <code>.gitignore</code></li>
+</ol>
+<pre><code>secrets/
+*.key
+*.pem
+</code></pre>
+<ol>
+<li>
+<p><strong>Use external secrets in production</strong>: For Swarm deployments, use external secrets managed outside of compose files</p>
+</li>
+<li>
+<p><strong>Rotate secrets regularly</strong>: Update secret files and restart containers</p>
+</li>
+</ol>
+<h2 id="configuration-priority">Configuration Priority</h2>
+<p>Configuration is loaded in this order (later overrides earlier):</p>
+<ol>
+<li>Default values</li>
+<li>Configuration file (<code>config/settings.php</code>)</li>
+<li>Environment variables</li>
+<li>Docker secrets (<code>__FILE</code> variables)</li>
+</ol>
+<h2 id="error-handling">Error Handling</h2>
+<p>The container validates secrets at startup:</p>
+<ul>
+<li><strong>Mutual exclusivity</strong>: Cannot set both <code>VAR</code> and <code>VAR__FILE</code> for the same variable</li>
+<li><strong>File existence</strong>: Secret files must exist and be readable</li>
+<li><strong>Permission checks</strong>: Files must be accessible by the container user</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="check-secret-loading">Check secret loading</h3>
+<pre><code class="language-bash">docker logs poweradmin | grep -i secret
+</code></pre>
+<p>Look for messages like:</p>
+<pre><code>[2025-01-18 10:30:00] Getting secret DB_PASS from /run/secrets/db_password
+</code></pre>
+<h3 id="enable-debug-mode">Enable debug mode</h3>
+<pre><code class="language-yaml">environment:
+  DEBUG: &quot;true&quot;
+</code></pre>
+<h3 id="common-issues">Common issues</h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>File not found</td>
+<td>Verify secret file path and mount</td>
+</tr>
+<tr>
+<td>Permission denied</td>
+<td>Check file permissions (readable by www-data)</td>
+</tr>
+<tr>
+<td>Both variables set</td>
+<td>Remove either <code>VAR</code> or <code>VAR__FILE</code>, not both</td>
+</tr>
+<tr>
+<td>Empty value</td>
+<td>Ensure secret file is not empty</td>
+</tr>
+</tbody>
+</table>
+<h2 id="directory-structure">Directory Structure</h2>
+<p>Recommended secrets directory layout:</p>
+<pre><code>project/
+├── docker-compose.yml
+└── secrets/
+    ├── db_password.txt
+    ├── pdns_api_key.txt
+    ├── smtp_password.txt
+    ├── oidc_client_secret.txt
+    └── saml_sp_key.txt
+</code></pre>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="../docker/">Docker Installation</a></li>
+<li><a href="../../configuration/basic/">Basic Configuration</a></li>
+<li><a href="../../configuration/oidc/">OIDC Authentication</a></li>
+<li><a href="../../configuration/saml/">SAML Authentication</a></li>
+</ul>
+              
+
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../docker/" class="btn btn-neutral float-left" title="Docker Installation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../debian/" class="btn btn-neutral float-right" title="Debian">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/poweradmin/poweradmin-docs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../docker/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../debian/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

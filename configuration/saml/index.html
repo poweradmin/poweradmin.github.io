@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/configuration/saml/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>SAML Authentication - Poweradmin Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "SAML Authentication";
+        var mkdocs_page_input_path = "configuration/saml.md";
+        var mkdocs_page_url = "/configuration/saml/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/php.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Poweradmin Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/overview/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/features/">Features</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Quick Evaluation</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../getting-started/docker-demo/">Docker Demo</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/requirements/">System Requirements</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Installation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Docker</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/docker/">Docker Installation</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/docker-secrets/">Docker Secrets</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Operating Systems</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/debian/">Debian</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/ubuntu/">Ubuntu</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/centos/">CentOS/RHEL</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Database Setup</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/mysql-configuration/">MySQL/MariaDB</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/postgresql-configuration/">PostgreSQL</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/sqlite/">SQLite</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/schema/">Database Schema</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/manual/">Manual Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/composer/">Composer</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/remote-setup-guide/">Remote Setup</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Configuration</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../basic/">Basic Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dns-settings/">DNS Settings</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dns-wizards/">DNS Wizards</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../database/">Database Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../powerdns-api/">PowerDNS API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dnssec/">DNSSEC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging Setup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ldap/">LDAP Integration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../oidc/">OIDC Authentication</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">SAML Authentication</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#global-settings">Global Settings</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#permission-template-mapping">Permission Template Mapping</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#service-provider-sp-configuration">Service Provider (SP) Configuration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sp-metadata">SP Metadata</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#provider-configuration">Provider Configuration</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#azure-ad-saml">Azure AD (SAML)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#okta-saml">Okta (SAML)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#auth0-saml">Auth0 (SAML)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#keycloak-saml">Keycloak (SAML)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#generic-saml-provider">Generic SAML Provider</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#user-mapping">User Mapping</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#security-settings">Security Settings</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sp-signing-optional">SP Signing (Optional)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#docker-configuration">Docker Configuration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#multiple-providers">Multiple Providers</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#invalid-signature-error">"Invalid signature" error</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#user-not-created-after-login">User not created after login</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#nameid-missing-error">NameID missing error</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#groups-not-mapped">Groups not mapped</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#redirect-loop">Redirect loop</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#certificate-errors">Certificate errors</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#related-documentation">Related Documentation</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mail/">Mail Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../record-types/">Record Type Customization</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >UI Customization</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../ui/overview/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ui/themes/">Themes</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ui/layout/">Layout</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../ui/custom-css/">Custom CSS</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../password-policies/">Password Policies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../security-policies/">Security Policies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../api/">API Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../whois/">WHOIS Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../rdap/">RDAP Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../user-agreements/">User Agreements</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../username-recovery/">Username Recovery</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../avatars/">Avatar System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../database-logging/">Database Logging</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../legacy-configuration/">Legacy Configuration (v3.x)</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >User Management</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/users-roles/">Users and Roles</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/permissions/">Permissions</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >DNS Management</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/dns-templates/">DNS Templates</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/reverse-dns/">Reverse DNS (PTR)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >Dynamic DNS</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/overview/">Overview</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/configuration/">Configuration</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/client-setup/">Client Setup</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/using-curl/">Using cURL</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Advanced Topics</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" >Logging</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../advanced/logging-config/">Log Configuration</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Maintenance</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">Overview</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrading</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrading/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >v4.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.1.0/">v4.1.0</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.0/">v4.0.0</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >v3.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >v3.9.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.3/">v3.9.3</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.2/">v3.9.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.1/">v3.9.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.0/">v3.9.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.8.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.8.1/">v3.8.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.8.0/">v3.8.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.7.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.7.0/">v3.7.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.6.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.6.1/">v3.6.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.6.0/">v3.6.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.5.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.5.1/">v3.5.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.5.0/">v3.5.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.4.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.2/">v3.4.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.1/">v3.4.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.0/">v3.4.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.3.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.3.0/">v3.3.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.2.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.2.0/">v3.2.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.1.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.1.0/">v3.1.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v3.0.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.0.0/">v3.0.0</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >v2.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >v2.2.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.2/">v2.2.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.1/">v2.2.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.0/">v2.2.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" >v2.1.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.9/">v2.1.9</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.8/">v2.1.8</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.7/">v2.1.7</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.6/">v2.1.6</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.5/">v2.1.5</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.4/">v2.1.4</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.3/">v2.1.3</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.2/">v2.1.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.1/">v2.1.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.0/">v2.1.0</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Troubleshooting</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting/debugging/">Debugging</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Contributing</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/development/">Development Setup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/coding-standards/">Coding Standards</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/testing/">Testing</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Poweradmin Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Configuration</li>
+      <li class="breadcrumb-item active">SAML Authentication</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/configuration/saml.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+  <div class="announcement">
+    This documentation covers Poweradmin 4.x. Some sections are still being expanded.
+  </div>
+  
+                <h1 id="saml-authentication">SAML Authentication</h1>
+<p>Poweradmin supports SAML 2.0 for single sign-on (SSO) authentication with enterprise identity providers like Azure AD, Okta, Auth0, and Keycloak.</p>
+<h2 id="overview">Overview</h2>
+<p>SAML (Security Assertion Markup Language) allows users to authenticate using their organization's identity provider. When enabled, users see additional "Sign in with..." buttons on the login page.</p>
+<p>Key features:</p>
+<ul>
+<li>Automatic user provisioning from SAML assertions</li>
+<li>Link SAML accounts to existing users by email</li>
+<li>Sync user information from SAML attributes</li>
+<li>Map SAML groups/roles to Poweradmin permission templates</li>
+<li>Support for multiple providers simultaneously</li>
+<li>SP metadata generation for easy IdP configuration</li>
+</ul>
+<h2 id="global-settings">Global Settings</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>saml.enabled</code></td>
+<td>false</td>
+<td>Enable SAML authentication</td>
+</tr>
+<tr>
+<td><code>saml.auto_provision</code></td>
+<td>true</td>
+<td>Auto-create users from SAML assertions</td>
+</tr>
+<tr>
+<td><code>saml.link_by_email</code></td>
+<td>true</td>
+<td>Link SAML accounts to existing users by email</td>
+</tr>
+<tr>
+<td><code>saml.sync_user_info</code></td>
+<td>true</td>
+<td>Sync user info on each login</td>
+</tr>
+<tr>
+<td><code>saml.default_permission_template</code></td>
+<td>""</td>
+<td>Default permission template for new users</td>
+</tr>
+</tbody>
+</table>
+<h2 id="permission-template-mapping">Permission Template Mapping</h2>
+<p>Map SAML groups/roles to Poweradmin permission templates:</p>
+<pre><code class="language-php">'saml' =&gt; [
+    'enabled' =&gt; true,
+    'permission_template_mapping' =&gt; [
+        'poweradmin-admins' =&gt; 'Administrator',
+        'dns-operators' =&gt; 'DNS Operator',
+        'dns-viewers' =&gt; 'Read Only',
+    ],
+],
+</code></pre>
+<h2 id="service-provider-sp-configuration">Service Provider (SP) Configuration</h2>
+<p>Poweradmin acts as a SAML Service Provider. Configure SP settings in the <code>sp</code> section:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sp.entity_id</code></td>
+<td>(auto)</td>
+<td>SP Entity ID (defaults to <code>{base_url}/saml/metadata</code>)</td>
+</tr>
+<tr>
+<td><code>sp.assertion_consumer_service_url</code></td>
+<td>(auto)</td>
+<td>ACS URL (defaults to <code>{base_url}/saml/acs</code>)</td>
+</tr>
+<tr>
+<td><code>sp.single_logout_service_url</code></td>
+<td>(auto)</td>
+<td>SLO URL (defaults to <code>{base_url}/saml/sls</code>)</td>
+</tr>
+<tr>
+<td><code>sp.name_id_format</code></td>
+<td>emailAddress</td>
+<td>NameID format</td>
+</tr>
+<tr>
+<td><code>sp.x509cert</code></td>
+<td>""</td>
+<td>SP certificate for signing (optional)</td>
+</tr>
+<tr>
+<td><code>sp.private_key</code></td>
+<td>""</td>
+<td>SP private key for signing (optional)</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-php">'saml' =&gt; [
+    'enabled' =&gt; true,
+    'sp' =&gt; [
+        'entity_id' =&gt; 'https://poweradmin.example.com/saml/metadata',
+        'name_id_format' =&gt; 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
+    ],
+],
+</code></pre>
+<h2 id="sp-metadata">SP Metadata</h2>
+<p>Poweradmin can generate SP metadata for your identity provider. Access it at:</p>
+<pre><code>https://your-poweradmin.com/saml/metadata/{provider-id}
+</code></pre>
+<p>For example: <code>https://your-poweradmin.com/saml/metadata/azure</code></p>
+<h2 id="provider-configuration">Provider Configuration</h2>
+<p>Each provider requires IdP-specific configuration:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Yes</td>
+<td>Internal provider identifier</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Yes</td>
+<td>Text shown on login button</td>
+</tr>
+<tr>
+<td><code>entity_id</code></td>
+<td>Yes</td>
+<td>IdP Entity ID</td>
+</tr>
+<tr>
+<td><code>sso_url</code></td>
+<td>Yes</td>
+<td>IdP Single Sign-On URL</td>
+</tr>
+<tr>
+<td><code>slo_url</code></td>
+<td>No</td>
+<td>IdP Single Logout URL</td>
+</tr>
+<tr>
+<td><code>x509cert</code></td>
+<td>Yes</td>
+<td>IdP X.509 certificate (without headers)</td>
+</tr>
+<tr>
+<td><code>user_mapping</code></td>
+<td>Yes</td>
+<td>Map SAML attributes to user fields</td>
+</tr>
+</tbody>
+</table>
+<h3 id="azure-ad-saml">Azure AD (SAML)</h3>
+<ol>
+<li>In Azure Portal, go to Enterprise Applications &gt; New Application</li>
+<li>Create a non-gallery application</li>
+<li>Configure Single Sign-On &gt; SAML</li>
+<li>Set Entity ID: <code>https://your-poweradmin.com/saml/metadata/azure</code></li>
+<li>Set Reply URL (ACS): <code>https://your-poweradmin.com/saml/acs</code></li>
+<li>Download the Certificate (Base64)</li>
+</ol>
+<pre><code class="language-php">'saml' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'azure' =&gt; [
+            'name' =&gt; 'Microsoft Azure AD',
+            'display_name' =&gt; 'Sign in with Microsoft',
+            'entity_id' =&gt; 'https://sts.windows.net/{tenant-id}/',
+            'sso_url' =&gt; 'https://login.microsoftonline.com/{tenant-id}/saml2',
+            'slo_url' =&gt; 'https://login.microsoftonline.com/{tenant-id}/saml2',
+            'x509cert' =&gt; 'MIICnTCCAYUCBgF...', // Certificate without BEGIN/END headers
+            'user_mapping' =&gt; [
+                'username' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',
+                'email' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
+                'first_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',
+                'last_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',
+                'display_name' =&gt; 'http://schemas.microsoft.com/identity/claims/displayname',
+                'groups' =&gt; 'http://schemas.microsoft.com/ws/2008/06/identity/claims/groups',
+            ],
+        ],
+    ],
+],
+</code></pre>
+<h3 id="okta-saml">Okta (SAML)</h3>
+<ol>
+<li>In Okta Admin Console, go to Applications &gt; Create App Integration</li>
+<li>Select SAML 2.0</li>
+<li>Set Single Sign-On URL: <code>https://your-poweradmin.com/saml/acs</code></li>
+<li>Set Audience URI (SP Entity ID): <code>https://your-poweradmin.com/saml/metadata/okta</code></li>
+<li>Configure attribute statements</li>
+<li>Download the IdP metadata or certificate</li>
+</ol>
+<pre><code class="language-php">'saml' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'okta' =&gt; [
+            'name' =&gt; 'Okta',
+            'display_name' =&gt; 'Sign in with Okta',
+            'entity_id' =&gt; 'http://www.okta.com/{app-id}',
+            'sso_url' =&gt; 'https://{domain}.okta.com/app/{app-name}/{app-id}/sso/saml',
+            'slo_url' =&gt; 'https://{domain}.okta.com/app/{app-name}/{app-id}/slo/saml',
+            'x509cert' =&gt; 'MIIDpDCCAoygAwIBAgIGAX...', // Certificate
+            'user_mapping' =&gt; [
+                'username' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',
+                'email' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
+                'first_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',
+                'last_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',
+                'groups' =&gt; 'http://schemas.xmlsoap.org/claims/Group',
+            ],
+        ],
+    ],
+],
+</code></pre>
+<h3 id="auth0-saml">Auth0 (SAML)</h3>
+<ol>
+<li>In Auth0 Dashboard, go to Applications &gt; Create Application</li>
+<li>Enable SAML2 Web App addon</li>
+<li>Configure SAML settings</li>
+<li>Download IdP metadata</li>
+</ol>
+<pre><code class="language-php">'saml' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'auth0' =&gt; [
+            'name' =&gt; 'Auth0',
+            'display_name' =&gt; 'Sign in with Auth0',
+            'entity_id' =&gt; 'urn:auth0:{tenant}:{connection}',
+            'sso_url' =&gt; 'https://{tenant}.auth0.com/samlp/{client-id}',
+            'slo_url' =&gt; 'https://{tenant}.auth0.com/samlp/{client-id}/logout',
+            'x509cert' =&gt; 'MIIDDTCCAfWgAwIBAgIJAP...', // Certificate
+            'user_mapping' =&gt; [
+                'username' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier',
+                'email' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
+                'first_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',
+                'last_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',
+                'groups' =&gt; 'http://schemas.auth0.com/roles',
+            ],
+        ],
+    ],
+],
+</code></pre>
+<h3 id="keycloak-saml">Keycloak (SAML)</h3>
+<ol>
+<li>In Keycloak Admin Console, create a new Client</li>
+<li>Set Client Protocol to "saml"</li>
+<li>Set Client ID: <code>https://your-poweradmin.com/saml/metadata/keycloak</code></li>
+<li>Configure endpoints and download certificate</li>
+</ol>
+<pre><code class="language-php">'saml' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'keycloak' =&gt; [
+            'name' =&gt; 'Keycloak',
+            'display_name' =&gt; 'Sign in with Keycloak',
+            'entity_id' =&gt; 'https://keycloak.example.com/realms/{realm}',
+            'sso_url' =&gt; 'https://keycloak.example.com/realms/{realm}/protocol/saml',
+            'slo_url' =&gt; 'https://keycloak.example.com/realms/{realm}/protocol/saml',
+            'x509cert' =&gt; 'MIIClTCCAX0CBgF...', // Certificate
+            'user_mapping' =&gt; [
+                'username' =&gt; 'username',
+                'email' =&gt; 'email',
+                'first_name' =&gt; 'firstName',
+                'last_name' =&gt; 'lastName',
+                'display_name' =&gt; 'name',
+                'groups' =&gt; 'groups',
+            ],
+        ],
+    ],
+],
+</code></pre>
+<h3 id="generic-saml-provider">Generic SAML Provider</h3>
+<p>For other SAML identity providers:</p>
+<pre><code class="language-php">'saml' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'custom' =&gt; [
+            'name' =&gt; 'Custom SAML IdP',
+            'display_name' =&gt; 'Sign in with SSO',
+            'entity_id' =&gt; 'https://idp.example.com/metadata',
+            'sso_url' =&gt; 'https://idp.example.com/sso',
+            'slo_url' =&gt; 'https://idp.example.com/slo',
+            'x509cert' =&gt; 'MIIDpDCCAoygAwIBAgIGAX...',
+            'user_mapping' =&gt; [
+                'username' =&gt; 'uid',
+                'email' =&gt; 'email',
+                'first_name' =&gt; 'firstName',
+                'last_name' =&gt; 'lastName',
+                'display_name' =&gt; 'displayName',
+                'groups' =&gt; 'groups',
+            ],
+            'security' =&gt; [
+                'wantAssertionsSigned' =&gt; true,
+                'wantNameId' =&gt; true,
+            ],
+        ],
+    ],
+],
+</code></pre>
+<h2 id="user-mapping">User Mapping</h2>
+<p>SAML attributes are mapped to Poweradmin user fields. Common attribute formats:</p>
+<p><strong>XML URI Format</strong> (Azure AD, Okta, Auth0):</p>
+<pre><code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
+http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname
+http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname
+</code></pre>
+<p><strong>Simple Format</strong> (Keycloak):</p>
+<pre><code>email
+firstName
+lastName
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Poweradmin Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>username</code></td>
+<td>User's login name</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>Email address</td>
+</tr>
+<tr>
+<td><code>first_name</code></td>
+<td>First name</td>
+</tr>
+<tr>
+<td><code>last_name</code></td>
+<td>Last name</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>Display name</td>
+</tr>
+<tr>
+<td><code>groups</code></td>
+<td>Group/role memberships</td>
+</tr>
+</tbody>
+</table>
+<h2 id="security-settings">Security Settings</h2>
+<p>Configure security options per provider:</p>
+<pre><code class="language-php">'security' =&gt; [
+    'nameIdEncrypted' =&gt; false,
+    'authnRequestsSigned' =&gt; false,
+    'logoutRequestSigned' =&gt; false,
+    'logoutResponseSigned' =&gt; false,
+    'signMetadata' =&gt; false,
+    'wantAssertionsSigned' =&gt; true,
+    'wantNameId' =&gt; true,
+    'wantAssertionsEncrypted' =&gt; false,
+    'signatureAlgorithm' =&gt; 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
+    'digestAlgorithm' =&gt; 'http://www.w3.org/2001/04/xmlenc#sha256',
+],
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>wantAssertionsSigned</code></td>
+<td>true</td>
+<td>Require signed assertions</td>
+</tr>
+<tr>
+<td><code>wantNameId</code></td>
+<td>true</td>
+<td>Require NameID in assertions</td>
+</tr>
+<tr>
+<td><code>authnRequestsSigned</code></td>
+<td>false</td>
+<td>Sign authentication requests</td>
+</tr>
+<tr>
+<td><code>signatureAlgorithm</code></td>
+<td>rsa-sha256</td>
+<td>Signature algorithm</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sp-signing-optional">SP Signing (Optional)</h2>
+<p>For IdPs that require signed requests, generate a certificate and key:</p>
+<pre><code class="language-bash">openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout sp-private.key \
+  -out sp-certificate.crt \
+  -subj &quot;/CN=poweradmin-sp&quot;
+</code></pre>
+<p>Configure in settings:</p>
+<pre><code class="language-php">'saml' =&gt; [
+    'sp' =&gt; [
+        'x509cert' =&gt; file_get_contents('/path/to/sp-certificate.crt'),
+        'private_key' =&gt; file_get_contents('/path/to/sp-private.key'),
+    ],
+],
+</code></pre>
+<h2 id="docker-configuration">Docker Configuration</h2>
+<p>Use environment variables with the <code>PA_SAML_</code> prefix:</p>
+<pre><code class="language-yaml">environment:
+  PA_SAML_ENABLED: &quot;true&quot;
+  PA_SAML_AUTO_PROVISION: &quot;true&quot;
+  PA_SAML_AZURE_ENTITY_ID: &quot;https://sts.windows.net/tenant-id/&quot;
+  PA_SAML_AZURE_SSO_URL: &quot;https://login.microsoftonline.com/tenant-id/saml2&quot;
+</code></pre>
+<p>For certificates and keys, use Docker secrets:</p>
+<pre><code class="language-yaml">secrets:
+  saml_idp_cert:
+    file: ./secrets/idp-certificate.crt
+  saml_sp_key:
+    file: ./secrets/sp-private.key
+
+services:
+  poweradmin:
+    environment:
+      PA_SAML_AZURE_X509_CERT__FILE: /run/secrets/saml_idp_cert
+      PA_SAML_SP_PRIVATE_KEY__FILE: /run/secrets/saml_sp_key
+    secrets:
+      - saml_idp_cert
+      - saml_sp_key
+</code></pre>
+<h2 id="multiple-providers">Multiple Providers</h2>
+<p>Configure multiple SAML providers:</p>
+<pre><code class="language-php">'saml' =&gt; [
+    'enabled' =&gt; true,
+    'providers' =&gt; [
+        'azure' =&gt; [
+            // Azure AD configuration...
+        ],
+        'okta' =&gt; [
+            // Okta configuration...
+        ],
+    ],
+],
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="invalid-signature-error">"Invalid signature" error</h3>
+<ul>
+<li>Verify the IdP certificate is correct and not expired</li>
+<li>Ensure the certificate is without BEGIN/END headers</li>
+<li>Check if your IdP rotated certificates</li>
+</ul>
+<h3 id="user-not-created-after-login">User not created after login</h3>
+<ul>
+<li>Check <code>auto_provision</code> is enabled</li>
+<li>Verify user mapping includes required fields</li>
+<li>Check that required attributes are released by IdP</li>
+</ul>
+<h3 id="nameid-missing-error">NameID missing error</h3>
+<ul>
+<li>Configure NameID format in IdP to match SP expectations</li>
+<li>Ensure IdP is configured to send NameID</li>
+</ul>
+<h3 id="groups-not-mapped">Groups not mapped</h3>
+<ul>
+<li>Verify IdP is configured to release group claims</li>
+<li>Check the attribute name matches <code>user_mapping.groups</code></li>
+<li>For Azure AD, configure Group claims in Token configuration</li>
+</ul>
+<h3 id="redirect-loop">Redirect loop</h3>
+<ul>
+<li>Clear browser cookies</li>
+<li>Verify ACS URL matches exactly in IdP configuration</li>
+<li>Check for mixed HTTP/HTTPS issues</li>
+</ul>
+<h3 id="certificate-errors">Certificate errors</h3>
+<ul>
+<li>Certificates should be PEM format without headers</li>
+<li>Remove <code>-----BEGIN CERTIFICATE-----</code> and <code>-----END CERTIFICATE-----</code></li>
+<li>Ensure no extra whitespace or line breaks</li>
+</ul>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="../oidc/">OIDC Authentication</a></li>
+<li><a href="../ldap/">LDAP Integration</a></li>
+<li><a href="../security-policies/">Security Policies</a></li>
+</ul>
+              
+
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../oidc/" class="btn btn-neutral float-left" title="OIDC Authentication"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../mail/" class="btn btn-neutral float-right" title="Mail Configuration">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/poweradmin/poweradmin-docs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../oidc/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../mail/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

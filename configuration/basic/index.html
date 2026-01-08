@@ -64,6 +64,14 @@
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../../installation/">Overview</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" >Docker</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/docker/">Docker Installation</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/docker-secrets/">Docker Secrets</a>
+                </li>
+    </ul>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" >Operating Systems</a>
     <ul>
                 <li class="toctree-l2"><a class="reference internal" href="../../installation/debian/">Debian</a>
@@ -82,6 +90,8 @@
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../database/sqlite/">SQLite</a>
                 </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/schema/">Database Schema</a>
+                </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../installation/manual/">Manual Installation</a>
@@ -95,39 +105,23 @@
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Basic Configuration</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#configuration-files">Configuration Files</a>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-file">Configuration File</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#legacy-configuration-format">Legacy Configuration Format</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#modern-configuration-format">Modern Configuration Format</a>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-precedence">Configuration Precedence</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#configuration-sections">Configuration Sections</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#configuration-variables">Configuration Variables</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#database-settings">Database Settings</a>
+    <li class="toctree-l2"><a class="reference internal" href="#database-settings">Database Settings</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#api-settings">API Settings</a>
+    <li class="toctree-l2"><a class="reference internal" href="#security-settings">Security Settings</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#security-settings">Security Settings</a>
+    <li class="toctree-l2"><a class="reference internal" href="#interface-settings">Interface Settings</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#interface-settings">Interface Settings</a>
+    <li class="toctree-l2"><a class="reference internal" href="#dns-settings">DNS Settings</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#dns-settings">DNS Settings</a>
+    <li class="toctree-l2"><a class="reference internal" href="#miscellaneous-settings">Miscellaneous Settings</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#timezone-settings">Timezone Settings</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#logging-settings">Logging Settings</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#dnssec-settings">DNSSEC Settings</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#ldap-settings">LDAP Settings</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#other-settings">Other Settings</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#important-notes">Important Notes</a>
+    <li class="toctree-l2"><a class="reference internal" href="#related-documentation">Related Documentation</a>
     </li>
     </ul>
                   </li>
@@ -144,6 +138,10 @@
                   <li class="toctree-l1"><a class="reference internal" href="../logging/">Logging Setup</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../ldap/">LDAP Integration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../oidc/">OIDC Authentication</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../saml/">SAML Authentication</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../mail/">Mail Configuration</a>
                   </li>
@@ -172,6 +170,14 @@
                   <li class="toctree-l1"><a class="reference internal" href="../rdap/">RDAP Configuration</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../user-agreements/">User Agreements</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../username-recovery/">Username Recovery</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../avatars/">Avatar System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../database-logging/">Database Logging</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../legacy-configuration/">Legacy Configuration (v3.x)</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">User Guide</span></p>
@@ -394,30 +400,10 @@
   </div>
   
                 <h1 id="basic-configuration">Basic Configuration</h1>
-<p>Poweradmin supports two configuration formats: legacy (individual PHP variables) and modern (array-based configuration).</p>
-<h2 id="configuration-files">Configuration Files</h2>
-<p>With any new installation, the file <code>config/settings.defaults.php</code> (or in legacy versions, <code>inc/config-defaults.inc.php</code>) is distributed. You should not edit this file as your changes will likely be overwritten during upgrades.</p>
-<p>Instead:
-- Modern format: Create <code>config/settings.php</code>
-- Legacy format: Create <code>inc/config.inc.php</code></p>
-<p>Your custom settings will override the defaults. This way, new configuration options can be added with sensible defaults without breaking your existing configuration.</p>
-<h2 id="legacy-configuration-format">Legacy Configuration Format</h2>
-<p>This is the traditional format, still supported for backwards compatibility:</p>
-<pre><code class="language-php">&lt;?php
-$db_host = 'localhost';
-$db_name = 'powerdns-db';
-$db_user = 'poweradmin-db-user';
-$db_pass = 'poweradmin-db-user-password';
-$db_type = 'mysql';
-
-$session_key = 'generate-some-random-text-here';
-
-$dns_hostmaster = 'hostmaster.example.net';
-$dns_ns1 = 'ns1.example.net';
-$dns_ns2 = 'ns2.example.net';
-</code></pre>
-<h2 id="modern-configuration-format">Modern Configuration Format</h2>
-<p>The recommended modern format uses a PHP array structure:</p>
+<p>Poweradmin v4.x uses an array-based configuration format in <code>config/settings.php</code>.</p>
+<p><strong>Note</strong>: For legacy v3.x variable format (<code>$variable</code>), see <a href="../legacy-configuration/">Legacy Configuration</a>.</p>
+<h2 id="configuration-file">Configuration File</h2>
+<p>Create <code>config/settings.php</code> with your custom settings. The file <code>config/settings.defaults.php</code> contains all defaults - do not edit it directly as changes will be overwritten during upgrades.</p>
 <pre><code class="language-php">&lt;?php
 return [
     'database' =&gt; [
@@ -439,705 +425,417 @@ return [
     ],
 ];
 </code></pre>
+<h2 id="configuration-precedence">Configuration Precedence</h2>
+<p>When using Docker, configuration is loaded in this order (later overrides earlier):</p>
+<ol>
+<li><code>config/settings.defaults.php</code> - Default values</li>
+<li><code>config/settings.php</code> - Your custom settings file</li>
+<li>Environment variables (<code>PA_*</code>) - Docker/container settings</li>
+<li>Docker secrets (<code>PA_*__FILE</code>) - Sensitive values from files</li>
+</ol>
 <h2 id="configuration-sections">Configuration Sections</h2>
-<p>The modern configuration format is organized into logical sections:</p>
-<ul>
-<li><strong>database</strong>: Database connection settings</li>
-<li><strong>security</strong>: Security-related settings including password policies and session management</li>
-<li><strong>dns</strong>: DNS-specific configurations including nameserver details</li>
-<li><strong>interface</strong>: UI and display preferences</li>
-<li><strong>logging</strong>: Logging configuration</li>
-<li><strong>pdns_api</strong>: PowerDNS API integration settings</li>
-<li><strong>mail</strong>: Email configuration for notifications</li>
-<li><strong>dnssec</strong>: DNSSEC functionality settings</li>
-<li><strong>ldap</strong>: LDAP authentication settings</li>
-<li><strong>whois</strong>: WHOIS lookup functionality settings</li>
-<li><strong>rdap</strong>: RDAP (Registration Data Access Protocol) settings</li>
-<li><strong>api</strong>: REST API configuration</li>
-<li><strong>user_agreement</strong>: User agreement system settings</li>
-<li><strong>misc</strong>: Miscellaneous settings like timezone and edit conflict handling</li>
-</ul>
-<h2 id="configuration-variables">Configuration Variables</h2>
-<p>The following configuration variables are available in the legacy format, with their modern array format equivalents:</p>
-<h3 id="database-settings">Database Settings</h3>
+<p>The configuration is organized into logical sections:</p>
 <table>
 <thead>
 <tr>
-<th>Legacy variable</th>
-<th>Modern equivalent</th>
-<th>Default value</th>
+<th>Section</th>
 <th>Description</th>
-<th>Added in version</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$db_host</td>
-<td>database.host</td>
-<td>no default</td>
-<td>The host to connect to for access to the database.</td>
-<td></td>
+<td><code>database</code></td>
+<td>Database connection settings</td>
 </tr>
 <tr>
-<td>$db_port</td>
-<td>database.port</td>
-<td>no default</td>
-<td>The port to use for database connection.</td>
-<td></td>
+<td><code>security</code></td>
+<td>Password policies, session management, MFA</td>
 </tr>
 <tr>
-<td>$db_user</td>
-<td>database.user</td>
-<td>no default</td>
-<td>The username to use to access the database.</td>
-<td></td>
+<td><code>dns</code></td>
+<td>Nameserver details, SOA defaults, TLD checks</td>
 </tr>
 <tr>
-<td>$db_pass</td>
-<td>database.password</td>
-<td>no default</td>
-<td>The password to use to access the database.</td>
-<td></td>
+<td><code>interface</code></td>
+<td>UI preferences, themes, display options</td>
 </tr>
 <tr>
-<td>$db_name</td>
-<td>database.name</td>
-<td>no default</td>
-<td>The name of the database of PowerDNS.</td>
-<td></td>
+<td><code>logging</code></td>
+<td>Logging configuration (file, syslog, database)</td>
 </tr>
 <tr>
-<td>$db_type</td>
-<td>database.type</td>
-<td>no default</td>
-<td>The type of the database of PowerDNS. Poweradmin currently has support for 'mysql', 'mysqli', 'pgsql' and 'sqlite'.</td>
-<td>mysqli - 2.1.5, sqlite - 2.1.6</td>
+<td><code>pdns_api</code></td>
+<td>PowerDNS API integration</td>
 </tr>
 <tr>
-<td>$db_charset</td>
-<td>database.charset</td>
-<td>no default</td>
-<td>The charset set which is used for communication with database (for example - 'utf8' for MySQL)</td>
-<td>2.1.8</td>
+<td><code>mail</code></td>
+<td>Email configuration for notifications</td>
 </tr>
 <tr>
-<td>$db_file</td>
-<td>database.file</td>
-<td>no default</td>
-<td>Used only for SQLite, provide full path to database file</td>
-<td>2.1.6</td>
+<td><code>dnssec</code></td>
+<td>DNSSEC functionality</td>
 </tr>
 <tr>
-<td>$db_debug</td>
-<td>database.debug</td>
+<td><code>ldap</code></td>
+<td>LDAP/Active Directory authentication</td>
+</tr>
+<tr>
+<td><code>oidc</code></td>
+<td>OpenID Connect authentication</td>
+</tr>
+<tr>
+<td><code>saml</code></td>
+<td>SAML authentication</td>
+</tr>
+<tr>
+<td><code>whois</code></td>
+<td>WHOIS lookup settings</td>
+</tr>
+<tr>
+<td><code>rdap</code></td>
+<td>RDAP lookup settings</td>
+</tr>
+<tr>
+<td><code>api</code></td>
+<td>REST API configuration</td>
+</tr>
+<tr>
+<td><code>user_agreement</code></td>
+<td>User agreement system</td>
+</tr>
+<tr>
+<td><code>misc</code></td>
+<td>Timezone, conflict handling, etc.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="database-settings">Database Settings</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>database.host</code></td>
+<td>-</td>
+<td>Database server hostname</td>
+</tr>
+<tr>
+<td><code>database.port</code></td>
+<td>-</td>
+<td>Database port (optional)</td>
+</tr>
+<tr>
+<td><code>database.user</code></td>
+<td>-</td>
+<td>Database username</td>
+</tr>
+<tr>
+<td><code>database.password</code></td>
+<td>-</td>
+<td>Database password</td>
+</tr>
+<tr>
+<td><code>database.name</code></td>
+<td>-</td>
+<td>Database name</td>
+</tr>
+<tr>
+<td><code>database.type</code></td>
+<td>-</td>
+<td>Database type: mysql, mysqli, pgsql, sqlite</td>
+</tr>
+<tr>
+<td><code>database.charset</code></td>
+<td>-</td>
+<td>Connection charset (e.g., utf8)</td>
+</tr>
+<tr>
+<td><code>database.file</code></td>
+<td>-</td>
+<td>SQLite database file path</td>
+</tr>
+<tr>
+<td><code>database.debug</code></td>
 <td>false</td>
-<td>Show all executed SQL queries (if true)</td>
-<td>2.1.6</td>
+<td>Log SQL queries</td>
 </tr>
 <tr>
-<td>$pdns_db_name</td>
-<td>database.pdns_db_name</td>
+<td><code>database.pdns_db_name</code></td>
 <td>powerdns</td>
-<td>Used for a separate database for PowerDNS</td>
-<td>3.8.0</td>
+<td>Separate PowerDNS database (v3.8.0+)</td>
 </tr>
 </tbody>
 </table>
-<h3 id="api-settings">API Settings</h3>
+<h2 id="security-settings">Security Settings</h2>
 <table>
 <thead>
 <tr>
-<th>Legacy variable</th>
-<th>Modern equivalent</th>
-<th>Default value</th>
+<th>Setting</th>
+<th>Default</th>
 <th>Description</th>
-<th>Added in version</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$pdns_api_url</td>
-<td>pdns_api.url</td>
-<td>no default</td>
-<td>The endpoint for establishing a connection to the PowerDNS API.</td>
-<td>3.7.0</td>
-</tr>
-<tr>
-<td>$pdns_api_key</td>
-<td>pdns_api.key</td>
-<td>no default</td>
-<td>The authentication key required for establishing a connection with the PowerDNS API.</td>
-<td>3.7.0</td>
-</tr>
-</tbody>
-</table>
-<h3 id="security-settings">Security Settings</h3>
-<table>
-<thead>
-<tr>
-<th>Legacy variable</th>
-<th>Modern equivalent</th>
-<th>Default value</th>
-<th>Description</th>
-<th>Added in version</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$session_key</td>
-<td>security.session_key</td>
+<td><code>security.session_key</code></td>
 <td>p0w3r4dm1n</td>
-<td>The key used for session data encryption</td>
-<td>2.1.6</td>
+<td>Session encryption key (change this!)</td>
 </tr>
 <tr>
-<td>$password_encryption</td>
-<td>security.password_encryption</td>
-<td>"bcrypt"</td>
-<td>The type of encryption used for keeping user passwords in database. Other possible values - md5, md5salt (compatible with WHMCS), argon2i, argon2id</td>
-<td>2.1.6</td>
+<td><code>security.password_encryption</code></td>
+<td>bcrypt</td>
+<td>Hash algorithm: md5, md5salt, bcrypt, argon2i, argon2id</td>
 </tr>
 <tr>
-<td>$password_encryption_cost</td>
-<td>security.password_encryption_cost</td>
+<td><code>security.password_encryption_cost</code></td>
 <td>12</td>
-<td>The algorithmic cost (needed for bcrypt)</td>
-<td>2.1.8</td>
+<td>Bcrypt cost parameter</td>
 </tr>
 <tr>
-<td>$login_token_validation</td>
-<td>security.login_token_validation</td>
+<td><code>security.login_token_validation</code></td>
 <td>true</td>
-<td>Enable or disable login token validation</td>
-<td>3.9.0</td>
+<td>CSRF protection for login</td>
 </tr>
 <tr>
-<td>$global_token_validation</td>
-<td>security.global_token_validation</td>
+<td><code>security.global_token_validation</code></td>
 <td>true</td>
-<td>Enable or disable global token validation</td>
-<td>3.9.0</td>
+<td>CSRF protection globally</td>
 </tr>
 </tbody>
 </table>
-<h3 id="interface-settings">Interface Settings</h3>
+<p>For password policies and MFA settings, see <a href="../security-policies/">Security Policies</a>.</p>
+<h2 id="interface-settings">Interface Settings</h2>
 <table>
 <thead>
 <tr>
-<th>Legacy variable</th>
-<th>Modern equivalent</th>
-<th>Default value</th>
+<th>Setting</th>
+<th>Default</th>
 <th>Description</th>
-<th>Added in version</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$iface_lang</td>
-<td>interface.lang</td>
+<td><code>interface.lang</code></td>
 <td>en_EN</td>
-<td>The language for the interface.</td>
-<td></td>
+<td>Default language</td>
 </tr>
 <tr>
-<td>$iface_enabled_languages</td>
-<td>interface.enabled_languages</td>
+<td><code>interface.enabled_languages</code></td>
 <td>multiple*</td>
-<td>Languages enabled in the interface.</td>
-<td>3.8.0</td>
+<td>Available languages</td>
 </tr>
 <tr>
-<td>$iface_style</td>
-<td>interface.style</td>
+<td><code>interface.style</code></td>
 <td>ignite</td>
-<td>The CSS template to use as skin of web interface. See "style/" directory. If you want a dark theme, use 'spark'.</td>
-<td></td>
+<td>Theme (ignite, spark for dark)</td>
 </tr>
 <tr>
-<td>$iface_templates</td>
-<td>interface.templates</td>
-<td>templates</td>
-<td>The HTML templates to use for web interface. See "templates/" directory.</td>
-<td>2.2.3</td>
-</tr>
-<tr>
-<td>$iface_rowamount</td>
-<td>interface.rowamount</td>
+<td><code>interface.rowamount</code></td>
 <td>10</td>
-<td>The maximum number of rows that should be shown (usefull if you have a large number of zones or records).</td>
-<td></td>
+<td>Records per page</td>
 </tr>
 <tr>
-<td>$iface_expire</td>
-<td>interface.expire</td>
+<td><code>interface.expire</code></td>
 <td>1800</td>
-<td>Session time-out in seconds. After this timeout, you are automagically logged out.</td>
-<td></td>
+<td>Session timeout (seconds)</td>
 </tr>
 <tr>
-<td>$iface_zonelist_serial</td>
-<td>interface.zonelist_serial</td>
-<td>false</td>
-<td>Enable (true) or disable (false) display of zone's serial in the zone listing.</td>
-<td></td>
-</tr>
-<tr>
-<td>$iface_zonelist_template</td>
-<td>interface.zonelist_template</td>
-<td>false</td>
-<td>Enable (true) or disable (false) display of zone's template in the zone listing.</td>
-<td></td>
-</tr>
-<tr>
-<td>$iface_title</td>
-<td>interface.title</td>
+<td><code>interface.title</code></td>
 <td>Poweradmin</td>
-<td>Application title displayed in browser tab and header logo. Useful for distinguishing multiple server instances.</td>
-<td>2.1.5</td>
+<td>Application title</td>
 </tr>
 <tr>
-<td>$iface_add_reverse_record</td>
-<td>interface.add_reverse_record</td>
-<td>true</td>
-<td>Displays a checkbox for adding a reverse record</td>
-<td>2.1.7</td>
-</tr>
-<tr>
-<td>$iface_add_domain_record</td>
-<td>interface.add_domain_record</td>
-<td>true</td>
-<td>Displays a checkbox for adding an A/AAAA record from the reverse zone view</td>
-<td></td>
-</tr>
-<tr>
-<td>$iface_zone_type_default</td>
-<td>interface.zone_type_default</td>
+<td><code>interface.zone_type_default</code></td>
 <td>MASTER</td>
-<td>Default zone type when creating new zones</td>
-<td>2.1.9</td>
+<td>Default zone type</td>
 </tr>
 <tr>
-<td>$iface_zone_comments</td>
-<td>interface.zone_comments</td>
-<td>true</td>
-<td>Show or hide zone comments</td>
-<td>2.2.3</td>
-</tr>
-<tr>
-<td>$iface_record_comments</td>
-<td>interface.record_comments</td>
+<td><code>interface.zonelist_serial</code></td>
 <td>false</td>
-<td>Show or hide record comments</td>
-<td>3.9.0</td>
+<td>Show serial in zone list</td>
 </tr>
 <tr>
-<td>$iface_index</td>
-<td>interface.index</td>
+<td><code>interface.zonelist_template</code></td>
+<td>false</td>
+<td>Show template in zone list</td>
+</tr>
+<tr>
+<td><code>interface.zone_comments</code></td>
+<td>true</td>
+<td>Enable zone comments</td>
+</tr>
+<tr>
+<td><code>interface.record_comments</code></td>
+<td>false</td>
+<td>Enable record comments</td>
+</tr>
+<tr>
+<td><code>interface.index</code></td>
 <td>cards</td>
-<td>Interface display mode (cards or list)</td>
-<td>3.2.0</td>
+<td>Display mode (cards/list)</td>
 </tr>
 <tr>
-<td>$iface_search_group_records</td>
-<td>interface.search_group_records</td>
-<td>false</td>
-<td>Group records by name and content in search results</td>
-<td>3.8.0</td>
-</tr>
-<tr>
-<td>$iface_edit_show_id</td>
-<td>interface.edit_show_id</td>
+<td><code>interface.add_reverse_record</code></td>
 <td>true</td>
-<td>Show or hide record ID in edit form</td>
-<td>3.9.0</td>
+<td>Show PTR record checkbox</td>
 </tr>
 <tr>
-<td>$iface_edit_add_record_top</td>
-<td>interface.edit_add_record_top</td>
-<td>false</td>
-<td>Add new record fields on top of the list</td>
-<td>3.9.0</td>
+<td><code>interface.add_domain_record</code></td>
+<td>true</td>
+<td>Show A/AAAA checkbox in reverse view</td>
 </tr>
 <tr>
-<td>$iface_edit_save_changes_top</td>
-<td>interface.edit_save_changes_top</td>
-<td>false</td>
-<td>Save changes button on top of the list</td>
-<td>3.9.0</td>
+<td><code>interface.edit_show_id</code></td>
+<td>true</td>
+<td>Show record ID in edit form</td>
 </tr>
 <tr>
-<td>$iface_migrations_show</td>
-<td>interface.migrations_show</td>
+<td><code>interface.edit_add_record_top</code></td>
 <td>false</td>
-<td>Show or hide migrations in the menu (experimental)</td>
-<td></td>
+<td>Add record form at top</td>
+</tr>
+<tr>
+<td><code>interface.edit_save_changes_top</code></td>
+<td>false</td>
+<td>Save button at top</td>
 </tr>
 </tbody>
 </table>
-<p>* Default enabled languages: cs_CZ, de_DE, en_EN, fr_FR, it_IT, ja_JP, lt_LT, nb_NO, nl_NL, pl_PL, ru_RU, tr_TR, zh_CN</p>
-<h3 id="dns-settings">DNS Settings</h3>
+<p>* Default languages: cs_CZ, de_DE, en_EN, fr_FR, it_IT, ja_JP, lt_LT, nb_NO, nl_NL, pl_PL, ru_RU, tr_TR, zh_CN</p>
+<p>For UI customization, see <a href="../ui/overview/">UI Customization</a>.</p>
+<h2 id="dns-settings">DNS Settings</h2>
 <table>
 <thead>
 <tr>
-<th>Legacy variable</th>
-<th>Modern equivalent</th>
-<th>Default value</th>
+<th>Setting</th>
+<th>Default</th>
 <th>Description</th>
-<th>Added in version</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$dns_hostmaster</td>
-<td>dns.hostmaster</td>
-<td>no default</td>
-<td>The default emailaddress to use for the RP in the SOA record. For example: 'hostmaster.example.net'.</td>
-<td></td>
+<td><code>dns.hostmaster</code></td>
+<td>-</td>
+<td>Default hostmaster (e.g., hostmaster.example.net)</td>
 </tr>
 <tr>
-<td>$dns_ns1</td>
-<td>dns.ns1</td>
-<td>no default</td>
-<td>The default primary nameserver.</td>
-<td></td>
+<td><code>dns.ns1</code></td>
+<td>-</td>
+<td>Primary nameserver</td>
 </tr>
 <tr>
-<td>$dns_ns2</td>
-<td>dns.ns2</td>
-<td>no default</td>
-<td>The default secondary nameserver.</td>
-<td></td>
+<td><code>dns.ns2</code></td>
+<td>-</td>
+<td>Secondary nameserver</td>
 </tr>
 <tr>
-<td>$dns_ns3</td>
-<td>dns.ns3</td>
-<td>no default</td>
-<td>The third secondary nameserver.</td>
-<td></td>
+<td><code>dns.ns3</code></td>
+<td>-</td>
+<td>Third nameserver (optional)</td>
 </tr>
 <tr>
-<td>$dns_ns4</td>
-<td>dns.ns4</td>
-<td>no default</td>
-<td>The fourth secondary nameserver.</td>
-<td></td>
+<td><code>dns.ns4</code></td>
+<td>-</td>
+<td>Fourth nameserver (optional)</td>
 </tr>
 <tr>
-<td>$dns_ttl</td>
-<td>dns.ttl</td>
+<td><code>dns.ttl</code></td>
 <td>86400</td>
-<td>The default TTL for records (in seconds of course).</td>
-<td></td>
+<td>Default TTL (seconds)</td>
 </tr>
 <tr>
-<td>$dns_soa</td>
-<td>dns.soa</td>
+<td><code>dns.soa</code></td>
 <td>28800 7200 604800 86400</td>
-<td>SOA settings for refresh, retry, expire and minimum</td>
-<td>2.2.3</td>
+<td>SOA: refresh retry expire minimum</td>
 </tr>
 <tr>
-<td>$dns_strict_tld_check</td>
-<td>dns.strict_tld_check</td>
+<td><code>dns.strict_tld_check</code></td>
 <td>false</td>
-<td>If enabled (true), allow  official TLD's only.</td>
-<td></td>
+<td>Allow only official TLDs</td>
 </tr>
 <tr>
-<td>$dns_top_level_tld_check</td>
-<td>dns.top_level_tld_check</td>
+<td><code>dns.top_level_tld_check</code></td>
 <td>false</td>
-<td>Don't allow to create top level TLDs</td>
-<td>2.1.7</td>
+<td>Prevent top-level TLD creation</td>
 </tr>
 <tr>
-<td>$dns_third_level_check</td>
-<td>dns.third_level_check</td>
+<td><code>dns.third_level_check</code></td>
 <td>false</td>
-<td>Don't allow to create third level domains</td>
-<td>2.1.7</td>
+<td>Prevent third-level domain creation</td>
 </tr>
 <tr>
-<td>$dns_txt_auto_quote</td>
-<td>dns.txt_auto_quote</td>
+<td><code>dns.txt_auto_quote</code></td>
 <td>false</td>
-<td>Automatically quote TXT records</td>
-<td>3.9.2</td>
+<td>Auto-quote TXT records</td>
 </tr>
 </tbody>
 </table>
-<h3 id="timezone-settings">Timezone Settings</h3>
+<p>For more DNS options, see <a href="../dns-settings/">DNS Settings</a>.</p>
+<h2 id="miscellaneous-settings">Miscellaneous Settings</h2>
 <table>
 <thead>
 <tr>
-<th>Legacy variable</th>
-<th>Modern equivalent</th>
-<th>Default value</th>
+<th>Setting</th>
+<th>Default</th>
 <th>Description</th>
-<th>Added in version</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$timezone</td>
-<td>timezone</td>
+<td><code>misc.timezone</code></td>
 <td>UTC</td>
-<td>Set timezone (for php 5.1.0+). See http://www.php.net/manual/en/timezones.php for list of supported timezones.</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="logging-settings">Logging Settings</h3>
-<table>
-<thead>
-<tr>
-<th>Legacy variable</th>
-<th>Modern equivalent</th>
-<th>Default value</th>
-<th>Description</th>
-<th>Added in version</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$logger_type</td>
-<td>logging.type</td>
-<td>null</td>
-<td>Logger type (null, native)</td>
-<td>3.9.0</td>
+<td>Application timezone</td>
 </tr>
 <tr>
-<td>$logger_level</td>
-<td>logging.level</td>
-<td>info</td>
-<td>Logging level (debug, info, notice, warning, error, critical, alert, emergency)</td>
-<td>3.9.0</td>
-</tr>
-<tr>
-<td>$syslog_use</td>
-<td>logging.syslog.use</td>
+<td><code>misc.display_stats</code></td>
 <td>false</td>
-<td>Enable (true) or disable (false) logging of authentication attempts and other operations to syslog</td>
-<td>2.1.6</td>
+<td>Show memory/execution stats</td>
 </tr>
 <tr>
-<td>$syslog_ident</td>
-<td>logging.syslog.ident</td>
-<td>poweradmin</td>
-<td>Specifies program name which is added to syslog message</td>
-<td>2.1.6</td>
-</tr>
-<tr>
-<td>$syslog_facility</td>
-<td>logging.syslog.facility</td>
-<td>LOG_USER</td>
-<td>Specifies what type of program is logging the message</td>
-<td>2.1.6</td>
-</tr>
-<tr>
-<td>$dblog_use</td>
-<td>logging.dblog.use</td>
+<td><code>misc.display_errors</code></td>
 <td>false</td>
-<td>Enable (true) or disable (false) logging to database</td>
-<td>3.2.0</td>
-</tr>
-</tbody>
-</table>
-<h3 id="dnssec-settings">DNSSEC Settings</h3>
-<table>
-<thead>
-<tr>
-<th>Legacy variable</th>
-<th>Modern equivalent</th>
-<th>Default value</th>
-<th>Description</th>
-<th>Added in version</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$pdnssec_use</td>
-<td>dnssec.use</td>
-<td>false</td>
-<td>Enable (true) or disable (false) DNSSEC support</td>
-<td>2.1.7</td>
+<td>Show PHP errors (disable in production)</td>
 </tr>
 <tr>
-<td>$pdnssec_debug</td>
-<td>dnssec.debug</td>
-<td>false</td>
-<td>Enable debug for DNSSEC operations</td>
-<td>2.1.9</td>
-</tr>
-<tr>
-<td>$pdnssec_command</td>
-<td>dnssec.command</td>
-<td>/usr/bin/pdnsutil</td>
-<td>Full path to pdnsutil utility (will be deprecated in the future)</td>
-<td>2.1.7</td>
-</tr>
-</tbody>
-</table>
-<h3 id="ldap-settings">LDAP Settings</h3>
-<table>
-<thead>
-<tr>
-<th>Legacy variable</th>
-<th>Modern equivalent</th>
-<th>Default value</th>
-<th>Description</th>
-<th>Added in version</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$ldap_use</td>
-<td>ldap.use</td>
-<td>false</td>
-<td>Authenticate against directory service (LDAP/Active Directory)</td>
-<td>2.1.7</td>
-</tr>
-<tr>
-<td>$ldap_debug</td>
-<td>ldap.debug</td>
-<td>false</td>
-<td>Enable debug for LDAP connection</td>
-<td>2.1.7</td>
-</tr>
-<tr>
-<td>$ldap_uri</td>
-<td>ldap.uri</td>
-<td>ldap://domaincontroller.example.com</td>
-<td>LDAP URI</td>
-<td>2.1.7</td>
-</tr>
-<tr>
-<td>$ldap_basedn</td>
-<td>ldap.basedn</td>
-<td>ou=users,dc=example,dc=com</td>
-<td>The top level of the LDAP directory tree</td>
-<td>2.1.7</td>
-</tr>
-<tr>
-<td>$ldap_search_filter</td>
-<td>ldap.search_filter</td>
-<td>no default</td>
-<td>Filter for LDAP search</td>
-<td>2.1.7</td>
-</tr>
-<tr>
-<td>$ldap_binddn</td>
-<td>ldap.binddn</td>
-<td>cn=admin,dc=example,dc=com</td>
-<td>LDAP user</td>
-<td>2.1.7</td>
-</tr>
-<tr>
-<td>$ldap_bindpw</td>
-<td>ldap.bindpw</td>
-<td>some_password</td>
-<td>password for LDAP user</td>
-<td>2.1.7</td>
-</tr>
-<tr>
-<td>$ldap_user_attribute</td>
-<td>ldap.user_attribute</td>
-<td>uid</td>
-<td>username attribute used in LDAP search filter</td>
-<td>2.1.7</td>
-</tr>
-<tr>
-<td>$ldap_proto</td>
-<td>ldap.proto</td>
-<td>3</td>
-<td>LDAP protocol version</td>
-<td>2.1.7</td>
-</tr>
-</tbody>
-</table>
-<p>LDAP search filter examples:</p>
-<pre><code>$ldap_search_filter = '(memberOf=cn=powerdns,ou=groups,dc=poweradmin,dc=org)';
-$ldap_search_filter = '(objectClass=account)';
-$ldap_search_filter = '(objectClass=person)(memberOf=cn=admins,ou=groups,dc=poweradmin,dc=org)';
-$ldap_search_filter = '(cn=*admin*)';
-</code></pre>
-<h3 id="other-settings">Other Settings</h3>
-<table>
-<thead>
-<tr>
-<th>Legacy variable</th>
-<th>Modern equivalent</th>
-<th>Default value</th>
-<th>Description</th>
-<th>Added in version</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$display_stats</td>
-<td>misc.display_stats</td>
-<td>false</td>
-<td>Displays the memory consumption and execution time of an application</td>
-<td></td>
-</tr>
-<tr>
-<td>$experimental_edit_conflict_resolution</td>
-<td>misc.edit_conflict_resolution</td>
-<td>last_writer_wins</td>
-<td>Controls how concurrent updates are handled (last_writer_wins, only_latest_version, 3_way_merge)</td>
-<td></td>
-</tr>
-<tr>
-<td>$record_comments_sync</td>
-<td>misc.record_comments_sync</td>
-<td>false</td>
-<td>Enable bidirectional comment synchronization between A and PTR records</td>
-<td>3.9.0</td>
-</tr>
-<tr>
-<td>N/A</td>
-<td>misc.timezone</td>
-<td>UTC</td>
-<td>Default timezone for the application</td>
-<td></td>
-</tr>
-<tr>
-<td>N/A</td>
-<td>misc.display_errors</td>
-<td>false</td>
-<td>Display PHP errors (false for production)</td>
-<td>4.0.0</td>
-</tr>
-<tr>
-<td>N/A</td>
-<td>misc.show_generated_passwords</td>
+<td><code>misc.show_generated_passwords</code></td>
 <td>true</td>
-<td>Show generated passwords on user creation</td>
-<td>4.0.0</td>
+<td>Display generated passwords</td>
+</tr>
+<tr>
+<td><code>misc.edit_conflict_resolution</code></td>
+<td>last_writer_wins</td>
+<td>Conflict strategy*</td>
+</tr>
+<tr>
+<td><code>misc.record_comments_sync</code></td>
+<td>false</td>
+<td>Sync A/PTR record comments</td>
 </tr>
 </tbody>
 </table>
-<p>For detailed information about specific settings, see:</p>
+<p>* Conflict resolution strategies:
+- <code>last_writer_wins</code> - Latest save overwrites previous
+- <code>only_latest_version</code> - Reject if record was modified
+- <code>3_way_merge</code> - Attempt automatic merge</p>
+<h2 id="related-documentation">Related Documentation</h2>
 <ul>
 <li><a href="../database/">Database Configuration</a></li>
 <li><a href="../dns-settings/">DNS Settings</a></li>
 <li><a href="../security-policies/">Security Policies</a></li>
 <li><a href="../powerdns-api/">PowerDNS API</a></li>
 <li><a href="../ldap/">LDAP Integration</a></li>
+<li><a href="../oidc/">OIDC Authentication</a></li>
+<li><a href="../saml/">SAML Authentication</a></li>
 <li><a href="../logging/">Logging Setup</a></li>
-<li><a href="../whois/">WHOIS Configuration</a></li>
-<li><a href="../rdap/">RDAP Configuration</a></li>
+<li><a href="../mail/">Mail Configuration</a></li>
 <li><a href="../api/">API Configuration</a></li>
-<li><a href="../user-agreements/">User Agreements</a></li>
+<li><a href="../legacy-configuration/">Legacy Configuration (v3.x)</a></li>
 </ul>
-<h2 id="important-notes">Important Notes</h2>
-<ol>
-<li>When using the modern format, all settings should be included in the array structure</li>
-<li>The legacy format is maintained for backward compatibility but new installations should use the modern format</li>
-<li>Never commit sensitive information like passwords to version control</li>
-<li>Always change default values, especially the <code>session_key</code>, in production environments</li>
-<li>Make sure to set appropriate file permissions on your configuration file</li>
-</ol>
               
 
             </div>
