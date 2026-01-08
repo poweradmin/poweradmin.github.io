@@ -103,11 +103,15 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#record-type-configuration">Record Type Configuration</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#custom-tld-whitelist">Custom TLD Whitelist</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#modern-configuration-example">Modern Configuration Example</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#legacy-configuration-example">Legacy Configuration Example</a>
     </li>
     </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dns-wizards/">DNS Wizards</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../database/">Database Configuration</a>
                   </li>
@@ -514,6 +518,13 @@
 <td>Custom record types for reverse zones (null uses defaults).</td>
 <td>4.0.0</td>
 </tr>
+<tr>
+<td>-</td>
+<td>dns.custom_tlds</td>
+<td>[]</td>
+<td>Custom TLDs to allow in CNAME targets (e.g., <code>['dn42', 'home']</code>).</td>
+<td>3.x</td>
+</tr>
 </tbody>
 </table>
 <h2 id="soa-record-settings">SOA Record Settings</h2>
@@ -537,6 +548,15 @@
     'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA', 'TXT', 'CNAME'],
 ],
 </code></pre>
+<h2 id="custom-tld-whitelist">Custom TLD Whitelist</h2>
+<p>By default, CNAME targets are validated to ensure they have a valid top-level domain (alphabetic characters only). This can cause issues in experimental networks like DN42 that use custom TLDs containing numbers (e.g., <code>.dn42</code>).</p>
+<p>The <code>custom_tlds</code> option allows you to whitelist custom TLDs that bypass the standard validation:</p>
+<pre><code class="language-php">'dns' =&gt; [
+    'custom_tlds' =&gt; ['dn42', 'home', 'internal', 'lan'],
+],
+</code></pre>
+<p>With this configuration, CNAME targets like <code>ns1.example.dn42</code> will pass validation. The matching is case-insensitive.</p>
+<p><strong>Note</strong>: Standard alphabetic TLDs (like <code>.com</code>, <code>.org</code>, <code>.net</code>) always work regardless of this setting.</p>
 <h2 id="modern-configuration-example">Modern Configuration Example</h2>
 <pre><code class="language-php">return [
     'dns' =&gt; [
@@ -559,6 +579,7 @@
         'prevent_duplicate_ptr' =&gt; true,
         'domain_record_types' =&gt; null, // Uses default types
         'reverse_record_types' =&gt; null, // Uses default types
+        'custom_tlds' =&gt; [], // Custom TLDs for CNAME validation
     ],
 ];
 </code></pre>
@@ -584,7 +605,7 @@ $iface_zone_type_default = 'MASTER';
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../basic/" class="btn btn-neutral float-left" title="Basic Configuration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../database/" class="btn btn-neutral float-right" title="Database Configuration">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../dns-wizards/" class="btn btn-neutral float-right" title="DNS Wizards">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -614,7 +635,7 @@ $iface_zone_type_default = 'MASTER';
       <span><a href="../basic/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../database/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../dns-wizards/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
