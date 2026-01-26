@@ -151,6 +151,16 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#configuration-example">Configuration Example</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#web-server-requirements">Web Server Requirements</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#key-requirements">Key Requirements</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration-examples">Configuration Examples</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#minimal-nginx-example">Minimal Nginx Example</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#authentication-methods">Authentication Methods</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#api-key-authentication">API Key Authentication</a>
@@ -310,6 +320,8 @@
                   <li class="toctree-l1"><a class="reference internal" >v4.x Series</a>
     <ul>
                 <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.1.0/">v4.1.0</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.5/">v4.0.5</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.0/">v4.0.0</a>
                 </li>
@@ -536,6 +548,72 @@
         'max_keys_per_user' =&gt; 5,  // Admin users have no limit
     ],
 ];
+</code></pre>
+<h2 id="web-server-requirements">Web Server Requirements</h2>
+<p>The API requires proper web server configuration to function correctly. The PHP router handles API path parsing from <code>REQUEST_URI</code>, so explicit per-endpoint rewrite rules are not needed—just route all <code>/api/*</code> requests to <code>index.php</code>.</p>
+<h3 id="key-requirements">Key Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CORS Headers</strong></td>
+<td>Required for cross-origin API requests from browsers</td>
+</tr>
+<tr>
+<td><strong>Authorization Header</strong></td>
+<td>Must be forwarded to PHP for API key authentication</td>
+</tr>
+<tr>
+<td><strong>Clean URL Routing</strong></td>
+<td>Route non-file requests to <code>index.php</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="configuration-examples">Configuration Examples</h3>
+<p>Use the web server configuration examples from the Poweradmin repository:</p>
+<p><strong>Apache:</strong></p>
+<ul>
+<li>The included <code>.htaccess</code> file handles everything automatically</li>
+<li>Ensure <code>AllowOverride All</code> and <code>mod_rewrite</code> are enabled</li>
+<li>Version links: <a href="https://github.com/poweradmin/poweradmin/blob/release/4.x/.htaccess">4.0.x .htaccess</a> | <a href="https://github.com/poweradmin/poweradmin/blob/master/.htaccess">4.1.x+ .htaccess</a></li>
+</ul>
+<p><strong>Nginx:</strong></p>
+<ul>
+<li><a href="https://github.com/poweradmin/poweradmin/blob/release/4.x/nginx.conf.example">nginx.conf.example (4.0.x)</a></li>
+<li><a href="https://github.com/poweradmin/poweradmin/blob/master/nginx.conf.example">nginx.conf.example (4.1.x+)</a> — includes subfolder deployment support</li>
+</ul>
+<p><strong>Caddy:</strong></p>
+<ul>
+<li><a href="https://github.com/poweradmin/poweradmin/blob/release/4.x/Caddyfile.example">Caddyfile.example (4.0.x)</a></li>
+<li><a href="https://github.com/poweradmin/poweradmin/blob/master/caddy.conf.example">caddy.conf.example (4.1.x+)</a> — includes subfolder deployment support</li>
+</ul>
+<h3 id="minimal-nginx-example">Minimal Nginx Example</h3>
+<p>If you need a minimal configuration, ensure these key elements are present:</p>
+<pre><code class="language-nginx"># CORS and API routing
+location ~ ^/api {
+    add_header Access-Control-Allow-Origin &quot;*&quot; always;
+    add_header Access-Control-Allow-Methods &quot;GET, POST, PUT, DELETE, OPTIONS&quot; always;
+    add_header Access-Control-Allow-Headers &quot;Content-Type, Authorization, X-API-Key&quot; always;
+
+    if ($request_method = 'OPTIONS') {
+        return 204;
+    }
+
+    try_files $uri $uri/ /index.php$is_args$args;
+}
+
+# PHP handling - ensure Authorization header is forwarded
+location ~ \.php$ {
+    fastcgi_pass unix:/var/run/php/php-fpm.sock;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param HTTP_AUTHORIZATION $http_authorization;
+    include fastcgi_params;
+}
 </code></pre>
 <h2 id="authentication-methods">Authentication Methods</h2>
 <h3 id="api-key-authentication">API Key Authentication</h3>

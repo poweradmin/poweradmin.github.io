@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/upgrading/v2.2.1/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://docs.poweradmin.org/upgrading/v4.0.5/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>v2.2.1 - Poweradmin Documentation</title>
+    <title>v4.0.5 - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "v2.2.1";
-        var mkdocs_page_input_path = "upgrading/v2.2.1.md";
-        var mkdocs_page_url = "/upgrading/v2.2.1/";
+        var mkdocs_page_name = "v4.0.5";
+        var mkdocs_page_input_path = "upgrading/v4.0.5.md";
+        var mkdocs_page_url = "/upgrading/v4.0.5/";
       </script>
     
     <!--[if lt IE 9]>
@@ -209,11 +209,79 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" >v4.x Series</a>
-    <ul>
+                  <li class="toctree-l1 current"><a class="reference internal current" >v4.x Series</a>
+    <ul class="current">
                 <li class="toctree-l2"><a class="reference internal" href="../v4.1.0/">v4.1.0</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../v4.0.5/">v4.0.5</a>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">v4.0.5</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#key-changes">Key Changes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking Changes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#upgrade-instructions">Upgrade Instructions</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#step-1-backup-your-data">Step 1: Backup Your Data</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#step-2-download-and-extract">Step 2: Download and Extract</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#step-3-run-database-updates">Step 3: Run Database Updates</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#step-5-verify-upgrade">Step 5: Verify Upgrade</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#database-schema-changes">Database Schema Changes</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#primary-key-on-records_zone_templ-table">Primary Key on records_zone_templ Table</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#postgresql-sequence-synchronization">PostgreSQL Sequence Synchronization</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#new-configuration-option">New Configuration Option</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#show_forward_zone_associations">show_forward_zone_associations</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug Fixes</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#zone-editing-issue-958">Zone Editing (Issue #958)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zone-template-sync-issues-944-945">Zone Template Sync (Issues #944, #945)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#php-84-compatibility-issue-935">PHP 8.4 Compatibility (Issue #935)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#sqlite-record-search-issue-919">SQLite Record Search (Issue #919)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#smtp-mail-configuration-issue-861">SMTP Mail Configuration (Issue #861)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#legacy-theme-handling-issue-899">Legacy Theme Handling (Issue #899)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#microseconds-display-issue-915">Microseconds Display (Issue #915)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#docker-users">Docker Users</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#duplicate-key-value-violates-unique-constraint-postgresql">"Duplicate key value violates unique constraint" (PostgreSQL)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#gateway-timeout-on-reverse-zones">Gateway Timeout on Reverse Zones</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#migration-script-errors">Migration Script Errors</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../v4.0.0/">v4.0.0</a>
                 </li>
@@ -301,23 +369,13 @@
                 </li>
     </ul>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" >v2.x Series</a>
-    <ul class="current">
-                <li class="toctree-l2 current"><a class="reference internal current" >v2.2.x</a>
-    <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" >v2.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" >v2.2.x</a>
+    <ul>
                 <li class="toctree-l3"><a class="reference internal" href="../v2.2.2/">v2.2.2</a>
                 </li>
-                <li class="toctree-l3 current"><a class="reference internal current" href="#">v2.2.1</a>
-    <ul class="current">
-    <li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#upgrade-instructions">Upgrade Instructions</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#bug-fixes-and-improvements">Bug Fixes and Improvements</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#notes">Notes</a>
-    </li>
-    </ul>
+                <li class="toctree-l3"><a class="reference internal" href="../v2.2.1/">v2.2.1</a>
                 </li>
                 <li class="toctree-l3"><a class="reference internal" href="../v2.2.0/">v2.2.0</a>
                 </li>
@@ -379,11 +437,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Upgrading</li>
-          <li class="breadcrumb-item">v2.x Series</li>
-          <li class="breadcrumb-item">v2.2.x</li>
-      <li class="breadcrumb-item active">v2.2.1</li>
+          <li class="breadcrumb-item">v4.x Series</li>
+      <li class="breadcrumb-item active">v4.0.5</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/upgrading/v2.2.1.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/upgrading/v4.0.5.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -395,39 +452,140 @@
     This documentation covers Poweradmin 4.x. Some sections are still being expanded.
   </div>
   
-                <h1 id="upgrading-to-v221">Upgrading to v2.2.1</h1>
+                <h1 id="upgrading-to-version-405">Upgrading to Version 4.0.5</h1>
 <h2 id="overview">Overview</h2>
-<p>Version 2.2.1 is a maintenance release that provides bug fixes, security improvements, and minor enhancements to the Poweradmin interface.</p>
+<p>Version 4.0.5 is a maintenance release that focuses on bug fixes, database compatibility improvements, and a new configuration option to address performance issues.</p>
+<h2 id="key-changes">Key Changes</h2>
+<ul>
+<li><strong>Database Compatibility</strong>: Added primary key to <code>records_zone_templ</code> table for MySQL InnoDB Cluster compatibility</li>
+<li><strong>PostgreSQL Fix</strong>: Synchronized sequences to prevent duplicate key errors when adding permission templates</li>
+<li><strong>PHP 8.4 Compatibility</strong>: Fixed type safety issues with zone templates</li>
+<li><strong>Performance Option</strong>: New configuration option to disable forward zone associations in reverse zone list</li>
+<li><strong>Bug Fixes</strong>: Various fixes for zone editing, record search, and mail configuration</li>
+</ul>
+<h2 id="breaking-changes">Breaking Changes</h2>
+<p><strong>None</strong> - Version 4.0.5 is fully backward compatible with v4.0.0 configuration.</p>
 <h2 id="upgrade-instructions">Upgrade Instructions</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>You must be running Poweradmin v4.0.0 or later</li>
+<li>If upgrading from v3.x, first upgrade to <a href="../v4.0.0/">v4.0.0</a></li>
+<li>Ensure you have a database backup before proceeding</li>
+</ul>
+<h3 id="step-1-backup-your-data">Step 1: Backup Your Data</h3>
+<p><strong>Always backup your database and files before upgrading.</strong></p>
+<pre><code class="language-bash"># MySQL/MariaDB backup
+mysqldump -u username -p poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
+
+# PostgreSQL backup
+pg_dump -h localhost -U username poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
+
+# SQLite backup
+cp /path/to/poweradmin.db /path/to/poweradmin_backup_$(date +%Y%m%d).db
+</code></pre>
+<h3 id="step-2-download-and-extract">Step 2: Download and Extract</h3>
 <ol>
-<li>Download latest tarball from <a href="https://github.com/poweradmin/poweradmin/releases/tag/v2.2.1">GitHub</a></li>
-<li>Backup all files and database before proceeding</li>
-<li>Replace all files with content from the downloaded archive</li>
-<li>Restore your configuration file (inc/config.inc.php) from backup</li>
+<li>Download the v4.0.5 release from <a href="https://github.com/poweradmin/poweradmin/releases">GitHub</a></li>
+<li>Extract the archive to a temporary location</li>
+<li>Replace files in your Poweradmin installation directory</li>
 </ol>
-<h2 id="bug-fixes-and-improvements">Bug Fixes and Improvements</h2>
+<pre><code class="language-bash">cd /tmp
+wget https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.0.5.tar.gz
+tar -xzf v4.0.5.tar.gz
+rsync -av poweradmin-4.0.5/ /var/www/poweradmin/ --exclude=config/settings.php
+</code></pre>
+<h3 id="step-3-run-database-updates">Step 3: Run Database Updates</h3>
+<p>Version 4.0.5 includes a database schema update to add a primary key to the <code>records_zone_templ</code> table. This improves compatibility with MySQL InnoDB Cluster and other replication systems that require all tables to have primary keys.</p>
+<p><strong>For MySQL/MariaDB:</strong></p>
+<pre><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.0.5.sql
+</code></pre>
+<p><strong>For PostgreSQL:</strong></p>
+<pre><code class="language-bash">psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.0.5.sql
+</code></pre>
+<p><strong>For SQLite:</strong></p>
+<pre><code class="language-bash">sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.0.5.sql
+</code></pre>
+<h3 id="step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart</h3>
+<pre><code class="language-bash"># Restart PHP-FPM to clear opcache
+sudo systemctl restart php-fpm
+# or for Apache
+sudo systemctl restart apache2
+</code></pre>
+<h3 id="step-5-verify-upgrade">Step 5: Verify Upgrade</h3>
+<ol>
+<li>Log in to Poweradmin</li>
+<li>Check that zones and records are accessible</li>
+<li>Test adding/editing records to confirm functionality</li>
+</ol>
+<h2 id="database-schema-changes">Database Schema Changes</h2>
+<h3 id="primary-key-on-records_zone_templ-table">Primary Key on <code>records_zone_templ</code> Table</h3>
+<p>The <code>records_zone_templ</code> table now has an <code>id</code> column as primary key. This change:</p>
 <ul>
-<li>Fixed various security vulnerabilities</li>
-<li>Improved error handling for database connections</li>
-<li>Enhanced input validation for DNS records</li>
-<li>Updated translations with latest corrections</li>
-<li>Fixed UI rendering issues in various browsers</li>
-<li>Optimized database queries for better performance</li>
-<li>Addressed compatibility issues with PowerDNS 4.x</li>
+<li>Enables compatibility with MySQL InnoDB Cluster (which requires all tables to have primary keys)</li>
+<li>Improves compatibility with database replication systems</li>
+<li>Has no impact on existing functionality</li>
 </ul>
-<h2 id="notes">Notes</h2>
+<h3 id="postgresql-sequence-synchronization">PostgreSQL Sequence Synchronization</h3>
+<p>For PostgreSQL users, this update also synchronizes the following sequences with actual data:</p>
 <ul>
-<li>No database schema changes are required for this update</li>
-<li>This release maintains backward compatibility with v2.2.0</li>
-<li>If you are upgrading from a version earlier than v2.2.0, please first upgrade to v2.2.0 before proceeding to v2.2.1</li>
+<li><code>perm_items_id_seq</code></li>
+<li><code>perm_templ_id_seq</code></li>
+<li><code>perm_templ_items_id_seq</code></li>
 </ul>
+<p>This prevents "duplicate key value violates unique constraint" errors when adding new permission templates or items.</p>
+<h2 id="new-configuration-option">New Configuration Option</h2>
+<h3 id="show_forward_zone_associations"><code>show_forward_zone_associations</code></h3>
+<p>A new configuration option has been added to address performance issues when viewing reverse zones with many associated forward zones.</p>
+<p><strong>Location:</strong> <code>config/settings.php</code></p>
+<pre><code class="language-php">'interface' =&gt; [
+    // ... other settings ...
+    'show_forward_zone_associations' =&gt; true, // Default: true (added in 4.0.5)
+],
+</code></pre>
+<p><strong>Description:</strong> When set to <code>true</code> (default), the reverse zone list displays associated forward zones for each PTR record. When set to <code>false</code>, this lookup is disabled, which can significantly improve page load times for large installations with many reverse zones.</p>
+<p><strong>When to disable:</strong> If you experience Gateway Timeout errors or slow loading on the reverse zones page, set this option to <code>false</code>.</p>
+<h2 id="bug-fixes">Bug Fixes</h2>
+<h3 id="zone-editing-issue-958">Zone Editing (Issue #958)</h3>
+<p>Fixed an issue where editing a DNS record would incorrectly remove the zone name from the record's name field. Previously, all occurrences of the zone name were removed; now only the trailing zone suffix is stripped as expected.</p>
+<h3 id="zone-template-sync-issues-944-945">Zone Template Sync (Issues #944, #945)</h3>
+<p>Fixed errors when updating zones from templates, particularly affecting installations where zones were created before Poweradmin was installed (where <code>zone_id</code> differs from <code>domain_id</code>).</p>
+<h3 id="php-84-compatibility-issue-935">PHP 8.4 Compatibility (Issue #935)</h3>
+<p>Fixed type safety issues with <code>getZoneTemplate()</code> function that caused errors on PHP 8.4 when managing zones not created from templates.</p>
+<h3 id="sqlite-record-search-issue-919">SQLite Record Search (Issue #919)</h3>
+<p>Fixed "ambiguous column name: name" error when searching for records in zones using SQLite database.</p>
+<h3 id="smtp-mail-configuration-issue-861">SMTP Mail Configuration (Issue #861)</h3>
+<p>Fixed TLS/STARTTLS connection handling for SMTP mail transport. Email sending now works correctly with modern mail servers requiring encrypted connections.</p>
+<h3 id="legacy-theme-handling-issue-899">Legacy Theme Handling (Issue #899)</h3>
+<p>Added graceful fallback when users have configured a removed legacy theme (like <code>spark</code>). The application now defaults to the <code>default</code> theme instead of throwing an error.</p>
+<h3 id="microseconds-display-issue-915">Microseconds Display (Issue #915)</h3>
+<p>Fixed the display of PowerDNS latency metrics to show the correct unit (microseconds/us) instead of milliseconds (ms).</p>
+<h2 id="docker-users">Docker Users</h2>
+<p>If using the official Docker image, simply pull the new version:</p>
+<pre><code class="language-bash">docker pull poweradmin/poweradmin:4.0.5
+</code></pre>
+<p>The database migration will need to be run manually against your database unless using a fresh installation.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="duplicate-key-value-violates-unique-constraint-postgresql">"Duplicate key value violates unique constraint" (PostgreSQL)</h3>
+<p>If you see this error when adding permission templates after upgrading, the sequence synchronization may not have run correctly. Manually run:</p>
+<pre><code class="language-sql">SELECT setval('perm_items_id_seq', (SELECT MAX(id) FROM perm_items));
+SELECT setval('perm_templ_id_seq', (SELECT MAX(id) FROM perm_templ));
+SELECT setval('perm_templ_items_id_seq', (SELECT MAX(id) FROM perm_templ_items));
+</code></pre>
+<h3 id="gateway-timeout-on-reverse-zones">Gateway Timeout on Reverse Zones</h3>
+<p>If the reverse zones page times out, add this to your <code>config/settings.php</code>:</p>
+<pre><code class="language-php">'interface' =&gt; [
+    'show_forward_zone_associations' =&gt; false,
+],
+</code></pre>
+<h3 id="migration-script-errors">Migration Script Errors</h3>
+<p>If the MySQL migration fails with "Duplicate column name 'id'", the table already has a primary key and no migration is needed. This can happen if you previously applied a fix manually or are upgrading from a development version.</p>
               
 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../v2.2.2/" class="btn btn-neutral float-left" title="v2.2.2"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../v2.2.0/" class="btn btn-neutral float-right" title="v2.2.0">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../v4.1.0/" class="btn btn-neutral float-left" title="v4.1.0"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../v4.0.0/" class="btn btn-neutral float-right" title="v4.0.0">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -454,10 +612,10 @@
         </span>
     
     
-      <span><a href="../v2.2.2/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../v4.1.0/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../v2.2.0/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../v4.0.0/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
