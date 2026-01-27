@@ -267,6 +267,14 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#microseconds-display-issue-915">Microseconds Display (Issue #915)</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#html-in-txt-records-issue-953">HTML in TXT Records (Issue #953)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#api-crash-prevention">API Crash Prevention</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#dnssec-reverse-zone-detection">DNSSEC Reverse Zone Detection</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#installation-xml-extension-check">Installation XML Extension Check</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#docker-users">Docker Users</a>
@@ -457,11 +465,13 @@
 <p>Version 4.0.5 is a maintenance release that focuses on bug fixes, database compatibility improvements, and a new configuration option to address performance issues.</p>
 <h2 id="key-changes">Key Changes</h2>
 <ul>
+<li><strong>Security</strong>: Replaced GET confirmation links with POST forms for delete operations; improved debug output escaping</li>
 <li><strong>Database Compatibility</strong>: Added primary key to <code>records_zone_templ</code> table for MySQL InnoDB Cluster compatibility</li>
 <li><strong>PostgreSQL Fix</strong>: Synchronized sequences to prevent duplicate key errors when adding permission templates</li>
-<li><strong>PHP 8.4 Compatibility</strong>: Fixed type safety issues with zone templates</li>
+<li><strong>API Improvements</strong>: Fixed crash when PowerDNS API returns errors; HTTP 204 compliance; PHP 8.1 compatibility</li>
+<li><strong>Docker</strong>: Updated FrankenPHP base image to 1.10-php8.4-alpine; improved health checks</li>
+<li><strong>DNS</strong>: Allow HTML characters in TXT records; improved IDN validation</li>
 <li><strong>Performance Option</strong>: New configuration option to disable forward zone associations in reverse zone list</li>
-<li><strong>Bug Fixes</strong>: Various fixes for zone editing, record search, and mail configuration</li>
 </ul>
 <h2 id="breaking-changes">Breaking Changes</h2>
 <p><strong>None</strong> - Version 4.0.5 is fully backward compatible with v4.0.0 configuration.</p>
@@ -559,6 +569,14 @@ sudo systemctl restart apache2
 <p>Added graceful fallback when users have configured a removed legacy theme (like <code>spark</code>). The application now defaults to the <code>default</code> theme instead of throwing an error.</p>
 <h3 id="microseconds-display-issue-915">Microseconds Display (Issue #915)</h3>
 <p>Fixed the display of PowerDNS latency metrics to show the correct unit (microseconds/us) instead of milliseconds (ms).</p>
+<h3 id="html-in-txt-records-issue-953">HTML in TXT Records (Issue #953)</h3>
+<p>TXT records containing HTML characters (like <code>&lt;</code> and <code>&gt;</code>) are now accepted. Previously these were incorrectly rejected by validation.</p>
+<h3 id="api-crash-prevention">API Crash Prevention</h3>
+<p>Fixed crash when PowerDNS API returns zone errors. The API now handles error responses gracefully.</p>
+<h3 id="dnssec-reverse-zone-detection">DNSSEC Reverse Zone Detection</h3>
+<p>Added missing <code>is_reverse_zone</code> variable to DNSSEC controllers, fixing errors when managing DNSSEC for reverse zones.</p>
+<h3 id="installation-xml-extension-check">Installation XML Extension Check</h3>
+<p>Added missing XML extension check in the requirements step of the installer.</p>
 <h2 id="docker-users">Docker Users</h2>
 <p>If using the official Docker image, simply pull the new version:</p>
 <pre><code class="language-bash">docker pull poweradmin/poweradmin:4.0.5
