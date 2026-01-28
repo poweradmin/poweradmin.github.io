@@ -137,13 +137,35 @@
                 </li>
                 <li class="toctree-l2 current"><a class="reference internal current" href="#">Custom CSS</a>
     <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#quick-start">Quick Start</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-it-works">How It Works</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#file-structure">File Structure</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#example-customizations">Example Customizations</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#custom-brand-colors">Custom Brand Colors</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#custom-logo-area">Custom Logo Area</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#wider-content-area">Wider Content Area</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#tips">Tips</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#benefits">Benefits</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#available-styles">Available Styles</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#style-configuration">Style Configuration</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#theme-and-style-relationship">Theme and Style Relationship</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#ui-customization-options">UI Customization Options</a>
+    <li class="toctree-l3"><a class="reference internal" href="#related-documentation">Related Documentation</a>
     </li>
     </ul>
                 </li>
@@ -394,19 +416,119 @@
     This documentation covers Poweradmin 4.x. Some sections are still being expanded.
   </div>
   
-                <h1 id="ui-styling">UI Styling</h1>
-<p>Poweradmin uses built-in themes for its user interface styling. Currently, the application does not support custom CSS files for styling customization.</p>
+                <h1 id="custom-css">Custom CSS</h1>
+<p>Poweradmin supports custom CSS files that allow you to customize the interface styling while surviving application updates.</p>
+<p><em>Added in version 4.1.0</em></p>
+<h2 id="overview">Overview</h2>
+<p>Each theme includes support for custom CSS extension files that are automatically loaded alongside the base theme styles. This allows you to:</p>
+<ul>
+<li>Customize colors, fonts, and spacing</li>
+<li>Add your organization's branding</li>
+<li>Override specific UI elements</li>
+<li>Keep customizations separate from core files</li>
+</ul>
+<h2 id="quick-start">Quick Start</h2>
+<ol>
+<li>
+<p>Navigate to your theme's style directory:
+   <code>templates/default/style/</code></p>
+</li>
+<li>
+<p>Copy the example files:
+   <code>bash
+   cp custom_light.css.example custom_light.css
+   cp custom_dark.css.example custom_dark.css</code></p>
+</li>
+<li>
+<p>Edit the CSS files to match your preferences</p>
+</li>
+<li>
+<p>Refresh your browser - custom styles are automatically loaded</p>
+</li>
+</ol>
+<h2 id="how-it-works">How It Works</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>custom_light.css</code></td>
+<td>Loaded automatically when using Light style</td>
+</tr>
+<tr>
+<td><code>custom_dark.css</code></td>
+<td>Loaded automatically when using Dark style</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Custom stylesheets override base theme styles using CSS cascade</li>
+<li>Files are only loaded if they exist (no errors if missing)</li>
+<li>Works with the existing light/dark theme switcher</li>
+</ul>
+<h2 id="file-structure">File Structure</h2>
+<pre><code>templates/default/style/
+├── light.css                    # Base light theme (don't modify)
+├── dark.css                     # Base dark theme (don't modify)
+├── custom_light.css.example     # Light theme customization examples
+├── custom_dark.css.example      # Dark theme customization examples
+├── custom_light.css             # Your light theme customizations (create this)
+└── custom_dark.css              # Your dark theme customizations (create this)
+</code></pre>
+<h2 id="example-customizations">Example Customizations</h2>
+<h3 id="custom-brand-colors">Custom Brand Colors</h3>
+<pre><code class="language-css">/* custom_light.css */
+:root {
+    --bs-primary: #0066cc;
+    --bs-primary-rgb: 0, 102, 204;
+}
+
+.navbar {
+    background-color: #0066cc !important;
+}
+</code></pre>
+<h3 id="custom-logo-area">Custom Logo Area</h3>
+<pre><code class="language-css">/* custom_light.css */
+.navbar-brand {
+    font-weight: bold;
+    color: #333 !important;
+}
+</code></pre>
+<h3 id="wider-content-area">Wider Content Area</h3>
+<pre><code class="language-css">/* custom_light.css */
+.container-fluid {
+    max-width: 1600px;
+}
+</code></pre>
+<h2 id="tips">Tips</h2>
+<ul>
+<li>Use <code>!important</code> when needed to ensure your styles override base theme styles</li>
+<li>Test with both light and dark themes if you use theme switching</li>
+<li>Remove example styles you don't need before deploying to production</li>
+<li>Keep customizations minimal for easier maintenance during upgrades</li>
+</ul>
+<h2 id="benefits">Benefits</h2>
+<ul>
+<li><strong>Update-safe</strong>: Your customizations survive all Poweradmin updates</li>
+<li><strong>Automatic loading</strong>: No configuration changes needed</li>
+<li><strong>Theme switching</strong>: Works with existing light/dark theme switcher</li>
+<li><strong>CSS cascade</strong>: Your styles naturally override base themes</li>
+</ul>
 <h2 id="available-styles">Available Styles</h2>
-<p>Poweradmin comes with the following styles, which can be selected in the configuration file:</p>
+<p>Poweradmin comes with the following base styles:</p>
 <ul>
 <li><strong>light</strong> (default): A clean, bright interface style</li>
 <li><strong>dark</strong>: A darker interface style that reduces eye strain in low-light environments</li>
 </ul>
 <h2 id="style-configuration">Style Configuration</h2>
-<p>To change the style, update the <code>style</code> setting in the <code>settings.php</code> file under the <code>interface</code> section:</p>
+<p>To change the default style, update the <code>style</code> setting in <code>config/settings.php</code>:</p>
 <pre><code class="language-php">return [
     'interface' =&gt; [
-        'theme' =&gt; 'default',  // The theme to use (default, custom)
+        'theme' =&gt; 'default',  // The theme to use (default, modern)
         'style' =&gt; 'dark',     // Options: 'light', 'dark'
     ],
 ];
@@ -414,20 +536,15 @@
 <h2 id="theme-and-style-relationship">Theme and Style Relationship</h2>
 <p>In Poweradmin, the visual appearance is controlled by two settings:</p>
 <ol>
-<li><strong>theme</strong>: Controls the template structure</li>
-<li><strong>style</strong>: Controls the color scheme and visual appearance</li>
+<li><strong>theme</strong>: Controls the template structure (default, modern)</li>
+<li><strong>style</strong>: Controls the color scheme (light, dark)</li>
 </ol>
 <p>This separation allows for maximum flexibility in customizing the interface.</p>
-<h2 id="ui-customization-options">UI Customization Options</h2>
-<p>Without custom CSS, you can still customize the UI using:</p>
-<ol>
-<li><strong>Custom themes</strong>: Create custom templates in your theme directory</li>
-<li><strong>Style selection</strong>: Choose between light and dark styles</li>
-<li><strong>Layout settings</strong>: Configure which UI elements are shown and their positioning</li>
-</ol>
-<p>For more information about UI customization, see:
-- <a href="../themes/">Themes documentation</a>
-- <a href="../layout/">Layout documentation</a> (includes custom header and footer setup)</p>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="../themes/">Themes</a></li>
+<li><a href="../layout/">Layout</a> (includes custom header and footer setup)</li>
+</ul>
               
 
             </div>

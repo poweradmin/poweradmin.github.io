@@ -216,12 +216,34 @@
     <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#key-changes">Key Changes</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#new-features">New Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#security-bug-fixes">Security &amp; Bug Fixes</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#security-updates">Security Updates</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#critical-security-fix-mfa-bypass-issue-813">Critical Security Fix: MFA Bypass (Issue #813)</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#other-security-improvements">Other Security Improvements</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#new-features-in-detail">New Features in Detail</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#federated-authentication-oidc-saml">Federated Authentication (OIDC &amp; SAML)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#dns-record-wizards">DNS Record Wizards</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zone-deletion-permissions">Zone Deletion Permissions</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#permission-templates">Permission Templates</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#custom-css-theming">Custom CSS Theming</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#username-recovery">Username Recovery</a>
     </li>
         </ul>
     </li>
@@ -309,9 +331,9 @@
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#from-v3x">From v3.x</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#from-v400-v401-v402-or-v403">From v4.0.0, v4.0.1, v4.0.2, or v4.0.3</a>
+    <li class="toctree-l4"><a class="reference internal" href="#from-v400-through-v403">From v4.0.0 through v4.0.3</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#from-v404">From v4.0.4</a>
+    <li class="toctree-l4"><a class="reference internal" href="#from-v404-or-v405">From v4.0.4 or v4.0.5</a>
     </li>
         </ul>
     </li>
@@ -502,8 +524,19 @@
   
                 <h1 id="upgrading-to-version-410">Upgrading to Version 4.1.0</h1>
 <h2 id="overview">Overview</h2>
-<p>Version 4.1.0 (previously known as 4.0.5 in development) is a maintenance and security release that builds upon the foundation of v4.0.0. This version includes critical security fixes, numerous bug fixes, and improvements to existing features.</p>
+<p>Version 4.1.0 is a major feature release that introduces federated authentication (OIDC/SAML), DNS record wizards, improved permission management, and custom theming capabilities. It also includes critical security fixes, numerous bug fixes, and improvements to existing features.</p>
 <h2 id="key-changes">Key Changes</h2>
+<h3 id="new-features">New Features</h3>
+<ul>
+<li><strong>Federated Authentication</strong>: OpenID Connect (OIDC) and SAML 2.0 support with automatic user provisioning</li>
+<li><strong>DNS Wizards</strong>: Interactive wizards for creating DMARC, SPF, DKIM, CAA, TLSA, and SRV records</li>
+<li><strong>Zone Deletion Permissions</strong>: Separate permissions for zone deletion, independent from edit permissions</li>
+<li><strong>Permission Templates</strong>: Pre-configured templates (Zone Manager, DNS Editor, Read Only, No Access)</li>
+<li><strong>Custom CSS Theming</strong>: Support for custom stylesheets that survive application updates</li>
+<li><strong>Username Recovery</strong>: Self-service username recovery via email</li>
+<li><strong>API Key Management</strong>: New permission for users to manage their own API keys</li>
+</ul>
+<h3 id="security-bug-fixes">Security &amp; Bug Fixes</h3>
 <ul>
 <li><strong>Critical Security Fixes</strong>: MFA bypass vulnerability patched (affects SQL, LDAP, OIDC, and SAML authentication)</li>
 <li><strong>Email System Improvements</strong>: Fixed SMTP TLS/STARTTLS handling and long line issues</li>
@@ -511,7 +544,6 @@
 <li><strong>API Improvements</strong>: Better error handling, optional pagination, and Basic Auth support</li>
 <li><strong>Database Compatibility</strong>: Enhanced PostgreSQL and SQLite compatibility</li>
 <li><strong>UI/UX Fixes</strong>: Sorting improvements, form handling fixes, and dark mode visibility fixes</li>
-<li><strong>Mail Configuration</strong>: Enhanced debug logging and TLS/STARTTLS connection handling</li>
 </ul>
 <h2 id="security-updates">Security Updates</h2>
 <h3 id="critical-security-fix-mfa-bypass-issue-813">Critical Security Fix: MFA Bypass (Issue #813)</h3>
@@ -530,10 +562,147 @@
 <li><strong>Docker Image Security</strong>: Base packages updated to resolve security vulnerabilities</li>
 <li><strong>Boolean Type Safety</strong>: Fixed boolean type handling in PostgreSQL for MFA comparisons</li>
 </ul>
+<h2 id="new-features-in-detail">New Features in Detail</h2>
+<h3 id="federated-authentication-oidc-saml">Federated Authentication (OIDC &amp; SAML)</h3>
+<p>Version 4.1.0 introduces support for enterprise Single Sign-On (SSO) through OpenID Connect and SAML 2.0 protocols.</p>
+<p><strong>OpenID Connect (OIDC)</strong> supports:</p>
+<ul>
+<li>Google, Microsoft Azure AD, Okta, Keycloak, Auth0, Authentik</li>
+<li>Automatic user provisioning on first login</li>
+<li>Group-based permission template mapping</li>
+<li>Account linking for existing users</li>
+</ul>
+<p><strong>SAML 2.0</strong> supports:</p>
+<ul>
+<li>Microsoft Azure AD, Okta, Auth0, Keycloak</li>
+<li>Service Provider (SP) initiated SSO</li>
+<li>Automatic user provisioning with attribute mapping</li>
+<li>Group-based permission assignment</li>
+</ul>
+<p>See the <a href="../../configuration/oidc/">OIDC Configuration</a> and <a href="../../configuration/saml/">SAML Configuration</a> guides for setup instructions.</p>
+<h3 id="dns-record-wizards">DNS Record Wizards</h3>
+<p>Interactive wizards help create complex DNS records with validation and best-practice defaults:</p>
+<table>
+<thead>
+<tr>
+<th>Wizard</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DMARC</strong></td>
+<td>Email authentication policy records</td>
+</tr>
+<tr>
+<td><strong>SPF</strong></td>
+<td>Sender Policy Framework records</td>
+</tr>
+<tr>
+<td><strong>DKIM</strong></td>
+<td>DomainKeys Identified Mail selector records</td>
+</tr>
+<tr>
+<td><strong>CAA</strong></td>
+<td>Certificate Authority Authorization records</td>
+</tr>
+<tr>
+<td><strong>TLSA</strong></td>
+<td>DANE/TLSA records for TLS certificate pinning</td>
+</tr>
+<tr>
+<td><strong>SRV</strong></td>
+<td>Service location records</td>
+</tr>
+</tbody>
+</table>
+<p>Access wizards from the zone edit page or the DNS Wizards menu. See <a href="../../configuration/dns-wizards/">DNS Wizards</a> for details.</p>
+<h3 id="zone-deletion-permissions">Zone Deletion Permissions</h3>
+<p>Zone deletion is now controlled by separate permissions, allowing finer-grained access control:</p>
+<table>
+<thead>
+<tr>
+<th>Permission</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>zone_delete_own</code></td>
+<td>Delete zones the user owns</td>
+</tr>
+<tr>
+<td><code>zone_delete_others</code></td>
+<td>Delete zones owned by other users</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Migration note:</strong> Users with existing <code>zone_content_edit_own</code> or <code>zone_content_edit_others</code> permissions are automatically granted the corresponding delete permissions during upgrade.</p>
+<h3 id="permission-templates">Permission Templates</h3>
+<p>Four new pre-configured permission templates are included:</p>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Zone Manager</strong></td>
+<td>Full self-service zone management (create, edit, delete, templates)</td>
+</tr>
+<tr>
+<td><strong>DNS Editor</strong></td>
+<td>Edit records but not SOA/NS (suitable for delegated management)</td>
+</tr>
+<tr>
+<td><strong>Read Only</strong></td>
+<td>View-only access with search capability (auditors, viewers)</td>
+</tr>
+<tr>
+<td><strong>No Access</strong></td>
+<td>No permissions (inactive accounts, pending assignment)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="custom-css-theming">Custom CSS Theming</h3>
+<p>Customize the Poweradmin interface with CSS files that persist across upgrades:</p>
+<ol>
+<li>
+<p>Copy example files in <code>templates/default/style/</code>:
+   <code>bash
+   cp custom_light.css.example custom_light.css
+   cp custom_dark.css.example custom_dark.css</code></p>
+</li>
+<li>
+<p>Edit the CSS files with your customizations</p>
+</li>
+<li>
+<p>Changes are automatically loaded for the corresponding theme</p>
+</li>
+</ol>
+<p>See <a href="../../configuration/ui/custom-css/">Custom CSS</a> for details.</p>
+<h3 id="username-recovery">Username Recovery</h3>
+<p>Users can recover forgotten usernames via email:</p>
+<ol>
+<li>Click "Forgot Username?" on the login page</li>
+<li>Enter the email address associated with the account</li>
+<li>Receive an email with the username(s) linked to that address</li>
+</ol>
+<p>Requires email configuration. See <a href="../../configuration/mail/">Mail Configuration</a>.</p>
 <h2 id="breaking-changes">Breaking Changes</h2>
 <p><strong>None</strong> - Version 4.1.0 is fully backward compatible with v4.0.0 configuration.</p>
 <h3 id="database-schema-update">Database Schema Update</h3>
-<p>Version 4.1.0 includes a minor database schema change to add a primary key to the <code>records_zone_templ</code> table. This change improves compatibility with MySQL InnoDB Cluster and other database replication systems that require all tables to have primary keys.</p>
+<p>Version 4.1.0 includes significant database schema changes:</p>
+<ul>
+<li><strong>Primary key</strong> added to <code>records_zone_templ</code> table (MySQL InnoDB Cluster compatibility)</li>
+<li><strong>New tables</strong>: <code>oidc_user_links</code>, <code>saml_user_links</code>, <code>username_recovery_requests</code></li>
+<li><strong>New column</strong>: <code>auth_method</code> on <code>users</code> table</li>
+<li><strong>New permissions</strong>: <code>api_manage_keys</code> (65), <code>zone_delete_own</code> (67), <code>zone_delete_others</code> (68)</li>
+<li><strong>Performance indexes</strong> added to multiple tables</li>
+<li><strong>Permission templates</strong>: Zone Manager, DNS Editor, Read Only, No Access</li>
+</ul>
 <h2 id="upgrade-instructions">Upgrade Instructions</h2>
 <h3 id="prerequisites">Prerequisites</h3>
 <ul>
@@ -565,7 +734,15 @@ tar -xzf v4.1.0.tar.gz
 rsync -av poweradmin-4.1.0/ /var/www/poweradmin/ --exclude=config/settings.php
 </code></pre>
 <h3 id="step-3-run-database-updates">Step 3: Run Database Updates</h3>
-<p>Version 4.1.0 includes a database schema update to add a primary key to the <code>records_zone_templ</code> table. This improves compatibility with MySQL InnoDB Cluster and other replication systems.</p>
+<p>Version 4.1.0 includes significant database schema changes:</p>
+<ul>
+<li>Primary key added to <code>records_zone_templ</code> table</li>
+<li>New tables for OIDC/SAML authentication</li>
+<li>New <code>auth_method</code> column on users table</li>
+<li>New permissions for API key management and zone deletion</li>
+<li>Performance indexes on multiple tables</li>
+<li>Username recovery request tracking table</li>
+</ul>
 <p><strong>Apply the 4.1.0 migration:</strong></p>
 <p><strong>For MySQL/MariaDB:</strong></p>
 <pre><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.1.0.sql
@@ -833,15 +1010,15 @@ sudo chmod -R 775 /var/www/poweradmin/tmp
 <h2 id="upgrading-from-older-versions">Upgrading from Older Versions</h2>
 <h3 id="from-v3x">From v3.x</h3>
 <p>You must first upgrade to <a href="../v4.0.0/">v4.0.0</a> before upgrading to v4.1.0.</p>
-<h3 id="from-v400-v401-v402-or-v403">From v4.0.0, v4.0.1, v4.0.2, or v4.0.3</h3>
+<h3 id="from-v400-through-v403">From v4.0.0 through v4.0.3</h3>
 <p>Follow the standard upgrade process in this document. Pay special attention to:</p>
 <ul>
 <li>The MFA security fix (critical if you use MFA)</li>
 <li>Email configuration if you experienced delivery issues</li>
 <li>Database migration to 4.0.2 if you haven't applied it</li>
 </ul>
-<h3 id="from-v404">From v4.0.4</h3>
-<p>Upgrading from v4.0.4 requires replacing the files and running the 4.1.0 database migration to add a primary key to the <code>records_zone_templ</code> table.</p>
+<h3 id="from-v404-or-v405">From v4.0.4 or v4.0.5</h3>
+<p>Upgrading from v4.0.4 or v4.0.5 requires replacing the files and running the 4.1.0 database migration, which adds new tables and permissions for OIDC/SAML authentication and zone deletion.</p>
 <h2 id="known-issues">Known Issues</h2>
 <h3 id="none-currently-documented">None Currently Documented</h3>
 <p>Version 4.1.0 has been thoroughly tested. If you encounter any issues, please report them on <a href="https://github.com/poweradmin/poweradmin/issues">GitHub Issues</a>.</p>
@@ -851,6 +1028,11 @@ sudo chmod -R 775 /var/www/poweradmin/tmp
 <li><a href="../../configuration/security-policies/">Security Configuration</a></li>
 <li><a href="../../configuration/mail/">Email Configuration</a></li>
 <li><a href="../../configuration/api/">API Documentation</a></li>
+<li><a href="../../configuration/oidc/">OIDC Authentication</a></li>
+<li><a href="../../configuration/saml/">SAML Authentication</a></li>
+<li><a href="../../configuration/dns-wizards/">DNS Wizards</a></li>
+<li><a href="../../configuration/ui/custom-css/">Custom CSS Theming</a></li>
+<li><a href="../../configuration/username-recovery/">Username Recovery</a></li>
 <li><a href="https://github.com/poweradmin/poweradmin">GitHub Repository</a></li>
 <li><a href="https://github.com/poweradmin/poweradmin/releases/tag/v4.1.0">Release Notes</a></li>
 </ul>
@@ -866,10 +1048,11 @@ sudo chmod -R 775 /var/www/poweradmin/tmp
 <ul>
 <li><strong>v4.0.0</strong> (July 2025): Major release with MFA, API keys, user agreements, new config system</li>
 <li><strong>v4.0.1</strong> (August 2025): Bug fixes for DNS validation, zones, API pagination</li>
-<li><strong>v4.0.2</strong> (September 2025): Database compatibility fixes, validation improvements</li>
+<li><strong>v4.0.2</strong> (October 2025): Database compatibility fixes, validation improvements</li>
 <li><strong>v4.0.3</strong> (October 2025): Email system fixes, PowerDNS metrics, dark mode fixes</li>
 <li><strong>v4.0.4</strong> (November 2025): Critical MFA security fix, LDAP support in Docker</li>
-<li><strong>v4.1.0</strong> (Current): Email TLS fixes, theme fallback, UI improvements</li>
+<li><strong>v4.0.5</strong> (January 2026): PTR duplicate warnings, per-record comments refactor, minor fixes</li>
+<li><strong>v4.1.0</strong> (Current): OIDC/SAML authentication, DNS wizards, zone deletion permissions, custom CSS theming, username recovery</li>
 </ul>
 <p>For a detailed history of all changes, see the <a href="https://github.com/poweradmin/poweradmin/commits/release/4.x">GitHub commit history</a>.</p>
               
