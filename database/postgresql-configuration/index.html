@@ -112,6 +112,20 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ssltls-configuration">SSL/TLS Configuration</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#ssl-settings">SSL Settings</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ssl-mode-mapping">SSL Mode Mapping</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#example-ssl-with-certificate-verification">Example: SSL with Certificate Verification</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#example-ssl-without-verification">Example: SSL without Verification</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#backwards-compatibility-note">Backwards Compatibility Note</a>
+    </li>
+        </ul>
+    </li>
     </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../sqlite/">SQLite</a>
@@ -441,6 +455,13 @@ return [
         'charset' =&gt; 'UTF8',          // PostgreSQL uses uppercase charset names
         'file' =&gt; '',                 // Not used for PostgreSQL
         'debug' =&gt; false,             // Set to true to see SQL queries for debugging
+
+        // SSL/TLS Settings (optional, added in 4.1.0)
+        'ssl' =&gt; false,               // Enable SSL/TLS connection
+        'ssl_verify' =&gt; false,        // Verify server certificate (requires ssl=true)
+        'ssl_ca' =&gt; '',               // Path to CA certificate file (sslrootcert)
+        'ssl_key' =&gt; '',              // Path to client private key (sslkey)
+        'ssl_cert' =&gt; '',             // Path to client certificate (sslcert)
     ],
 
     // Other configuration sections remain the same as in settings.defaults.php
@@ -482,6 +503,101 @@ psql -U poweradmin -d powerdns -f sql/pdns/[version]/schema.pgsql.sql
 <p><strong>Statement Timeout</strong>: For web applications, consider setting <code>statement_timeout</code> to prevent long-running queries</p>
 </li>
 </ol>
+<h2 id="ssltls-configuration">SSL/TLS Configuration</h2>
+<p><em>Added in version 4.1.0</em></p>
+<p>Poweradmin supports SSL/TLS encrypted connections to PostgreSQL servers using the <code>sslmode</code> DSN parameter.</p>
+<h3 id="ssl-settings">SSL Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ssl</code></td>
+<td>Enable SSL/TLS connection</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>ssl_verify</code></td>
+<td>Verify server certificate (requires <code>ssl=true</code>)</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>ssl_ca</code></td>
+<td>Path to CA certificate file (sslrootcert)</td>
+<td>Empty</td>
+</tr>
+<tr>
+<td><code>ssl_key</code></td>
+<td>Path to client private key (sslkey)</td>
+<td>Empty</td>
+</tr>
+<tr>
+<td><code>ssl_cert</code></td>
+<td>Path to client certificate (sslcert)</td>
+<td>Empty</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ssl-mode-mapping">SSL Mode Mapping</h3>
+<p>Poweradmin maps the settings to PostgreSQL <code>sslmode</code> values:</p>
+<table>
+<thead>
+<tr>
+<th>ssl</th>
+<th>ssl_verify</th>
+<th>PostgreSQL sslmode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>false</code></td>
+<td>-</td>
+<td><code>prefer</code> (try SSL, fall back to non-SSL)</td>
+</tr>
+<tr>
+<td><code>true</code></td>
+<td><code>false</code></td>
+<td><code>require</code> (require SSL, no cert verification)</td>
+</tr>
+<tr>
+<td><code>true</code></td>
+<td><code>true</code></td>
+<td><code>verify-full</code> (require SSL + verify cert + hostname)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-ssl-with-certificate-verification">Example: SSL with Certificate Verification</h3>
+<pre><code class="language-php">'database' =&gt; [
+    'type' =&gt; 'pgsql',
+    'host' =&gt; 'postgres.example.com',
+    'port' =&gt; '5432',
+    'user' =&gt; 'poweradmin',
+    'password' =&gt; 'your_password',
+    'name' =&gt; 'powerdns',
+    'ssl' =&gt; true,
+    'ssl_verify' =&gt; true,
+    'ssl_ca' =&gt; '/path/to/ca-cert.pem',
+],
+</code></pre>
+<h3 id="example-ssl-without-verification">Example: SSL without Verification</h3>
+<pre><code class="language-php">'database' =&gt; [
+    'type' =&gt; 'pgsql',
+    'host' =&gt; 'postgres.example.com',
+    'port' =&gt; '5432',
+    'user' =&gt; 'poweradmin',
+    'password' =&gt; 'your_password',
+    'name' =&gt; 'powerdns',
+    'ssl' =&gt; true,
+    'ssl_verify' =&gt; false,
+],
+</code></pre>
+<h3 id="backwards-compatibility-note">Backwards Compatibility Note</h3>
+<p>By default (<code>ssl=false</code>), Poweradmin uses <code>sslmode=prefer</code>, which attempts SSL connections but falls back to non-SSL if the server doesn't support it. This maintains backwards compatibility with existing configurations.</p>
               
 
             </div>
