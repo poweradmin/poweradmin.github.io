@@ -90,23 +90,7 @@
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#apache">Apache</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#nginx-configuration">Nginx Configuration</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#caddy-configuration">Caddy Configuration</a>
-    </li>
         </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#installing-poweradmin">Installing Poweradmin</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#obtain-poweradmin-source-code">Obtain Poweradmin Source Code</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#deploy-to-web-server">Deploy to Web Server</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#complete-the-installation">Complete the Installation</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
     </li>
     </ul>
                 </li>
@@ -434,45 +418,49 @@ dnf install -y php-sqlite3
 <h2 id="web-server-configuration">Web Server Configuration</h2>
 <h3 id="apache">Apache</h3>
 <ol>
-<li>Install Apache if not already installed:</li>
-</ol>
-<pre><code class="language-bash">dnf install -y httpd
-</code></pre>
-<ol>
-<li>Enable and start the Apache service:</li>
-</ol>
-<pre><code class="language-bash">systemctl enable httpd
-systemctl start httpd
-</code></pre>
-<ol>
-<li>Configure SELinux if it's enabled:</li>
-</ol>
-<pre><code class="language-bash"># Allow Apache to connect to the database
-setsebool -P httpd_can_network_connect_db 1
-
-# If using a non-standard directory, set the correct context
-semanage fcontext -a -t httpd_sys_content_t &quot;/path/to/poweradmin(/.*)?&quot;
+<li>
+<p>Install Apache if not already installed:</p>
+<p><code>bash
+dnf install -y httpd</code></p>
+</li>
+<li>
+<p>Enable and start the Apache service:</p>
+<p><code>bash
+systemctl enable httpd
+systemctl start httpd</code></p>
+</li>
+<li>
+<p>Configure SELinux if it's enabled:</p>
+<p>```bash</p>
+<h1 id="allow-apache-to-connect-to-the-database">Allow Apache to connect to the database</h1>
+<p>setsebool -P httpd_can_network_connect_db 1</p>
+<h1 id="if-using-a-non-standard-directory-set-the-correct-context">If using a non-standard directory, set the correct context</h1>
+<p>semanage fcontext -a -t httpd_sys_content_t "/path/to/poweradmin(/.*)?"
 restorecon -Rv /path/to/poweradmin
-</code></pre>
-<ol>
-<li>Configure your firewall:</li>
-</ol>
-<pre><code class="language-bash">firewall-cmd --permanent --add-service=http
+```</p>
+</li>
+<li>
+<p>Configure your firewall:</p>
+<p><code>bash
+firewall-cmd --permanent --add-service=http
 firewall-cmd --permanent --add-service=https  # If using HTTPS
-firewall-cmd --reload
-</code></pre>
-<ol>
-<li>Ensure <code>AllowOverride All</code> is set in your Apache configuration to allow the <code>.htaccess</code> file to function properly. The <code>.htaccess</code> file handles URL routing, API support, and security rules automatically.</li>
+firewall-cmd --reload</code></p>
+</li>
+<li>
+<p>Ensure <code>AllowOverride All</code> is set in your Apache configuration to allow the <code>.htaccess</code> file to function properly. The <code>.htaccess</code> file handles URL routing, API support, and security rules automatically.</p>
+</li>
 </ol>
 <h3 id="nginx-configuration">Nginx Configuration</h3>
 <p>If you prefer Nginx, use the configuration example provided in the Poweradmin repository. The configuration includes API routing, CORS support, security rules, and clean URL handling.</p>
 <ol>
-<li>Install Nginx:</li>
-</ol>
-<pre><code class="language-bash">dnf install -y nginx
-</code></pre>
-<ol>
-<li>Download the appropriate configuration file:</li>
+<li>
+<p>Install Nginx:</p>
+<p><code>bash
+dnf install -y nginx</code></p>
+</li>
+<li>
+<p>Download the appropriate configuration file:</p>
+</li>
 </ol>
 <p><strong>Version-specific configuration files:</strong></p>
 <ul>
@@ -492,14 +480,14 @@ firewall-cmd --reload
 </li>
 <li>
 <p>Enable and start Nginx and PHP-FPM:</p>
+<p><code>bash
+systemctl enable nginx php-fpm
+systemctl start nginx php-fpm</code></p>
+</li>
+<li>
+<p>Configure SELinux and firewall as with Apache.</p>
 </li>
 </ul>
-<pre><code class="language-bash">systemctl enable nginx php-fpm
-systemctl start nginx php-fpm
-</code></pre>
-<ol>
-<li>Configure SELinux and firewall as with Apache.</li>
-</ol>
 <h3 id="caddy-configuration">Caddy Configuration</h3>
 <p>For Caddy servers, use the configuration example from the repository:</p>
 <ul>
