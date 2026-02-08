@@ -487,19 +487,16 @@ PRIVILEGES;
 </code></pre>
 <h2 id="step-3-configure-powerdns-api-access">Step 3: Configure PowerDNS API Access</h2>
 <p>For DNSSEC management and certain operations, Poweradmin requires access to the PowerDNS API:</p>
-<ol>
-<li>
-<p>Enable the API on your PowerDNS server by editing <code>/etc/powerdns/pdns.conf</code>:</p>
-<p><code>api=yes
+<p><strong>1.</strong> Enable the API on your PowerDNS server by editing <code>/etc/powerdns/pdns.conf</code>:</p>
+<pre><code>api=yes
 api-key=your_secure_api_key
 webserver=yes
 webserver-address=0.0.0.0  # Or restrict to admin_server_ip
 webserver-port=8081
-webserver-allow-from=admin_server_ip/32</code></p>
-</li>
-<li>
-<p>Configure Poweradmin to use the API by editing your <code>settings.php</code>:</p>
-</li>
+webserver-allow-from=admin_server_ip/32
+</code></pre>
+<ol>
+<li>Configure Poweradmin to use the API by editing your <code>settings.php</code>:</li>
 </ol>
 <pre><code class="language-php">'pdns_api' =&gt; [
     'url' =&gt; 'http://dns_server_ip:8081',  // PowerDNS API URL

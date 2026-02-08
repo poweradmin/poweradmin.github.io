@@ -229,6 +229,62 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#post-migration-cleanup">Post-Migration Cleanup</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#configuration-changes-overview">Configuration Changes Overview</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#manual-migration-steps">Manual Migration Steps</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#database-schema-updates">Database Schema Updates</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#new-tables-added-in-v400">New Tables Added in v4.0.0</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#database-migration-files">Database Migration Files</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#migration-prerequisites-and-upgrading-from-older-versions">Migration Prerequisites and Upgrading from Older Versions</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#verify-database-migration-completeness">Verify Database Migration Completeness</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#new-feature-dns-record-type-customization">New Feature: DNS Record Type Customization</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#new-features-in-v400">New Features in v4.0.0</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#enhanced-security-features">Enhanced Security Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#api-management">API Management</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#user-experience-improvements">User Experience Improvements</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#lookup-and-integration-features">Lookup and Integration Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#email-system-enhancements">Email System Enhancements</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zone-management-features">Zone Management Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#user-management-features">User Management Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#administrative-features">Administrative Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#configuration-examples">Configuration Examples</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#post-upgrade-configuration">Post-Upgrade Configuration</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#security-features-configuration">Security Features Configuration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#user-management-features_1">User Management Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#communication-features">Communication Features</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#external-services-integration">External Services Integration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#api-and-development-features">API and Development Features</a>
+    </li>
         </ul>
     </li>
     </ul>
@@ -437,21 +493,16 @@
 <li><strong>If you answered "y" to rename the old config during migration:</strong></li>
 <li>The script renamed <code>inc/config.inc.php</code> to <code>inc/config.inc.php.bak</code></li>
 <li>Keep this backup temporarily while testing</li>
-<li>
-<p>Delete it once you're confident everything works: <code>rm inc/config.inc.php.bak</code></p>
-</li>
-<li>
+<li>Delete it once you're confident everything works: <code>rm inc/config.inc.php.bak</code></li>
+</ol>
 <p><strong>If you kept the original file (answered "n"):</strong></p>
-<p>```bash</p>
-<h1 id="backup-and-remove-the-old-config">Backup and remove the old config</h1>
-<p>mv inc/config.inc.php inc/config.inc.php.backup</p>
-<h1 id="store-it-safely-outside-the-web-root">Store it safely outside the web root</h1>
-<p>mv inc/config.inc.php.backup ~/poweradmin-backups/config.inc.php.$(date +%Y%m%d)
-```</p>
-</li>
-<li>
-<p><strong>Clean up other legacy files:</strong></p>
-</li>
+<pre><code class="language-bash"># Backup and remove the old config
+mv inc/config.inc.php inc/config.inc.php.backup
+# Store it safely outside the web root
+mv inc/config.inc.php.backup ~/poweradmin-backups/config.inc.php.$(date +%Y%m%d)
+</code></pre>
+<ol>
+<li><strong>Clean up other legacy files:</strong></li>
 <li>You can safely remove <code>.old</code>, <code>.bak</code>, or other backup files from the <code>inc/</code> directory</li>
 <li>These are typically leftover from previous installations</li>
 </ol>

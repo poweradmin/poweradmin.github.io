@@ -90,7 +90,23 @@
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#apache">Apache</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#nginx-configuration">Nginx Configuration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#caddy-configuration">Caddy Configuration</a>
+    </li>
         </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#installing-poweradmin">Installing Poweradmin</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#obtain-poweradmin-source-code">Obtain Poweradmin Source Code</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#deploy-to-web-server">Deploy to Web Server</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#complete-the-installation">Complete the Installation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
     </li>
     </ul>
                 </li>
@@ -417,77 +433,49 @@ dnf install -y php-sqlite3
 </code></pre>
 <h2 id="web-server-configuration">Web Server Configuration</h2>
 <h3 id="apache">Apache</h3>
-<ol>
-<li>
-<p>Install Apache if not already installed:</p>
-<p><code>bash
-dnf install -y httpd</code></p>
-</li>
-<li>
-<p>Enable and start the Apache service:</p>
-<p><code>bash
-systemctl enable httpd
-systemctl start httpd</code></p>
-</li>
-<li>
-<p>Configure SELinux if it's enabled:</p>
-<p>```bash</p>
-<h1 id="allow-apache-to-connect-to-the-database">Allow Apache to connect to the database</h1>
-<p>setsebool -P httpd_can_network_connect_db 1</p>
-<h1 id="if-using-a-non-standard-directory-set-the-correct-context">If using a non-standard directory, set the correct context</h1>
-<p>semanage fcontext -a -t httpd_sys_content_t "/path/to/poweradmin(/.*)?"
+<p><strong>1. Install Apache if not already installed:</strong></p>
+<pre><code class="language-bash">dnf install -y httpd
+</code></pre>
+<p><strong>2. Enable and start the Apache service:</strong></p>
+<pre><code class="language-bash">systemctl enable httpd
+systemctl start httpd
+</code></pre>
+<p><strong>3. Configure SELinux if it's enabled:</strong></p>
+<pre><code class="language-bash"># Allow Apache to connect to the database
+setsebool -P httpd_can_network_connect_db 1
+
+# If using a non-standard directory, set the correct context
+semanage fcontext -a -t httpd_sys_content_t &quot;/path/to/poweradmin(/.*)?&quot;
 restorecon -Rv /path/to/poweradmin
-```</p>
-</li>
-<li>
-<p>Configure your firewall:</p>
-<p><code>bash
-firewall-cmd --permanent --add-service=http
+</code></pre>
+<p><strong>4. Configure your firewall:</strong></p>
+<pre><code class="language-bash">firewall-cmd --permanent --add-service=http
 firewall-cmd --permanent --add-service=https  # If using HTTPS
-firewall-cmd --reload</code></p>
-</li>
-<li>
-<p>Ensure <code>AllowOverride All</code> is set in your Apache configuration to allow the <code>.htaccess</code> file to function properly. The <code>.htaccess</code> file handles URL routing, API support, and security rules automatically.</p>
-</li>
-</ol>
+firewall-cmd --reload
+</code></pre>
+<p><strong>5.</strong> Ensure <code>AllowOverride All</code> is set in your Apache configuration to allow the <code>.htaccess</code> file to function properly. The <code>.htaccess</code> file handles URL routing, API support, and security rules automatically.</p>
 <h3 id="nginx-configuration">Nginx Configuration</h3>
 <p>If you prefer Nginx, use the configuration example provided in the Poweradmin repository. The configuration includes API routing, CORS support, security rules, and clean URL handling.</p>
-<ol>
-<li>
-<p>Install Nginx:</p>
-<p><code>bash
-dnf install -y nginx</code></p>
-</li>
-<li>
-<p>Download the appropriate configuration file:</p>
-</li>
-</ol>
+<p><strong>1. Install Nginx:</strong></p>
+<pre><code class="language-bash">dnf install -y nginx
+</code></pre>
+<p><strong>2.</strong> Download the appropriate configuration file:</p>
 <p><strong>Version-specific configuration files:</strong></p>
 <ul>
 <li><strong>Poweradmin 4.0.x</strong>: Use <a href="https://github.com/poweradmin/poweradmin/blob/release/4.x/nginx.conf.example">nginx.conf.example from release/4.x</a></li>
-<li>
-<p><strong>Poweradmin 4.1.x+</strong>: Use <a href="https://github.com/poweradmin/poweradmin/blob/master/nginx.conf.example">nginx.conf.example from master</a> (includes subfolder deployment support)</p>
-</li>
-<li>
-<p>Save the configuration to <code>/etc/nginx/conf.d/poweradmin.conf</code> and adjust:</p>
-</li>
-<li>
-<p><code>server_name</code> - Set to your domain name</p>
-</li>
-<li><code>root</code> - Set to your Poweradmin installation path</li>
-<li>
-<p><code>fastcgi_pass</code> - Use <code>unix:/var/run/php-fpm/www.sock</code> for RHEL/CentOS</p>
-</li>
-<li>
-<p>Enable and start Nginx and PHP-FPM:</p>
-<p><code>bash
-systemctl enable nginx php-fpm
-systemctl start nginx php-fpm</code></p>
-</li>
-<li>
-<p>Configure SELinux and firewall as with Apache.</p>
-</li>
+<li><strong>Poweradmin 4.1.x+</strong>: Use <a href="https://github.com/poweradmin/poweradmin/blob/master/nginx.conf.example">nginx.conf.example from master</a> (includes subfolder deployment support)</li>
 </ul>
+<p><strong>3.</strong> Save the configuration to <code>/etc/nginx/conf.d/poweradmin.conf</code> and adjust:</p>
+<ul>
+<li><code>server_name</code> - Set to your domain name</li>
+<li><code>root</code> - Set to your Poweradmin installation path</li>
+<li><code>fastcgi_pass</code> - Use <code>unix:/var/run/php-fpm/www.sock</code> for RHEL/CentOS</li>
+</ul>
+<p><strong>4. Enable and start Nginx and PHP-FPM:</strong></p>
+<pre><code class="language-bash">systemctl enable nginx php-fpm
+systemctl start nginx php-fpm
+</code></pre>
+<p><strong>5.</strong> Configure SELinux and firewall as with Apache.</p>
 <h3 id="caddy-configuration">Caddy Configuration</h3>
 <p>For Caddy servers, use the configuration example from the repository:</p>
 <ul>
