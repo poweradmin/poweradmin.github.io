@@ -460,24 +460,14 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO poweradmi
 <h4 id="for-sqlite">For SQLite:</h4>
 <pre><code class="language-bash">sqlite3 /path/to/your/powerdns.db &lt; sql/poweradmin-sqlite-db-structure.sql
 </code></pre>
-<p>!!! danger "Default Credentials"
-    The default login credentials are:</p>
-<pre><code>* Username: `admin`
-* Password: `admin`
-
-You **must** change these credentials immediately after your first login for security reasons.
-</code></pre>
+<blockquote>
+<p><strong>Warning:</strong> The default login credentials are <code>admin</code> / <code>admin</code>. You <strong>must</strong> change these credentials immediately after your first login for security reasons.</p>
+</blockquote>
 <h3 id="4-create-configuration-file">4. Create Configuration File</h3>
 <p>Create a <code>config/settings.php</code> file using the template below. A full list of configuration options can be found in <code>config/settings.defaults.php</code>.</p>
-<p>!!! warning "Password Character Restrictions"
-    When creating passwords for database, LDAP, or SMTP authentication, avoid using the following characters:</p>
-<pre><code>* Single quotes (`'`)
-* Double quotes (`"`) 
-* Backslashes (`\`)
-* Line breaks
-
-These characters can cause configuration file generation to fail during installation with cryptic PHP syntax errors.
-</code></pre>
+<blockquote>
+<p><strong>Warning:</strong> When creating passwords for database, LDAP, or SMTP authentication, avoid using single quotes (<code>'</code>), double quotes (<code>"</code>), backslashes (<code>\</code>), and line breaks. These characters can cause configuration file generation to fail during installation with cryptic PHP syntax errors.</p>
+</blockquote>
 <pre><code class="language-php">&lt;?php
 /**
  * Poweradmin Custom Settings Configuration File
@@ -547,13 +537,10 @@ return [
     RewriteRule ^/nic/update(.*)$ /dynamic_update.php [L]
 &lt;/VirtualHost&gt;
 </code></pre>
-<p>!!! warning "404 errors after installation or upgrade"
-    If you see 404 errors when accessing Poweradmin (e.g., on <code>/login</code>), check that:</p>
-<pre><code>1. `mod_rewrite` is enabled: `a2enmod rewrite &amp;&amp; systemctl restart apache2`
-2. `AllowOverride All` is set in your VirtualHost or Apache configuration
-3. The `.htaccess` file is present in the Poweradmin root directory
-
-You can verify `mod_rewrite` is loaded with: `apache2ctl -M | grep rewrite`
+<blockquote>
+<p><strong>Warning:</strong> If you see 404 errors when accessing Poweradmin (e.g., on <code>/login</code>), check that: (1) <code>mod_rewrite</code> is enabled: <code>a2enmod rewrite &amp;&amp; systemctl restart apache2</code>, (2) <code>AllowOverride All</code> is set in your VirtualHost or Apache configuration, (3) The <code>.htaccess</code> file is present in the Poweradmin root directory.</p>
+</blockquote>
+<pre><code>You can verify `mod_rewrite` is loaded with: `apache2ctl -M | grep rewrite`
 </code></pre>
 <h3 id="important-apache-htaccess-file">Important: Apache .htaccess File</h3>
 <p>The <code>.htaccess</code> file in the root directory is <strong>essential</strong> for Poweradmin to work properly. Starting with v4.1.0, it handles all URL routing (not just API requests).</p>
