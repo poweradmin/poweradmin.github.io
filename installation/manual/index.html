@@ -522,7 +522,15 @@ return [
 </ul>
 <h2 id="web-server-configuration">Web Server Configuration</h2>
 <h3 id="apache-configuration">Apache Configuration</h3>
-<p>For a basic Apache configuration (without API support), you can use the following settings:</p>
+<p>Apache requires <code>mod_rewrite</code> to be enabled for Poweradmin to function correctly. Starting with v4.1.0, all pages use clean URLs (e.g., <code>/login</code>, <code>/zones</code>) which depend on URL rewriting.</p>
+<ol>
+<li>Enable the required Apache modules:</li>
+</ol>
+<pre><code class="language-bash">a2enmod rewrite headers
+</code></pre>
+<ol>
+<li>Configure your VirtualHost:</li>
+</ol>
 <pre><code class="language-apache">&lt;VirtualHost *:80&gt;
     ServerName your-domain.com
     DocumentRoot /path/to/poweradmin
@@ -531,7 +539,7 @@ return [
         Options -Indexes +FollowSymLinks
         AllowOverride All
         Require all granted
-    &lt;/Directory&gt;    
+    &lt;/Directory&gt;
 
     # For DDNS update functionality
     RewriteEngine On
@@ -539,14 +547,22 @@ return [
     RewriteRule ^/nic/update(.*)$ /dynamic_update.php [L]
 &lt;/VirtualHost&gt;
 </code></pre>
+<p>!!! warning "404 errors after installation or upgrade"
+    If you see 404 errors when accessing Poweradmin (e.g., on <code>/login</code>), check that:</p>
+<pre><code>1. `mod_rewrite` is enabled: `a2enmod rewrite &amp;&amp; systemctl restart apache2`
+2. `AllowOverride All` is set in your VirtualHost or Apache configuration
+3. The `.htaccess` file is present in the Poweradmin root directory
+
+You can verify `mod_rewrite` is loaded with: `apache2ctl -M | grep rewrite`
+</code></pre>
 <h3 id="important-apache-htaccess-file">Important: Apache .htaccess File</h3>
-<p>The <code>.htaccess</code> file in the root directory is <strong>essential</strong> for the API to work properly.</p>
+<p>The <code>.htaccess</code> file in the root directory is <strong>essential</strong> for Poweradmin to work properly. Starting with v4.1.0, it handles all URL routing (not just API requests).</p>
 <p><strong>Version-specific .htaccess files:</strong></p>
 <ul>
-<li><strong>For Poweradmin 4.0.x with API support</strong>: Use the <a href="https://github.com/poweradmin/poweradmin/blob/release/4.0.x/.htaccess">.htaccess from release/4.0.x branch</a></li>
-<li><strong>For other Poweradmin 4.x versions</strong>: Use the latest <a href="https://github.com/poweradmin/poweradmin/blob/master/.htaccess">.htaccess from master branch</a></li>
+<li><strong>For Poweradmin 4.0.x</strong>: Use the <a href="https://github.com/poweradmin/poweradmin/blob/release/4.0.x/.htaccess">.htaccess from release/4.0.x branch</a></li>
+<li><strong>For Poweradmin 4.1.x and later</strong>: Use the latest <a href="https://github.com/poweradmin/poweradmin/blob/master/.htaccess">.htaccess from master branch</a></li>
 </ul>
-<p>Ensure that <code>AllowOverride All</code> is set in your Apache configuration to allow the .htaccess file to function properly.</p>
+<p><code>AllowOverride All</code> <strong>must</strong> be set in your Apache configuration to allow the <code>.htaccess</code> file to function.</p>
 <h3 id="nginx-configuration">Nginx Configuration</h3>
 <p>For Nginx servers, use the complete configuration example provided in the Poweradmin repository.</p>
 <p><strong>Version-specific nginx configuration files:</strong></p>

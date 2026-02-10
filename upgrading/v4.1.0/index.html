@@ -249,6 +249,10 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking Changes</a>
         <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#url-rewriting-now-required">URL Rewriting Now Required</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#no-configuration-breaking-changes">No Configuration Breaking Changes</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#database-schema-update">Database Schema Update</a>
     </li>
         </ul>
@@ -321,6 +325,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#theme-not-found-error">Theme Not Found Error</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#404-error-on-login-or-other-pages">404 Error on /login or Other Pages</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#permission-issues-after-upgrade">Permission Issues After Upgrade</a>
     </li>
         </ul>
@@ -339,7 +345,7 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#known-issues">Known Issues</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#none-currently-documented">None Currently Documented</a>
+    <li class="toctree-l4"><a class="reference internal" href="#404-on-login-when-url-rewriting-is-not-configured-993">404 on /login When URL Rewriting Is Not Configured (#993)</a>
     </li>
         </ul>
     </li>
@@ -688,7 +694,26 @@ cp custom_dark.css.example custom_dark.css
 </ol>
 <p>Requires email configuration. See <a href="../../configuration/mail/">Mail Configuration</a>.</p>
 <h2 id="breaking-changes">Breaking Changes</h2>
-<p><strong>None</strong> - Version 4.1.0 is fully backward compatible with v4.0.0 configuration.</p>
+<h3 id="url-rewriting-now-required">URL Rewriting Now Required</h3>
+<p>Version 4.1.0 switched from query-parameter URLs (e.g., <code>index.php?page=login</code>) to clean URLs (e.g., <code>/login</code>). This means <strong>URL rewriting is now required</strong> for your web server.</p>
+<p><strong>Apache users must ensure:</strong></p>
+<ol>
+<li><code>mod_rewrite</code> is enabled: <code>a2enmod rewrite &amp;&amp; systemctl restart apache2</code></li>
+<li><code>AllowOverride All</code> is set in the VirtualHost configuration</li>
+<li>The <code>.htaccess</code> file from the v4.1.0 release is present in the Poweradmin root directory</li>
+</ol>
+<p><strong>Nginx users must ensure:</strong></p>
+<ul>
+<li>The <code>try_files</code> directive routes requests to <code>index.php</code> — use the <a href="https://github.com/poweradmin/poweradmin/blob/master/nginx.conf.example">nginx.conf.example from master</a></li>
+</ul>
+<p><strong>Caddy users must ensure:</strong></p>
+<ul>
+<li>The <code>try_files</code> directive is configured — use the <a href="https://github.com/poweradmin/poweradmin/blob/master/caddy.conf.example">caddy.conf.example from master</a></li>
+</ul>
+<p>!!! warning "Symptom: 404 on /login after upgrade"
+    If you see a 404 error when Poweradmin redirects to <code>/login</code>, your web server is not rewriting URLs to <code>index.php</code>. This is the most common issue when upgrading from v4.0.x to v4.1.0. See the troubleshooting section below.</p>
+<h3 id="no-configuration-breaking-changes">No Configuration Breaking Changes</h3>
+<p>Version 4.1.0 is fully backward compatible with v4.0.0 configuration format. No <code>config/settings.php</code> changes are required.</p>
 <h3 id="database-schema-update">Database Schema Update</h3>
 <p>Version 4.1.0 includes significant database schema changes:</p>
 <ul>
@@ -986,6 +1011,44 @@ SHOW INDEX FROM records;
 <li>The fallback mechanism in v4.1.0 should handle this automatically</li>
 <li>Check <code>config/settings.php</code> and ensure theme is set to a valid theme: <code>'ignite'</code> or <code>'spark'</code></li>
 </ol>
+<h3 id="404-error-on-login-or-other-pages">404 Error on /login or Other Pages</h3>
+<p>If you see a 404 error when accessing Poweradmin after upgrading to v4.1.0:</p>
+<ol>
+<li><strong>Apache</strong>: Verify <code>mod_rewrite</code> is enabled:</li>
+</ol>
+<pre><code class="language-bash">apache2ctl -M | grep rewrite
+# If not listed, enable it:
+a2enmod rewrite
+systemctl restart apache2
+</code></pre>
+<ol>
+<li><strong>Apache</strong>: Verify <code>AllowOverride All</code> is set in your VirtualHost:</li>
+</ol>
+<pre><code class="language-apache">&lt;Directory /path/to/poweradmin&gt;
+    AllowOverride All
+&lt;/Directory&gt;
+</code></pre>
+<ol>
+<li>
+<p><strong>Apache</strong>: Verify the <code>.htaccess</code> file is present in the Poweradmin root directory and is the version from v4.1.0 (not v4.0.x)</p>
+</li>
+<li>
+<p><strong>Nginx</strong>: Verify your configuration includes the <code>try_files</code> directive:</p>
+</li>
+</ol>
+<pre><code class="language-nginx">location / {
+    try_files $uri $uri/ /index.php$is_args$args;
+}
+</code></pre>
+<ol>
+<li><strong>All servers</strong>: Check error logs for more details:</li>
+</ol>
+<pre><code class="language-bash"># Apache
+tail -f /var/log/apache2/error.log
+
+# Nginx
+tail -f /var/log/nginx/error.log
+</code></pre>
 <h3 id="permission-issues-after-upgrade">Permission Issues After Upgrade</h3>
 <p>If you see permission denied errors:</p>
 <pre><code class="language-bash"># Fix file permissions
@@ -1015,8 +1078,9 @@ sudo chmod -R 775 /var/www/poweradmin/tmp
 <h3 id="from-v404-or-v405">From v4.0.4 or v4.0.5</h3>
 <p>Upgrading from v4.0.4 or v4.0.5 requires replacing the files and running the 4.1.0 database migration, which adds new tables and permissions for OIDC/SAML authentication and zone deletion.</p>
 <h2 id="known-issues">Known Issues</h2>
-<h3 id="none-currently-documented">None Currently Documented</h3>
-<p>Version 4.1.0 has been thoroughly tested. If you encounter any issues, please report them on <a href="https://github.com/poweradmin/poweradmin/issues">GitHub Issues</a>.</p>
+<h3 id="404-on-login-when-url-rewriting-is-not-configured-993">404 on /login When URL Rewriting Is Not Configured (#993)</h3>
+<p>Users upgrading from v4.0.x may encounter a 404 error when Poweradmin redirects to <code>/login</code>. This happens because v4.1.0 uses clean URLs that require URL rewriting to be properly configured on the web server. See the <a href="#url-rewriting-now-required">Breaking Changes</a> section above for the fix.</p>
+<p>If you encounter any other issues, please report them on <a href="https://github.com/poweradmin/poweradmin/issues">GitHub Issues</a>.</p>
 <h2 id="additional-resources">Additional Resources</h2>
 <ul>
 <li><a href="../../configuration/basic/">Configuration Guide</a></li>

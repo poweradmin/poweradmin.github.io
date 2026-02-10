@@ -62,6 +62,10 @@
     <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#minimum-requirements">Minimum Requirements</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#web-server-url-rewriting">Web Server URL Rewriting</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#supported-distributions">Supported Distributions</a>
     </li>
@@ -442,6 +446,40 @@ exceeds the recommended requirements.</p>
 - <strong>Operating System</strong>: Linux or BSD</p>
 <p><strong>Note</strong>: Other web server software, such as Caddy, might also be supported. However, these are usually not tested by
 the maintainer and may only work with help from the community.</p>
+</blockquote>
+<h3 id="web-server-url-rewriting">Web Server URL Rewriting</h3>
+<p>Starting with Poweradmin 4.1.0, URL rewriting is <strong>required</strong> for all web servers. Poweradmin uses clean URLs (e.g., <code>/login</code> instead of <code>index.php?page=login</code>), which require the web server to route all requests through <code>index.php</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Web Server</th>
+<th>Requirement</th>
+<th>How to Enable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Apache</strong></td>
+<td><code>mod_rewrite</code> enabled + <code>AllowOverride All</code></td>
+<td><code>a2enmod rewrite</code> and set <code>AllowOverride All</code> in VirtualHost</td>
+</tr>
+<tr>
+<td><strong>Nginx</strong></td>
+<td><code>try_files</code> directive</td>
+<td>Use the provided <a href="https://github.com/poweradmin/poweradmin/blob/master/nginx.conf.example">nginx.conf.example</a></td>
+</tr>
+<tr>
+<td><strong>Caddy</strong></td>
+<td><code>try_files</code> directive</td>
+<td>Use the provided <a href="https://github.com/poweradmin/poweradmin/blob/master/caddy.conf.example">caddy.conf.example</a></td>
+</tr>
+</tbody>
+</table>
+<p>The included <code>.htaccess</code> file handles routing automatically for Apache. For Nginx and Caddy, use the example configuration files from the repository.</p>
+<p>!!! warning "404 errors on clean URLs"
+    If you see 404 errors when accessing pages like <code>/login</code> or <code>/zones</code>, your web server is not routing requests to <code>index.php</code>. For Apache, ensure <code>mod_rewrite</code> is enabled and <code>AllowOverride All</code> is set. For Nginx/Caddy, verify your configuration matches the provided examples.</p>
+<blockquote>
+<p><strong>Note:</strong> Poweradmin 4.0.x and earlier do not require URL rewriting for basic functionality, only for API support.</p>
 </blockquote>
 <hr />
 <h2 id="supported-distributions">Supported Distributions</h2>
