@@ -108,6 +108,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#authentication">Authentication</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#custom-ca-certificate">Custom CA Certificate</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#miscellaneous">Miscellaneous</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#logging">Logging</a>
@@ -903,6 +905,29 @@ volumes:
 </tr>
 </tbody>
 </table>
+<h3 id="custom-ca-certificate">Custom CA Certificate</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TRUSTED_CA_FILE</code></td>
+<td>-</td>
+<td>Path to a custom CA certificate file inside the container</td>
+</tr>
+</tbody>
+</table>
+<p>Use this when connecting to services (OIDC, SAML, LDAP, PowerDNS API) that use self-signed or internal CA certificates:</p>
+<pre><code class="language-bash">docker run -d --name poweradmin -p 80:80 \
+  -e TRUSTED_CA_FILE=/certs/my-ca.crt \
+  -v /path/to/my-ca.crt:/certs/my-ca.crt:ro \
+  poweradmin/poweradmin
+</code></pre>
 <h3 id="miscellaneous">Miscellaneous</h3>
 <table>
 <thead>

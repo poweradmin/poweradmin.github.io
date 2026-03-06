@@ -525,11 +525,6 @@
 <td>Realm name for HTTP Basic Authentication</td>
 </tr>
 <tr>
-<td><code>log_requests</code></td>
-<td><code>false</code></td>
-<td>Log all API requests</td>
-</tr>
-<tr>
 <td><code>docs_enabled</code></td>
 <td><code>false</code></td>
 <td>Enable API documentation at /api/docs endpoint</td>
@@ -547,7 +542,6 @@
         'enabled' =&gt; true,
         'basic_auth_enabled' =&gt; true,
         'basic_auth_realm' =&gt; 'DNS Management API',
-        'log_requests' =&gt; true,
         'docs_enabled' =&gt; true,
         'max_keys_per_user' =&gt; 5,  // Admin users have no limit
     ],
@@ -697,10 +691,11 @@ location ~ \.php$ {
 <pre><code class="language-php">'api' =&gt; [
     'enabled' =&gt; true,
     'basic_auth_enabled' =&gt; false, // Use API keys only
-    'log_requests' =&gt; true,        // Enable audit logging
     'docs_enabled' =&gt; false,       // Disable docs in production
 ],
 </code></pre>
+<p>!!! tip
+    To enable audit logging for API operations, use the <a href="../logging/">audit logging settings</a> (<code>logging.database_enabled</code> and <code>logging.syslog_enabled</code>) instead.</p>
 <h3 id="security-best-practices">Security Best Practices</h3>
 <ol>
 <li><strong>Use HTTPS only</strong> - Never expose API over HTTP</li>
@@ -752,12 +747,13 @@ location ~ \.php$ {
 <li><strong>500 Internal Server Error</strong>: Server configuration issue</li>
 </ol>
 <h3 id="debugging">Debugging</h3>
-<p>Enable request logging for troubleshooting:</p>
-<pre><code class="language-php">'api' =&gt; [
-    'log_requests' =&gt; true,
+<p>Enable diagnostic logging for troubleshooting:</p>
+<pre><code class="language-php">'logging' =&gt; [
+    'type' =&gt; 'native',
+    'level' =&gt; 'debug',
 ],
 </code></pre>
-<p>Check logs in your configured logging destination for detailed request/response information.</p>
+<p>This writes diagnostic messages to PHP's <code>error_log</code>. For audit logging of API operations, enable <code>logging.database_enabled</code> and/or <code>logging.syslog_enabled</code> - see <a href="../logging/">Logging Configuration</a>.</p>
 <h2 id="powerdns-metrics-api-v403">PowerDNS Metrics API <em>(v4.0.3+)</em></h2>
 <p>Poweradmin can integrate with PowerDNS metrics endpoints for monitoring and status information.</p>
 <h3 id="configuration">Configuration</h3>
