@@ -131,6 +131,22 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#functionality-enabled-by-api">Functionality Enabled by API</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#api-backend-mode-v430">API Backend Mode (v4.3.0+)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#when-to-use-api-backend-mode">When to Use API Backend Mode</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#new-installation-with-api-backend">New Installation with API Backend</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#migrating-from-sql-to-api-backend">Migrating from SQL to API Backend</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#zone-sync-service">Zone Sync Service</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#docker">Docker</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#security-considerations">Security Considerations</a>
     </li>
     </ul>
@@ -241,6 +257,8 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" >v4.x Series</a>
     <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.2.0/">v4.2.0</a>
+                </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.1.0/">v4.1.0</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.5/">v4.0.5</a>
@@ -417,7 +435,16 @@
   
                 <h1 id="powerdns-api-configuration">PowerDNS API Configuration</h1>
 <h2 id="overview">Overview</h2>
-<p>Poweradmin can interact with PowerDNS through its API for advanced operations like DNSSEC management and automatic zone changes. This document explains how to configure the PowerDNS API integration.</p>
+<p>Poweradmin can interact with PowerDNS through its REST API in two ways:</p>
+<ol>
+<li>
+<p><strong>Supplementary mode</strong> (default): The API enhances a traditional SQL-based setup with DNSSEC management, zone transfers, and metadata access. Poweradmin still queries the PowerDNS database directly for zone and record operations.</p>
+</li>
+<li>
+<p><strong>API backend mode</strong> (v4.3.0+): The API is the sole communication channel with PowerDNS. Poweradmin does not need access to the PowerDNS database at all. This is ideal for cloud-hosted PowerDNS, network-restricted environments, or API-first architectures.</p>
+</li>
+</ol>
+<p>This document explains how to configure both modes.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>PowerDNS server with API enabled</li>
@@ -464,6 +491,13 @@
 <td>localhost</td>
 <td>PowerDNS server name used in API calls</td>
 <td>4.0.0</td>
+</tr>
+<tr>
+<td>-</td>
+<td>dns.backend</td>
+<td>sql</td>
+<td>Backend mode: <code>sql</code> (database) or <code>api</code> (API only)</td>
+<td>4.3.0</td>
 </tr>
 </tbody>
 </table>
@@ -512,6 +546,73 @@ webserver-loglevel=none
 <li>Metadata management</li>
 <li>Direct server statistics access</li>
 </ul>
+<h2 id="api-backend-mode-v430">API Backend Mode (v4.3.0+)</h2>
+<p>API backend mode eliminates the need for Poweradmin to access the PowerDNS database. All DNS operations go through the PowerDNS REST API.</p>
+<h3 id="when-to-use-api-backend-mode">When to Use API Backend Mode</h3>
+<ul>
+<li>PowerDNS database is not accessible from the Poweradmin server</li>
+<li>Running PowerDNS as a managed/cloud service</li>
+<li>Network policies prevent direct database access</li>
+<li>You prefer API-first integration</li>
+</ul>
+<h3 id="configuration">Configuration</h3>
+<p>Set <code>dns.backend</code> to <code>api</code> in your <code>config/settings.php</code>:</p>
+<pre><code class="language-php">return [
+    'dns' =&gt; [
+        'backend' =&gt; 'api',
+        'hostmaster' =&gt; 'hostmaster.example.com',
+        'ns1' =&gt; 'ns1.example.com',
+        'ns2' =&gt; 'ns2.example.com',
+    ],
+
+    'pdns_api' =&gt; [
+        'url' =&gt; 'http://powerdns-server:8081',
+        'key' =&gt; 'YOUR_API_KEY',
+        'server_name' =&gt; 'localhost',
+    ],
+
+    // Poweradmin's own database (still required)
+    'db_host' =&gt; 'localhost',
+    'db_port' =&gt; 3306,
+    'db_user' =&gt; 'poweradmin',
+    'db_pass' =&gt; 'password',
+    'db_name' =&gt; 'poweradmin',
+    'db_type' =&gt; 'mysql',
+
+    // PowerDNS database settings are NOT needed in API mode
+];
+</code></pre>
+<h3 id="new-installation-with-api-backend">New Installation with API Backend</h3>
+<p>The installer (Step 4) offers a choice between "Database" and "API" backend. Selecting API will:</p>
+<ul>
+<li>Prompt for the PowerDNS API URL and key</li>
+<li>Skip PowerDNS database configuration</li>
+<li>Set <code>dns.backend</code> to <code>api</code> in the generated configuration</li>
+</ul>
+<h3 id="migrating-from-sql-to-api-backend">Migrating from SQL to API Backend</h3>
+<ol>
+<li>Ensure the PowerDNS API is enabled and accessible</li>
+<li>Run the v4.3.0 database migration (adds required columns to <code>zones</code> table)</li>
+<li>Change <code>dns.backend</code> from <code>sql</code> to <code>api</code> in <code>config/settings.php</code></li>
+<li>Add <code>pdns_api</code> settings if not already configured</li>
+<li>Load any page - the zone sync service automatically populates cached zone metadata</li>
+</ol>
+<p>All existing zone ownership, group assignments, and permissions are preserved. The migration is reversible by changing <code>dns.backend</code> back to <code>sql</code>.</p>
+<h3 id="zone-sync-service">Zone Sync Service</h3>
+<p>In API backend mode, a sync service keeps the local <code>zones</code> table in sync with PowerDNS:</p>
+<ul>
+<li><strong>Automatic</strong>: Runs on zone list page loads, throttled to once per 5 minutes per session</li>
+<li><strong>Adds</strong> zones created directly in PowerDNS (assigned no owner - admin must assign access)</li>
+<li><strong>Removes</strong> local entries for zones deleted from PowerDNS</li>
+<li><strong>Updates</strong> cached zone type and master when changed</li>
+</ul>
+<h3 id="docker">Docker</h3>
+<p>For Docker deployments, set the backend via environment variable:</p>
+<pre><code class="language-yaml">environment:
+  PA_DNS_BACKEND: api
+  PA_PDNS_API_URL: http://powerdns:8081
+  PA_PDNS_API_KEY: your-api-key
+</code></pre>
 <h2 id="security-considerations">Security Considerations</h2>
 <ul>
 <li>Always use HTTPS for production environments</li>
@@ -519,6 +620,7 @@ webserver-loglevel=none
 <li>Use a strong API key and rotate it regularly</li>
 <li>Consider using a reverse proxy for additional security</li>
 <li>Keep PowerDNS and Poweradmin updated to the latest versions</li>
+<li>In API backend mode, the API key grants full control over PowerDNS - protect it accordingly</li>
 </ul>
               
 

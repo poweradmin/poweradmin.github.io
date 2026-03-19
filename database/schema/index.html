@@ -178,6 +178,14 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#record-comment-tables">Record Comment Tables</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#record_comments">record_comments</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#record_comment_links">record_comment_links</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#default-permission-templates">Default Permission Templates</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#table-relationships">Table Relationships</a>
@@ -319,6 +327,8 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" >v4.x Series</a>
     <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.2.0/">v4.2.0</a>
+                </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.1.0/">v4.1.0</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.5/">v4.0.5</a>
@@ -959,7 +969,7 @@
 </tbody>
 </table>
 <h3 id="zones"><code>zones</code></h3>
-<p>Links zones to users for permission management.</p>
+<p>Links zones to users for permission management. In API backend mode, also caches zone metadata from the PowerDNS API.</p>
 <table>
 <thead>
 <tr>
@@ -977,7 +987,7 @@
 <tr>
 <td><code>domain_id</code></td>
 <td>int</td>
-<td>Foreign key to domains.id</td>
+<td>Foreign key to domains.id (nullable in API mode)</td>
 </tr>
 <tr>
 <td><code>owner</code></td>
@@ -993,6 +1003,21 @@
 <td><code>zone_templ_id</code></td>
 <td>int</td>
 <td>Zone template ID</td>
+</tr>
+<tr>
+<td><code>zone_name</code></td>
+<td>varchar(255)</td>
+<td>Zone name (cached from PowerDNS API, v4.3.0+)</td>
+</tr>
+<tr>
+<td><code>zone_type</code></td>
+<td>varchar(8)</td>
+<td>Zone type: Master, Slave, Native (cached, v4.3.0+)</td>
+</tr>
+<tr>
+<td><code>zone_master</code></td>
+<td>varchar(255)</td>
+<td>Master server for slave zones (cached, v4.3.0+)</td>
 </tr>
 </tbody>
 </table>
@@ -1661,6 +1686,63 @@
 </tr>
 </tbody>
 </table>
+<h2 id="record-comment-tables">Record Comment Tables</h2>
+<h3 id="record_comments"><code>record_comments</code></h3>
+<p>Stores comments for individual DNS records.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>comment</code></td>
+<td>text</td>
+<td>Comment text</td>
+</tr>
+</tbody>
+</table>
+<h3 id="record_comment_links"><code>record_comment_links</code></h3>
+<p>Links record comments to specific records.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>domain_id</code></td>
+<td>int</td>
+<td>Foreign key to domains.id</td>
+</tr>
+<tr>
+<td><code>record_id</code></td>
+<td>varchar</td>
+<td>Record identifier (int for SQL mode, encoded string for API mode)</td>
+</tr>
+<tr>
+<td><code>comment_id</code></td>
+<td>int</td>
+<td>Foreign key to record_comments.id</td>
+</tr>
+</tbody>
+</table>
 <h2 id="default-permission-templates">Default Permission Templates</h2>
 <p>Poweradmin includes default permission templates:</p>
 <table>
@@ -1716,6 +1798,10 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>4.3.0</td>
+<td>Added <code>zone_name</code>, <code>zone_type</code>, <code>zone_master</code> to zones; Widened <code>record_comment_links.record_id</code> to VARCHAR; Added <code>record_comments</code>, <code>record_comment_links</code></td>
+</tr>
 <tr>
 <td>4.2.0</td>
 <td>Added <code>oidc_user_links</code>, <code>saml_user_links</code>, <code>username_recovery_requests</code>; Added <code>auth_method</code> to users; Added zone deletion permissions</td>
