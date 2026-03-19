@@ -177,17 +177,29 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#api-endpoints">API Endpoints</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#zone-management">Zone Management</a>
+    <li class="toctree-l3"><a class="reference internal" href="#api-v2-endpoints-v410">API v2 Endpoints (v4.1.0+)</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#zone-management">Zone Management</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#record-management">Record Management</a>
+    <li class="toctree-l4"><a class="reference internal" href="#zone-owners-v420">Zone Owners (v4.2.0+)</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#user-management">User Management</a>
+    <li class="toctree-l4"><a class="reference internal" href="#record-management">Record Management</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#permission-management">Permission Management</a>
+    <li class="toctree-l4"><a class="reference internal" href="#rrset-management">RRset Management</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#permission-templates">Permission Templates</a>
+    <li class="toctree-l4"><a class="reference internal" href="#user-management">User Management</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#internal-api-endpoints">Internal API Endpoints</a>
+    <li class="toctree-l4"><a class="reference internal" href="#permission-management">Permission Management</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#permission-templates">Permission Templates</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zone-templates-v420">Zone Templates (v4.2.0+)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#group-management-v420">Group Management (v4.2.0+)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#api-v1-endpoints-legacy">API v1 Endpoints (Legacy)</a>
     </li>
         </ul>
     </li>
@@ -237,6 +249,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#version-history">Version History</a>
         <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#v420">v4.2.0</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#v410">v4.1.0</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#v404">v4.0.4</a>
@@ -643,50 +657,95 @@ location ~ \.php$ {
      https://your-domain.com/api/v1/zones
 </code></pre>
 <h2 id="api-endpoints">API Endpoints</h2>
-<h3 id="zone-management">Zone Management</h3>
+<p>Poweradmin provides two API versions. API v2 (introduced in v4.1.0) is recommended for all new integrations. API v1 remains available for backward compatibility.</p>
+<h3 id="api-v2-endpoints-v410">API v2 Endpoints <em>(v4.1.0+)</em></h3>
+<h4 id="zone-management">Zone Management</h4>
 <ul>
-<li><code>GET /api/v1/zones</code> - List all zones</li>
-<li><code>GET /api/v1/zones/{id}</code> - Get zone details</li>
-<li><code>POST /api/v1/zones</code> - Create new zone</li>
-<li><code>PUT /api/v1/zones/{id}</code> - Update zone</li>
-<li><code>DELETE /api/v1/zones/{id}</code> - Delete zone</li>
+<li><code>GET /api/v2/zones</code> - List all zones</li>
+<li><code>GET /api/v2/zones/{id}</code> - Get zone details</li>
+<li><code>POST /api/v2/zones</code> - Create new zone</li>
+<li><code>PUT /api/v2/zones/{id}</code> - Update zone</li>
+<li><code>DELETE /api/v2/zones/{id}</code> - Delete zone</li>
 </ul>
-<h3 id="record-management">Record Management</h3>
+<h4 id="zone-owners-v420">Zone Owners <em>(v4.2.0+)</em></h4>
 <ul>
-<li><code>GET /api/v1/zones/{id}/records</code> - List zone records</li>
-<li><code>GET /api/v1/records/{id}</code> - Get record details</li>
-<li><code>POST /api/v1/zones/{id}/records</code> - Create record</li>
-<li><code>PUT /api/v1/records/{id}</code> - Update record</li>
-<li><code>DELETE /api/v1/records/{id}</code> - Delete record</li>
+<li><code>GET /api/v2/zones/{id}/owners</code> - List zone owners</li>
+<li><code>POST /api/v2/zones/{id}/owners</code> - Add zone owner (supports batch assignment via <code>user_ids</code> array)</li>
+<li><code>DELETE /api/v2/zones/{id}/owners/{user_id}</code> - Remove zone owner</li>
 </ul>
-<h3 id="user-management">User Management</h3>
+<h4 id="record-management">Record Management</h4>
 <ul>
-<li><code>GET /api/v1/users</code> - List users (admin only)</li>
-<li><code>GET /api/v1/users/{id}</code> - Get user details</li>
-<li><code>POST /api/v1/users</code> - Create user (admin only)</li>
-<li><code>PUT /api/v1/users/{id}</code> - Update user</li>
-<li><code>DELETE /api/v1/users/{id}</code> - Delete user (admin only)</li>
+<li><code>GET /api/v2/zones/{id}/records</code> - List zone records</li>
+<li><code>POST /api/v2/zones/{id}/records</code> - Create record</li>
+<li><code>PUT /api/v2/zones/{id}/records/{record_id}</code> - Update record</li>
+<li><code>DELETE /api/v2/zones/{id}/records/{record_id}</code> - Delete record</li>
+<li><code>POST /api/v2/zones/{id}/records/bulk</code> - Bulk create records</li>
 </ul>
-<h3 id="permission-management">Permission Management</h3>
+<h4 id="rrset-management">RRset Management</h4>
 <ul>
-<li><code>GET /api/v1/permissions</code> - List available permissions</li>
+<li><code>GET /api/v2/zones/{id}/rrsets</code> - List all RRsets in a zone</li>
+<li><code>GET /api/v2/zones/{id}/rrsets/{name}/{type}</code> - Get specific RRset</li>
+</ul>
+<h4 id="user-management">User Management</h4>
+<ul>
+<li><code>GET /api/v2/users</code> - List users</li>
+<li><code>GET /api/v2/users/{id}</code> - Get user details</li>
+<li><code>POST /api/v2/users</code> - Create user</li>
+<li><code>PUT /api/v2/users/{id}</code> - Update user</li>
+<li><code>DELETE /api/v2/users/{id}</code> - Delete user</li>
+</ul>
+<h4 id="permission-management">Permission Management</h4>
+<ul>
+<li><code>GET /api/v2/permissions</code> - List available permissions</li>
+<li><code>GET /api/v2/permissions/{id}</code> - Get permission details</li>
+</ul>
+<h4 id="permission-templates">Permission Templates</h4>
+<ul>
+<li><code>GET /api/v2/permission-templates</code> - List permission templates</li>
+<li><code>GET /api/v2/permission-templates/{id}</code> - Get permission template details</li>
+<li><code>POST /api/v2/permission-templates</code> - Create permission template</li>
+<li><code>PUT /api/v2/permission-templates/{id}</code> - Update permission template</li>
+<li><code>DELETE /api/v2/permission-templates/{id}</code> - Delete permission template</li>
+</ul>
+<h4 id="zone-templates-v420">Zone Templates <em>(v4.2.0+)</em></h4>
+<ul>
+<li><code>GET /api/v2/zone-templates</code> - List zone templates</li>
+<li><code>GET /api/v2/zone-templates/{id}</code> - Get zone template details</li>
+<li><code>POST /api/v2/zone-templates</code> - Create zone template</li>
+<li><code>PUT /api/v2/zone-templates/{id}</code> - Update zone template</li>
+<li><code>DELETE /api/v2/zone-templates/{id}</code> - Delete zone template</li>
+<li><code>GET /api/v2/zone-templates/{id}/records</code> - List template records</li>
+<li><code>POST /api/v2/zone-templates/{id}/records</code> - Add template record</li>
+<li><code>PUT /api/v2/zone-templates/{template_id}/records/{id}</code> - Update template record</li>
+<li><code>DELETE /api/v2/zone-templates/{template_id}/records/{id}</code> - Delete template record</li>
+</ul>
+<h4 id="group-management-v420">Group Management <em>(v4.2.0+)</em></h4>
+<ul>
+<li><code>GET /api/v2/groups</code> - List groups</li>
+<li><code>GET /api/v2/groups/{id}</code> - Get group details</li>
+<li><code>POST /api/v2/groups</code> - Create group</li>
+<li><code>PUT /api/v2/groups/{id}</code> - Update group</li>
+<li><code>DELETE /api/v2/groups/{id}</code> - Delete group</li>
+<li><code>GET /api/v2/groups/{id}/members</code> - List group members</li>
+<li><code>POST /api/v2/groups/{id}/members</code> - Add member to group</li>
+<li><code>DELETE /api/v2/groups/{id}/members/{user_id}</code> - Remove member from group</li>
+<li><code>GET /api/v2/groups/{id}/zones</code> - List group zones</li>
+<li><code>POST /api/v2/groups/{id}/zones</code> - Assign zone to group</li>
+<li><code>DELETE /api/v2/groups/{id}/zones/{zone_id}</code> - Remove zone from group</li>
+</ul>
+<h3 id="api-v1-endpoints-legacy">API v1 Endpoints (Legacy)</h3>
+<p>API v1 is available for backward compatibility. Consider migrating to v2 for new integrations.</p>
+<ul>
+<li><code>GET/POST /api/v1/zones</code> - List / create zones</li>
+<li><code>GET/PUT/DELETE /api/v1/zones/{id}</code> - Get / update / delete zone</li>
+<li><code>GET/POST /api/v1/zones/{id}/records</code> - List / create records</li>
+<li><code>PUT/DELETE /api/v1/zones/{id}/records/{record_id}</code> - Update / delete record</li>
+<li><code>GET/POST /api/v1/users</code> - List / create users</li>
+<li><code>GET/PUT/DELETE /api/v1/users/{id}</code> - Get / update / delete user</li>
+<li><code>GET/POST /api/v1/permission-templates</code> - List / create templates</li>
+<li><code>GET/PUT/DELETE /api/v1/permission-templates/{id}</code> - Get / update / delete template</li>
+<li><code>GET /api/v1/permissions</code> - List permissions</li>
 <li><code>GET /api/v1/permissions/{id}</code> - Get permission details</li>
-</ul>
-<h3 id="permission-templates">Permission Templates</h3>
-<ul>
-<li><code>GET /api/v1/permission-templates</code> - List permission templates</li>
-<li><code>GET /api/v1/permission-templates/{id}</code> - Get permission template details</li>
-<li><code>POST /api/v1/permission-templates</code> - Create permission template</li>
-<li><code>PUT /api/v1/permission-templates/{id}</code> - Update permission template</li>
-<li><code>DELETE /api/v1/permission-templates/{id}</code> - Delete permission template</li>
-</ul>
-<h3 id="internal-api-endpoints">Internal API Endpoints</h3>
-<p>The following endpoints are available for internal use (session-based authentication):</p>
-<ul>
-<li><code>GET /api/internal/zones/{id}/validate</code> - Validate zone configuration</li>
-<li><code>GET /api/internal/users/{id}/preferences</code> - Get user preferences</li>
-<li><code>PUT /api/internal/users/{id}/preferences</code> - Update user preferences</li>
-<li><code>POST /api/internal/validation</code> - Validate various data types</li>
 </ul>
 <h2 id="api-documentation">API Documentation</h2>
 <p>When <code>docs_enabled</code> is true, interactive API documentation is available at <code>/api/docs</code>. This provides:</p>
@@ -704,8 +763,9 @@ location ~ \.php$ {
     'docs_enabled' =&gt; false,       // Disable docs in production
 ],
 </code></pre>
-<p>!!! tip
-    To enable audit logging for API operations, use the <a href="../logging/">audit logging settings</a> (<code>logging.database_enabled</code> and <code>logging.syslog_enabled</code>) instead.</p>
+<blockquote>
+<p><strong>Tip:</strong> To enable audit logging for API operations, use the <a href="../logging/">audit logging settings</a> (<code>logging.database_enabled</code> and <code>logging.syslog_enabled</code>) instead.</p>
+</blockquote>
 <h3 id="security-best-practices">Security Best Practices</h3>
 <ol>
 <li><strong>Use HTTPS only</strong> - Never expose API over HTTP</li>
@@ -817,9 +877,18 @@ GET /api/v1/users?page=2&amp;limit=25
 }
 </code></pre>
 <h2 id="version-history">Version History</h2>
+<h3 id="v420">v4.2.0</h3>
+<ul>
+<li><strong>Added:</strong> Zone template CRUD endpoints (API v2)</li>
+<li><strong>Added:</strong> Zone owners endpoints with batch assignment (API v2)</li>
+<li><strong>Added:</strong> Group management endpoints - members and zones (API v2)</li>
+<li><strong>Added:</strong> RRset endpoints (API v2)</li>
+<li><strong>Added:</strong> Bulk record creation endpoint (API v2)</li>
+</ul>
 <h3 id="v410">v4.1.0</h3>
 <ul>
-<li>Improved API stability and error handling</li>
+<li><strong>Added:</strong> API v2 with consistent response wrapping</li>
+<li><strong>Added:</strong> Permission validation for API endpoints</li>
 </ul>
 <h3 id="v404">v4.0.4</h3>
 <ul>
