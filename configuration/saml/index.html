@@ -134,6 +134,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#permission-template-mapping">Permission Template Mapping</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#group-membership-mapping">Group Membership Mapping</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#service-provider-sp-configuration">Service Provider (SP) Configuration</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#sp-metadata">SP Metadata</a>
@@ -515,6 +517,35 @@
     ],
 ],
 </code></pre>
+<h2 id="group-membership-mapping">Group Membership Mapping</h2>
+<p>Separate from permission templates, you can also map SAML groups to Poweradmin groups. This controls zone ownership and access through group membership.</p>
+<p>Key differences from permission template mapping:</p>
+<ul>
+<li><code>permission_template_mapping</code> assigns <strong>one</strong> permission template per user</li>
+<li><code>group_mapping</code> assigns <strong>multiple</strong> Poweradmin groups per user</li>
+</ul>
+<pre><code class="language-php">'saml' =&gt; [
+    'enabled' =&gt; true,
+    'group_mapping' =&gt; [
+        'external-admins' =&gt; 'Administrators',
+        'dns-managers' =&gt; 'Zone Managers',
+        'dns-editors' =&gt; 'Editors',
+        'dns-viewers' =&gt; 'Viewers',
+        'dns-guests' =&gt; 'Guests',
+    ],
+],
+</code></pre>
+<p>Predefined Poweradmin groups:</p>
+<ul>
+<li><strong>Administrators</strong> - Full administrative access to all system functions</li>
+<li><strong>Zone Managers</strong> - Full zone management including creation, editing, and deletion</li>
+<li><strong>Editors</strong> - Edit zone records but cannot modify SOA and NS records</li>
+<li><strong>Viewers</strong> - Read-only access to zones with search capability</li>
+<li><strong>Guests</strong> - Temporary group with no permissions (awaiting approval)</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Both <code>permission_template_mapping</code> and <code>group_mapping</code> read from the same SAML attribute specified by <code>user_mapping.groups</code>. Group memberships are re-evaluated on every login - users are added to or removed from mapped groups based on their current SAML assertion.</p>
+</blockquote>
 <h2 id="service-provider-sp-configuration">Service Provider (SP) Configuration</h2>
 <p>Poweradmin acts as a SAML Service Provider. Configure SP settings in the <code>sp</code> section:</p>
 <table>
@@ -880,6 +911,13 @@ lastName
   PA_SAML_AZURE_ENTITY_ID: "https://sts.windows.net/tenant-id/"
   PA_SAML_AZURE_SSO_URL: "https://login.microsoftonline.com/tenant-id/saml2"
 </code></pre>
+<blockquote>
+<p><strong>Note:</strong> The <code>permission_template_mapping</code> and <code>group_mapping</code> settings can be configured via environment variables using the <code>=</code> delimiter and comma-separated entries:</p>
+<p><code>yaml
+PA_SAML_PERMISSION_TEMPLATE_MAPPING: "admins=Administrator,editors=Viewer"
+PA_SAML_GROUP_MAPPING: "admins=Administrators,editors=Editors"</code></p>
+<p>Group names containing colons (e.g., SAML URNs) are supported. Whitespace around commas and delimiters is trimmed automatically.</p>
+</blockquote>
 <p>For certificates and keys, use Docker secrets:</p>
 <pre><code class="language-yaml">secrets:
   saml_idp_cert:
