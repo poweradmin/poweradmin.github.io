@@ -125,6 +125,20 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#secrets">Secrets</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#non-root-rootless-deployment">Non-Root / Rootless Deployment</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#behavior">Behavior</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#docker-non-root">Docker (Non-Root)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#kubernetes-restricted">Kubernetes (Restricted)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#custom-port">Custom Port</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#limitations-non-root">Limitations (Non-Root)</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#check-container-logs">Check container logs</a>
@@ -1108,6 +1122,68 @@ services:
     secrets:
       - db_password
 </code></pre>
+<h2 id="non-root-rootless-deployment">Non-Root / Rootless Deployment</h2>
+<p>The Poweradmin image supports running as a non-root user for restricted Kubernetes clusters and OpenShift. No separate image variant is needed - the entrypoint adapts automatically.</p>
+<h3 id="behavior">Behavior</h3>
+<table>
+<thead>
+<tr>
+<th>Start mode</th>
+<th>Port</th>
+<th>Privileges</th>
+<th>Use case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Root (default)</td>
+<td>80</td>
+<td>Drops to www-data after setup</td>
+<td>Standard Docker, unrestricted K8s</td>
+</tr>
+<tr>
+<td>Non-root</td>
+<td>8080 (auto)</td>
+<td>No chown/chmod/CA install</td>
+<td>Restricted K8s, OpenShift</td>
+</tr>
+</tbody>
+</table>
+<h3 id="docker-non-root">Docker (Non-Root)</h3>
+<pre><code class="language-bash">docker run --rm --user 82:82 -p 8080:8080 \
+  -e DB_TYPE=sqlite \
+  poweradmin/poweradmin:stable
+</code></pre>
+<h3 id="kubernetes-restricted">Kubernetes (Restricted)</h3>
+<pre><code class="language-yaml">spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 82
+    runAsGroup: 82
+    fsGroup: 82
+  containers:
+    - name: poweradmin
+      image: poweradmin/poweradmin:stable
+      ports:
+        - containerPort: 8080
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+      env:
+        - name: DB_TYPE
+          value: sqlite
+</code></pre>
+<p><code>fsGroup: 82</code> ensures volumes are group-writable for <code>www-data</code> (GID 82).</p>
+<h3 id="custom-port">Custom Port</h3>
+<p>Override the auto-detected port with <code>SERVER_PORT</code>:</p>
+<pre><code class="language-bash">docker run --rm -e SERVER_PORT=9090 -p 9090:9090 poweradmin/poweradmin
+</code></pre>
+<h3 id="limitations-non-root">Limitations (Non-Root)</h3>
+<ul>
+<li><code>TRUSTED_CA_FILE</code> requires root - a warning is logged if set in non-root mode</li>
+<li>Volumes must be pre-configured as writable (use <code>fsGroup</code> or host permissions)</li>
+</ul>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="check-container-logs">Check container logs</h3>
 <pre><code class="language-bash">docker logs poweradmin
