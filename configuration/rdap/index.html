@@ -161,6 +161,10 @@
     <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#configuration-example">Configuration Example</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#custom-server-mapping">Custom Server Mapping</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#rdap-vs-whois">RDAP vs WHOIS</a>
     </li>
@@ -463,6 +467,11 @@
 <td>Optional default RDAP server URL (empty to use server from RDAP database)</td>
 </tr>
 <tr>
+<td><code>custom_servers</code></td>
+<td><code>[]</code></td>
+<td>Custom TLD-to-server mapping for TLDs not in the built-in database</td>
+</tr>
+<tr>
 <td><code>request_timeout</code></td>
 <td><code>10</code></td>
 <td>HTTP request timeout in seconds for RDAP queries</td>
@@ -478,12 +487,30 @@
 <pre><code class="language-php">return [
     'rdap' =&gt; [
         'enabled' =&gt; true,
-        'default_server' =&gt; 'https://rdap.verisign.com/com/v1/',
+        'default_server' =&gt; '',
+        'custom_servers' =&gt; [
+            'za' =&gt; 'https://rdap.example.com/za/',
+        ],
         'request_timeout' =&gt; 15,
         'restrict_to_admin' =&gt; true,
     ],
 ];
 </code></pre>
+<h3 id="custom-server-mapping">Custom Server Mapping</h3>
+<p>The <code>custom_servers</code> option allows you to define RDAP servers for specific TLDs that may not be in the built-in database. Custom servers take priority over the built-in server list.</p>
+<pre><code class="language-php">'custom_servers' =&gt; [
+    'za' =&gt; 'https://rdap.registry.net.za/',
+],
+</code></pre>
+<p><strong>Docker environment variable:</strong></p>
+<pre><code>PA_MODULE_RDAP_CUSTOM_SERVERS=za=https://rdap.registry.net.za/
+</code></pre>
+<p><strong>Lookup priority:</strong></p>
+<ol>
+<li>Custom servers (from <code>custom_servers</code> config)</li>
+<li>Built-in RDAP server database</li>
+<li><code>default_server</code> (global fallback, if set)</li>
+</ol>
 <h2 id="rdap-vs-whois">RDAP vs WHOIS</h2>
 <table>
 <thead>

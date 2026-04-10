@@ -159,6 +159,10 @@
     <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#configuration-example">Configuration Example</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#custom-server-mapping">Custom Server Mapping</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
         <ul>
@@ -451,6 +455,11 @@
 <td>Optional default WHOIS server (empty to use server from WHOIS database)</td>
 </tr>
 <tr>
+<td><code>custom_servers</code></td>
+<td><code>[]</code></td>
+<td>Custom TLD-to-server mapping for TLDs not in the built-in database</td>
+</tr>
+<tr>
 <td><code>socket_timeout</code></td>
 <td><code>10</code></td>
 <td>Socket timeout in seconds for WHOIS queries</td>
@@ -466,12 +475,32 @@
 <pre><code class="language-php">return [
     'whois' =&gt; [
         'enabled' =&gt; true,
-        'default_server' =&gt; 'whois.internic.net',
+        'default_server' =&gt; '',
+        'custom_servers' =&gt; [
+            'za' =&gt; 'whois.registry.net.za',
+            'co.za' =&gt; 'whois.registry.net.za',
+        ],
         'socket_timeout' =&gt; 15,
         'restrict_to_admin' =&gt; true,
     ],
 ];
 </code></pre>
+<h3 id="custom-server-mapping">Custom Server Mapping</h3>
+<p>The <code>custom_servers</code> option allows you to define WHOIS servers for specific TLDs that may not be in the built-in database. Custom servers take priority over the built-in server list.</p>
+<pre><code class="language-php">'custom_servers' =&gt; [
+    'za' =&gt; 'whois.registry.net.za',    // South Africa
+    'co.za' =&gt; 'whois.registry.net.za', // South African SLD
+],
+</code></pre>
+<p><strong>Docker environment variable:</strong></p>
+<pre><code>PA_MODULE_WHOIS_CUSTOM_SERVERS=za=whois.registry.net.za,co.za=whois.registry.net.za
+</code></pre>
+<p><strong>Lookup priority:</strong></p>
+<ol>
+<li>Custom servers (from <code>custom_servers</code> config)</li>
+<li>Built-in WHOIS server database</li>
+<li><code>default_server</code> (global fallback, if set)</li>
+</ol>
 <h2 id="usage">Usage</h2>
 <p>When enabled, WHOIS lookups can be performed from:</p>
 <ol>

@@ -575,8 +575,33 @@ webserver-address=127.0.0.1
 <li><strong>Zone lookups</strong>: The <code>zone_name</code> column has a unique index, making name-based queries fast.</li>
 <li><strong>Record operations</strong>: Each record list/edit operation makes an API call to PowerDNS. This adds network latency compared to direct SQL, but the API response times are typically under 50ms for local deployments.</li>
 </ul>
+<h2 id="zone-metadata-editor-issue-16">Zone Metadata Editor (Issue #16)</h2>
+<p>A new zone metadata editor allows managing PowerDNS <code>domainmetadata</code> entries per zone. Access it from the zone edit page via the <strong>Metadata</strong> button.</p>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Edit all known PowerDNS metadata kinds (ALLOW-AXFR-FROM, ALSO-NOTIFY, TSIG-ALLOW-AXFR, etc.)</li>
+<li>Custom metadata kind support</li>
+<li>Multi-value metadata (one row per value)</li>
+<li>Inline help and version badges for each metadata kind</li>
+<li>Works in both SQL and API backend modes</li>
+</ul>
+<p><strong>SOA-EDIT-API</strong> (Issue #622) is editable through the metadata editor. In API mode, it writes via the zone properties endpoint. Options: DEFAULT, INCREASE, EPOCH, SOA-EDIT, SOA-EDIT-INCREASE, OFF.</p>
+<p><strong>Permissions:</strong> Requires <code>zone_meta_edit_own</code> (own zones) or <code>zone_meta_edit_others</code> (all zones).</p>
+<h2 id="security-changes">Security Changes</h2>
+<h3 id="password-hashing">Password Hashing</h3>
+<ul>
+<li><strong>md5 and md5salt</strong> password hashing methods have been removed. Only <code>bcrypt</code>, <code>argon2i</code>, and <code>argon2id</code> are supported for new passwords.</li>
+<li>Existing md5/md5salt hashes are still verified on login and automatically upgraded to the configured algorithm.</li>
+<li>Default bcrypt cost aligned to 12 across all code paths.</li>
+</ul>
+<p>Update your <code>config/settings.php</code> if you were using md5 or md5salt:</p>
+<pre><code class="language-php">'security' =&gt; [
+    'password_encryption' =&gt; 'bcrypt',  // Options: bcrypt, argon2i, argon2id
+    'password_cost' =&gt; 12,
+],
+</code></pre>
 <h2 id="breaking-changes">Breaking Changes</h2>
-<p>None. API backend mode is opt-in. Existing SQL-mode installations continue to work without any configuration changes.</p>
+<p>None. API backend mode is opt-in. Existing SQL-mode installations continue to work without any configuration changes. Password hashing changes are backward-compatible - legacy hashes are auto-upgraded on login.</p>
 <h2 id="rollback">Rollback</h2>
 <p>To rollback to v4.2.0:</p>
 <ol>
