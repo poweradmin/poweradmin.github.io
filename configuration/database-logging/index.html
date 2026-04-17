@@ -180,6 +180,8 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#log_users">log_users</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#log_api">log_api</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#log_zones">log_zones</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#log_groups">log_groups</a>
@@ -189,6 +191,8 @@
     <li class="toctree-l2"><a class="reference internal" href="#what-gets-logged">What Gets Logged</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#user-events">User Events</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#api-events">API Events</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#zone-events">Zone Events</a>
     </li>
@@ -449,9 +453,10 @@
                 <h1 id="database-logging">Database Logging</h1>
 <p>Poweradmin can log operations to the database for auditing and tracking purposes.</p>
 <h2 id="overview">Overview</h2>
-<p>Database logging records operations across three log tables:</p>
+<p>Database logging records operations across four log tables:</p>
 <ul>
-<li><strong>User events</strong> (<code>log_users</code>): login/logout, user creation/editing/deletion</li>
+<li><strong>User events</strong> (<code>log_users</code>): login/logout, user creation/editing/deletion, MFA, password resets</li>
+<li><strong>API events</strong> (<code>log_api</code>): API key creation, editing, deletion, regeneration, and toggling</li>
 <li><strong>Zone events</strong> (<code>log_zones</code>): zone and record creation, modification, and deletion</li>
 <li><strong>Group events</strong> (<code>log_groups</code>): group creation/editing/deletion, membership and zone assignment changes</li>
 </ul>
@@ -493,6 +498,38 @@
 </code></pre>
 <h2 id="log-tables">Log Tables</h2>
 <h3 id="log_users">log_users</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Auto-increment ID</td>
+</tr>
+<tr>
+<td><code>event</code></td>
+<td>text</td>
+<td>Description of the event</td>
+</tr>
+<tr>
+<td><code>priority</code></td>
+<td>int</td>
+<td>Syslog priority level</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>When the event occurred</td>
+</tr>
+</tbody>
+</table>
+<h3 id="log_api">log_api</h3>
 <table>
 <thead>
 <tr>
@@ -601,8 +638,16 @@
 <h2 id="what-gets-logged">What Gets Logged</h2>
 <h3 id="user-events">User Events</h3>
 <ul>
-<li>Login and logout</li>
+<li>Login and logout (includes <code>auth_method</code> - sql, ldap, oidc, saml)</li>
 <li>User creation, editing, and deletion</li>
+<li>MFA enable/disable/verify</li>
+<li>Password changes and resets</li>
+<li>Username recovery</li>
+</ul>
+<h3 id="api-events">API Events</h3>
+<ul>
+<li>API key creation, editing, and deletion</li>
+<li>API key regeneration and toggling (enable/disable)</li>
 </ul>
 <h3 id="zone-events">Zone Events</h3>
 <ul>
@@ -618,12 +663,14 @@
 <li>Zone assignment additions and removals</li>
 </ul>
 <h2 id="viewing-logs">Viewing Logs</h2>
-<p>Administrators can view the change log through the web interface:</p>
-<ol>
-<li>Navigate to <strong>Logs</strong> in the main menu</li>
-<li>Filter by zone, user, or date range</li>
-<li>Export logs if needed</li>
-</ol>
+<p>Administrators can view logs through the web interface:</p>
+<ul>
+<li><strong>Users</strong> &gt; <strong>User logs</strong> - user and authentication events</li>
+<li><strong>Tools</strong> &gt; <strong>API Logs</strong> - API key management events</li>
+<li><strong>Zones</strong> &gt; <strong>Zone logs</strong> - zone and record events</li>
+<li><strong>Groups</strong> &gt; <strong>Group logs</strong> - group membership and zone assignment events</li>
+</ul>
+<p>Each log page supports filtering by user, event type, and date range, with CSV/JSON export.</p>
 <h2 id="querying-logs">Querying Logs</h2>
 <p>You can query logs directly from the database:</p>
 <pre><code class="language-sql">-- Recent user events
@@ -654,6 +701,7 @@ WHERE created_at BETWEEN '2025-01-01' AND '2025-01-31';
 <p>Database logs can grow large over time. Consider implementing a retention policy:</p>
 <pre><code class="language-sql">-- Delete logs older than 90 days
 DELETE FROM log_users WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
+DELETE FROM log_api WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
 DELETE FROM log_zones WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
 DELETE FROM log_groups WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
 </code></pre>

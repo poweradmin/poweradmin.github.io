@@ -587,6 +587,11 @@ webserver-loglevel=none
     // PowerDNS database settings are NOT needed in API mode
 ];
 </code></pre>
+<p><strong>Required:</strong> when <code>dns.backend</code> is <code>api</code>, both <code>pdns_api.url</code> and <code>pdns_api.key</code> must be set. Otherwise Poweradmin fails on the first DNS operation with:</p>
+<pre><code>dns.backend is set to "api" but pdns_api.url and/or pdns_api.key are not configured.
+Set both values or change dns.backend to "sql".
+</code></pre>
+<p>There is no SQL fallback, so writes can't bypass the API path by accident.</p>
 <h3 id="new-installation-with-api-backend">New Installation with API Backend</h3>
 <p>The installer (Step 4) offers a choice between "Database" and "API" backend. Selecting API will:</p>
 <ul>
@@ -598,11 +603,16 @@ webserver-loglevel=none
 <ol>
 <li>Ensure the PowerDNS API is enabled and accessible</li>
 <li>Run the v4.3.0 database migration (adds required columns to <code>zones</code> table)</li>
-<li>Change <code>dns.backend</code> from <code>sql</code> to <code>api</code> in <code>config/settings.php</code></li>
-<li>Add <code>pdns_api</code> settings if not already configured</li>
+<li>Add <code>pdns_api.url</code> and <code>pdns_api.key</code> to <code>config/settings.php</code> and verify the API is reachable (see Testing Connection above)</li>
+<li>Change <code>dns.backend</code> from <code>sql</code> to <code>api</code></li>
 <li>Load any page - the zone sync service automatically populates cached zone metadata</li>
 </ol>
 <p>All existing zone ownership, group assignments, and permissions are preserved. The migration is reversible by changing <code>dns.backend</code> back to <code>sql</code>.</p>
+<p><strong>What changes at runtime:</strong></p>
+<ul>
+<li>All zone and record writes go through the PowerDNS API, so NOTIFY, cache flush, and DNSSEC signing are triggered automatically. In SQL mode these required manual <code>pdns_control notify</code> or <code>pdns_control cache-flush</code> calls.</li>
+<li>The Poweradmin app no longer needs credentials for the PowerDNS database. You can remove <code>pdns_db_*</code> settings and revoke the corresponding database grants.</li>
+</ul>
 <h3 id="zone-sync-service">Zone Sync Service</h3>
 <p>In API backend mode, a sync service keeps the local <code>zones</code> table in sync with PowerDNS:</p>
 <ul>

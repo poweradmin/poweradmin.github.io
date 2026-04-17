@@ -452,6 +452,10 @@
 <p>The <code>domain_id</code> column is also made nullable, since API-mode zones don't require a PowerDNS domain ID.</p>
 <p>A unique index <code>idx_zones_zone_name</code> is created on <code>zone_name</code> for fast lookups.</p>
 <p><strong>These schema changes are safe for existing SQL-mode installations</strong> - the new columns are nullable and unused when running in SQL backend mode.</p>
+<h3 id="separate-api-logs-table">Separate API Logs Table</h3>
+<p>API key events (create, edit, delete, regenerate, toggle) are now logged to a dedicated <code>log_api</code> table instead of <code>log_users</code>. The migration automatically moves existing API key log entries to the new table.</p>
+<p>A new <strong>API Logs</strong> page is available under <strong>Tools</strong> in the navigation menu.</p>
+<p>Login events now also include <code>auth_method</code> (sql, ldap, oidc, saml) for audit visibility.</p>
 <h3 id="record-comment-links-schema-change">Record Comment Links Schema Change</h3>
 <p>The <code>record_comment_links.record_id</code> column has been widened from INT to VARCHAR(3072) (MySQL) / VARCHAR(4096) (PostgreSQL) / TEXT (SQLite). This supports API-mode encoded string record IDs (base64url-encoded name+type+content composites).</p>
 <p><strong>Migration scripts</strong> handle this automatically. No manual action needed for existing installations.</p>
@@ -533,6 +537,7 @@ webserver-address=127.0.0.1
     // Keep the Poweradmin database settings (db_host, db_port, etc.)
 ];
 </code></pre>
+<p><strong>Both <code>pdns_api.url</code> and <code>pdns_api.key</code> are required when <code>dns.backend</code> is <code>api</code>.</strong> Missing values cause Poweradmin to error out on the first DNS operation. There is no silent fallback to SQL.</p>
 <h3 id="what-happens-after-switching">What Happens After Switching</h3>
 <ol>
 <li><strong>First page load</strong>: The zone sync service automatically populates <code>zone_name</code>, <code>zone_type</code>, and <code>zone_master</code> for all existing zones in your local <code>zones</code> table</li>
