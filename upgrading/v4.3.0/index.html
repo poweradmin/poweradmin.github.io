@@ -483,17 +483,12 @@ tar -xzf v4.3.0.tar.gz
 rsync -av poweradmin-4.3.0/ /var/www/poweradmin/ --exclude=config/settings.php
 </code></pre>
 <h3 id="step-3-run-database-updates">Step 3: Run Database Updates</h3>
-<p>!!! warning "Separate PowerDNS database (MySQL/MariaDB with <code>pdns_db_name</code>)"</p>
-<pre><code>The 4.3.0 MySQL upgrade script backfills `zones.zone_name`, `zone_type`, and `zone_master` by joining the PowerDNS `domains` table. If you have `pdns_db_name` set (i.e. PowerDNS tables live in a separate database), the unqualified `domains` reference in the script will not resolve against your Poweradmin database.
-
-Before running the script, edit `sql/poweradmin-mysql-update-to-4.3.0.sql` and replace `` `domains` `` with the fully qualified table name, e.g. `` `pdns`.`domains` `` (using your actual `pdns_db_name` value). Your MySQL user must have `SELECT` privileges on that database.
-
-This only applies to MySQL/MariaDB. `pdns_db_name` is not supported on PostgreSQL or SQLite - those deployments always keep Poweradmin and PowerDNS tables in the same database, and no edit is needed.
-
-**If you already ran the original script and ended up with `NULL` values in `zones.zone_name`:** re-run just the backfill query against your Poweradmin database with the qualified name, for example:
-
-```sql
-UPDATE `zones` z
+<p><strong>Warning: Separate PowerDNS database (MySQL/MariaDB with <code>pdns_db_name</code>)</strong></p>
+<p>The 4.3.0 MySQL upgrade script backfills <code>zones.zone_name</code>, <code>zone_type</code>, and <code>zone_master</code> by joining the PowerDNS <code>domains</code> table. If you have <code>pdns_db_name</code> set (i.e. PowerDNS tables live in a separate database), the unqualified <code>domains</code> reference in the script will not resolve against your Poweradmin database.</p>
+<p>Before running the script, edit <code>sql/poweradmin-mysql-update-to-4.3.0.sql</code> and replace <code>`domains`</code> with the fully qualified table name, e.g. <code>`pdns`.`domains`</code> (using your actual <code>pdns_db_name</code> value). Your MySQL user must have <code>SELECT</code> privileges on that database.</p>
+<p>This only applies to MySQL/MariaDB. <code>pdns_db_name</code> is not supported on PostgreSQL or SQLite - those deployments always keep Poweradmin and PowerDNS tables in the same database, and no edit is needed.</p>
+<p><strong>If you already ran the original script and ended up with <code>NULL</code> values in <code>zones.zone_name</code>:</strong> re-run just the backfill query against your Poweradmin database with the qualified name, for example:</p>
+<pre><code class="language-sql">UPDATE `zones` z
 INNER JOIN `pdns`.`domains` d ON z.domain_id = d.id
 INNER JOIN (
     SELECT domain_id, MIN(id) AS min_id FROM `zones` GROUP BY domain_id
@@ -502,10 +497,8 @@ SET z.zone_name = d.name,
     z.zone_type = d.type,
     z.zone_master = d.master
 WHERE z.zone_name IS NULL;
-```
-
-Replace `` `pdns` `` with your actual `pdns_db_name`. The columns and unique index added by the earlier run stay in place - only the backfill needs re-running.
 </code></pre>
+<p>Replace <code>`pdns`</code> with your actual <code>pdns_db_name</code>. The columns and unique index added by the earlier run stay in place - only the backfill needs re-running.</p>
 <p><strong>MySQL/MariaDB:</strong></p>
 <pre><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.3.0.sql
 </code></pre>
