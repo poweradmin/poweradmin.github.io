@@ -219,6 +219,14 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#default-zone-template">Default Zone Template</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#setting-the-default-from-the-ui">Setting the default from the UI</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#setting-the-default-via-configuration">Setting the default via configuration</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#see-also">See Also</a>
@@ -508,8 +516,34 @@
 <li><strong>Editing permission templates</strong>: Requires <code>templ_perm_edit</code> permission</li>
 <li><strong>Deleting permission templates</strong>: Requires <code>user_edit_templ_perm</code> permission</li>
 </ul>
+<h2 id="default-zone-template">Default Zone Template</h2>
+<p>A global zone template can be marked as the default. The marked template is pre-selected on the <strong>Add master zone</strong> form (instead of "none") and shown with a "(default)" suffix in the dropdown, so users know which template will be applied if they don't change the selection.</p>
+<h3 id="setting-the-default-from-the-ui">Setting the default from the UI</h3>
+<p>On the <strong>Zone templates</strong> list, ueberusers see a star button next to each global template:</p>
+<ul>
+<li>An outline star icon - "Set as default": flags this template as the default. Any previously flagged template is cleared in the same operation.</li>
+<li>A filled star icon - "Unset as default": clears the flag.</li>
+</ul>
+<p>A blue "default" badge marks the active row.</p>
+<p>Only <strong>global</strong> templates (Type: <code>global</code> in the list) can be marked default. If a template is later converted to private, the default flag is cleared automatically so it cannot become an orphan.</p>
+<h3 id="setting-the-default-via-configuration">Setting the default via configuration</h3>
+<p>If you cannot mark a default through the UI, set <code>dns.default_zone_template</code> in <code>config/settings.php</code>. The value is either the template id or its name:</p>
+<pre><code class="language-php">'dns' =&gt; [
+    'default_zone_template' =&gt; 'Standard',  // by name
+    // 'default_zone_template' =&gt; 7,        // or by id
+],
+</code></pre>
+<p>The DB-backed default (set via the UI) takes precedence over the config setting; the config setting is the fallback when no template is flagged in the database.</p>
+<p>When the configured template is the active default but no row carries the DB flag, the list view shows a "default (config)" badge - a hint that the value comes from <code>settings.php</code> and cannot be cleared from the UI.</p>
+<h4 id="edge-cases">Edge cases</h4>
+<ul>
+<li>If the configured name resolves to multiple global templates (template names are not strictly unique in the database), the setting is ignored and a warning is logged. Either rename one of the duplicates or use the template id.</li>
+<li>If the configured template no longer exists, the form silently falls back to "none" and a warning is logged. Update or remove the setting to clear the warning.</li>
+<li>Personal templates cannot be the default. Setting <code>dns.default_zone_template</code> to a private template id has no effect.</li>
+</ul>
 <h2 id="configuration">Configuration</h2>
 <p>Template display in zone listings can be controlled via the <code>interface.zonelist_template</code> setting in your configuration file.</p>
+<p>The default zone template is configured via <code>dns.default_zone_template</code> (see <a href="#default-zone-template">Default Zone Template</a> above).</p>
 <h2 id="see-also">See Also</h2>
 <ul>
 <li><a href="../permissions/">Permissions</a> - For detailed permission requirements</li>
