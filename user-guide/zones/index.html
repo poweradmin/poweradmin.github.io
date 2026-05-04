@@ -216,6 +216,10 @@
     <li class="toctree-l3"><a class="reference internal" href="#csv-export">CSV Export</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#zone-ownership">Zone Ownership</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#restricting-ownership-assignment">Restricting Ownership Assignment</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#disabled-records">Disabled Records</a>
     </li>
@@ -524,6 +528,14 @@
 <blockquote>
 <p><strong>Note:</strong> When creating a zone, you must select at least one owner. Administrators can reassign ownership later.</p>
 </blockquote>
+<h3 id="restricting-ownership-assignment">Restricting Ownership Assignment</h3>
+<p>Starting in v4.4.0, the <code>dns.zone_ownership_mode</code> setting controls which ownership pickers are available on the zone creation form, the bulk registration form, the zone import form, and the zone ownership page:</p>
+<ul>
+<li><code>both</code> (default) - users and groups can both be assigned as owners</li>
+<li><code>users_only</code> - only individual users can be assigned; the group picker is hidden</li>
+<li><code>groups_only</code> - only groups can be assigned; the user picker is hidden, and group membership is the sole way to grant zone access</li>
+</ul>
+<p>Use <code>groups_only</code> to enforce group-based access management across the installation. The setting also applies to the API. API v2 supports group-only zones (pass <code>owner_user_id: null</code> together with <code>group_ids</code>); API v1 cannot create group-only zones and returns an error when <code>zone_ownership_mode</code> is set to <code>groups_only</code>.</p>
 <h2 id="disabled-records">Disabled Records</h2>
 <p>Starting in v4.1.0, you can disable individual records without deleting them:</p>
 <ul>
