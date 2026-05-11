@@ -176,6 +176,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#invalid-state-error">"Invalid state" error</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#provider-discovery-fails-behind-a-web-proxy">Provider discovery fails behind a web proxy</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#related-documentation">Related Documentation</a>
@@ -282,6 +284,10 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal">v4.x Series</a>
     <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.4.0/">v4.4.0</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.3.0/">v4.3.0</a>
+                </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.2.0/">v4.2.0</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.1.0/">v4.1.0</a>
@@ -1024,6 +1030,12 @@ services:
 <li>Check session configuration in Poweradmin</li>
 <li>Verify server time is synchronized (NTP)</li>
 </ul>
+<h3 id="provider-discovery-fails-behind-a-web-proxy">Provider discovery fails behind a web proxy</h3>
+<p>If your Poweradmin host can only reach the internet through an HTTP proxy, OIDC discovery (the <code>.well-known/openid-configuration</code> fetch) will time out unless the proxy is exported in the environment. From v4.4.0, the discovery client honors the standard <code>HTTPS_PROXY</code> / <code>http_proxy</code> variables. Set them where PHP can see them - typically in the systemd unit, the FPM pool, or the Docker environment:</p>
+<pre><code class="language-bash">HTTPS_PROXY=http://proxy.internal:3128
+NO_PROXY=localhost,127.0.0.1,.internal
+</code></pre>
+<p>Restart the web server (or <code>php-fpm</code>) so the new environment is picked up. Earlier versions ignored these variables and required a manual <code>cURL</code> build with proxy support.</p>
 <h2 id="related-documentation">Related Documentation</h2>
 <ul>
 <li><a href="../saml/">SAML Authentication</a></li>

@@ -1,9 +1,9 @@
 <!DOCTYPE html><html class="writer-html5" lang="en"><head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://docs.poweradmin.org/upgrading/v2.1.8/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://docs.poweradmin.org/upgrading/v4.4.0/">
       <link rel="shortcut icon" href="../../img/favicon.ico">
-    <title>v2.1.8 - Poweradmin Documentation</title>
+    <title>v4.4.0 - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css">
     <link rel="stylesheet" href="../../css/theme_extra.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
@@ -11,9 +11,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "v2.1.8";
-        var mkdocs_page_input_path = "upgrading/v2.1.8.md";
-        var mkdocs_page_url = "/upgrading/v2.1.8/";
+        var mkdocs_page_name = "v4.4.0";
+        var mkdocs_page_input_path = "upgrading/v4.4.0.md";
+        var mkdocs_page_url = "/upgrading/v4.4.0/";
       </script>
     
     <!--[if lt IE 9]>
@@ -224,9 +224,61 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal">v4.x Series</a>
-    <ul>
-                <li class="toctree-l2"><a class="reference internal" href="../v4.4.0/">v4.4.0</a>
+                  <li class="toctree-l1 current"><a class="reference internal current">v4.x Series</a>
+    <ul class="current">
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">v4.4.0</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#database-schema-update">Database Schema Update</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#upgrade-instructions">Upgrade Instructions</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#step-1-backup-your-data">Step 1: Backup Your Data</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#step-2-download-and-extract">Step 2: Download and Extract</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#step-3-run-database-update">Step 3: Run Database Update</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#new-features">New Features</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#powerdns-capability-detection">PowerDNS Capability Detection</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#views-networks-powerdns-50">Views &amp; Networks (PowerDNS 5.0)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#dnssec-pem-key-import-export">DNSSEC PEM Key Import / Export</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#manual-sync-from-powerdns">Manual Sync from PowerDNS</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#default-zone-template">Default Zone Template</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zone-audit-log-for-owners">Zone Audit Log for Owners</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zone-ownership-mode">Zone Ownership Mode</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#per-user-display_hostname_only">Per-User display_hostname_only</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#configurable-powerdns-api-timeout">Configurable PowerDNS API Timeout</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#new-locales">New Locales</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#oidc-and-web-proxies">OIDC and Web Proxies</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#security-and-audit">Security and Audit</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking Changes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#rollback">Rollback</a>
+    </li>
+    </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../v4.3.0/">v4.3.0</a>
                 </li>
@@ -322,8 +374,8 @@
                 </li>
     </ul>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current">v2.x Series</a>
-    <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal">v2.x Series</a>
+    <ul>
                 <li class="toctree-l2"><a class="reference internal">v2.2.x</a>
     <ul>
                 <li class="toctree-l3"><a class="reference internal" href="../v2.2.2/">v2.2.2</a>
@@ -334,15 +386,11 @@
                 </li>
     </ul>
                 </li>
-                <li class="toctree-l2 current"><a class="reference internal current">v2.1.x</a>
-    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal">v2.1.x</a>
+    <ul>
                 <li class="toctree-l3"><a class="reference internal" href="../v2.1.9/">v2.1.9</a>
                 </li>
-                <li class="toctree-l3 current"><a class="reference internal current" href="#">v2.1.8</a>
-    <ul class="current">
-    <li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a>
-    </li>
-    </ul>
+                <li class="toctree-l3"><a class="reference internal" href="../v2.1.8/">v2.1.8</a>
                 </li>
                 <li class="toctree-l3"><a class="reference internal" href="../v2.1.7/">v2.1.7</a>
                 </li>
@@ -396,11 +444,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Upgrading</li>
-          <li class="breadcrumb-item">v2.x Series</li>
-          <li class="breadcrumb-item">v2.1.x</li>
-      <li class="breadcrumb-item active">v2.1.8</li>
+          <li class="breadcrumb-item">v4.x Series</li>
+      <li class="breadcrumb-item active">v4.4.0</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/upgrading/v2.1.8.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/upgrading/v4.4.0.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr>
@@ -412,17 +459,174 @@
     This documentation covers Poweradmin 4.x. Some sections are still being expanded.
   </div>
   
-                <h1 id="upgrading-to-v218">Upgrading to v2.1.8</h1>
+                <h1 id="upgrading-to-version-440">Upgrading to Version 4.4.0</h1>
 <h2 id="overview">Overview</h2>
-<p>Version 2.1.8 includes security improvements and minor bugfixes. This is a maintenance release that focuses on security enhancements and code quality improvements.</p>
-<p><em>Detailed upgrade instructions will be added later.</em></p>
+<p>Version 4.4.0 focuses on adapting Poweradmin to the version of PowerDNS it is connected to. Poweradmin now detects the backend version and adjusts the UI accordingly - record types, metadata kinds, zone-kind labels, and entire features (Views &amp; Networks, DNSSEC PEM key import/export, Producer/Consumer zones) light up or stay hidden based on what your PowerDNS instance actually supports.</p>
+<p>This release also lands a long-requested default zone template, per-user <code>display_hostname_only</code>, a new <code>zone_ownership_mode</code> setting, configurable PowerDNS API timeout, audit log access for zone owners, and eight new locales.</p>
+<h2 id="database-schema-update">Database Schema Update</h2>
+<p>The 4.4.0 migration adds one column to the <code>zone_templ</code> table:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>is_default</code></td>
+<td>tinyint(1)</td>
+<td>Marks a single template as the system-wide default on the add-zone form</td>
+</tr>
+</tbody>
+</table>
+<p>Only one template should carry <code>is_default=1</code> at a time. Uniqueness is enforced at the application layer.</p>
+<p>The migration scripts are:</p>
+<ul>
+<li><code>sql/poweradmin-mysql-update-to-4.4.0.sql</code></li>
+<li><code>sql/poweradmin-pgsql-update-to-4.4.0.sql</code></li>
+<li><code>sql/poweradmin-sqlite-update-to-4.4.0.sql</code></li>
+</ul>
+<p>The change is small, additive, and safe for both SQL and API backend installs.</p>
+<h2 id="upgrade-instructions">Upgrade Instructions</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>Poweradmin v4.3.0 or later</li>
+<li>PHP 8.2 or later</li>
+<li>Database backup</li>
+</ul>
+<p>If you are upgrading from 4.2.x, run the 4.3.0 migration script first, then the 4.4.0 migration script. Do not skip intermediate versions.</p>
+<h3 id="step-1-backup-your-data">Step 1: Backup Your Data</h3>
+<pre><code class="language-bash"># MySQL/MariaDB
+mysqldump -u username -p poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
+
+# PostgreSQL
+pg_dump -h localhost -U username poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
+
+# SQLite
+cp /path/to/poweradmin.db /path/to/poweradmin_backup_$(date +%Y%m%d).db
+</code></pre>
+<h3 id="step-2-download-and-extract">Step 2: Download and Extract</h3>
+<pre><code class="language-bash">cd /tmp
+wget https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.4.0.tar.gz
+tar -xzf v4.4.0.tar.gz
+rsync -av poweradmin-4.4.0/ /var/www/poweradmin/ --exclude=config/settings.php
+</code></pre>
+<h3 id="step-3-run-database-update">Step 3: Run Database Update</h3>
+<p><strong>MySQL/MariaDB:</strong></p>
+<pre><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.4.0.sql
+</code></pre>
+<p><strong>PostgreSQL:</strong></p>
+<pre><code class="language-bash">psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.4.0.sql
+</code></pre>
+<p><strong>SQLite:</strong></p>
+<pre><code class="language-bash">sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.4.0.sql
+</code></pre>
+<h3 id="step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart</h3>
+<pre><code class="language-bash">sudo systemctl restart php-fpm
+# or
+sudo systemctl restart apache2
+</code></pre>
+<h2 id="new-features">New Features</h2>
+<h3 id="powerdns-capability-detection">PowerDNS Capability Detection</h3>
+<p>Poweradmin queries the connected PowerDNS server's version on first use and adapts the UI to match what that version supports.</p>
+<p><strong>What's gated by detected version:</strong></p>
+<ul>
+<li><strong>Record types</strong> unsupported by your PowerDNS version are hidden from the add/edit/bulk-import forms.</li>
+<li><strong>Metadata kinds</strong> unsupported by your PowerDNS version show a "Requires X.Y+" hint instead of failing silently.</li>
+<li><strong>Last-modified record column</strong> appears on PowerDNS 4.9+.</li>
+<li><strong>Master/Slave</strong> labels become <strong>Primary/Secondary</strong> on PowerDNS 4.5+.</li>
+<li><strong>Supermasters</strong> is renamed to <strong>Autoprimaries</strong> on PowerDNS 4.6+.</li>
+<li><strong>Producer/Consumer</strong> zone kinds become available on PowerDNS 4.7+.</li>
+<li><strong>Views &amp; Networks</strong> management appears on PowerDNS 5.0+ (see below).</li>
+<li><strong>DNSSEC PEM key import/export</strong> is available on PowerDNS 4.7+ (see below).</li>
+</ul>
+<p>The detected version is shown on the dashboard. The detection result is cached per user with a TTL so the capability gates refresh after PowerDNS upgrades without requiring a restart.</p>
+<p><strong>On DB-backed installs without API access</strong>, Poweradmin uses a permissive capability set so existing functionality keeps working when the API isn't reachable.</p>
+<h3 id="views-networks-powerdns-50">Views &amp; Networks (PowerDNS 5.0)</h3>
+<p>PowerDNS 5.0 introduced views (named sets of zones) and networks (CIDR-to-view mappings). Both can now be managed from the Poweradmin UI on installations connected to PowerDNS 5.0+. The corresponding dashboard tiles are gated on the API backend; SQL-mode installs do not see them.</p>
+<h3 id="dnssec-pem-key-import-export">DNSSEC PEM Key Import / Export</h3>
+<p>On PowerDNS 4.7+, you can import existing PEM-encoded private keys into a zone and export the active keys back out. This makes it possible to migrate signed zones between PowerDNS instances or recover from key material kept outside Poweradmin.</p>
+<p>The CSK guidance alert that was previously shown on the DNSSEC page is now scoped to legacy pre-PowerDNS-4.0 servers, where it actually applies.</p>
+<p>DS and DNSKEY records can be copied to clipboard from the DNSSEC display.</p>
+<h3 id="manual-sync-from-powerdns">Manual Sync from PowerDNS</h3>
+<p>A <strong>Sync from PowerDNS</strong> button is now available on the Forward Zones page. This triggers an immediate zone-sync against the PowerDNS API, useful after creating zones directly in PowerDNS (via <code>pdnsutil</code> or another tool) when you don't want to wait for the next scheduled sync.</p>
+<p>The sync action requires a CSRF-protected POST. Sync runs are also recorded inside <code>sync()</code> itself, preventing double-reconciliation when multiple page loads race.</p>
+<p>When the PowerDNS API is unreachable, the dashboard now surfaces the failure on every admin page with HTTP status and actionable guidance, instead of a stack trace. Cached zone counts are retained so the dashboard doesn't suddenly show zero zones during a transient outage.</p>
+<h3 id="default-zone-template">Default Zone Template</h3>
+<p>You can now mark one zone template as the system-wide default on the add-zone form.</p>
+<ul>
+<li>The default is stored in the new <code>zone_templ.is_default</code> column.</li>
+<li>It can also be configured via <code>dns.default_zone_template</code> in <code>config/settings.php</code> (template id as int, or template name as string; <code>null</code> means no default).</li>
+<li>Only one template can be the default at a time.</li>
+</ul>
+<pre><code class="language-php">return [
+    'dns' =&gt; [
+        'default_zone_template' =&gt; 'default-internal', // or a numeric id, or null
+    ],
+];
+</code></pre>
+<h3 id="zone-audit-log-for-owners">Zone Audit Log for Owners</h3>
+<p>Zone owners can now read the audit log for their own zones. Previously this was restricted to administrators. Owners see only entries for zones they own (directly or via group ownership).</p>
+<h3 id="zone-ownership-mode">Zone Ownership Mode</h3>
+<p>A new <code>dns.zone_ownership_mode</code> setting controls which ownership models are exposed:</p>
+<pre><code class="language-php">return [
+    'dns' =&gt; [
+        'zone_ownership_mode' =&gt; 'both', // 'both', 'users_only', or 'groups_only'
+    ],
+];
+</code></pre>
+<ul>
+<li><code>both</code> (default) - users and groups can both own zones, matching prior behavior.</li>
+<li><code>users_only</code> - only direct user ownership is shown. Group-ownership UI is hidden.</li>
+<li><code>groups_only</code> - only group ownership is shown. Direct-user ownership UI is hidden.</li>
+</ul>
+<p>This is a UI gating setting, not a destructive switch. Existing ownership records are preserved; the modes just hide one model or the other from the forms.</p>
+<h3 id="per-user-display_hostname_only">Per-User <code>display_hostname_only</code></h3>
+<p>The <code>display_hostname_only</code> setting, which strips the zone suffix from record names in the zone edit form, is now also a per-user preference. Users can flip it independently of the site-wide default in their account preferences.</p>
+<p>The site-wide <code>dns.display_hostname_only</code> continues to act as the default for users who haven't set a personal preference.</p>
+<h3 id="configurable-powerdns-api-timeout">Configurable PowerDNS API Timeout</h3>
+<p>The PowerDNS API request timeout is now configurable:</p>
+<pre><code class="language-php">return [
+    'pdns_api' =&gt; [
+        'timeout' =&gt; 10, // seconds; default 10
+    ],
+];
+</code></pre>
+<p>GET requests are retried once on transient PowerDNS API failures (network errors, 5xx responses). Write requests are not retried.</p>
+<h3 id="new-locales">New Locales</h3>
+<p>Eight new locales were added: Serbian, Hungarian, Slovak, Romanian, Croatian, Latvian, Estonian, and Finnish. They are available in the installer language picker and the runtime locale selector.</p>
+<h3 id="oidc-and-web-proxies">OIDC and Web Proxies</h3>
+<p>OIDC endpoint discovery now honors the <code>HTTPS_PROXY</code> and <code>http_proxy</code> environment variables. Deployments behind a web proxy can reach external OIDC providers without additional configuration.</p>
+<h3 id="security-and-audit">Security and Audit</h3>
+<ul>
+<li><strong>Forwarded-IP headers</strong> (<code>X-Forwarded-For</code>, <code>X-Real-IP</code>, <code>Client-IP</code>) are only honored when the upstream peer is on a private or loopback address. Direct-internet deployments stop trusting client-supplied headers. This was also shipped in 4.2.3 and 4.3.2.</li>
+<li><strong>DNSSEC sign events</strong> are now logged in the zone activity feed alongside unsign events.</li>
+<li><strong>DNSSEC authorization</strong> for sign/unsign requires both full edit and ownership.</li>
+</ul>
+<h2 id="breaking-changes">Breaking Changes</h2>
+<p>None. All new features are additive or opt-in:</p>
+<ul>
+<li>The schema migration adds one nullable-friendly column.</li>
+<li>New settings (<code>zone_ownership_mode</code>, <code>default_zone_template</code>, <code>pdns_api.timeout</code>) have safe defaults that match prior behavior.</li>
+<li>Capability-gated UI changes only show or hide elements based on the connected PowerDNS version.</li>
+</ul>
+<h2 id="rollback">Rollback</h2>
+<p>To roll back to v4.3.2:</p>
+<ol>
+<li>Restore your database backup.</li>
+<li>Restore your file backup.</li>
+<li>Restart the web server.</li>
+</ol>
+<p>The new <code>zone_templ.is_default</code> column is harmless in earlier versions - it's simply unused.</p>
               
 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../v2.1.9/" class="btn btn-neutral float-left" title="v2.1.9"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../v2.1.7/" class="btn btn-neutral float-right" title="v2.1.7">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../" class="btn btn-neutral float-left" title="Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../v4.3.0/" class="btn btn-neutral float-right" title="v4.3.0">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr>
@@ -449,10 +653,10 @@
         </span>
     
     
-      <span><a href="../v2.1.9/" style="color: #fcfcfc">« Previous</a></span>
+      <span><a href="../" style="color: #fcfcfc">« Previous</a></span>
     
     
-      <span><a href="../v2.1.7/" style="color: #fcfcfc">Next »</a></span>
+      <span><a href="../v4.3.0/" style="color: #fcfcfc">Next »</a></span>
     
   </span>
 </div>

@@ -142,9 +142,17 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#new-installation-with-api-backend">New Installation with API Backend</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#installing-poweradmin-on-top-of-an-existing-powerdns">Installing Poweradmin on top of an existing PowerDNS</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#migrating-from-sql-to-api-backend">Migrating from SQL to API Backend</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#zone-sync-service">Zone Sync Service</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#manual-sync-v440">Manual Sync (v4.4.0+)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#what-happens-when-the-api-is-down">What Happens When the API is Down</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#docker">Docker</a>
     </li>
@@ -262,6 +270,10 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal">v4.x Series</a>
     <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.4.0/">v4.4.0</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.3.0/">v4.3.0</a>
+                </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.2.0/">v4.2.0</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.1.0/">v4.1.0</a>
@@ -499,6 +511,13 @@
 </tr>
 <tr>
 <td>-</td>
+<td>pdns_api.timeout</td>
+<td>10</td>
+<td>PowerDNS API request timeout in seconds. GET requests are retried once on transient failures; writes are not retried.</td>
+<td>4.4.0</td>
+</tr>
+<tr>
+<td>-</td>
 <td>dns.backend</td>
 <td>sql</td>
 <td>Backend mode: <code>sql</code> (database) or <code>api</code> (API only)</td>
@@ -599,6 +618,17 @@ Set both values or change dns.backend to "sql".
 <li>Skip PowerDNS database configuration</li>
 <li>Set <code>dns.backend</code> to <code>api</code> in the generated configuration</li>
 </ul>
+<h3 id="installing-poweradmin-on-top-of-an-existing-powerdns">Installing Poweradmin on top of an existing PowerDNS</h3>
+<p>If PowerDNS already has zones (e.g., you imported them via <code>mysqldump</code> or directly into the <code>domains</code> table), those zones will <strong>not</strong> appear in Poweradmin immediately after installation.</p>
+<p>This is expected behavior. The installer creates Poweradmin's schema and initial configuration - it does not import or reconcile existing PowerDNS zones. Poweradmin stores ownership and metadata in its own <code>zones</code> table, one row per PowerDNS domain, and those rows are added by the zone sync service at runtime.</p>
+<p><strong>To populate existing zones after a fresh install:</strong></p>
+<ol>
+<li>Log in as an administrator.</li>
+<li>Navigate to <strong>Forward Zones</strong> (not the dashboard). Sync runs on that page load.</li>
+<li>All zones from PowerDNS will appear with no owner assigned.</li>
+<li>Assign owners (or zone-group access) as needed.</li>
+</ol>
+<p>The dashboard may report "0 zones" until the sync has run at least once in API mode. Visiting Forward Zones triggers the sync.</p>
 <h3 id="migrating-from-sql-to-api-backend">Migrating from SQL to API Backend</h3>
 <ol>
 <li>Ensure the PowerDNS API is enabled and accessible</li>
@@ -620,6 +650,16 @@ Set both values or change dns.backend to "sql".
 <li><strong>Adds</strong> zones created directly in PowerDNS (assigned no owner - admin must assign access)</li>
 <li><strong>Removes</strong> local entries for zones deleted from PowerDNS</li>
 <li><strong>Updates</strong> cached zone type and master when changed</li>
+</ul>
+<h4 id="manual-sync-v440">Manual Sync (v4.4.0+)</h4>
+<p>If you've just created zones in PowerDNS through <code>pdnsutil</code> or another tool and don't want to wait for the next scheduled sync, the Forward Zones page now has a <strong>Sync from PowerDNS</strong> button. Clicking it triggers an immediate sync against the PowerDNS API.</p>
+<p>The action requires a CSRF-protected POST, so it's safe to expose to non-admin zone owners. The button respects the same throttle as the automatic sync internally - if a sync ran very recently, the manual press becomes a no-op rather than a double-reconciliation.</p>
+<h4 id="what-happens-when-the-api-is-down">What Happens When the API is Down</h4>
+<p>If PowerDNS becomes unreachable, sync stops but the dashboard does not throw a stack trace at users. Instead:</p>
+<ul>
+<li>The cached zone count from the last successful sync is kept on display, so you don't see "0 zones" during a transient outage.</li>
+<li>Admin pages show an API-error banner with the HTTP status and a short hint at what to check next (network, credentials, capabilities endpoint).</li>
+<li>Sync retries are not throttled during outages - once the API comes back, the next page load reconciles normally.</li>
 </ul>
 <h3 id="docker">Docker</h3>
 <p>For Docker deployments, set the backend via environment variable:</p>
