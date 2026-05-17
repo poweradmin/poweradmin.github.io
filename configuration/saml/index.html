@@ -647,7 +647,7 @@
 <tr>
 <td><code>x509cert</code></td>
 <td>Yes</td>
-<td>IdP X.509 certificate (without headers)</td>
+<td>IdP X.509 certificate (PEM string, with or without <code>-----BEGIN CERTIFICATE-----</code>/<code>-----END CERTIFICATE-----</code> headers and line breaks)</td>
 </tr>
 <tr>
 <td><code>user_mapping</code></td>
@@ -674,7 +674,7 @@
             'entity_id' =&gt; 'https://sts.windows.net/{tenant-id}/',
             'sso_url' =&gt; 'https://login.microsoftonline.com/{tenant-id}/saml2',
             'slo_url' =&gt; 'https://login.microsoftonline.com/{tenant-id}/saml2',
-            'x509cert' =&gt; 'MIICnTCCAYUCBgF...', // Certificate without BEGIN/END headers
+            'x509cert' =&gt; 'MIICnTCCAYUCBgF...', // Base64 cert body, or a full PEM string
             'user_mapping' =&gt; [
                 'username' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',
                 'email' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
@@ -958,7 +958,6 @@ services:
 <h3 id="invalid-signature-error">"Invalid signature" error</h3>
 <ul>
 <li>Verify the IdP certificate is correct and not expired</li>
-<li>Ensure the certificate is without BEGIN/END headers</li>
 <li>Check if your IdP rotated certificates</li>
 </ul>
 <h3 id="user-not-created-after-login">User not created after login</h3>
@@ -986,9 +985,14 @@ services:
 </ul>
 <h3 id="certificate-errors">Certificate errors</h3>
 <ul>
-<li>Certificates should be PEM format without headers</li>
-<li>Remove <code>-----BEGIN CERTIFICATE-----</code> and <code>-----END CERTIFICATE-----</code></li>
-<li>Ensure no extra whitespace or line breaks</li>
+<li>Paste the certificate exactly as your IdP exports it (Base64 download from
+  Azure / Okta / Keycloak is fine). Both raw Base64 bodies and full PEM
+  strings (<code>-----BEGIN CERTIFICATE-----</code> ... <code>-----END CERTIFICATE-----</code>) are
+  accepted, with or without embedded line breaks.</li>
+<li>If the login page logs <em>"x509cert is not a valid X.509 certificate"</em> the
+  pasted value cannot be parsed by <code>openssl_x509_read</code> - check for stray
+  characters, truncation, or that you copied the certificate body rather than
+  the metadata wrapper.</li>
 </ul>
 <h2 id="related-documentation">Related Documentation</h2>
 <ul>

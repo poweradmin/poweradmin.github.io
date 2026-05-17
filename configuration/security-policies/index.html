@@ -163,6 +163,10 @@
     <li class="toctree-l2"><a class="reference internal" href="#multi-factor-authentication-mfa">Multi-Factor Authentication (MFA)</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#password-reset">Password Reset</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#interfaceapplication_url-is-required">interface.application_url is required</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#google-recaptcha">Google reCAPTCHA</a>
         <ul>
@@ -522,6 +526,14 @@
 <li><strong>rate_limit_window</strong>: Rate limit window in seconds. Default: <code>3600</code> (1 hour)</li>
 <li><strong>min_time_between_requests</strong>: Minimum seconds between requests. Default: <code>60</code> (1 minute)</li>
 </ul>
+<h3 id="interfaceapplication_url-is-required"><code>interface.application_url</code> is required</h3>
+<p>When password reset is enabled, <code>interface.application_url</code> must be set to the full public URL of the Poweradmin install, e.g. <code>https://dns.example.com/poweradmin</code>. The reset link in the email is built from this value only - request headers such as <code>Host</code> are never used. If <code>application_url</code> is empty, the password-reset endpoint accepts requests but does not send mail and logs an error: <code>Password reset email NOT sent: interface.application_url must be configured to build a trustworthy reset link</code>.</p>
+<pre><code class="language-php">return [
+    'interface' =&gt; [
+        'application_url' =&gt; 'https://dns.example.com/poweradmin',
+    ],
+];
+</code></pre>
 <h2 id="google-recaptcha">Google reCAPTCHA</h2>
 <p>Protect login forms from automated attacks using Google reCAPTCHA:</p>
 <ul>

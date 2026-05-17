@@ -275,6 +275,12 @@
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking Changes</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#interfaceapplication_url-is-now-required-for-password-reset-emails">interface.application_url is now required for password reset emails</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#other-changes">Other changes</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#rollback">Rollback</a>
     </li>
@@ -602,11 +608,22 @@ sudo systemctl restart apache2
 <h3 id="security-and-audit">Security and Audit</h3>
 <ul>
 <li><strong>Forwarded-IP headers</strong> (<code>X-Forwarded-For</code>, <code>X-Real-IP</code>, <code>Client-IP</code>) are only honored when the upstream peer is on a private or loopback address. Direct-internet deployments stop trusting client-supplied headers. This was also shipped in 4.2.3 and 4.3.2.</li>
+<li><strong>Emailed URLs no longer auto-detect from the request host.</strong> Password reset and username recovery emails are built from <code>interface.application_url</code> instead of <code>Host</code>/<code>X-Forwarded-*</code>. This closes a host-header injection path where a forged <code>Host</code> could redirect the reset link to an attacker-controlled domain. See <a href="#breaking-changes">Breaking Changes</a> below for the operator-facing impact.</li>
 <li><strong>DNSSEC sign events</strong> are now logged in the zone activity feed alongside unsign events.</li>
 <li><strong>DNSSEC authorization</strong> for sign/unsign requires both full edit and ownership.</li>
 </ul>
 <h2 id="breaking-changes">Breaking Changes</h2>
-<p>None. All new features are additive or opt-in:</p>
+<h3 id="interfaceapplication_url-is-now-required-for-password-reset-emails"><code>interface.application_url</code> is now required for password reset emails</h3>
+<p>If <code>security.password_reset.enabled = true</code> and <code>interface.application_url</code> is empty, the forgot-password endpoint accepts the request but stops short of sending mail and logs <code>Password reset email NOT sent: interface.application_url must be configured to build a trustworthy reset link</code>. Set <code>application_url</code> to the full public URL of the install before upgrading:</p>
+<pre><code class="language-php">return [
+    'interface' =&gt; [
+        'application_url' =&gt; 'https://dns.example.com/poweradmin',
+    ],
+];
+</code></pre>
+<p>Username recovery continues to send emails when <code>application_url</code> is empty, falling back to the web server's <code>SERVER_NAME</code>; if neither is available, the email omits the login link but still includes the username. See <a href="../../configuration/security-policies/#interfaceapplication_url-is-required">Security Policies</a> and <a href="../../configuration/username-recovery/#requirements">Username Recovery</a> for the full details.</p>
+<h3 id="other-changes">Other changes</h3>
+<p>All other new features in 4.4.0 are additive or opt-in:</p>
 <ul>
 <li>The schema migration adds one nullable-friendly column.</li>
 <li>New settings (<code>zone_ownership_mode</code>, <code>default_zone_template</code>, <code>pdns_api.timeout</code>) have safe defaults that match prior behavior.</li>
