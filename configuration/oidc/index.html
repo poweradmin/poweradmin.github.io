@@ -611,6 +611,13 @@
     ],
 ],
 </code></pre>
+<p>A single OIDC group can also be mapped to multiple Poweradmin groups by giving an array as the value (added in 4.4.0). The user is added to every Poweradmin group listed:</p>
+<pre><code class="language-php">'group_mapping' =&gt; [
+    'team1' =&gt; ['Editors', 'Viewers'],
+    'team2' =&gt; ['Editors'],
+    'platform-admins' =&gt; 'Administrators', // single-value form still works
+],
+</code></pre>
 <p>Predefined Poweradmin groups:</p>
 <ul>
 <li><strong>Administrators</strong> - Full administrative access to all system functions</li>
@@ -966,6 +973,9 @@
 PA_OIDC_PERMISSION_TEMPLATE_MAPPING: "admins=Administrator,editors=Viewer"
 PA_OIDC_GROUP_MAPPING: "admins=Administrators,editors=Editors"</code></p>
 <p>Group names containing colons (e.g., SAML URNs) are supported. Whitespace around commas and delimiters is trimmed automatically.</p>
+<p>For 1:n group mappings, separate the Poweradmin groups with a pipe (<code>|</code>) so one OIDC group can grant access to several Poweradmin groups (added in 4.4.0):</p>
+<p><code>yaml
+PA_OIDC_GROUP_MAPPING: "team1=Editors|Viewers,team2=Administrators"</code></p>
 </blockquote>
 <p>For secrets, use the <code>__FILE</code> suffix:</p>
 <pre><code class="language-yaml">secrets:

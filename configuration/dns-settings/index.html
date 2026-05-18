@@ -477,6 +477,13 @@
 <td></td>
 </tr>
 <tr>
+<td>-</td>
+<td>dns.ttl_reverse</td>
+<td>null</td>
+<td>Default TTL for PTR records in reverse zones. When <code>null</code>, falls back to <code>dns.ttl</code>. When configured, the value pre-fills the TTL field on the reverse-zone add-record form, applies to batch PTR creation, and is used for PTRs auto-created alongside a forward record (the matched forward record's TTL is overridden). The same default is applied server-side by the v1/v2 record APIs, RRSets, bulk records, and the DNS wizard when the request omits a <code>ttl</code> field.</td>
+<td>4.4.0 (UI), 4.5.0 (APIs + wizard)</td>
+</tr>
+<tr>
 <td>$dns_soa</td>
 <td>(see below)</td>
 <td>28800 7200 604800 86400</td>
@@ -583,6 +590,13 @@
 </tr>
 <tr>
 <td>-</td>
+<td>dns.top_record_types</td>
+<td>null</td>
+<td>Pin selected record types to the top of record type selectors, in the given order. Null = alphabetical only.</td>
+<td>4.4.0</td>
+</tr>
+<tr>
+<td>-</td>
 <td>dns.custom_tlds</td>
 <td>[]</td>
 <td>Custom TLDs to allow in CNAME targets (e.g., <code>['dn42', 'home']</code>).</td>
@@ -604,11 +618,13 @@
 <ul>
 <li><strong>domain_record_types</strong>: Array of record types for domain zones. Set to <code>null</code> to use defaults.</li>
 <li><strong>reverse_record_types</strong>: Array of record types for reverse zones. Set to <code>null</code> to use defaults.</li>
+<li><strong>top_record_types</strong> (4.4.0): Array of record types to pin to the top of record type selectors, in the given order. Remaining types follow alphabetically. Set to <code>null</code> to keep the original alphabetical order.</li>
 </ul>
 <p>Example custom configuration:</p>
 <pre><code class="language-php">'dns' =&gt; [
     'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT', 'SRV', 'CAA'],
     'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA', 'TXT', 'CNAME'],
+    'top_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'TXT', 'MX'],
 ],
 </code></pre>
 <h2 id="custom-tld-whitelist">Custom TLD Whitelist</h2>
@@ -629,6 +645,7 @@
         'ns3' =&gt; 'ns3.example.com',
         'ns4' =&gt; 'ns4.example.com',
         'ttl' =&gt; 86400,
+        'ttl_reverse' =&gt; null, // PTR-specific default; null falls back to dns.ttl (added in 4.4.0)
         // SOA settings
         'soa_refresh' =&gt; 28800,
         'soa_retry' =&gt; 7200,
