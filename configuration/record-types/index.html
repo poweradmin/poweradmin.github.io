@@ -146,6 +146,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#zone-templates">Zone Templates</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pinning-popular-record-types-to-the-top-440">Pinning Popular Record Types to the Top (4.4.0)</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#supported-record-types">Supported Record Types</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#use-cases">Use Cases</a>
@@ -462,6 +464,20 @@
 </code></pre>
 <h2 id="zone-templates">Zone Templates</h2>
 <p>When editing zone templates, Poweradmin will automatically show the combined list of both <code>domain_record_types</code> and <code>reverse_record_types</code> to ensure all potential record types for template use are available.</p>
+<h2 id="pinning-popular-record-types-to-the-top-440">Pinning Popular Record Types to the Top (4.4.0)</h2>
+<p>By default, record types appear alphabetically in selectors. If you regularly create the same handful of record types, you can pin them to the top of every record type dropdown using <code>top_record_types</code>:</p>
+<pre><code class="language-php">'dns' =&gt; [
+    // Other DNS settings...
+    'top_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'TXT', 'MX'],
+]
+</code></pre>
+<p>Pinned types appear first in the order you list them; all remaining types follow alphabetically. Leave the setting as <code>null</code> (the default) for the original alphabetical-only behavior.</p>
+<p>Notes:</p>
+<ul>
+<li>Pinning composes with <code>domain_record_types</code> and <code>reverse_record_types</code>. If a pinned type isn't part of the visible set for a given zone (for example, <code>A</code> in a reverse zone), it is silently skipped.</li>
+<li>Unknown record types in the list are silently ignored, so typos won't break the selector.</li>
+<li>The setting applies to every record type selector in the UI (Add Record, Edit Record, Bulk Add, etc.).</li>
+</ul>
 <h2 id="supported-record-types">Supported Record Types</h2>
 <p>Poweradmin supports the following DNS record types that can be included in your customized lists:</p>
 <table>
