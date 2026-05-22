@@ -1,9 +1,9 @@
 <!DOCTYPE html><html class="writer-html5" lang="en"><head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://docs.poweradmin.org/upgrading/v2.1.6/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://docs.poweradmin.org/advanced/fail2ban/">
       <link rel="shortcut icon" href="../../img/favicon.ico">
-    <title>v2.1.6 - Poweradmin Documentation</title>
+    <title>fail2ban Integration - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css">
     <link rel="stylesheet" href="../../css/theme_extra.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
@@ -11,9 +11,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "v2.1.6";
-        var mkdocs_page_input_path = "upgrading/v2.1.6.md";
-        var mkdocs_page_url = "/upgrading/v2.1.6/";
+        var mkdocs_page_name = "fail2ban Integration";
+        var mkdocs_page_input_path = "advanced/fail2ban.md";
+        var mkdocs_page_url = "/advanced/fail2ban/";
       </script>
     
     <!--[if lt IE 9]>
@@ -209,12 +209,32 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Advanced Topics</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal">Logging</a>
-    <ul>
-                <li class="toctree-l2"><a class="reference internal" href="../../advanced/logging-config/">Log Configuration</a>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current">Logging</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../logging-config/">Log Configuration</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../../advanced/fail2ban/">fail2ban Integration</a>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">fail2ban Integration</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#event-types">Event Types</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#why-login_error-is-separate">Why login_error is separate</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#fail2ban-filter">fail2ban Filter</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#fail2ban-jail">fail2ban Jail</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#verifying-it-works">Verifying It Works</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#combining-with-the-built-in-lockout">Combining with the Built-In Lockout</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#admin-ui">Admin UI</a>
+    </li>
+    </ul>
                 </li>
     </ul>
                   </li>
@@ -225,22 +245,22 @@
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Upgrading</span></p>
-              <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrading/">Overview</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal">v4.x Series</a>
     <ul>
-                <li class="toctree-l2"><a class="reference internal" href="../v4.4.0/">v4.4.0</a>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.4.0/">v4.4.0</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../v4.3.0/">v4.3.0</a>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.3.0/">v4.3.0</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../v4.2.0/">v4.2.0</a>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.2.0/">v4.2.0</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../v4.1.0/">v4.1.0</a>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.1.0/">v4.1.0</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../v4.0.5/">v4.0.5</a>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.5/">v4.0.5</a>
                 </li>
-                <li class="toctree-l2"><a class="reference internal" href="../v4.0.0/">v4.0.0</a>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.0/">v4.0.0</a>
                 </li>
     </ul>
                   </li>
@@ -248,123 +268,117 @@
     <ul>
                 <li class="toctree-l2"><a class="reference internal">v3.9.x</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.9.7/">v3.9.7</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.7/">v3.9.7</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.9.3/">v3.9.3</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.3/">v3.9.3</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.9.2/">v3.9.2</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.2/">v3.9.2</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.9.1/">v3.9.1</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.1/">v3.9.1</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.9.0/">v3.9.0</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.0/">v3.9.0</a>
                 </li>
     </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal">v3.8.x</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.8.1/">v3.8.1</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.8.1/">v3.8.1</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.8.0/">v3.8.0</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.8.0/">v3.8.0</a>
                 </li>
     </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal">v3.7.x</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.7.0/">v3.7.0</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.7.0/">v3.7.0</a>
                 </li>
     </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal">v3.6.x</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.6.1/">v3.6.1</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.6.1/">v3.6.1</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.6.0/">v3.6.0</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.6.0/">v3.6.0</a>
                 </li>
     </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal">v3.5.x</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.5.1/">v3.5.1</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.5.1/">v3.5.1</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.5.0/">v3.5.0</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.5.0/">v3.5.0</a>
                 </li>
     </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal">v3.4.x</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.4.2/">v3.4.2</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.2/">v3.4.2</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.4.1/">v3.4.1</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.1/">v3.4.1</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.4.0/">v3.4.0</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.0/">v3.4.0</a>
                 </li>
     </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal">v3.3.x</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.3.0/">v3.3.0</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.3.0/">v3.3.0</a>
                 </li>
     </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal">v3.2.x</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.2.0/">v3.2.0</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.2.0/">v3.2.0</a>
                 </li>
     </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal">v3.1.x</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.1.0/">v3.1.0</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.1.0/">v3.1.0</a>
                 </li>
     </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal">v3.0.x</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../v3.0.0/">v3.0.0</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.0.0/">v3.0.0</a>
                 </li>
     </ul>
                 </li>
     </ul>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current">v2.x Series</a>
-    <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal">v2.x Series</a>
+    <ul>
                 <li class="toctree-l2"><a class="reference internal">v2.2.x</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../v2.2.2/">v2.2.2</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.2/">v2.2.2</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v2.2.1/">v2.2.1</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.1/">v2.2.1</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v2.2.0/">v2.2.0</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.0/">v2.2.0</a>
                 </li>
     </ul>
                 </li>
-                <li class="toctree-l2 current"><a class="reference internal current">v2.1.x</a>
-    <ul class="current">
-                <li class="toctree-l3"><a class="reference internal" href="../v2.1.9/">v2.1.9</a>
+                <li class="toctree-l2"><a class="reference internal">v2.1.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.9/">v2.1.9</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v2.1.8/">v2.1.8</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.8/">v2.1.8</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v2.1.7/">v2.1.7</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.7/">v2.1.7</a>
                 </li>
-                <li class="toctree-l3 current"><a class="reference internal current" href="#">v2.1.6</a>
-    <ul class="current">
-    <li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#upgrade-instructions">Upgrade Instructions</a>
-    </li>
-    </ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.6/">v2.1.6</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v2.1.5/">v2.1.5</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.5/">v2.1.5</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v2.1.4/">v2.1.4</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.4/">v2.1.4</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v2.1.3/">v2.1.3</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.3/">v2.1.3</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v2.1.2/">v2.1.2</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.2/">v2.1.2</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v2.1.1/">v2.1.1</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.1/">v2.1.1</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../v2.1.0/">v2.1.0</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.0/">v2.1.0</a>
                 </li>
     </ul>
                 </li>
@@ -401,12 +415,11 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Upgrading</li>
-          <li class="breadcrumb-item">v2.x Series</li>
-          <li class="breadcrumb-item">v2.1.x</li>
-      <li class="breadcrumb-item active">v2.1.6</li>
+          <li class="breadcrumb-item">Advanced Topics</li>
+          <li class="breadcrumb-item">Logging</li>
+      <li class="breadcrumb-item active">fail2ban Integration</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/upgrading/v2.1.6.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/advanced/fail2ban.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr>
@@ -418,31 +431,184 @@
     This documentation covers Poweradmin 4.x. Some sections are still being expanded.
   </div>
   
-                <h1 id="upgrading-to-v216">Upgrading to v2.1.6</h1>
-<h2 id="overview">Overview</h2>
-<p>Version 2.1.6 focuses on performance improvements and adds better support for record types and search functionality.</p>
-<h2 id="upgrade-instructions">Upgrade Instructions</h2>
+                <h1 id="brute-force-protection-with-fail2ban">Brute-Force Protection with fail2ban</h1>
+<p>Poweradmin logs every authentication and MFA event in a single structured
+format that <a href="https://www.fail2ban.org/">fail2ban</a> can consume. This page
+documents the log format, shows the filter and jail you need, and explains
+the trade-offs between the different event types.</p>
+<p>This complements the built-in <a href="../../configuration/security-policies/">account lockout</a>
+(which throttles attempts against a single account) by letting fail2ban
+escalate to <strong>IP-level bans</strong> at the firewall.</p>
+<h2 id="prerequisites">Prerequisites</h2>
 <ol>
-<li>Download latest tarball from <a href="https://github.com/downloads/poweradmin/poweradmin/poweradmin-2.1.6.tgz">GitHub</a></li>
-<li>Backup old files, replace everything with content from downloaded file</li>
-<li>From backup restore only inc/config.inc.php</li>
-<li>Update database structure:</li>
+<li>
+<p>Enable syslog output in <code>config/settings.php</code>:</p>
+<p><code>php
+'logging' =&gt; [
+    'syslog_enabled' =&gt; true,
+    'syslog_identity' =&gt; 'poweradmin',
+    'syslog_facility' =&gt; LOG_USER,
+],</code></p>
+</li>
+<li>
+<p>Make sure your syslog daemon writes Poweradmin's events to a file you
+   can point fail2ban at - for example <code>/var/log/poweradmin.log</code> via
+   rsyslog:</p>
+<p><code>:programname, isequal, "poweradmin"   /var/log/poweradmin.log
+&amp; stop</code></p>
+</li>
 </ol>
-<h3 id="mysql">MySQL</h3>
-<pre><code class="language-sql">ALTER TABLE users MODIFY username VARCHAR(64) NOT NULL DEFAULT '0';
-ALTER TABLE users MODIFY password VARCHAR(128) NOT NULL DEFAULT '0';
+<h2 id="event-types">Event Types</h2>
+<p>Every Poweradmin authentication event uses the same field order:</p>
+<pre><code>client_ip:&lt;ip&gt; user:&lt;username&gt; operation:&lt;op&gt; auth_method:&lt;sql|ldap|oidc|saml&gt; [reason:&lt;code&gt;] [mfa_type:&lt;app|email&gt;]
 </code></pre>
-<h3 id="postgresql">PostgreSQL</h3>
-<pre><code class="language-sql">ALTER TABLE users ALTER COLUMN username TYPE VARCHAR(64);
-ALTER TABLE users ALTER COLUMN password TYPE VARCHAR(128);
+<p>The <code>operation:</code> token is what fail2ban filters on.</p>
+<table>
+<thead>
+<tr>
+<th><code>operation:</code></th>
+<th>Severity</th>
+<th>When it fires</th>
+<th>Should fail2ban ban?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>login_success</code></td>
+<td>NOTICE</td>
+<td>Successful credential check (or SAML/OIDC handshake completed)</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>login_failed</code></td>
+<td>WARNING</td>
+<td>Credential check rejected: unknown user, wrong password, or disabled account</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td><code>login_locked</code></td>
+<td>WARNING</td>
+<td>Attempt arrived against an account already locked by <code>LoginAttemptService</code></td>
+<td>Optional - useful for escalation</td>
+</tr>
+<tr>
+<td><code>login_error</code></td>
+<td>WARNING</td>
+<td>Infrastructure failure: LDAP server unreachable, OIDC <code>?error=</code> callback, SAML assertion validation exception</td>
+<td><strong>No</strong> - the user was never credential-checked</td>
+</tr>
+<tr>
+<td><code>mfa_verify</code></td>
+<td>INFO</td>
+<td>MFA code accepted, user fully authenticated</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>mfa_failed</code></td>
+<td>WARNING</td>
+<td>MFA code rejected after password was already correct</td>
+<td><strong>Yes</strong> - high-confidence brute force</td>
+</tr>
+</tbody>
+</table>
+<h3 id="why-login_error-is-separate">Why <code>login_error</code> is separate</h3>
+<p>If you put <code>operation:login_error</code> into the same filter as
+<code>login_failed</code>, an LDAP outage or a misconfigured IdP would cause every
+legitimate user's login attempt to be counted against the client IP and
+trigger bans. Keep them separate.</p>
+<p><code>login_error</code> lines still go to your audit log (and to the admin UI under
+the <strong>Login error</strong> event filter), so operators can investigate, but
+fail2ban skips them.</p>
+<h2 id="fail2ban-filter">fail2ban Filter</h2>
+<p>Create <code>/etc/fail2ban/filter.d/poweradmin.conf</code>:</p>
+<pre><code class="language-ini">[Definition]
+# Match credential failures and MFA brute force.
+# Deliberately excludes operation:login_error (backend/IdP outages) and
+# operation:login_locked (already throttled at the application layer).
+failregex = ^.*\bpoweradmin\b.*client_ip:&lt;HOST&gt; .*operation:(login_failed|mfa_failed)\b
+
+ignoreregex =
+
+# fail2ban journal hint: the same regex works whether logs come from
+# rsyslog or systemd-journal, as long as syslog_identity is "poweradmin".
 </code></pre>
+<p>The <code>&lt;HOST&gt;</code> token tells fail2ban which capture group is the client IP.
+The regex anchors on:</p>
+<ul>
+<li><code>\bpoweradmin\b</code> - the syslog identity, so unrelated lines on the same
+  file don't match.</li>
+<li><code>operation:(login_failed|mfa_failed)</code> - the credential-side events
+  only.</li>
+</ul>
+<h2 id="fail2ban-jail">fail2ban Jail</h2>
+<p>Add to <code>/etc/fail2ban/jail.local</code>:</p>
+<pre><code class="language-ini">[poweradmin]
+enabled  = true
+filter   = poweradmin
+logpath  = /var/log/poweradmin.log
+maxretry = 5
+findtime = 10m
+bantime  = 1h
+# Optional: ban for longer on repeat offenders
+# bantime.increment = true
+</code></pre>
+<p>Tune <code>maxretry</code>/<code>findtime</code> to match your application-level
+<code>account_lockout.lockout_attempts</code> if you want fail2ban to fire at the
+same time the account-level lockout does, or set it higher to use
+fail2ban only as a secondary line.</p>
+<p>Reload fail2ban:</p>
+<pre><code class="language-sh">fail2ban-client reload
+</code></pre>
+<h2 id="verifying-it-works">Verifying It Works</h2>
+<ol>
+<li>
+<p>Tail your Poweradmin log file:</p>
+<p><code>sh
+tail -f /var/log/poweradmin.log</code></p>
+</li>
+<li>
+<p>From a test machine, hit the login form with a wrong password a few
+   times. You should see:</p>
+<p><code>May 21 22:00:01 host poweradmin[1234]: client_ip:203.0.113.42 user:admin operation:login_failed auth_method:sql reason:wrong_password</code></p>
+</li>
+<li>
+<p>After <code>maxretry</code> attempts, fail2ban should ban the IP:</p>
+<p><code>sh
+fail2ban-client status poweradmin</code></p>
+</li>
+</ol>
+<h2 id="combining-with-the-built-in-lockout">Combining with the Built-In Lockout</h2>
+<p>The application-level <a href="../../configuration/security-policies/">account lockout</a>
+and fail2ban are complementary:</p>
+<ul>
+<li><strong>Application lockout</strong> stops attempts against a single account, even
+  if they come from different IPs. It surfaces as <code>operation:login_locked</code>.</li>
+<li><strong>fail2ban</strong> stops attempts from a single IP, even if they target
+  different usernames. It runs at the firewall and doesn't burn database
+  rows.</li>
+</ul>
+<p>A common setup: keep the application lockout aggressive on a per-account
+basis (e.g. 5 attempts), and run fail2ban with a higher threshold over a
+longer window (e.g. 20 attempts in an hour) so it only catches sustained
+distributed scans.</p>
+<h2 id="admin-ui">Admin UI</h2>
+<p>The same events are searchable in <strong>Audit Log</strong> under these filter
+entries:</p>
+<ul>
+<li><code>login_failed</code>, <code>login_locked</code>, <code>login_error</code></li>
+<li><code>mfa_failed</code>, <code>mfa_verify</code></li>
+<li><code>oidc_login_error</code>, <code>saml_login_error</code> (per-backend variants of
+  <code>login_error</code>)</li>
+<li>Legacy <code>oidc_login_failed</code>, <code>saml_login_failed</code> (kept for historical
+  rows logged before 4.4.0)</li>
+</ul>
               
 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../v2.1.7/" class="btn btn-neutral float-left" title="v2.1.7"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../v2.1.5/" class="btn btn-neutral float-right" title="v2.1.5">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../logging-config/" class="btn btn-neutral float-left" title="Log Configuration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../maintenance/" class="btn btn-neutral float-right" title="Overview">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr>
@@ -469,10 +635,10 @@ ALTER TABLE users ALTER COLUMN password TYPE VARCHAR(128);
         </span>
     
     
-      <span><a href="../v2.1.7/" style="color: #fcfcfc">« Previous</a></span>
+      <span><a href="../logging-config/" style="color: #fcfcfc">« Previous</a></span>
     
     
-      <span><a href="../v2.1.5/" style="color: #fcfcfc">Next »</a></span>
+      <span><a href="../../maintenance/" style="color: #fcfcfc">Next »</a></span>
     
   </span>
 </div>
