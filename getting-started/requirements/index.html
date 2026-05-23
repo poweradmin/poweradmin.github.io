@@ -70,6 +70,8 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#php-version-policy">PHP Version Policy</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#supported-distributions">Supported Distributions</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#bsd-operating-systems">BSD Operating Systems</a>
@@ -444,33 +446,36 @@
   
                 <h1 id="poweradmin-system-requirements">Poweradmin System Requirements</h1>
 <h2 id="overview">Overview</h2>
-<p>Poweradmin requires PHP 8.1 or higher to run. This document outlines the supported Linux and BSD distributions as well
+<p>Poweradmin requires PHP 8.2 or higher to run. This document outlines the supported Linux and BSD distributions as well
 as those that are not supported due to PHP version constraints. For the best experience, ensure your system meets or
 exceeds the recommended requirements.</p>
 <hr>
 <h2 id="minimum-requirements">Minimum Requirements</h2>
 <ul>
-<li><strong>PHP</strong>: 8.1 or higher (including 8.2, 8.3, 8.4, etc.)</li>
+<li><strong>PHP</strong>: 8.2 or higher (including 8.3, 8.4, 8.5)</li>
+<li><strong>PHP Extensions</strong>:<ul>
+<li><code>intl</code></li>
+<li><code>gettext</code></li>
+<li><code>openssl</code></li>
+<li><code>filter</code></li>
+<li><code>tokenizer</code></li>
+<li><code>xml</code></li>
+<li><code>pdo</code></li>
+<li>One of:<ul>
+<li><code>pdo-mysql</code></li>
+<li><code>pdo-pgsql</code></li>
+<li><code>pdo-sqlite</code></li>
+</ul>
+</li>
+<li><code>ldap</code> (optional)</li>
+</ul>
+</li>
+<li><strong>Database</strong>: MySQL 5.7.x/8.x, MariaDB, PostgreSQL, or SQLite</li>
+<li><strong>PowerDNS</strong>: PowerDNS authoritative server 4.0.0+ (including 4.x and 5.x series)</li>
+<li><strong>Web Server</strong>: Apache or NGINX</li>
+<li><strong>Operating System</strong>: Linux or BSD</li>
 </ul>
 <blockquote>
-<p><strong>PHP 8.1 Deprecation Notice:</strong> Poweradmin <strong>4.1.x will be the last version to support PHP 8.1</strong>. Starting with version 4.2.x, the minimum required PHP version will be <strong>8.2</strong>. Users on PHP 8.1 should plan their PHP upgrade accordingly.
-- <strong>PHP Extensions</strong>:
-    - <code>intl</code>
-    - <code>gettext</code>
-    - <code>openssl</code>
-    - <code>filter</code>
-    - <code>tokenizer</code>
-    - <code>xml</code>
-    - <code>pdo</code>
-    - One of:
-        - <code>pdo-mysql</code>
-        - <code>pdo-pgsql</code>
-        - <code>pdo-sqlite</code>
-    - <code>ldap</code> (optional)
-- <strong>Database</strong>: MySQL 5.7.x/8.x, MariaDB, PostgreSQL, or SQLite
-- <strong>PowerDNS</strong>: PowerDNS authoritative server 4.0.0+ (including 4.x and 5.x series)
-- <strong>Web Server</strong>: Apache or NGINX
-- <strong>Operating System</strong>: Linux or BSD</p>
 <p><strong>Note</strong>: Other web server software, such as Caddy, might also be supported. However, these are usually not tested by
 the maintainer and may only work with help from the community.</p>
 </blockquote>
@@ -507,6 +512,17 @@ the maintainer and may only work with help from the community.</p>
 <p><strong>Warning:</strong> If you see 404 errors when accessing pages like <code>/login</code> or <code>/zones</code>, your web server is not routing requests to <code>index.php</code>. For Apache, ensure <code>mod_rewrite</code> is enabled and <code>AllowOverride All</code> is set. For Nginx/Caddy, verify your configuration matches the provided examples.</p>
 <p><strong>Note:</strong> Poweradmin 4.0.x and earlier do not require URL rewriting for basic functionality, only for API support.</p>
 </blockquote>
+<hr>
+<h2 id="php-version-policy">PHP Version Policy</h2>
+<p>Poweradmin tracks the <a href="https://www.php.net/supported-versions.php">official PHP release lifecycle</a>. Rather than maintain
+a static list of supported versions, the policy is simple:</p>
+<ul>
+<li><strong>Actively supported</strong> PHP versions (active or security-only) are supported by the current Poweradmin release.</li>
+<li><strong>End-of-life</strong> PHP versions are dropped from the next Poweradmin minor release after they reach EOL.</li>
+<li>New PHP minor releases are added to compatibility testing (<code>composer compat:*</code>) shortly after their stable release.</li>
+</ul>
+<p>This means the supported range moves forward over time. Always consult <a href="https://www.php.net/supported-versions.php">php.net/supported-versions.php</a>
+for the authoritative EOL calendar before planning a long-running deployment.</p>
 <hr>
 <h2 id="supported-distributions">Supported Distributions</h2>
 <table>
@@ -552,7 +568,7 @@ the maintainer and may only work with help from the community.</p>
 </table>
 <hr>
 <h2 id="bsd-operating-systems">BSD Operating Systems</h2>
-<p>Poweradmin is compatible with BSD operating systems that meet the PHP 8.1+ requirement. While not extensively tested, it
+<p>Poweradmin is compatible with BSD operating systems that meet the PHP 8.2+ requirement. While not extensively tested, it
 should work as long as the environment is properly configured.</p>
 <hr>
 <h2 id="unsupported-distributions">Unsupported Distributions</h2>
@@ -628,6 +644,24 @@ should work as long as the environment is properly configured.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>4.3.x</td>
+<td>8.2</td>
+<td>4.9.12</td>
+<td>10.11</td>
+<td>-</td>
+<td>16.11</td>
+<td>-</td>
+</tr>
+<tr>
+<td>4.2.x</td>
+<td>8.2</td>
+<td>4.9.12</td>
+<td>10.11</td>
+<td>-</td>
+<td>16.11</td>
+<td>-</td>
+</tr>
 <tr>
 <td>4.1.x</td>
 <td>8.2</td>

@@ -427,7 +427,10 @@
                 <h1 id="dynamic-dns-configuration">Dynamic DNS Configuration</h1>
 <p>This guide will walk you through the process of setting up Dynamic DNS (DDNS) in Poweradmin.</p>
 <h2 id="setting-up-user-permissions">Setting Up User Permissions</h2>
-<p>You'll need to create a user with specific permissions for DDNS updates:</p>
+<p>You'll need to create a <strong>dedicated</strong> user with specific permissions for DDNS updates:</p>
+<blockquote>
+<p>Administrator (ueberuser) accounts are deliberately blocked from <code>dynamic_update.php</code>. DDNS credentials are typically stored in plaintext on routers, IoT devices, or <code>ddclient.conf</code> files - low-trust locations. Forcing a dedicated, narrowly-scoped account keeps admin credentials out of those files. If you authenticate with an admin account, the endpoint responds with <code>badauth2</code>.</p>
+</blockquote>
 <ol>
 <li>Create a permission template:<ul>
 <li>Navigate to <code>Users &gt; Add permission template</code></li>
@@ -464,19 +467,20 @@
 <a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../screenshots/dynamic_update_04.png" data-desc-position="bottom"><img alt="Record Configuration" src="../../../screenshots/dynamic_update_04.png"></a></p>
 <h2 id="server-side-configuration">Server-Side Configuration</h2>
 <p>The Dynamic DNS functionality in Poweradmin is provided by the <code>dynamic_update.php</code> script, which handles DNS record updates when IP addresses change.</p>
-<h3 id="configuration-options">Configuration Options</h3>
-<p>The main configuration is controlled through Poweradmin's settings:</p>
-<pre><code class="language-php">return [
-    'dynamicdns' =&gt; [
-        'enabled' =&gt; true,             // Enable or disable DDNS functionality
-        'ttl' =&gt; 60,                   // Default TTL for dynamic records (in seconds)
-        'allow_auto_detect' =&gt; true,   // Allow automatic IP detection
-        'allow_ipv4' =&gt; true,          // Allow IPv4 updates
-        'allow_ipv6' =&gt; true,          // Allow IPv6 updates
-        'require_authentication' =&gt; true, // Require user authentication
-    ],
-];
-</code></pre>
+<h3 id="current-behaviour">Current Behaviour</h3>
+<p>There are no dedicated configuration keys for DDNS. The endpoint is always available when the file is reachable, and the following values are fixed:</p>
+<ul>
+<li><strong>TTL</strong>: All A and AAAA records created or refreshed through <code>dynamic_update.php</code> are written with a TTL of 60 seconds. This is hard-coded.</li>
+<li><strong>Authentication</strong>: Always required (HTTP Basic Auth or <code>username</code> / <code>password</code> query parameters).</li>
+<li><strong>IPv4 and IPv6</strong>: Both are always allowed; you control which records exist by what you send.</li>
+<li><strong>Automatic IP detection</strong>: Always available via the special value <code>whatismyip</code> for <code>myip</code> / <code>myip6</code>.</li>
+</ul>
+<p>To restrict who can use the endpoint, control access at three layers:</p>
+<ul>
+<li><strong>User permissions</strong>: Only grant the DDNS permission template to accounts that should update records.</li>
+<li><strong>Zone ownership</strong>: A user can only update records in zones they (or one of their groups) own.</li>
+<li><strong>Web server</strong>: Restrict access to <code>/dynamic_update.php</code> and <code>/addons/clientip.php</code> by IP range or HTTPS-only if your update sources are predictable.</li>
+</ul>
 <h3 id="security-considerations">Security Considerations</h3>
 <ol>
 <li><strong>Use HTTPS</strong>: Always use HTTPS for DDNS updates to prevent credentials and updates from being intercepted.</li>
@@ -486,11 +490,12 @@
 </ol>
 <h2 id="testing-your-configuration">Testing Your Configuration</h2>
 <p>After setup, you can test your configuration using:</p>
-<pre><code class="language-bash">curl -u username:password "https://yourserver.com/dynamic_update.php?hostname=host.yourdomain.com&amp;myip=auto"
+<pre><code class="language-bash">curl -u username:password "https://yourserver.com/dynamic_update.php?hostname=host.yourdomain.com&amp;myip=whatismyip&amp;verbose=1"
 </code></pre>
-<p>A successful response will look like:</p>
-<pre><code>good 192.168.1.100
+<p>A successful response in verbose mode will look like:</p>
+<pre><code>Your hostname has been updated.
 </code></pre>
+<p>Without <code>verbose=1</code> you will just receive <code>good\n</code> (or one of the short error codes documented in <a href="../client-setup/">Client Setup</a>).</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <p>If you encounter issues with your DDNS setup:</p>
 <ol>

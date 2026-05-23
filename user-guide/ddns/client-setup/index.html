@@ -207,6 +207,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#basic-authentication">Basic Authentication</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#using-ddclient-dyndns2-protocol">Using ddclient (dyndns2 protocol)</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#client-script-installation">Client Script Installation</a>
     </li>
     </ul>
@@ -438,11 +440,56 @@
 <li><code>myip</code> or <code>ip</code> - IPv4 address(es), comma-separated</li>
 <li><code>myip6</code> or <code>ip6</code> - IPv6 address(es), comma-separated</li>
 <li><code>dualstack_update</code> - Set to 1 to update both IPv4 and IPv6</li>
-<li><code>verbose</code> - Enable verbose response messages</li>
+<li><code>verbose</code> - Set to 1 to receive human-readable response messages</li>
 </ul>
+<h3 id="response-codes">Response Codes</h3>
+<p>Without <code>verbose=1</code> the endpoint returns one of these short codes followed by a newline:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>good &lt;ip&gt;</code></td>
+<td>Update accepted. The applied IPv4 (or IPv6) address follows. Poweradmin returns <code>good</code> for both new updates and no-op updates against unchanged records (dyndns2's optional <code>nochg</code> code is not emitted separately).</td>
+</tr>
+<tr>
+<td><code>nohost</code></td>
+<td>Hostname does not exist in any zone you own.</td>
+</tr>
+<tr>
+<td><code>!yours</code></td>
+<td>You authenticated, but you do not own a zone containing this hostname.</td>
+</tr>
+<tr>
+<td><code>notfqdn</code></td>
+<td>The supplied hostname is not a fully-qualified domain name.</td>
+</tr>
+<tr>
+<td><code>badauth</code></td>
+<td>Missing credentials.</td>
+</tr>
+<tr>
+<td><code>badauth2</code></td>
+<td>Credentials supplied but did not validate.</td>
+</tr>
+<tr>
+<td><code>badagent</code></td>
+<td>Request had no <code>User-Agent</code> header.</td>
+</tr>
+<tr>
+<td><code>dnserr</code></td>
+<td>A server-side validation or write error occurred.</td>
+</tr>
+</tbody>
+</table>
+<p>When debugging, always append <code>&amp;verbose=1</code> so you get the readable equivalent instead of a two-letter code.</p>
 <h3 id="special-values">Special Values</h3>
 <p>You can use <code>whatismyip</code> for the IP parameters to automatically detect your address:</p>
-<pre><code class="language-bash">curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=whatismyip"
+<pre><code class="language-bash">curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=whatismyip&amp;verbose=1"
 </code></pre>
 <h3 id="multiple-ip-management">Multiple IP Management</h3>
 <p>The system supports managing multiple IP addresses per host:</p>
@@ -455,6 +502,7 @@ curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;m
 # Update both IPv4 and IPv6 with cleanup
 curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1,192.0.2.2&amp;myip6=2001:db8::1,2001:db8::2&amp;dualstack_update=1"
 </code></pre>
+<p>If any of these return a short error code like <code>!yours</code> or <code>badauth2</code>, re-run the same URL with <code>&amp;verbose=1</code> appended to get a readable message.</p>
 <p>When using multiple IPs:</p>
 <ul>
 <li>Omitted record types are preserved</li>
@@ -474,6 +522,31 @@ curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;m
 <h2 id="basic-authentication">Basic Authentication</h2>
 <p>You can also create a client that uses HTTP basic authentication with username and password.</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../screenshots/dynamic_update06.png" data-desc-position="bottom"><img alt="Basic Auth Setup" src="../../../screenshots/dynamic_update06.png"></a></p>
+<h2 id="using-ddclient-dyndns2-protocol">Using <code>ddclient</code> (dyndns2 protocol)</h2>
+<p><code>ddclient</code> and other dyndns2 clients expect the update endpoint at <code>/nic/update</code>. Poweradmin exposes the endpoint at <code>/dynamic_update.php</code>, so you need a small web-server rewrite to make stock clients work.</p>
+<h3 id="apache">Apache</h3>
+<p>Add to your virtual host (or <code>.htaccess</code> if rewrites are enabled):</p>
+<pre><code class="language-apache">RewriteEngine On
+RewriteRule ^/?nic/update$ /dynamic_update.php [QSA,L]
+</code></pre>
+<h3 id="nginx">nginx</h3>
+<p>Inside the <code>server { ... }</code> block that serves Poweradmin:</p>
+<pre><code class="language-nginx">location = /nic/update {
+    rewrite ^ /dynamic_update.php last;
+}
+</code></pre>
+<h3 id="ddclientconf"><code>ddclient.conf</code></h3>
+<pre><code>protocol=dyndns2
+use=web, web=https://dns.example.com/addons/clientip.php
+ssl=yes
+server=dns.example.com
+login=ddns-user
+password='your-password'
+home.example.com
+</code></pre>
+<p>Run <code>ddclient -daemon=0 -debug -verbose -noquiet</code> to watch the exchange. The server returns either <code>good\n</code> (no IP suffix on older builds) or the dyndns2-compliant <code>good &lt;ip&gt;\n</code> depending on Poweradmin version. Both forms are accepted by <code>ddclient</code>.</p>
+<h3 id="other-clients">Other clients</h3>
+<p><code>inadyn</code>, OPNsense's built-in DDNS client, and most router firmwares can target the same endpoint. Configure the service URL as <code>https://dns.example.com/nic/update?hostname=%h&amp;myip=%i</code> (or the equivalent template for your client) and set the protocol to <code>dyndns2</code> or "custom".</p>
 <h2 id="client-script-installation">Client Script Installation</h2>
 <h3 id="shell-script">Shell Script</h3>
 <pre><code class="language-bash">chmod 755 dynamic_dns_client.sh
