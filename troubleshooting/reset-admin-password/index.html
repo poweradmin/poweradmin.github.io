@@ -1,9 +1,9 @@
 <!DOCTYPE html><html class="writer-html5" lang="en"><head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://docs.poweradmin.org/troubleshooting/debugging/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://docs.poweradmin.org/troubleshooting/reset-admin-password/">
       <link rel="shortcut icon" href="../../img/favicon.ico">
-    <title>Debugging - Poweradmin Documentation</title>
+    <title>Reset Admin Password - Poweradmin Documentation</title>
     <link rel="stylesheet" href="../../css/theme.css">
     <link rel="stylesheet" href="../../css/theme_extra.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
@@ -11,9 +11,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Debugging";
-        var mkdocs_page_input_path = "troubleshooting/debugging.md";
-        var mkdocs_page_url = "/troubleshooting/debugging/";
+        var mkdocs_page_name = "Reset Admin Password";
+        var mkdocs_page_input_path = "troubleshooting/reset-admin-password.md";
+        var mkdocs_page_url = "/troubleshooting/reset-admin-password/";
       </script>
     
     <!--[if lt IE 9]>
@@ -367,35 +367,21 @@
               </ul>
               <p class="caption"><span class="caption-text">Troubleshooting</span></p>
               <ul class="current">
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Debugging</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../debugging/">Debugging</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Reset Admin Password</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#configuration-location">Configuration Location</a>
+    <li class="toctree-l2"><a class="reference internal" href="#1-generate-a-new-password-hash">1. Generate a New Password Hash</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#available-debug-settings">Available Debug Settings</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#1-php-error-reporting">1. PHP Error Reporting</a>
+    <li class="toctree-l2"><a class="reference internal" href="#2-update-the-user-record">2. Update the User Record</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#2-logger-settings">2. Logger Settings</a>
+    <li class="toctree-l2"><a class="reference internal" href="#3-clear-mfa-only-if-you-lost-the-device">3. Clear MFA (Only If You Lost the Device)</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#3-database-debugging">3. Database Debugging</a>
+    <li class="toctree-l2"><a class="reference internal" href="#4-log-in-and-change-the-password">4. Log In and Change the Password</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#4-dnssec-debugging">4. DNSSEC Debugging</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#5-ldap-debugging">5. LDAP Debugging</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#display-statistics">Display Statistics</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#common-configuration-issues">Common Configuration Issues</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#password-character-issues">Password Character Issues</a>
-    </li>
-        </ul>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
     </li>
     </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../reset-admin-password/">Reset Admin Password</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Contributing</span></p>
@@ -424,9 +410,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Troubleshooting</li>
-      <li class="breadcrumb-item active">Debugging</li>
+      <li class="breadcrumb-item active">Reset Admin Password</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/troubleshooting/debugging.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/troubleshooting/reset-admin-password.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr>
@@ -438,116 +424,62 @@
     This documentation covers Poweradmin 4.x. Some sections are still being expanded.
   </div>
   
-                <h1 id="debugging-poweradmin">Debugging Poweradmin</h1>
-<p>To help diagnose issues, you can enable various debug settings in your Poweradmin configuration. Below are the available debug settings and how to enable them.</p>
-<h2 id="configuration-location">Configuration Location</h2>
-<p>Debugging settings should be added to your <code>config/settings.php</code> file. If you're still using the legacy configuration in <code>inc/config.inc.php</code>, consider migrating to the new configuration format using the provided script:</p>
-<pre><code class="language-bash">php config/migrate-config.php
+                <h1 id="reset-admin-password">Reset Admin Password</h1>
+<p>If the administrator account is locked out and the "Forgot password" flow is not available (no mail configured, no second admin account, lost MFA device), the password can be reset directly in the database.</p>
+<p>Poweradmin 4.3.0 and later store passwords as bcrypt, argon2i, or argon2id hashes. The <code>md5</code> and <code>md5salt</code> algorithms were removed. The active algorithm is set by <code>security.password_encryption</code> in <code>config/settings.php</code> (default: <code>bcrypt</code>).</p>
+<h2 id="1-generate-a-new-password-hash">1. Generate a New Password Hash</h2>
+<p>Run this on the same host as Poweradmin so the PHP version matches. Replace <code>NewPassword123</code> with the password you want.</p>
+<p><strong>bcrypt (default):</strong></p>
+<pre><code class="language-bash">php -r 'echo password_hash("NewPassword123", PASSWORD_BCRYPT, ["cost" =&gt; 12]) . "\n";'
 </code></pre>
-<h2 id="available-debug-settings">Available Debug Settings</h2>
-<h3 id="1-php-error-reporting">1. PHP Error Reporting</h3>
-<p>To display PHP errors directly in the browser, add the following lines to your <code>index.php</code> or any other entry point file:</p>
-<pre><code class="language-php">ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+<p>The <code>cost</code> value should match <code>security.password_cost</code> in your configuration (default: <code>12</code>).</p>
+<p><strong>argon2i:</strong></p>
+<pre><code class="language-bash">php -r 'echo password_hash("NewPassword123", PASSWORD_ARGON2I) . "\n";'
 </code></pre>
-<h3 id="2-logger-settings">2. Logger Settings</h3>
-<p>Configure the logging settings in your <code>config/settings.php</code>:</p>
-<pre><code class="language-php">return [
-    // Other settings...
-
-    'logging' =&gt; [
-        'type' =&gt; 'native',    // Options: 'null', 'native'
-        'level' =&gt; 'debug',    // Options: 'debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'
-        // Other logging settings...
-    ],
-
-    // Other settings...
-];
+<p><strong>argon2id:</strong></p>
+<pre><code class="language-bash">php -r 'echo password_hash("NewPassword123", PASSWORD_ARGON2ID) . "\n";'
 </code></pre>
-<p>These settings are primarily used for logging authentication issues and other system events.</p>
-<h3 id="3-database-debugging">3. Database Debugging</h3>
-<p>Enable or disable database debugging to log detailed database operations and errors:</p>
-<pre><code class="language-php">return [
-    // Other settings...
-
-    'database' =&gt; [
-        // Other database settings...
-        'debug' =&gt; true,    // Show all SQL queries
-    ],
-
-    // Other settings...
-];
+<p>Copy the resulting hash (it begins with <code>$2y$</code>, <code>$argon2i$</code>, or <code>$argon2id$</code>).</p>
+<h2 id="2-update-the-user-record">2. Update the User Record</h2>
+<p>Open your database client and run the appropriate statement. The <code>users</code> table is the same on MySQL/MariaDB, PostgreSQL, and SQLite.</p>
+<pre><code class="language-sql">UPDATE users
+SET password = '&lt;paste-hash-here&gt;',
+    active = 1,
+    use_ldap = 0,
+    auth_method = 'sql'
+WHERE username = 'admin';
 </code></pre>
-<h3 id="4-dnssec-debugging">4. DNSSEC Debugging</h3>
-<p>Enable or disable DNSSEC debugging to log detailed DNSSEC operations and errors:</p>
-<pre><code class="language-php">return [
-    // Other settings...
-
-    'dnssec' =&gt; [
-        // Other DNSSEC settings...
-        'debug' =&gt; true,    // Enable DNSSEC debug logging
-    ],
-
-    // Other settings...
-];
+<p>Notes:</p>
+<ul>
+<li>Quote the hash with single quotes. Bcrypt and argon2 hashes contain <code>$</code> characters but no embedded single quotes, so they are safe inside <code>'...'</code>.</li>
+<li><code>auth_method</code> was added in Poweradmin 4.1.0. If your install is older, that column may not exist - drop it from the <code>SET</code> clause. The legacy <code>use_ldap</code> column has been present since 2.1.7.</li>
+<li>Resetting both <code>use_ldap = 0</code> and <code>auth_method = 'sql'</code> forces the account back onto local password authentication. Otherwise Poweradmin will continue routing the login through LDAP/SAML/OIDC and ignore the new hash.</li>
+<li>Setting <code>active = 1</code> re-enables the account in case it was disabled.</li>
+</ul>
+<h2 id="3-clear-mfa-only-if-you-lost-the-device">3. Clear MFA (Only If You Lost the Device)</h2>
+<p>If multi-factor authentication is enabled for that user and the second factor is no longer available, disable it before logging in. MFA state lives in the separate <code>user_mfa</code> table:</p>
+<pre><code class="language-sql">DELETE FROM user_mfa WHERE user_id = (SELECT id FROM users WHERE username = 'admin');
 </code></pre>
-<h3 id="5-ldap-debugging">5. LDAP Debugging</h3>
-<p>Enable or disable LDAP debugging to log detailed LDAP operations and errors:</p>
-<pre><code class="language-php">return [
-    // Other settings...
-
-    'ldap' =&gt; [
-        // Other LDAP settings...
-        'debug' =&gt; true,    // Enable LDAP debug logging
-    ],
-
-    // Other settings...
-];
+<p>Removing the row is the safest option - the next login will not prompt for a second factor, and you can re-enrol MFA from the user profile afterwards. If you prefer to keep the secret on file (for example to restore it later), update the row instead:</p>
+<pre><code class="language-sql">UPDATE user_mfa
+SET enabled = 0
+WHERE user_id = (SELECT id FROM users WHERE username = 'admin');
 </code></pre>
-<h2 id="display-statistics">Display Statistics</h2>
-<p>To see memory usage and execution time at the bottom of each page, enable the display_stats option:</p>
-<pre><code class="language-php">return [
-    // Other settings...
-
-    'misc' =&gt; [
-        // Other miscellaneous settings...
-        'display_stats' =&gt; true,    // Display memory usage and execution time
-    ],
-
-    // Other settings...
-];
-</code></pre>
-<p>By enabling these settings, you can gain more insight into the application's behavior and troubleshoot issues more effectively.</p>
-<h2 id="common-configuration-issues">Common Configuration Issues</h2>
-<h3 id="password-character-issues">Password Character Issues</h3>
-<p>If you experience PHP syntax errors when generating configuration files during installation, check your passwords for problematic characters:</p>
-<p><strong>Symptoms:</strong>
-- Installation fails with PHP parse errors
-- Configuration file cannot be parsed
-- "Access denied for user" errors after successful installation test</p>
-<p><strong>Solution:</strong>
-Avoid these characters in database, LDAP, and SMTP passwords:
-- Single quotes (<code>'</code>)
-- Double quotes (<code>"</code>)
-- Backslashes (<code>\</code>)
-- Line breaks</p>
-<p><strong>Example Error:</strong></p>
-<pre><code>Parse error: syntax error, unexpected 'password' in config/settings.php on line 42
-</code></pre>
-<p><strong>Debugging Steps:</strong>
-1. Check your password for the problematic characters listed above
-2. Use <code>var_dump((new AppConfiguration())-&gt;getAll())</code> to inspect parsed configuration values
-3. Look for missing quotes or escape characters in the output
-4. Change the password to use only alphanumeric characters and basic symbols</p>
-<p>This issue occurs because the configuration file generator does not properly escape special PHP characters in password values during installation.</p>
+<h2 id="4-log-in-and-change-the-password">4. Log In and Change the Password</h2>
+<p>Log in with the temporary password, then change it through the web UI under your user profile. Poweradmin will re-hash the password using the currently configured algorithm and cost, which keeps the stored hash aligned with <code>security.password_encryption</code> and <code>security.password_cost</code>.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong>"Invalid username or password" after the update.</strong> Confirm you updated the row for the right account (<code>SELECT id, username, active, use_ldap FROM users WHERE username = 'admin';</code>) and that the hash was copied without trailing whitespace or line breaks.</li>
+<li><strong>PHP <code>password_hash</code> not available.</strong> Make sure you are running PHP 8.2 or newer, which is required by Poweradmin 4.x.</li>
+<li><strong>Hash starts with <code>$1$</code> or is 32 hex characters.</strong> That is a legacy md5/md5salt hash from an older Poweradmin version. Replace it with a bcrypt/argon2 hash using the steps above; the legacy formats are no longer accepted.</li>
+</ul>
               
 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../../upgrading/v2.1.0/" class="btn btn-neutral float-left" title="v2.1.0"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../reset-admin-password/" class="btn btn-neutral float-right" title="Reset Admin Password">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../debugging/" class="btn btn-neutral float-left" title="Debugging"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../contributing/development/" class="btn btn-neutral float-right" title="Development Setup">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr>
@@ -574,10 +506,10 @@ Avoid these characters in database, LDAP, and SMTP passwords:
         </span>
     
     
-      <span><a href="../../upgrading/v2.1.0/" style="color: #fcfcfc">« Previous</a></span>
+      <span><a href="../debugging/" style="color: #fcfcfc">« Previous</a></span>
     
     
-      <span><a href="../reset-admin-password/" style="color: #fcfcfc">Next »</a></span>
+      <span><a href="../../contributing/development/" style="color: #fcfcfc">Next »</a></span>
     
   </span>
 </div>
