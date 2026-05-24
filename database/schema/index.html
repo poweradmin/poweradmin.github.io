@@ -183,8 +183,6 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#record-comment-tables">Record Comment Tables</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#record_comments">record_comments</a>
-    </li>
     <li class="toctree-l4"><a class="reference internal" href="#record_comment_links">record_comment_links</a>
     </li>
         </ul>
@@ -882,7 +880,12 @@
 <tr>
 <td><code>perm_templ</code></td>
 <td>int</td>
-<td>Permission template ID</td>
+<td>Permission template ID (FK to <code>perm_templ.id</code>)</td>
+</tr>
+<tr>
+<td><code>perm_templ_source</code></td>
+<td>varchar(20)</td>
+<td>How <code>perm_templ</code> was assigned: <code>admin</code> (default; set by an administrator) or <code>sso</code> (assigned by OIDC/SAML provisioning)</td>
 </tr>
 <tr>
 <td><code>active</code></td>
@@ -1704,31 +1707,8 @@
 </tbody>
 </table>
 <h2 id="record-comment-tables">Record Comment Tables</h2>
-<h3 id="record_comments"><code>record_comments</code></h3>
-<p>Stores comments for individual DNS records.</p>
-<table>
-<thead>
-<tr>
-<th>Column</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>id</code></td>
-<td>int</td>
-<td>Primary key</td>
-</tr>
-<tr>
-<td><code>comment</code></td>
-<td>text</td>
-<td>Comment text</td>
-</tr>
-</tbody>
-</table>
 <h3 id="record_comment_links"><code>record_comment_links</code></h3>
-<p>Links record comments to specific records.</p>
+<p>Bridge table that maps a record identifier to a PowerDNS <code>comments.id</code>. Record-level comment <strong>text</strong> lives in PowerDNS's own <code>comments</code> table; Poweradmin only stores the link so that comments survive record edits in the UI / API.</p>
 <table>
 <thead>
 <tr>
@@ -1738,25 +1718,15 @@
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>id</code></td>
-<td>int</td>
-<td>Primary key</td>
-</tr>
-<tr>
-<td><code>domain_id</code></td>
-<td>int</td>
-<td>Foreign key to domains.id</td>
-</tr>
 <tr>
 <td><code>record_id</code></td>
-<td>varchar</td>
-<td>Record identifier (int for SQL mode, encoded string for API mode)</td>
+<td>VARCHAR(3072) on MySQL / VARCHAR(4096) on PostgreSQL &amp; SQLite</td>
+<td>Record identifier (numeric <code>records.id</code> in SQL mode, encoded string in API mode). Primary key.</td>
 </tr>
 <tr>
 <td><code>comment_id</code></td>
 <td>int</td>
-<td>Foreign key to record_comments.id</td>
+<td>Reference to PowerDNS <code>comments.id</code>. Unique.</td>
 </tr>
 </tbody>
 </table>
@@ -1817,7 +1787,7 @@
 <tbody>
 <tr>
 <td>4.3.0</td>
-<td>Added <code>zone_name</code>, <code>zone_type</code>, <code>zone_master</code> to zones; Widened <code>record_comment_links.record_id</code> to VARCHAR; Added <code>record_comments</code>, <code>record_comment_links</code></td>
+<td>Added <code>zone_name</code>, <code>zone_type</code>, <code>zone_master</code> to zones; Widened <code>record_comment_links.record_id</code> to VARCHAR. (The <code>record_comment_links</code> bridge table itself was introduced earlier; comment text lives in PowerDNS's <code>comments</code> table.)</td>
 </tr>
 <tr>
 <td>4.2.0</td>

@@ -446,7 +446,7 @@
 <h2 id="overview">Overview</h2>
 <p>Poweradmin includes WHOIS lookup functionality that allows administrators to query domain registration information directly from the interface. This feature helps with domain management and verification tasks.</p>
 <h2 id="configuration-options">Configuration Options</h2>
-<p>WHOIS settings can be configured in the <code>config/settings.php</code> file under the <code>whois</code> section.</p>
+<p>WHOIS settings live under <code>modules.whois</code> in <code>config/settings.php</code>.</p>
 <table>
 <thead>
 <tr>
@@ -457,27 +457,27 @@
 </thead>
 <tbody>
 <tr>
-<td><code>enabled</code></td>
+<td><code>modules.whois.enabled</code></td>
 <td><code>false</code></td>
 <td>Enable WHOIS lookup functionality</td>
 </tr>
 <tr>
-<td><code>default_server</code></td>
+<td><code>modules.whois.default_server</code></td>
 <td><code>''</code></td>
 <td>Optional default WHOIS server (empty to use server from WHOIS database)</td>
 </tr>
 <tr>
-<td><code>custom_servers</code></td>
+<td><code>modules.whois.custom_servers</code></td>
 <td><code>[]</code></td>
 <td>Custom TLD-to-server mapping for TLDs not in the built-in database</td>
 </tr>
 <tr>
-<td><code>socket_timeout</code></td>
+<td><code>modules.whois.socket_timeout</code></td>
 <td><code>10</code></td>
 <td>Socket timeout in seconds for WHOIS queries</td>
 </tr>
 <tr>
-<td><code>restrict_to_admin</code></td>
+<td><code>modules.whois.restrict_to_admin</code></td>
 <td><code>true</code></td>
 <td>Only allow administrators (user_is_ueberuser) to use WHOIS functionality</td>
 </tr>
@@ -485,15 +485,17 @@
 </table>
 <h2 id="configuration-example">Configuration Example</h2>
 <pre><code class="language-php">return [
-    'whois' =&gt; [
-        'enabled' =&gt; true,
-        'default_server' =&gt; '',
-        'custom_servers' =&gt; [
-            'za' =&gt; 'whois.registry.net.za',
-            'co.za' =&gt; 'whois.registry.net.za',
+    'modules' =&gt; [
+        'whois' =&gt; [
+            'enabled' =&gt; true,
+            'default_server' =&gt; '',
+            'custom_servers' =&gt; [
+                'za' =&gt; 'whois.registry.net.za',
+                'co.za' =&gt; 'whois.registry.net.za',
+            ],
+            'socket_timeout' =&gt; 15,
+            'restrict_to_admin' =&gt; true,
         ],
-        'socket_timeout' =&gt; 15,
-        'restrict_to_admin' =&gt; true,
     ],
 ];
 </code></pre>

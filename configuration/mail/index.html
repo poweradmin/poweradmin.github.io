@@ -146,7 +146,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#email-debug-logging-v403">Email Debug Logging (v4.0.3+)</a>
+    <li class="toctree-l3"><a class="reference internal" href="#email-debug-logging">Email Debug Logging</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#tlsstarttls-issues-fixed-in-v410">TLS/STARTTLS Issues (Fixed in v4.1.0)</a>
     </li>
@@ -474,6 +474,7 @@
 <li><strong>transport</strong>: Transport method. Options: 'smtp', 'sendmail', 'php'. Default: <code>php</code></li>
 </ul>
 <h3 id="smtp-settings">SMTP Settings</h3>
+<p>SMTP settings live as flat keys under <code>mail</code> (they are not nested in an <code>smtp</code> subarray):</p>
 <ul>
 <li><strong>host</strong>: SMTP server hostname. Default: <code>smtp.example.com</code></li>
 <li><strong>port</strong>: SMTP server port. Default: <code>587</code></li>
@@ -481,7 +482,6 @@
 <li><strong>password</strong>: SMTP authentication password. Default: empty</li>
 <li><strong>encryption</strong>: Encryption method. Options: 'tls', 'ssl', empty. Default: <code>tls</code></li>
 <li><strong>auth</strong>: Whether SMTP requires authentication. Default: <code>false</code></li>
-<li><strong>debug</strong>: Enable debug logging for email operations. Default: <code>false</code> <em>(Added in v4.0.3)</em></li>
 </ul>
 <h3 id="sendmail-settings">Sendmail Settings</h3>
 <ul>
@@ -495,31 +495,24 @@
         'from_name' =&gt; 'DNS Administrator',
         'return_path' =&gt; 'dns@example.com',
         'transport' =&gt; 'smtp',
-        'smtp' =&gt; [
-            'host' =&gt; 'smtp.example.com',
-            'port' =&gt; 587,
-            'username' =&gt; 'smtp_user',
-            'password' =&gt; 'smtp_password',
-            'encryption' =&gt; 'tls',  // 'tls', 'ssl', or null
-            'auth' =&gt; true,
-        ],
-        'debug' =&gt; false,  // Set to true for detailed logging (v4.0.3+)
+        // SMTP settings (flat, not nested under 'smtp')
+        'host' =&gt; 'smtp.example.com',
+        'port' =&gt; 587,
+        'username' =&gt; 'smtp_user',
+        'password' =&gt; 'smtp_password',
+        'encryption' =&gt; 'tls',  // 'tls', 'ssl', or ''
+        'auth' =&gt; true,
     ],
 ];
 </code></pre>
 <h2 id="troubleshooting">Troubleshooting</h2>
-<h3 id="email-debug-logging-v403">Email Debug Logging <em>(v4.0.3+)</em></h3>
-<p>Enable detailed debug logging to troubleshoot email delivery issues:</p>
+<h3 id="email-debug-logging">Email Debug Logging</h3>
+<p>To troubleshoot email delivery without touching SMTP, set <code>transport</code> to <code>logger</code>. Outgoing messages are then written to the PHP error log and Poweradmin's application log instead of being sent over the network - useful for inspecting password reset content during development:</p>
 <pre><code class="language-php">'mail' =&gt; [
-    'debug' =&gt; true,  // Enable comprehensive debug logging
+    'transport' =&gt; 'logger',
 ],
 </code></pre>
-<p>When enabled, Poweradmin logs:
-- SMTP connection attempts and responses
-- Authentication process
-- Email composition and sending operations
-- Detailed error messages</p>
-<p>Check your web server error log or PHP error log for debug output.</p>
+<p>For server-side errors during real SMTP delivery, raise the global log level under <code>logging.level</code> (see <a href="../logging/">Logging</a>) and check your web server error log or PHP error log for output from <code>MailService</code>.</p>
 <h3 id="tlsstarttls-issues-fixed-in-v410">TLS/STARTTLS Issues <em>(Fixed in v4.1.0)</em></h3>
 <p><strong>Problem:</strong> Email sending fails with TLS/STARTTLS errors in versions prior to v4.1.0.</p>
 <p><strong>Solution:</strong> Upgrade to v4.1.0 or later, which includes proper TLS/STARTTLS connection handling.</p>
@@ -557,7 +550,7 @@
 </code></pre>
 <ol>
 <li><strong>Check firewall rules:</strong> Ensure outbound SMTP ports are open</li>
-<li><strong>Review server logs:</strong> Enable <code>'debug' =&gt; true</code> for detailed logging</li>
+<li><strong>Review server logs:</strong> Raise <code>logging.level</code> to <code>debug</code> (see <a href="../logging/">Logging</a>) for detailed <code>MailService</code> output</li>
 <li><strong>Try alternative ports:</strong> Test port 465 (SSL) or 25 if 587 fails</li>
 </ol>
 <h3 id="email-not-being-delivered">Email Not Being Delivered</h3>
@@ -570,7 +563,7 @@
 </ol>
 <p><strong>Debugging steps:</strong></p>
 <ol>
-<li>Enable debug logging: <code>'debug' =&gt; true</code></li>
+<li>Raise <code>logging.level</code> to <code>debug</code> and check the application log (see <a href="../logging/">Logging</a>)</li>
 <li>Check mail server logs</li>
 <li>Verify email appears in sent items (if using external SMTP)</li>
 <li>Test with a simple mail client using same credentials</li>
