@@ -374,6 +374,10 @@
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Reset Admin Password</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#1-generate-a-new-password-hash">1. Generate a New Password Hash</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#legacy-versions-poweradmin-3x-or-42-and-older">Legacy versions (Poweradmin 3.x, or 4.2 and older)</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#2-update-the-user-record">2. Update the User Record</a>
     </li>
@@ -442,6 +446,15 @@
 <pre><code class="language-bash">php -r 'echo password_hash("NewPassword123", PASSWORD_ARGON2ID) . "\n";'
 </code></pre>
 <p>Copy the resulting hash (it begins with <code>$2y$</code>, <code>$argon2i$</code>, or <code>$argon2id$</code>).</p>
+<h3 id="legacy-versions-poweradmin-3x-or-42-and-older">Legacy versions (Poweradmin 3.x, or 4.2 and older)</h3>
+<p>The 3.x LTS branch and pre-4.3 releases still accept <code>md5</code> and <code>md5salt</code> hashes. Use these only if <code>security.password_encryption</code> is set to one of those values; otherwise stick with the bcrypt/argon2 commands above.</p>
+<p><strong>md5</strong> (the default on Poweradmin 2.x and on 3.x installs that were never reconfigured):</p>
+<pre><code class="language-bash">php -r 'echo md5("NewPassword123") . "\n";'
+</code></pre>
+<p><strong>md5salt</strong> (<code>security.password_encryption = 'md5salt'</code>):</p>
+<pre><code class="language-bash">php -r '$salt = bin2hex(random_bytes(3)); echo md5($salt . "NewPassword123") . ":" . $salt . "\n";'
+</code></pre>
+<p>The stored format is <code>md5(salt + password) + ":" + salt</code>. Any printable salt works; the verifier splits on the <code>:</code>.</p>
 <h2 id="2-update-the-user-record">2. Update the User Record</h2>
 <p>Open your database client and run the appropriate statement. The <code>users</code> table is the same on MySQL/MariaDB, PostgreSQL, and SQLite.</p>
 <pre><code class="language-sql">UPDATE users
