@@ -168,6 +168,16 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#injecting-content-into-head">Injecting content into &lt;head&gt;</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#option-1-fork-the-theme-header-template-simple-but-upgrade-aware">Option 1: Fork the theme header template (simple, but upgrade-aware)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#option-2-reverse-proxy-injection-upgrade-safe">Option 2: Reverse-proxy injection (upgrade-safe)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#why-no-configuration-setting">Why no configuration setting?</a>
+    </li>
+        </ul>
+    </li>
     </ul>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../custom-css/">Custom CSS</a>
@@ -446,7 +456,7 @@
                 <h1 id="layout-customization">Layout Customization</h1>
 <p>Poweradmin allows you to customize various layout aspects to better fit your workflow. These settings are configured in the <code>settings.php</code> file under the <code>interface</code> section.</p>
 <h2 id="customizing-header-and-footer">Customizing Header and Footer</h2>
-<p>Poweradmin supports custom header and footer templates through the theme system.</p>
+<p>Poweradmin supports custom header and footer templates through the theme system. These templates replace the visible logo/title area at the top of the page and the footer line at the bottom. They do not inject content into the page <code>&lt;head&gt;</code> element (see <a href="#injecting-content-into-head">Injecting content into <code>&lt;head&gt;</code></a> below if you need that for analytics or custom meta tags).</p>
 <h3 id="configuration">Configuration</h3>
 <p>First, configure your theme settings in <code>settings.php</code>:</p>
 <pre><code class="language-php">return [
@@ -586,8 +596,45 @@
 <ul>
 <li>The custom templates use a simple templating system</li>
 <li>Changes may be overwritten during updates - keep backups of your custom files</li>
-<li>You can include custom JavaScript in your header/footer templates if needed</li>
+<li>Custom header/footer templates render inside the page body (logo area / footer line). Scripts placed here run on every page but are not in <code>&lt;head&gt;</code>. For analytics tags, see the next section.</li>
 </ul>
+<h2 id="injecting-content-into-head">Injecting content into <code>&lt;head&gt;</code></h2>
+<p>Tracking snippets (Matomo, Plausible, Google Analytics), custom favicons, and additional meta tags need to live inside the page <code>&lt;head&gt;</code> element, not in the custom header template. Poweradmin does not expose a configuration setting for this - it gives you two supported paths instead.</p>
+<h3 id="option-1-fork-the-theme-header-template-simple-but-upgrade-aware">Option 1: Fork the theme header template (simple, but upgrade-aware)</h3>
+<ol>
+<li>
+<p>Copy your active theme's header to a custom theme directory, e.g.:</p>
+<p><code>bash
+mkdir -p templates/custom
+cp templates/default/header.html templates/custom/header.html</code></p>
+</li>
+<li>
+<p>Set <code>theme: 'custom'</code> in <code>settings.php</code> (see the configuration block earlier on this page).</p>
+</li>
+<li>
+<p>Open <code>templates/custom/header.html</code> and paste your snippet immediately before <code>&lt;/head&gt;</code>. For example, a Matomo <code>&lt;noscript&gt;</code> tracker:</p>
+<p><code>html
+    &lt;script type="text/javascript" src="{{ base_url_prefix }}/assets/userSettings.js?time={{ file_version }}"&gt;&lt;/script&gt;
+    &lt;noscript&gt;&lt;p&gt;&lt;img src="https://analytics.example.com/matomo.php?idsite=23" style="border:0;" alt="" /&gt;&lt;/p&gt;&lt;/noscript&gt;
+&lt;/head&gt;</code></p>
+<p>The full JavaScript tracker from Matomo/GA/Plausible goes in the same place.</p>
+</li>
+<li>
+<p>Track the upstream <code>templates/default/header.html</code> (or <code>templates/modern/header.html</code>) on each Poweradmin upgrade. If it changes, re-apply your edit on top of the new version.</p>
+</li>
+</ol>
+<h3 id="option-2-reverse-proxy-injection-upgrade-safe">Option 2: Reverse-proxy injection (upgrade-safe)</h3>
+<p>If Poweradmin sits behind Nginx or Apache, inject the snippet at the proxy layer so application updates never touch it. Example for Nginx with <code>ngx_http_sub_module</code>:</p>
+<pre><code class="language-nginx">location / {
+    proxy_pass http://poweradmin_upstream;
+    sub_filter '&lt;/head&gt;' '&lt;script src="https://analytics.example.com/matomo.js" async&gt;&lt;/script&gt;&lt;/head&gt;';
+    sub_filter_once on;
+    sub_filter_types text/html;
+}
+</code></pre>
+<p>This is the recommended path for production deployments because it survives Poweradmin upgrades with no patching.</p>
+<h3 id="why-no-configuration-setting">Why no configuration setting?</h3>
+<p>A <code>custom_head_html</code> config value would mean pasting a multi-line HTML/JavaScript block into <code>config/settings.php</code>. The configuration file is intended for short scalar settings, so HTML injection lives in templates or at the proxy layer instead.</p>
               
 
             </div>
