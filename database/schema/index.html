@@ -179,6 +179,32 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#log_zones">log_zones</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#log_api">log_api</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#log_groups">log_groups</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#log_record_changes">log_record_changes</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#group-tables">Group Tables</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#user_groups">user_groups</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#user_group_members">user_group_members</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zones_groups">zones_groups</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#defaults-and-application-state">Defaults and Application State</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#record_type_defaults">record_type_defaults</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#app_settings">app_settings</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#records_zone_templ_api">records_zone_templ_api</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#record-comment-tables">Record Comment Tables</a>
@@ -1706,6 +1732,360 @@
 </tr>
 </tbody>
 </table>
+<h3 id="log_api"><code>log_api</code></h3>
+<p>Logs API requests handled by the public API.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>event</code></td>
+<td>varchar(2048)</td>
+<td>Event description</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Event timestamp</td>
+</tr>
+<tr>
+<td><code>priority</code></td>
+<td>int</td>
+<td>Log priority level</td>
+</tr>
+</tbody>
+</table>
+<h3 id="log_groups"><code>log_groups</code></h3>
+<p>Logs user-group lifecycle events (create / rename / membership changes).</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>event</code></td>
+<td>varchar(2048)</td>
+<td>Event description</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Event timestamp</td>
+</tr>
+<tr>
+<td><code>priority</code></td>
+<td>int</td>
+<td>Log priority level</td>
+</tr>
+<tr>
+<td><code>group_id</code></td>
+<td>int</td>
+<td>Related <code>user_groups.id</code> (nullable)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="log_record_changes"><code>log_record_changes</code></h3>
+<p>Structured before/after snapshots for record mutations. Powers the diff-style change-log UI and email digests. Complements <code>log_zones</code> (which is a free-text activity feed) with machine-readable detail.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>zone_id</code></td>
+<td>int</td>
+<td>Related zone (nullable)</td>
+</tr>
+<tr>
+<td><code>record_id</code></td>
+<td>text</td>
+<td>Record identifier (numeric for SQL mode, encoded for API mode)</td>
+</tr>
+<tr>
+<td><code>action</code></td>
+<td>varchar(32)</td>
+<td><code>create</code>, <code>update</code>, <code>delete</code></td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>int</td>
+<td>Acting user (nullable)</td>
+</tr>
+<tr>
+<td><code>username</code></td>
+<td>varchar(64)</td>
+<td>Acting username (denormalized so log survives user deletion)</td>
+</tr>
+<tr>
+<td><code>before_state</code></td>
+<td>text</td>
+<td>JSON snapshot prior to mutation (null for creates)</td>
+</tr>
+<tr>
+<td><code>after_state</code></td>
+<td>text</td>
+<td>JSON snapshot after mutation (null for deletes)</td>
+</tr>
+<tr>
+<td><code>client_ip</code></td>
+<td>varchar(64)</td>
+<td>Source IP</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Event timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="group-tables">Group Tables</h2>
+<h3 id="user_groups"><code>user_groups</code></h3>
+<p>Named groups that bundle a permission template and a set of members. Underpins group-based ownership of zones.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int unsigned</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>varchar(255)</td>
+<td>Group name (unique)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>text</td>
+<td>Free-form description</td>
+</tr>
+<tr>
+<td><code>perm_templ</code></td>
+<td>int</td>
+<td>FK to <code>perm_templ.id</code> - the permission template applied to members</td>
+</tr>
+<tr>
+<td><code>created_by</code></td>
+<td>int</td>
+<td>FK to <code>users.id</code> (nullable; <code>SET NULL</code> on user deletion)</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Creation timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>timestamp</td>
+<td>Last update timestamp</td>
+</tr>
+</tbody>
+</table>
+<h3 id="user_group_members"><code>user_group_members</code></h3>
+<p>Membership join table between users and groups.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int unsigned</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>group_id</code></td>
+<td>int unsigned</td>
+<td>FK to <code>user_groups.id</code> (cascade delete)</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>int</td>
+<td>FK to <code>users.id</code> (cascade delete)</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Membership added at</td>
+</tr>
+</tbody>
+</table>
+<h3 id="zones_groups"><code>zones_groups</code></h3>
+<p>Maps zones to groups for group-based ownership. A zone can be owned directly via <code>zones.owner</code> and/or via one or more rows in this table.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int unsigned</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>domain_id</code></td>
+<td>int</td>
+<td>Zone identifier (matches PowerDNS <code>domains.id</code>)</td>
+</tr>
+<tr>
+<td><code>group_id</code></td>
+<td>int unsigned</td>
+<td>FK to <code>user_groups.id</code> (cascade delete)</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Assignment timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="defaults-and-application-state">Defaults and Application State</h2>
+<h3 id="record_type_defaults"><code>record_type_defaults</code></h3>
+<p>Per-record-type default TTL values used when adding new records via the UI.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>record_type</code></td>
+<td>varchar(20)</td>
+<td>DNS record type (e.g. <code>A</code>, <code>AAAA</code>, <code>MX</code>); primary key</td>
+</tr>
+<tr>
+<td><code>ttl</code></td>
+<td>int</td>
+<td>Default TTL in seconds</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Created at</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>timestamp</td>
+<td>Updated at</td>
+</tr>
+</tbody>
+</table>
+<h3 id="app_settings"><code>app_settings</code></h3>
+<p>Key/value store for settings that can be changed at runtime from the admin UI (without editing <code>config/settings.php</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>setting_key</code></td>
+<td>varchar(128)</td>
+<td>Setting identifier (primary key)</td>
+</tr>
+<tr>
+<td><code>setting_value</code></td>
+<td>text</td>
+<td>Stored value (always serialized to string)</td>
+</tr>
+<tr>
+<td><code>value_type</code></td>
+<td>varchar(16)</td>
+<td>One of <code>string</code>, <code>int</code>, <code>bool</code>, <code>array</code> - tells callers how to deserialize <code>setting_value</code></td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Created at</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>timestamp</td>
+<td>Updated at</td>
+</tr>
+</tbody>
+</table>
+<h3 id="records_zone_templ_api"><code>records_zone_templ_api</code></h3>
+<p>API-mode equivalent of <code>records_zone_templ</code>. Tracks which template a record was created from when Poweradmin is talking to PowerDNS via the API (record identifiers are opaque strings, not numeric IDs).</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>domain_id</code></td>
+<td>int</td>
+<td>Zone identifier</td>
+</tr>
+<tr>
+<td><code>record_id</code></td>
+<td>varchar(255)</td>
+<td>API-mode record identifier</td>
+</tr>
+<tr>
+<td><code>zone_templ_id</code></td>
+<td>int</td>
+<td>FK to <code>zone_templ.id</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="record-comment-tables">Record Comment Tables</h2>
 <h3 id="record_comment_links"><code>record_comment_links</code></h3>
 <p>Bridge table that maps a record identifier to a PowerDNS <code>comments.id</code>. Record-level comment <strong>text</strong> lives in PowerDNS's own <code>comments</code> table; Poweradmin only stores the link so that comments survive record edits in the UI / API.</p>
@@ -1765,16 +2145,18 @@
 <h2 id="table-relationships">Table Relationships</h2>
 <h3 id="key-relationships">Key Relationships</h3>
 <ol>
-<li><strong>Zone Ownership</strong>: <code>zones.domain_id</code> → <code>domains.id</code>, <code>zones.owner</code> → <code>users.id</code></li>
-<li><strong>DNS Records</strong>: <code>records.domain_id</code> → <code>domains.id</code></li>
-<li><strong>User Permissions</strong>: <code>users.perm_templ</code> → <code>perm_templ.id</code></li>
-<li><strong>Permission Templates</strong>: <code>perm_templ_items.templ_id</code> → <code>perm_templ.id</code>, <code>perm_templ_items.perm_id</code> → <code>perm_items.id</code></li>
-<li><strong>Zone Templates</strong>: <code>zone_templ_records.zone_templ_id</code> → <code>zone_templ.id</code></li>
-<li><strong>API Keys</strong>: <code>api_keys.created_by</code> → <code>users.id</code></li>
+<li><strong>Direct zone ownership</strong>: <code>zones.domain_id</code> → <code>domains.id</code>; <code>zones.owner</code> → <code>users.id</code></li>
+<li><strong>Group zone ownership</strong>: <code>zones_groups.domain_id</code> → <code>domains.id</code>; <code>zones_groups.group_id</code> → <code>user_groups.id</code></li>
+<li><strong>Group membership</strong>: <code>user_group_members.group_id</code> → <code>user_groups.id</code>; <code>user_group_members.user_id</code> → <code>users.id</code></li>
+<li><strong>DNS records</strong>: <code>records.domain_id</code> → <code>domains.id</code></li>
+<li><strong>User permissions</strong>: <code>users.perm_templ</code> → <code>perm_templ.id</code>; <code>user_groups.perm_templ</code> → <code>perm_templ.id</code></li>
+<li><strong>Permission templates</strong>: <code>perm_templ_items.templ_id</code> → <code>perm_templ.id</code>; <code>perm_templ_items.perm_id</code> → <code>perm_items.id</code></li>
+<li><strong>Zone templates</strong>: <code>zone_templ_records.zone_templ_id</code> → <code>zone_templ.id</code>; <code>records_zone_templ.zone_templ_id</code> → <code>zone_templ.id</code> (SQL mode); <code>records_zone_templ_api.zone_templ_id</code> → <code>zone_templ.id</code> (API mode)</li>
+<li><strong>API keys</strong>: <code>api_keys.created_by</code> → <code>users.id</code></li>
 <li><strong>MFA</strong>: <code>user_mfa.user_id</code> → <code>users.id</code></li>
-<li><strong>User Preferences</strong>: <code>user_preferences.user_id</code> → <code>users.id</code></li>
-<li><strong>OIDC Links</strong>: <code>oidc_user_links.user_id</code> → <code>users.id</code></li>
-<li><strong>SAML Links</strong>: <code>saml_user_links.user_id</code> → <code>users.id</code></li>
+<li><strong>User preferences</strong>: <code>user_preferences.user_id</code> → <code>users.id</code></li>
+<li><strong>OIDC / SAML links</strong>: <code>oidc_user_links.user_id</code> → <code>users.id</code>; <code>saml_user_links.user_id</code> → <code>users.id</code></li>
+<li><strong>Comment bridge</strong>: <code>record_comment_links.comment_id</code> → PowerDNS <code>comments.id</code></li>
 </ol>
 <h2 id="version-history">Version History</h2>
 <table>
@@ -1786,20 +2168,28 @@
 </thead>
 <tbody>
 <tr>
+<td>4.5.0 <em>(develop)</em></td>
+<td>Added <code>log_record_changes</code> (structured before/after record snapshots), <code>records_zone_templ_api</code> (template tracking in API mode), <code>record_type_defaults</code> (per-type default TTLs), and <code>app_settings</code> (admin-managed runtime key/value store). <code>zones.zone_templ_id</code> now defaults to <code>0</code>.</td>
+</tr>
+<tr>
+<td>4.4.0 <em>(master)</em></td>
+<td>Added <code>is_default</code> to <code>zone_templ</code> for marking a system-wide default template.</td>
+</tr>
+<tr>
 <td>4.3.0</td>
-<td>Added <code>zone_name</code>, <code>zone_type</code>, <code>zone_master</code> to zones; Widened <code>record_comment_links.record_id</code> to VARCHAR. (The <code>record_comment_links</code> bridge table itself was introduced earlier; comment text lives in PowerDNS's <code>comments</code> table.)</td>
+<td>Added <code>log_api</code> and migrated API key log entries into it; added <code>zone_name</code>, <code>zone_type</code>, <code>zone_master</code> to <code>zones</code>; widened <code>record_comment_links.record_id</code> to VARCHAR.</td>
 </tr>
 <tr>
 <td>4.2.0</td>
-<td>Added <code>oidc_user_links</code>, <code>saml_user_links</code>, <code>username_recovery_requests</code>; Added <code>auth_method</code> to users; Added zone deletion permissions</td>
+<td>Introduced group-based ownership (<code>user_groups</code>, <code>user_group_members</code>, <code>zones_groups</code>, <code>log_groups</code>); added <code>template_type</code> to <code>perm_templ</code>; made <code>zones.owner</code> nullable. Introduced <code>record_comment_links</code>. Renamed default permission templates (DNS Editor → Editor, Read Only → Viewer, No Access → Guest).</td>
 </tr>
 <tr>
 <td>4.1.0</td>
-<td>Performance indexes added</td>
+<td>Added <code>oidc_user_links</code>, <code>saml_user_links</code>, <code>username_recovery_requests</code>; added <code>auth_method</code> to <code>users</code> (with backfill from <code>use_ldap</code>); performance indexes added.</td>
 </tr>
 <tr>
 <td>4.0.0</td>
-<td>Added <code>login_attempts</code>, <code>api_keys</code>, <code>user_mfa</code>, <code>user_preferences</code>, <code>zone_template_sync</code>, <code>password_reset_tokens</code>, <code>user_agreements</code></td>
+<td>Major rework: added <code>login_attempts</code>, <code>api_keys</code>, <code>user_mfa</code>, <code>user_preferences</code>, <code>zone_template_sync</code>, <code>password_reset_tokens</code>, <code>user_agreements</code>.</td>
 </tr>
 </tbody>
 </table>
