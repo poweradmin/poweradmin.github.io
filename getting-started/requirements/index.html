@@ -133,6 +133,8 @@
                 </li>
     </ul>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/wizard/">Web Installer Wizard</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../installation/manual/">Manual Installation</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../installation/composer/">Composer</a>
@@ -527,44 +529,65 @@ a static list of supported versions, the policy is simple:</p>
 for the authoritative EOL calendar before planning a long-running deployment.</p>
 <hr>
 <h2 id="supported-distributions">Supported Distributions</h2>
+<p>Default PHP versions are taken from each distribution's official package repository as of May 2026.</p>
 <table>
 <thead>
 <tr>
 <th>Distribution</th>
-<th>PHP Version</th>
+<th>Default PHP</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Debian 12.7</td>
-<td>8.2</td>
-<td></td>
+<td>Debian 13 (Trixie)</td>
+<td>8.4</td>
+<td>Current stable; meets the minimum out of the box.</td>
 </tr>
 <tr>
-<td>Ubuntu 22.04</td>
+<td>Debian 12 (Bookworm)</td>
+<td>8.2</td>
+<td>Oldstable; meets the minimum out of the box.</td>
+</tr>
+<tr>
+<td>Ubuntu 26.04 LTS</td>
+<td>8.5</td>
+<td>Released April 2026; meets the minimum out of the box.</td>
+</tr>
+<tr>
+<td>Ubuntu 24.04 LTS</td>
+<td>8.3</td>
+<td>Meets the minimum out of the box.</td>
+</tr>
+<tr>
+<td>Ubuntu 22.04 LTS</td>
 <td>8.1</td>
-<td></td>
+<td>Below the 8.2 minimum - install PHP 8.2 or newer from the <a href="https://launchpad.net/~ondrej/+archive/ubuntu/php">ondrej/php PPA</a>. Standard support ends April 2027.</td>
 </tr>
 <tr>
-<td>Ubuntu 24.04</td>
+<td>Fedora 44</td>
+<td>8.5</td>
+<td>Apache included by default.</td>
+</tr>
+<tr>
+<td>Fedora 43</td>
+<td>8.4</td>
+<td>Apache included by default.</td>
+</tr>
+<tr>
+<td>Rocky Linux 10 / AlmaLinux 10</td>
 <td>8.3</td>
-<td></td>
+<td>RHEL 10 dropped modularity; PHP 8.3 ships directly from AppStream. Use the <a href="https://rpms.remirepo.net/">Remi repository</a> for newer releases.</td>
 </tr>
 <tr>
-<td>Fedora 40</td>
-<td>8.3</td>
-<td>Apache included by default</td>
+<td>Rocky Linux 9 / AlmaLinux 9</td>
+<td>8.0</td>
+<td>Below the 8.2 minimum - run <code>dnf module reset php &amp;&amp; dnf module enable php:8.2</code> (or <code>php:8.3</code>) to enable a newer module stream, or install from Remi.</td>
 </tr>
 <tr>
-<td>Fedora 41</td>
-<td>8.3</td>
-<td>Apache included by default</td>
-</tr>
-<tr>
-<td>OpenSuse 15.6</td>
+<td>OpenSUSE Leap 15.6</td>
 <td>8.2</td>
-<td></td>
+<td>Meets the minimum out of the box.</td>
 </tr>
 </tbody>
 </table>
@@ -574,49 +597,30 @@ for the authoritative EOL calendar before planning a long-running deployment.</p
 should work as long as the environment is properly configured.</p>
 <hr>
 <h2 id="unsupported-distributions">Unsupported Distributions</h2>
+<p>The following distributions are EOL or otherwise out of support and ship a PHP version below Poweradmin's 8.2 minimum. Distributions listed in "Supported" with a note about a third-party PPA or module stream are not repeated here.</p>
 <table>
 <thead>
 <tr>
 <th>Distribution</th>
-<th>PHP Version</th>
-<th>Reason for Lack of Support</th>
+<th>Default PHP</th>
+<th>Reason</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Debian 11</td>
+<td>Debian 11 (Bullseye)</td>
 <td>7.4</td>
-<td>PHP below minimum version</td>
+<td>LTS support ended June 2026.</td>
 </tr>
 <tr>
-<td>Ubuntu 20.04</td>
+<td>Ubuntu 20.04 LTS</td>
 <td>7.4</td>
-<td>PHP below minimum version</td>
+<td>Standard support ended April 2025.</td>
 </tr>
 <tr>
-<td>CentOS Stream release 9</td>
-<td>8.0</td>
-<td>PHP below minimum version</td>
-</tr>
-<tr>
-<td>Rocky 8.10</td>
+<td>Rocky/AlmaLinux 8.x</td>
 <td>7.2</td>
-<td>PHP below minimum version</td>
-</tr>
-<tr>
-<td>Rocky 9.4</td>
-<td>8.0</td>
-<td>PHP below minimum version</td>
-</tr>
-<tr>
-<td>Alma 8.10</td>
-<td>7.2</td>
-<td>PHP below minimum version</td>
-</tr>
-<tr>
-<td>Alma 9.4</td>
-<td>8.0</td>
-<td>PHP below minimum version</td>
+<td>PHP below minimum; consider upgrading to 9.x or 10.x.</td>
 </tr>
 </tbody>
 </table>
@@ -761,13 +765,11 @@ should work as long as the environment is properly configured.</p>
 <li><strong>Minimal version-specific dependencies</strong>: The core DNS management features don't rely on version-specific PowerDNS features</li>
 </ul>
 <h3 id="powerdns-version-recommendations">PowerDNS Version Recommendations</h3>
-<p>For production environments, consider:</p>
+<p>For production environments, prefer a branch that is still receiving upstream fixes. PowerDNS publishes its own <a href="https://doc.powerdns.com/authoritative/appendices/EOL.html">End of Life (EOL) schedule</a>, which is the authoritative source - the dates below were correct at the time of writing but move forward with each release.</p>
 <ul>
-<li><strong>PowerDNS 4.8.x</strong>: Supported until March 2025 (critical fixes only)</li>
-<li><strong>PowerDNS 4.9.x</strong>: Supported until September 2025 (critical fixes only)</li>
-<li><strong>PowerDNS 5.0.x and newer</strong>: Current stable branch with active support</li>
+<li><strong>PowerDNS 4.8.x / 4.9.x</strong>: EOL as of 2025. Plan an upgrade.</li>
+<li><strong>PowerDNS 5.0.x and newer</strong>: Current stable branch with active support.</li>
 </ul>
-<p>Refer to the <a href="https://doc.powerdns.com/authoritative/appendices/EOL.html">PowerDNS End of Life (EOL) schedule</a> for the latest support information.</p>
               
 
             </div>

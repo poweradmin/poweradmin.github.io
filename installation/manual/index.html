@@ -99,6 +99,8 @@
                 </li>
     </ul>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../wizard/">Web Installer Wizard</a>
+                  </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Manual Installation</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
@@ -107,27 +109,29 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#1-prepare-the-environment">1. Prepare the Environment</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#2-create-database-user">2. Create Database User</a>
+    <li class="toctree-l3"><a class="reference internal" href="#2-import-database-structure">2. Import Database Structure</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#for-mysqlmariadb">For MySQL/MariaDB:</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#for-postgresql">For PostgreSQL:</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#for-sqlite">For SQLite:</a>
+    </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#3-import-database-structure">3. Import Database Structure</a>
+    <li class="toctree-l3"><a class="reference internal" href="#3-create-database-user">3. Create Database User</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#for-mysqlmariadb_1">For MySQL/MariaDB:</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#for-postgresql_1">For PostgreSQL:</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#for-sqlite">For SQLite:</a>
-    </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#4-create-configuration-file">4. Create Configuration File</a>
+    <li class="toctree-l3"><a class="reference internal" href="#4-create-the-admin-user">4. Create the Admin User</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#5-secure-the-installation">5. Secure the Installation</a>
+    <li class="toctree-l3"><a class="reference internal" href="#5-create-configuration-file">5. Create Configuration File</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6-secure-the-installation">6. Secure the Installation</a>
     </li>
         </ul>
     </li>
@@ -140,22 +144,6 @@
     <li class="toctree-l3"><a class="reference internal" href="#nginx-configuration">Nginx Configuration</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#caddy-configuration">Caddy Configuration</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#web-installer-wizard">Web Installer Wizard</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#step-1-language-selection">Step 1: Language Selection</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#step-2-system-requirements">Step 2: System Requirements</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#step-4-database-configuration">Step 4: Database Configuration</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#step-5-account-nameservers">Step 5: Account &amp; Nameservers</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#step-7-configuration-file">Step 7: Configuration File</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#step-8-installation-complete">Step 8: Installation Complete</a>
     </li>
         </ul>
     </li>
@@ -477,38 +465,60 @@
   </div>
   
                 <h1 id="manual-installation">Manual Installation</h1>
-<p>This page describes the manual installation procedure for Poweradmin. While using the installer is recommended for most users, manual installation can be useful for automated deployments or advanced users.</p>
+<p>This page describes how to install Poweradmin <strong>without</strong> running the web installer wizard. The manual path is useful for automated deployments (Ansible, Salt, Terraform), restricted environments where the wizard cannot be reached, or operators who want to keep the install directory out of the document root entirely.</p>
+<p>If you would rather have the wizard walk you through the setup interactively, see <a href="../wizard/">Web Installer Wizard</a>.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>Verify that your setup meets the application requirements. For detailed requirements, including PHP version, required extensions, and supported databases, see <a href="../../getting-started/requirements/">System Requirements</a>.</p>
 <h2 id="installation-steps">Installation Steps</h2>
 <h3 id="1-prepare-the-environment">1. Prepare the Environment</h3>
 <p>Unpack the Poweradmin archive in a location accessible via your web server. Ensure unpacked files are readable by the user that your web server/PHP runs as.</p>
-<h3 id="2-create-database-user">2. Create Database User</h3>
-<p>Create a database user with SELECT, INSERT, UPDATE, DELETE rights on your PowerDNS database:</p>
+<h3 id="2-import-database-structure">2. Import Database Structure</h3>
+<p>Import the Poweradmin database structure as a database superuser. The schema bundles the tables Poweradmin needs alongside the PowerDNS tables your authoritative server already uses.</p>
 <h4 id="for-mysqlmariadb">For MySQL/MariaDB:</h4>
-<pre><code class="language-sql">CREATE USER 'poweradmin'@'localhost' IDENTIFIED BY 'secure_password';
-GRANT SELECT, INSERT, UPDATE, DELETE ON powerdns.* TO 'poweradmin'@'localhost';
-FLUSH PRIVILEGES;
-</code></pre>
-<h4 id="for-postgresql">For PostgreSQL:</h4>
-<pre><code class="language-sql">CREATE USER poweradmin WITH PASSWORD 'secure_password';
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO poweradmin;
-</code></pre>
-<h3 id="3-import-database-structure">3. Import Database Structure</h3>
-<p>Import the Poweradmin database structure:</p>
-<h4 id="for-mysqlmariadb_1">For MySQL/MariaDB:</h4>
 <pre><code class="language-bash">mysql -u root -p powerdns &lt; sql/poweradmin-mysql-db-structure.sql
 </code></pre>
-<h4 id="for-postgresql_1">For PostgreSQL:</h4>
+<h4 id="for-postgresql">For PostgreSQL:</h4>
 <pre><code class="language-bash">psql -U postgres -d powerdns -f sql/poweradmin-pgsql-db-structure.sql
 </code></pre>
 <h4 id="for-sqlite">For SQLite:</h4>
 <pre><code class="language-bash">sqlite3 /path/to/your/powerdns.db &lt; sql/poweradmin-sqlite-db-structure.sql
 </code></pre>
 <blockquote>
-<p><strong>Warning:</strong> The default login credentials are <code>admin</code> / <code>admin</code>. You <strong>must</strong> change these credentials immediately after your first login for security reasons.</p>
+<p><strong>Note:</strong> Unlike the web installer, importing the schema does not create an admin user automatically. You will create the <code>admin</code> account by hand in step 4. Until then, there is no way to log in.</p>
 </blockquote>
-<h3 id="4-create-configuration-file">4. Create Configuration File</h3>
+<h3 id="3-create-database-user">3. Create Database User</h3>
+<p>After importing the schema, create a database user with SELECT, INSERT, UPDATE, DELETE rights on the database. Grant the runtime user only what it needs - never reuse the superuser credentials from step 2 in <code>config/settings.php</code>.</p>
+<h4 id="for-mysqlmariadb_1">For MySQL/MariaDB:</h4>
+<pre><code class="language-sql">CREATE USER 'poweradmin'@'localhost' IDENTIFIED BY 'secure_password';
+GRANT SELECT, INSERT, UPDATE, DELETE ON powerdns.* TO 'poweradmin'@'localhost';
+FLUSH PRIVILEGES;
+</code></pre>
+<h4 id="for-postgresql_1">For PostgreSQL:</h4>
+<p>Run these as the <code>postgres</code> superuser inside the target database (<code>\c powerdns</code> in <code>psql</code>). The <code>ALTER DEFAULT PRIVILEGES</code> step is required so that any tables added by future schema updates are automatically covered:</p>
+<pre><code class="language-sql">CREATE USER poweradmin WITH PASSWORD 'secure_password';
+GRANT CONNECT ON DATABASE powerdns TO poweradmin;
+GRANT USAGE ON SCHEMA public TO poweradmin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO poweradmin;
+GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public TO poweradmin;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO poweradmin;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+    GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO poweradmin;
+</code></pre>
+<h3 id="4-create-the-admin-user">4. Create the Admin User</h3>
+<p>The web installer normally creates the built-in <code>admin</code> account for you. Since you are skipping the installer, insert it by hand. The wizard hashes the password with PHP's <code>password_hash()</code> and bcrypt by default - do the same for compatibility:</p>
+<pre><code class="language-sh">php -r 'echo password_hash("your_admin_password", PASSWORD_BCRYPT, ["cost" =&gt; 12]) . "\n";'
+</code></pre>
+<p>Copy the resulting hash (it will start with <code>$2y$</code>) and insert the row, pointing <code>perm_templ</code> at the seeded Administrator template (id <code>1</code>):</p>
+<pre><code class="language-sql">INSERT INTO users
+    (username, password, fullname, email, description, perm_templ, active, use_ldap, auth_method)
+VALUES
+    ('admin', '&lt;PASTE_HASH_HERE&gt;', 'Administrator', 'admin@example.net', 'Administrator with full rights.', 1, 1, 0, 'sql');
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> Administrative rights come from the <code>perm_templ</code> column on the <code>users</code> row, not from a separate join table. Permission template <code>id = 1</code> is the seeded "Administrator template with full rights".</p>
+</blockquote>
+<h3 id="5-create-configuration-file">5. Create Configuration File</h3>
 <p>Create a <code>config/settings.php</code> file using the template below. A full list of configuration options can be found in <code>config/settings.defaults.php</code>.</p>
 <blockquote>
 <p><strong>Warning:</strong> When creating passwords for database, LDAP, or SMTP authentication, avoid using single quotes (<code>'</code>), double quotes (<code>"</code>), backslashes (<code>\</code>), and line breaks. These characters can cause configuration file generation to fail during installation with cryptic PHP syntax errors.</p>
@@ -524,7 +534,7 @@ return [
      */
     'database' =&gt; [
         'host' =&gt; 'localhost',
-        'user' =&gt; 'poweradmin', // Database user created in step 2
+        'user' =&gt; 'poweradmin', // Database user created in step 3
         'password' =&gt; 'secure_password',
         'name' =&gt; 'powerdns',  // PowerDNS database name
         'type' =&gt; 'mysql',     // Options: 'mysql', 'pgsql', 'sqlite'
@@ -549,11 +559,11 @@ return [
 ];
 </code></pre>
 <p>For detailed configuration options, see <a href="../../configuration/basic/">Basic Configuration</a> and <a href="../../configuration/database/">Database Configuration</a>.</p>
-<h3 id="5-secure-the-installation">5. Secure the Installation</h3>
+<h3 id="6-secure-the-installation">6. Secure the Installation</h3>
 <ul>
-<li>Set appropriate permissions on configuration files</li>
-<li>Remove the <code>install</code> directory after installation</li>
-<li>Change the default admin password immediately after first login</li>
+<li>Restrict permissions on <code>config/settings.php</code> so only the web server user can read it.</li>
+<li>Remove or rename the <code>install/</code> directory so the wizard cannot be re-run.</li>
+<li>Confirm you can log in at <code>/login</code> as <code>admin</code> with the password you hashed in step 4, then rotate it from the web interface if it was a temporary placeholder.</li>
 </ul>
 <h2 id="web-server-configuration">Web Server Configuration</h2>
 <h3 id="apache-configuration">Apache Configuration</h3>
@@ -564,7 +574,7 @@ return [
 <pre><code class="language-bash">a2enmod rewrite headers
 </code></pre>
 <ol>
-<li>Configure your VirtualHost:</li>
+<li>Configure your VirtualHost. If you are using PHP-FPM instead of <code>mod_php</code>, also include the <code>SetHandler</code> block shown below to forward <code>.php</code> requests to the FPM socket:</li>
 </ol>
 <pre><code class="language-apache">&lt;VirtualHost *:80&gt;
     ServerName your-domain.com
@@ -575,6 +585,12 @@ return [
         AllowOverride All
         Require all granted
     &lt;/Directory&gt;
+
+    # Only needed when using PHP-FPM (not mod_php).
+    # Adjust the socket path to your installed PHP version.
+    &lt;FilesMatch \.php$&gt;
+        SetHandler "proxy:unix:/var/run/php/php8.2-fpm.sock|fcgi://localhost"
+    &lt;/FilesMatch&gt;
 
     # For DDNS update functionality
     RewriteEngine On
@@ -621,50 +637,6 @@ return [
 <li><code>root</code> - Set to your Poweradmin installation path</li>
 <li><code>php_fastcgi</code> - Adjust PHP-FPM socket/TCP configuration as needed (default: <code>localhost:9000</code>)</li>
 </ul>
-<h2 id="web-installer-wizard">Web Installer Wizard</h2>
-<p>As an alternative to manual installation, Poweradmin includes a web-based installer wizard that guides you through the setup process in 8 steps.</p>
-<p>To use the wizard, navigate to your Poweradmin URL with the <code>/install/</code> path (e.g., <code>http://your-server/install/</code>). The wizard will walk you through:</p>
-<h3 id="step-1-language-selection">Step 1: Language Selection</h3>
-<p>Choose your preferred language for the installation process.</p>
-<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/install-step1-language.png" data-desc-position="bottom"><img alt="Language selection" src="../../screenshots/install-step1-language.png"></a></p>
-<h3 id="step-2-system-requirements">Step 2: System Requirements</h3>
-<p>The installer checks that your server meets all requirements, including PHP version, required extensions, and database drivers.</p>
-<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/install-step2-requirements.png" data-desc-position="bottom"><img alt="System requirements check" src="../../screenshots/install-step2-requirements.png"></a></p>
-<h3 id="step-4-database-configuration">Step 4: Database Configuration</h3>
-<p>Configure your database connection, select the database type (MySQL, PostgreSQL, or SQLite), and set the administrator password.</p>
-<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/install-step4-database.png" data-desc-position="bottom"><img alt="Database configuration" src="../../screenshots/install-step4-database.png"></a></p>
-<p>This step asks for two distinct sets of credentials. They are not interchangeable - confusing them is the most common cause of "I cannot log in after installation" reports.</p>
-<table>
-<thead>
-<tr>
-<th>Block on the form</th>
-<th>What it is</th>
-<th>Used for</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Database Connection Settings</strong> (username / password)</td>
-<td>A MySQL or PostgreSQL account with <code>CREATE TABLE</code> rights</td>
-<td>One-time use by the installer to create Poweradmin's tables. Not used to log in to the web interface.</td>
-</tr>
-<tr>
-<td><strong>Poweradmin Account</strong> (administrator password)</td>
-<td>The password for the built-in <strong><code>admin</code></strong> user</td>
-<td>Logging in to the Poweradmin web interface. The username is hard-coded as <code>admin</code> and cannot be changed here.</td>
-</tr>
-</tbody>
-</table>
-<p>After the installer finishes, you log in at <code>/login</code> with username <strong><code>admin</code></strong> and the password you typed into the "Poweradmin Account" block - not the database username. You can then create additional Poweradmin users from <code>Users &gt; Add user</code> in the web interface.</p>
-<h3 id="step-5-account-nameservers">Step 5: Account &amp; Nameservers</h3>
-<p>Configure the database user for runtime access and set up default DNS settings (hostmaster, nameservers).</p>
-<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/install-step5-nameservers.png" data-desc-position="bottom"><img alt="Account and nameserver setup" src="../../screenshots/install-step5-nameservers.png"></a></p>
-<h3 id="step-7-configuration-file">Step 7: Configuration File</h3>
-<p>The installer generates the <code>config/settings.php</code> file content. Copy this to your server.</p>
-<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/install-step7-config.png" data-desc-position="bottom"><img alt="Generated configuration" src="../../screenshots/install-step7-config.png"></a></p>
-<h3 id="step-8-installation-complete">Step 8: Installation Complete</h3>
-<p>After creating the configuration file, the installation is complete. Remove the <code>install/</code> directory for security.</p>
-<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/install-step8-complete.png" data-desc-position="bottom"><img alt="Installation complete" src="../../screenshots/install-step8-complete.png"></a></p>
 <h2 id="post-installation-steps">Post-Installation Steps</h2>
 <ol>
 <li>Configure web server permissions</li>
@@ -683,7 +655,7 @@ return [
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../../database/schema/" class="btn btn-neutral float-left" title="Database Schema"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../wizard/" class="btn btn-neutral float-left" title="Web Installer Wizard"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../composer/" class="btn btn-neutral float-right" title="Composer">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -711,7 +683,7 @@ return [
         </span>
     
     
-      <span><a href="../../database/schema/" style="color: #fcfcfc">« Previous</a></span>
+      <span><a href="../wizard/" style="color: #fcfcfc">« Previous</a></span>
     
     
       <span><a href="../composer/" style="color: #fcfcfc">Next »</a></span>
