@@ -1,0 +1,619 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://docs.poweradmin.org/getting-started/headless-quickstart/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>Headless / API-First Quickstart - Poweradmin Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Headless / API-First Quickstart";
+        var mkdocs_page_input_path = "getting-started/headless-quickstart.md";
+        var mkdocs_page_url = "/getting-started/headless-quickstart/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/php.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Poweradmin Documentation
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../overview/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../features/">Features</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current">Quick Evaluation</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../docker-demo/">Docker Demo</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Headless / API-First Quickstart</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#what-you-get">What you get</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#1-start-poweradmin-with-the-api-enabled">1. Start Poweradmin with the API enabled</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-create-an-api-key">2. Create an API key</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-verify-the-key-works">3. Verify the key works</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-create-a-zone">4. Create a zone</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-add-a-record">5. Add a record</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6-explore-the-rest-interactively">6. Explore the rest interactively</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#when-to-use-this-mode">When to use this mode</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#what-is-not-covered-by-the-api-yet">What is not covered by the API yet</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#next-steps">Next steps</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../requirements/">System Requirements</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Installation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Docker</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/docker/">Docker Installation</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/docker-secrets/">Docker Secrets</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/reverse-proxy/">Reverse Proxy</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Operating Systems</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/debian/">Debian</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/ubuntu/">Ubuntu</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/centos/">CentOS/RHEL</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Database Setup</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/mysql-configuration/">MySQL/MariaDB</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/postgresql-configuration/">PostgreSQL</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/sqlite/">SQLite</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../database/schema/">Database Schema</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/wizard/">Web Installer Wizard</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/manual/">Manual Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/composer/">Composer</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../installation/remote-setup-guide/">Remote Setup</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Configuration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/basic/">Basic Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/dns-settings/">DNS Settings</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/dns-wizards/">DNS Wizards</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/database/">Database Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/powerdns-api/">PowerDNS API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/dnssec/">DNSSEC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/logging/">Logging Setup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/ldap/">LDAP Integration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/oidc/">OIDC Authentication</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/saml/">SAML Authentication</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/mail/">Mail Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/record-types/">Record Type Customization</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">UI Customization</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../configuration/ui/overview/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../configuration/ui/themes/">Themes</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../configuration/ui/layout/">Layout</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../configuration/ui/custom-css/">Custom CSS</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/permissions/">Permissions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/password-policies/">Password Policies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/security-policies/">Security Policies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/api/">API Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/whois/">WHOIS Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/rdap/">RDAP Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/zone-import-export/">Zone Import/Export</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/user-agreements/">User Agreements</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/username-recovery/">Username Recovery</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/avatars/">Avatar System</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/database-logging/">Database Logging</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/legacy-configuration/">Legacy Configuration (v3.x)</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal">User Management</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/users-roles/">Users and Roles</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/groups/">User Groups</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/mfa/">Multi-Factor Authentication</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/permissions/">Permissions</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">DNS Management</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/zones/">Zone Management</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/dns-templates/">DNS Templates</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/reverse-dns/">Reverse DNS (PTR)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/naptr-records/">NAPTR Records</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal">Dynamic DNS</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/overview/">Overview</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/configuration/">Configuration</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/client-setup/">Client Setup</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../user-guide/ddns/using-curl/">Using cURL</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Advanced Topics</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal">Logging</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../advanced/logging-config/">Log Configuration</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../advanced/fail2ban/">fail2ban Integration</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Maintenance</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../maintenance/">Overview</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Upgrading</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../upgrading/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">v4.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.4.0/">v4.4.0</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.3.0/">v4.3.0</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.2.0/">v4.2.0</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.1.0/">v4.1.0</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.5/">v4.0.5</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../upgrading/v4.0.0/">v4.0.0</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">v3.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal">v3.9.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.7/">v3.9.7</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.3/">v3.9.3</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.2/">v3.9.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.1/">v3.9.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.9.0/">v3.9.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal">v3.8.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.8.1/">v3.8.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.8.0/">v3.8.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal">v3.7.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.7.0/">v3.7.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal">v3.6.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.6.1/">v3.6.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.6.0/">v3.6.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal">v3.5.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.5.1/">v3.5.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.5.0/">v3.5.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal">v3.4.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.2/">v3.4.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.1/">v3.4.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.4.0/">v3.4.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal">v3.3.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.3.0/">v3.3.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal">v3.2.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.2.0/">v3.2.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal">v3.1.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.1.0/">v3.1.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal">v3.0.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v3.0.0/">v3.0.0</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">v2.x Series</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal">v2.2.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.2/">v2.2.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.1/">v2.2.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.2.0/">v2.2.0</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal">v2.1.x</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.9/">v2.1.9</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.8/">v2.1.8</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.7/">v2.1.7</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.6/">v2.1.6</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.5/">v2.1.5</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.4/">v2.1.4</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.3/">v2.1.3</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.2/">v2.1.2</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.1/">v2.1.1</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../../upgrading/v2.1.0/">v2.1.0</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Troubleshooting</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting/debugging/">Debugging</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../troubleshooting/reset-admin-password/">Reset Admin Password</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/overview/">API Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/authentication/">Authentication</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/endpoints/">Endpoints</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Contributing</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/development/">Development Setup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/coding-standards/">Coding Standards</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/testing/">Testing</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../contributing/translations/">Translations</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Poweradmin Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Getting Started</li>
+          <li class="breadcrumb-item">Quick Evaluation</li>
+      <li class="breadcrumb-item active">Headless / API-First Quickstart</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/poweradmin/poweradmin-docs/edit/main/docs/getting-started/headless-quickstart.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+  <div class="announcement">
+    This documentation covers Poweradmin 4.x. Some sections are still being expanded.
+  </div>
+  
+                <h1 id="headless-api-first-quickstart">Headless / API-First Quickstart</h1>
+<p>If you want to drive PowerDNS from scripts, CI, or your own tooling without
+clicking through a web UI, Poweradmin can run in an API-first mode. The web
+interface stays available for the few things that need it (creating the first
+admin user, issuing API keys), but day-to-day zone and record management can
+happen entirely over the REST API.</p>
+<p>This page gets you from zero to a scripted record update in about five minutes.</p>
+<h2 id="what-you-get">What you get</h2>
+<ul>
+<li>A REST API (<code>/api/v1</code> and <code>/api/v2</code>) with predictable JSON responses</li>
+<li>Per-user API keys that can be revoked or rotated</li>
+<li>Interactive OpenAPI/Swagger docs at <code>/api/docs</code></li>
+<li>The same validation Poweradmin applies in the web UI (record types,
+  hostnames, TTL bounds, SOA serial bumps)</li>
+</ul>
+<h2 id="1-start-poweradmin-with-the-api-enabled">1. Start Poweradmin with the API enabled</h2>
+<p>The Docker image is the fastest path. Set <code>PA_API_ENABLED=true</code> so the API is
+exposed, and <code>PA_API_DOCS_ENABLED=true</code> so you can explore endpoints
+interactively.</p>
+<pre><code class="language-bash">docker run -d --name poweradmin -p 8080:80 \
+  -e PA_API_ENABLED=true \
+  -e PA_API_DOCS_ENABLED=true \
+  poweradmin/poweradmin:latest
+</code></pre>
+<p>The default image uses SQLite with a pre-seeded admin account
+(<code>admin</code> / <code>testadmin</code>). For a production setup, point at MySQL or PostgreSQL
+with the <code>DB_*</code> variables described in
+<a href="../../installation/docker/">Docker Installation</a>.</p>
+<h2 id="2-create-an-api-key">2. Create an API key</h2>
+<p>API keys are issued through the web UI. This is a one-time step — once the key
+exists, you can do everything else from scripts.</p>
+<ol>
+<li>Open <a href="http://localhost:8080">http://localhost:8080</a> and log in.</li>
+<li>Go to <strong>Settings -&gt; API Keys</strong> (<code>/settings/api-keys</code>).</li>
+<li>Click <strong>Add API Key</strong>, give it a name (e.g. <code>ci-deploy</code>), and copy the key.
+   The full key is only shown once.</li>
+</ol>
+<p>Store it somewhere your scripts can read it:</p>
+<pre><code class="language-bash">export PA_API_KEY="paste-the-key-here"
+export PA_URL="http://localhost:8080"
+</code></pre>
+<h2 id="3-verify-the-key-works">3. Verify the key works</h2>
+<pre><code class="language-bash">curl -H "X-API-Key: $PA_API_KEY" "$PA_URL/api/v2/zones"
+</code></pre>
+<p>You should get back a JSON envelope with an empty <code>data</code> array (or your existing
+zones if any).</p>
+<h2 id="4-create-a-zone">4. Create a zone</h2>
+<pre><code class="language-bash">curl -X POST \
+  -H "X-API-Key: $PA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "example.com",
+    "type": "MASTER"
+  }' \
+  "$PA_URL/api/v2/zones"
+</code></pre>
+<p>The response includes the zone <code>id</code> you will use for subsequent requests.</p>
+<h2 id="5-add-a-record">5. Add a record</h2>
+<pre><code class="language-bash">ZONE_ID=1  # from the previous response
+
+curl -X POST \
+  -H "X-API-Key: $PA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "www.example.com",
+    "type": "A",
+    "content": "192.0.2.10",
+    "ttl": 3600
+  }' \
+  "$PA_URL/api/v2/zones/$ZONE_ID/records"
+</code></pre>
+<p>Poweradmin validates the record, writes it to PowerDNS, and bumps the SOA
+serial so secondaries pick up the change.</p>
+<h2 id="6-explore-the-rest-interactively">6. Explore the rest interactively</h2>
+<p>With <code>PA_API_DOCS_ENABLED=true</code> the full OpenAPI explorer is available at:</p>
+<pre><code>http://localhost:8080/api/docs
+</code></pre>
+<p>You can paste your API key into the "Authorize" dialog and try every endpoint
+from the browser.</p>
+<h2 id="when-to-use-this-mode">When to use this mode</h2>
+<p>This setup is a good fit when:</p>
+<ul>
+<li>You are scripting record updates from CI, Terraform, or config management</li>
+<li>You want PowerDNS managed by an infrastructure team but exposed to developers
+  as an API</li>
+<li>You do not want end users in a web UI at all, but still need Poweradmin's
+  validation and audit logging</li>
+<li>You are integrating with the
+  <a href="https://github.com/poweradmin/terraform-provider-poweradmin">terraform-provider-poweradmin</a>
+  or the
+  <a href="https://github.com/poweradmin/external-dns-poweradmin-webhook">external-dns-poweradmin-webhook</a></li>
+</ul>
+<p>The web UI remains available for operators who prefer it; nothing about
+enabling the API turns it off.</p>
+<h2 id="what-is-not-covered-by-the-api-yet">What is <em>not</em> covered by the API yet</h2>
+<p>The REST API focuses on zones, records, users, groups, permission templates,
+and zone templates. A few operator workflows still live only in the web UI:</p>
+<ul>
+<li>Initial admin user creation (handled by the installer)</li>
+<li>API key issuance and rotation (Settings -&gt; API Keys)</li>
+<li>Some global settings under Settings -&gt; Configuration</li>
+</ul>
+<p>If a missing endpoint blocks you, please open an issue on the
+<a href="https://github.com/poweradmin/poweradmin/issues">GitHub repository</a>.</p>
+<h2 id="next-steps">Next steps</h2>
+<ul>
+<li><a href="../../configuration/api/">API Configuration</a> - full list of API settings,
+  web server requirements, security recommendations</li>
+<li><a href="../../configuration/powerdns-api/">PowerDNS API Configuration</a> - connecting
+  Poweradmin to PowerDNS itself, including the API-only backend mode
+  (<code>dns.backend = api</code>) added in 4.3.0</li>
+<li><a href="../../user-guide/ddns/using-curl/">Dynamic DNS with cURL</a> - a separate,
+  simpler endpoint for IP-update scripts</li>
+</ul>
+              
+
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../docker-demo/" class="btn btn-neutral float-left" title="Docker Demo"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../requirements/" class="btn btn-neutral float-right" title="System Requirements">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/poweradmin/poweradmin-docs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../docker-demo/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../requirements/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>
