@@ -123,6 +123,10 @@
     <li class="toctree-l2"><a class="reference internal" href="#record-type-configuration">Record Type Configuration</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#custom-tld-whitelist">Custom TLD Whitelist</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pre-whitelisted-special-use-tlds">Pre-whitelisted special-use TLDs</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#modern-configuration-example">Modern Configuration Example</a>
     </li>
@@ -622,7 +626,7 @@
 <td>-</td>
 <td>dns.custom_tlds</td>
 <td>[]</td>
-<td>Custom TLDs to allow in CNAME targets (e.g., <code>['dn42', 'home']</code>).</td>
+<td>Custom TLDs to allow in zone names (when <code>strict_tld_check</code> is on) and in CNAME targets (e.g., <code>['dn42', 'home']</code>).</td>
 <td>3.x</td>
 </tr>
 </tbody>
@@ -651,14 +655,57 @@
 ],
 </code></pre>
 <h2 id="custom-tld-whitelist">Custom TLD Whitelist</h2>
-<p>By default, CNAME targets are validated to ensure they have a valid top-level domain (alphabetic characters only). This can cause issues in experimental networks like DN42 that use custom TLDs containing numbers (e.g., <code>.dn42</code>).</p>
-<p>The <code>custom_tlds</code> option allows you to whitelist custom TLDs that bypass the standard validation:</p>
+<p>The <code>custom_tlds</code> option lets you whitelist non-IANA TLDs so they pass validation. It applies in two places:</p>
+<ul>
+<li><strong>CNAME targets</strong> are normally restricted to alphabetic TLDs, which rejects experimental networks like DN42 (<code>.dn42</code>).</li>
+<li><strong>Zone names</strong> are normally restricted to the official IANA list plus reserved special-use names when <code>strict_tld_check</code> is enabled. With <code>strict_tld_check</code> off (the default), any alphabetic TLD is accepted and this whitelist is not consulted.</li>
+</ul>
 <pre><code class="language-php">'dns' =&gt; [
-    'custom_tlds' =&gt; ['dn42', 'home', 'internal', 'lan'],
+    'strict_tld_check' =&gt; true,
+    'custom_tlds' =&gt; ['dn42', 'home', 'lan', 'corp'],
 ],
 </code></pre>
-<p>With this configuration, CNAME targets like <code>ns1.example.dn42</code> will pass validation. The matching is case-insensitive.</p>
+<p>With this configuration, both a zone named <code>office.lan</code> and a CNAME target like <code>ns1.example.dn42</code> pass validation. Matching is case-insensitive.</p>
 <p><strong>Note</strong>: Standard alphabetic TLDs (like <code>.com</code>, <code>.org</code>, <code>.net</code>) always work regardless of this setting.</p>
+<h3 id="pre-whitelisted-special-use-tlds">Pre-whitelisted special-use TLDs</h3>
+<p>Even with <code>strict_tld_check</code> enabled, the following reserved TLDs are always accepted and do not need to be added to <code>custom_tlds</code>:</p>
+<table>
+<thead>
+<tr>
+<th>TLD</th>
+<th>Reference</th>
+<th>Typical use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>test</code>, <code>example</code>, <code>invalid</code>, <code>localhost</code></td>
+<td>RFC 2606</td>
+<td>Testing and documentation</td>
+</tr>
+<tr>
+<td><code>local</code></td>
+<td>RFC 6762</td>
+<td>Multicast DNS</td>
+</tr>
+<tr>
+<td><code>onion</code></td>
+<td>RFC 7686</td>
+<td>Tor hidden services</td>
+</tr>
+<tr>
+<td><code>alt</code></td>
+<td>RFC 9476</td>
+<td>Alternative DNS namespaces</td>
+</tr>
+<tr>
+<td><code>internal</code></td>
+<td>ICANN reserved (2024)</td>
+<td>Private-use applications</td>
+</tr>
+</tbody>
+</table>
+<p>If you use one of these for an internal zone, no extra configuration is required. Other common homelab TLDs such as <code>.lan</code>, <code>.home</code>, and <code>.corp</code> are not on this list and require either <code>strict_tld_check = false</code> or an entry in <code>custom_tlds</code>.</p>
 <h2 id="modern-configuration-example">Modern Configuration Example</h2>
 <pre><code class="language-php">return [
     'dns' =&gt; [
