@@ -213,6 +213,14 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#delegating-a-sub-range-rfc-2317">Delegating a Sub-Range (RFC 2317)</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#example-delegate-10006425-to-a-client">Example: Delegate 10.0.0.64/25 to a client</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#when-you-dont-need-rfc-2317">When you don't need RFC 2317</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#per-record-type-default-ttls-450">Per-Record-Type Default TTLs (4.5.0)</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#default-ttl-for-ptr-records-legacy">Default TTL for PTR Records (legacy)</a>
@@ -221,7 +229,11 @@
     </li>
     </ul>
                 </li>
+                <li class="toctree-l2"><a class="reference internal" href="../bulk-operations/">Bulk and Batch Operations</a>
+                </li>
                 <li class="toctree-l2"><a class="reference internal" href="../naptr-records/">NAPTR Records</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../txt-records/">TXT Records (SPF / DKIM / DMARC)</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal">Dynamic DNS</a>
     <ul>
@@ -589,6 +601,82 @@
 <li><strong>No records created</strong>: Check if records already exist (they will be skipped)</li>
 <li><strong>Feature not visible</strong>: Check if you have the required permissions</li>
 </ul>
+<h2 id="delegating-a-sub-range-rfc-2317">Delegating a Sub-Range (RFC 2317)</h2>
+<p>When you own a /24 reverse zone but want a different team or client to manage PTRs for only part of it (e.g. 10.0.0.64/25), use classless reverse delegation as defined in <a href="https://datatracker.ietf.org/doc/html/rfc2317">RFC 2317</a>. Poweradmin's ownership model is per-zone, so the trick is to create a smaller child zone for the sub-range and assign it to the delegate.</p>
+<h3 id="example-delegate-10006425-to-a-client">Example: Delegate 10.0.0.64/25 to a client</h3>
+<p>Parent zone: <code>0.0.10.in-addr.arpa</code> (owned by you, covers 10.0.0.0/24).
+Goal: the client manages PTRs for 10.0.0.64 through 10.0.0.127.</p>
+<p><strong>1. Create the child zone</strong></p>
+<p>From <strong>Zones → Add master zone</strong>, create:</p>
+<ul>
+<li><strong>Zone name</strong>: <code>64/25.0.0.10.in-addr.arpa</code> (slash notation - preferred)</li>
+<li>Range notation <code>64-127.0.0.10.in-addr.arpa</code> is also accepted.</li>
+<li><strong>Owner</strong>: the client user (or a group the client belongs to)</li>
+</ul>
+<p>Poweradmin's hostname validator accepts both notations. The slash form follows the RFC 2317 example syntax most resolvers and dig output assume.</p>
+<p><strong>2. Add delegation NS records in the child zone</strong></p>
+<p>In the new child zone, add NS records pointing to whichever nameservers will be authoritative for it (often the same servers as the parent).</p>
+<p><strong>3. Add CNAME glue in the parent zone</strong></p>
+<p>In <code>0.0.10.in-addr.arpa</code>, replace the PTR records for the 64-127 range with CNAMEs pointing into the child zone. For each delegated address:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>64</code></td>
+<td>CNAME</td>
+<td><code>64.64/25.0.0.10.in-addr.arpa.</code></td>
+</tr>
+<tr>
+<td><code>65</code></td>
+<td>CNAME</td>
+<td><code>65.64/25.0.0.10.in-addr.arpa.</code></td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr>
+<td><code>127</code></td>
+<td>CNAME</td>
+<td><code>127.64/25.0.0.10.in-addr.arpa.</code></td>
+</tr>
+</tbody>
+</table>
+<p>These CNAMEs tell any resolver doing reverse lookup for 10.0.0.64-127 to chase the answer into the delegated child zone.</p>
+<p><strong>4. Client adds PTRs in the child zone</strong></p>
+<p>The client (who owns the child zone, not the parent) adds PTR records in <code>64/25.0.0.10.in-addr.arpa</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>64</code></td>
+<td>PTR</td>
+<td><code>host64.client.example.</code></td>
+</tr>
+<tr>
+<td><code>100</code></td>
+<td>PTR</td>
+<td><code>mailrelay.client.example.</code></td>
+</tr>
+</tbody>
+</table>
+<p>The client cannot edit the parent zone, and you cannot accidentally clobber their PTRs.</p>
+<h3 id="when-you-dont-need-rfc-2317">When you don't need RFC 2317</h3>
+<p>If you're delegating on an octet boundary - the whole /24 inside a /16, for instance - just create the child zone directly (<code>5.10.in-addr.arpa</code> under <code>10.in-addr.arpa</code>) and assign the owner. No CNAMEs needed.</p>
+<p>RFC 2317 only applies when the sub-range doesn't align with a DNS label boundary, i.e. anything smaller than /24 for IPv4 or anything not on a nibble boundary for IPv6.</p>
 <h2 id="per-record-type-default-ttls-450">Per-Record-Type Default TTLs (4.5.0)</h2>
 <p>Admins can configure default TTLs per record type from <strong>Tools → TTL defaults</strong> (<code>/tools/record-type-defaults</code>). Values stored there take precedence over the legacy <code>dns.ttl_reverse</code> config and <code>dns.ttl</code> fallback. The same default applies to every record-creation path (UI forms, batch PTR, the v1/v2 record APIs, RRSets, bulk records, and the DNS wizard) when the caller omits a <code>ttl</code> field. Leave a row empty to fall back to the legacy chain.</p>
 <p>The fallback chain (first non-null wins):</p>
@@ -617,7 +705,7 @@
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../dns-templates/" class="btn btn-neutral float-left" title="DNS Templates"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../naptr-records/" class="btn btn-neutral float-right" title="NAPTR Records">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../bulk-operations/" class="btn btn-neutral float-right" title="Bulk and Batch Operations">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr>
@@ -647,7 +735,7 @@
       <span><a href="../dns-templates/" style="color: #fcfcfc">« Previous</a></span>
     
     
-      <span><a href="../naptr-records/" style="color: #fcfcfc">Next »</a></span>
+      <span><a href="../bulk-operations/" style="color: #fcfcfc">Next »</a></span>
     
   </span>
 </div>
