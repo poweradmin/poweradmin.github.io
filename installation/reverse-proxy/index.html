@@ -78,6 +78,12 @@
                 <li class="toctree-l2 current"><a class="reference internal current" href="#">Reverse Proxy</a>
     <ul class="current">
     <li class="toctree-l3"><a class="reference internal" href="#client-ip-resolution">Client IP Resolution</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#two-trust-layers-docker">Two trust layers (Docker)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#non-docker-installs">Non-Docker installs</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#traefik">Traefik</a>
         <ul>
@@ -463,6 +469,20 @@
 </code></pre>
 <p>The <code>private_ranges</code> value trusts all private IP ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) and is recommended for most Docker deployments. For specific CIDRs, use a comma-separated list: <code>TRUSTED_PROXIES=172.17.0.0/16,10.0.0.0/8</code>.</p>
 <p>Both <code>X-Forwarded-For</code> and <code>X-Real-IP</code> headers are supported. Your reverse proxy must forward at least one of these headers - see the examples below for proxy-specific configuration.</p>
+<h3 id="two-trust-layers-docker">Two trust layers (Docker)</h3>
+<p><code>TRUSTED_PROXIES</code> configures two layers at once. The Docker image (4.5.0 and later) writes the same list to Poweradmin's <code>security.trusted_proxies</code> setting in addition to the Caddy server, so the application also honors forwarded headers from the listed proxies:</p>
+<ul>
+<li><strong>Caddy</strong> resolves the real client IP for its own access logs.</li>
+<li><strong>The application</strong> decides whether to trust forwarded headers for audit logs and per-IP rate limiting. By default it only trusts private/loopback peers, which is why a proxy on a <strong>public</strong> (non-RFC1918) address needs its IP listed here.</li>
+</ul>
+<p>The <code>private_ranges</code> keyword applies to Caddy only; the application always trusts private/loopback peers. Set <code>PA_TRUSTED_PROXIES</code> if the application allowlist must differ from the Caddy list.</p>
+<h3 id="non-docker-installs">Non-Docker installs</h3>
+<p>Outside Docker, set the application allowlist directly in <code>config/settings.php</code>. This is required when the proxy connects from a public address:</p>
+<pre><code class="language-php">'security' =&gt; [
+    'trusted_proxies' =&gt; ['203.0.113.10', '2001:db8::/32'],
+],
+</code></pre>
+<p>See <a href="../../configuration/security-policies/">Security Policies</a> for details.</p>
 <h2 id="traefik">Traefik</h2>
 <h3 id="basic-setup-http-only">Basic Setup (HTTP only)</h3>
 <pre><code class="language-yaml">services:
