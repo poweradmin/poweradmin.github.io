@@ -128,6 +128,8 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#zone-overlap-protection">Zone Overlap Protection</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#modern-configuration-example">Modern Configuration Example</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#legacy-configuration-example">Legacy Configuration Example</a>
@@ -567,6 +569,13 @@
 <td>2.1.7</td>
 </tr>
 <tr>
+<td>-</td>
+<td>dns.parent_zone_ownership_check</td>
+<td>true</td>
+<td>Block creating a zone that overlaps an existing zone owned by another user, in either direction (a subdomain of, or a parent of, the other zone). Covers forward and reverse zones. Ueberusers are exempt.</td>
+<td>4.5.0</td>
+</tr>
+<tr>
 <td>$dns_txt_auto_quote</td>
 <td>dns.txt_auto_quote</td>
 <td>false</td>
@@ -706,6 +715,25 @@
 </tbody>
 </table>
 <p>If you use one of these for an internal zone, no extra configuration is required. Other common homelab TLDs such as <code>.lan</code>, <code>.home</code>, and <code>.corp</code> are not on this list and require either <code>strict_tld_check = false</code> or an entry in <code>custom_tlds</code>.</p>
+<h2 id="zone-overlap-protection">Zone Overlap Protection</h2>
+<p><code>parent_zone_ownership_check</code> (added in 4.5.0, <strong>enabled by default</strong>) stops a user from creating a zone that overlaps a zone owned by <strong>another</strong> user. Because PowerDNS serves the most-specific zone, an overlapping zone would otherwise shadow the other owner's data.</p>
+<p>It blocks both directions:</p>
+<ul>
+<li><strong>subdomain of another owner's zone</strong> - e.g. user B cannot create <code>b.a.com</code> when <code>a.com</code> is owned by user A;</li>
+<li><strong>parent of another owner's zone</strong> - e.g. user B cannot create <code>a.com</code> when <code>b.a.com</code> is owned by user A.</li>
+</ul>
+<p>Notes:</p>
+<ul>
+<li>Applies to forward and reverse zones.</li>
+<li>Creating a sub-zone of a zone <strong>you already own</strong> is allowed (legitimate delegation).</li>
+<li>Ueberusers (super-admins) are exempt.</li>
+<li>The check runs only at creation time; it does not retroactively flag zones that already overlap.</li>
+</ul>
+<p>To allow cross-owner overlapping zones, set it to <code>false</code>:</p>
+<pre><code class="language-php">'dns' =&gt; [
+    'parent_zone_ownership_check' =&gt; false,
+],
+</code></pre>
 <h2 id="modern-configuration-example">Modern Configuration Example</h2>
 <pre><code class="language-php">return [
     'dns' =&gt; [
@@ -727,6 +755,7 @@
         'strict_tld_check' =&gt; false,
         'top_level_tld_check' =&gt; false,
         'third_level_check' =&gt; false,
+        'parent_zone_ownership_check' =&gt; true, // block overlapping zones across owners (added in 4.5.0)
         'txt_auto_quote' =&gt; false,
         'prevent_duplicate_ptr' =&gt; true,
         'domain_record_types' =&gt; null, // Uses default types

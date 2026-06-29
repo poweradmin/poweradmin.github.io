@@ -579,6 +579,10 @@ instance for exploration.</p>
 configured default (<code>dns.ttl_reverse</code> for PTR records in reverse zones when
 set, <code>dns.ttl</code> otherwise). See
 <a href="../../configuration/dns-settings/">DNS settings</a> for details.</p>
+<p>Records in <strong>Secondary</strong> and <strong>Consumer</strong> zones are read-only - they replicate
+from a primary. Create, update, delete, and bulk-write calls against such a
+zone return <code>403</code> with a message stating the zone is read-only (rather than a
+permission error). Edit the records on the primary instead.</p>
 <h3 id="users">Users</h3>
 <table>
 <thead>

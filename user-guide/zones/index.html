@@ -192,6 +192,10 @@
                 <li class="toctree-l2 current"><a class="reference internal current" href="#">Zone Management</a>
     <ul class="current">
     <li class="toctree-l3"><a class="reference internal" href="#zone-types">Zone Types</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#read-only-zones">Read-only zones</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#creating-zones">Creating Zones</a>
         <ul>
@@ -483,6 +487,18 @@
 <blockquote>
 <p><strong>Tip:</strong> If you are running a single PowerDNS server, <strong>Native</strong> is the simplest option since no zone transfers are needed.</p>
 </blockquote>
+<h3 id="read-only-zones">Read-only zones</h3>
+<p><strong>Secondary</strong> (Slave) and <strong>Consumer</strong> (catalog) zones hold records that PowerDNS replicates from a primary, so Poweradmin treats their records as read-only. In the zone list these zones show a muted <strong>Read-only</strong> badge next to their type.</p>
+<p>For a read-only zone, Poweradmin blocks every record-changing action across the UI, API, and automation:</p>
+<ul>
+<li>Adding, editing, or deleting records (zone editor, DNS wizards, bulk add, batch PTR)</li>
+<li>Editing per-record comments and the zone comment</li>
+<li>Applying a zone template</li>
+<li>Importing records from a zone file</li>
+<li>Dynamic DNS (DDNS) updates</li>
+<li>The public API record, RRset, and bulk endpoints, which return a clear "read-only zone" error instead of a permission error</li>
+</ul>
+<p>To change the records in a read-only zone, edit them on the primary server - the changes replicate automatically. You can still change the zone's own configuration (such as the Secondary master IP) and delete the zone itself.</p>
 <h2 id="creating-zones">Creating Zones</h2>
 <h3 id="adding-a-master-zone">Adding a Master Zone</h3>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/zone-add-master.png" data-desc-position="bottom"><img alt="Add Master Zone" src="../../screenshots/zone-add-master.png"></a></p>
