@@ -537,15 +537,14 @@
 </table>
 <h2 id="permission-template-mapping">Permission Template Mapping</h2>
 <p>Map SAML groups/roles to Poweradmin permission templates:</p>
-<pre><code class="language-php">'saml' =&gt; [
+<pre class="highlight"><code class="language-php">'saml' =&gt; [
     'enabled' =&gt; true,
     'permission_template_mapping' =&gt; [
         'poweradmin-admins' =&gt; 'Administrator',
         'dns-operators' =&gt; 'DNS Operator',
         'dns-viewers' =&gt; 'Read Only',
     ],
-],
-</code></pre>
+],</code></pre>
 <h2 id="group-membership-mapping">Group Membership Mapping</h2>
 <p>Separate from permission templates, you can also map SAML groups to Poweradmin groups. This controls zone ownership and access through group membership.</p>
 <p>Key differences from permission template mapping:</p>
@@ -553,7 +552,7 @@
 <li><code>permission_template_mapping</code> assigns <strong>one</strong> permission template per user</li>
 <li><code>group_mapping</code> assigns <strong>multiple</strong> Poweradmin groups per user</li>
 </ul>
-<pre><code class="language-php">'saml' =&gt; [
+<pre class="highlight"><code class="language-php">'saml' =&gt; [
     'enabled' =&gt; true,
     'group_mapping' =&gt; [
         'external-admins' =&gt; 'Administrators',
@@ -562,15 +561,13 @@
         'dns-viewers' =&gt; 'Viewers',
         'dns-guests' =&gt; 'Guests',
     ],
-],
-</code></pre>
+],</code></pre>
 <p>A single SAML group can also be mapped to multiple Poweradmin groups by giving an array as the value (added in 4.4.0). The user is added to every Poweradmin group listed:</p>
-<pre><code class="language-php">'group_mapping' =&gt; [
+<pre class="highlight"><code class="language-php">'group_mapping' =&gt; [
     'team1' =&gt; ['Editors', 'Viewers'],
     'team2' =&gt; ['Editors'],
     'platform-admins' =&gt; 'Administrators', // single-value form still works
-],
-</code></pre>
+],</code></pre>
 <p>Predefined Poweradmin groups:</p>
 <ul>
 <li><strong>Administrators</strong> - Full administrative access to all system functions</li>
@@ -625,18 +622,16 @@
 </tr>
 </tbody>
 </table>
-<pre><code class="language-php">'saml' =&gt; [
+<pre class="highlight"><code class="language-php">'saml' =&gt; [
     'enabled' =&gt; true,
     'sp' =&gt; [
         'entity_id' =&gt; 'https://poweradmin.example.com/saml/metadata',
         'name_id_format' =&gt; 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
     ],
-],
-</code></pre>
+],</code></pre>
 <h2 id="sp-metadata">SP Metadata</h2>
 <p>Poweradmin can generate SP metadata for your identity provider. Access it at:</p>
-<pre><code>https://your-poweradmin.com/saml/metadata/{provider-id}
-</code></pre>
+<pre class="highlight"><code>https://your-poweradmin.com/saml/metadata/{provider-id}</code></pre>
 <p>For example: <code>https://your-poweradmin.com/saml/metadata/azure</code></p>
 <h2 id="provider-configuration">Provider Configuration</h2>
 <p>Each provider requires IdP-specific configuration:</p>
@@ -695,7 +690,7 @@
 <li>Set Reply URL (ACS): <code>https://your-poweradmin.com/saml/acs</code></li>
 <li>Download the Certificate (Base64)</li>
 </ol>
-<pre><code class="language-php">'saml' =&gt; [
+<pre class="highlight"><code class="language-php">'saml' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'azure' =&gt; [
@@ -715,8 +710,7 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h3 id="okta-saml">Okta (SAML)</h3>
 <ol>
 <li>In Okta Admin Console, go to Applications &gt; Create App Integration</li>
@@ -726,7 +720,7 @@
 <li>Configure attribute statements</li>
 <li>Download the IdP metadata or certificate</li>
 </ol>
-<pre><code class="language-php">'saml' =&gt; [
+<pre class="highlight"><code class="language-php">'saml' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'okta' =&gt; [
@@ -745,8 +739,7 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h3 id="auth0-saml">Auth0 (SAML)</h3>
 <ol>
 <li>In Auth0 Dashboard, go to Applications &gt; Create Application</li>
@@ -754,7 +747,7 @@
 <li>Configure SAML settings</li>
 <li>Download IdP metadata</li>
 </ol>
-<pre><code class="language-php">'saml' =&gt; [
+<pre class="highlight"><code class="language-php">'saml' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'auth0' =&gt; [
@@ -773,8 +766,7 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h3 id="keycloak-saml">Keycloak (SAML)</h3>
 <ol>
 <li>In Keycloak Admin Console, create a new Client</li>
@@ -782,7 +774,7 @@
 <li>Set Client ID: <code>https://your-poweradmin.com/saml/metadata/keycloak</code></li>
 <li>Configure endpoints and download certificate</li>
 </ol>
-<pre><code class="language-php">'saml' =&gt; [
+<pre class="highlight"><code class="language-php">'saml' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'keycloak' =&gt; [
@@ -802,11 +794,10 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h3 id="generic-saml-provider">Generic SAML Provider</h3>
 <p>For other SAML identity providers:</p>
-<pre><code class="language-php">'saml' =&gt; [
+<pre class="highlight"><code class="language-php">'saml' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'custom' =&gt; [
@@ -830,20 +821,17 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h2 id="user-mapping">User Mapping</h2>
 <p>SAML attributes are mapped to Poweradmin user fields. Common attribute formats:</p>
-<p><strong>XML URI Format</strong> (Azure AD, Okta, Auth0):</p>
-<pre><code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
+<p><strong>XML URI Format</strong> (Azure AD, Okta, Auth0):
+</p><pre class="highlight"><code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
 http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname
-http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname
-</code></pre>
-<p><strong>Simple Format</strong> (Keycloak):</p>
-<pre><code>email
+http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname</code></pre><p></p>
+<p><strong>Simple Format</strong> (Keycloak):
+</p><pre class="highlight"><code>email
 firstName
-lastName
-</code></pre>
+lastName</code></pre><p></p>
 <table>
 <thead>
 <tr>
@@ -880,7 +868,7 @@ lastName
 </table>
 <h2 id="security-settings">Security Settings</h2>
 <p>Configure security options per provider:</p>
-<pre><code class="language-php">'security' =&gt; [
+<pre class="highlight"><code class="language-php">'security' =&gt; [
     'nameIdEncrypted' =&gt; false,
     'authnRequestsSigned' =&gt; false,
     'logoutRequestSigned' =&gt; false,
@@ -891,8 +879,7 @@ lastName
     'wantAssertionsEncrypted' =&gt; false,
     'signatureAlgorithm' =&gt; 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',
     'digestAlgorithm' =&gt; 'http://www.w3.org/2001/04/xmlenc#sha256',
-],
-</code></pre>
+],</code></pre>
 <table>
 <thead>
 <tr>
@@ -926,39 +913,34 @@ lastName
 </table>
 <h2 id="sp-signing-optional">SP Signing (Optional)</h2>
 <p>For IdPs that require signed requests, generate a certificate and key:</p>
-<pre><code class="language-bash">openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+<pre class="highlight"><code class="language-bash">openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -keyout sp-private.key \
   -out sp-certificate.crt \
-  -subj "/CN=poweradmin-sp"
-</code></pre>
+  -subj "/CN=poweradmin-sp"</code></pre>
 <p>Configure in settings:</p>
-<pre><code class="language-php">'saml' =&gt; [
+<pre class="highlight"><code class="language-php">'saml' =&gt; [
     'sp' =&gt; [
         'x509cert' =&gt; file_get_contents('/path/to/sp-certificate.crt'),
         'private_key' =&gt; file_get_contents('/path/to/sp-private.key'),
     ],
-],
-</code></pre>
+],</code></pre>
 <h2 id="docker-configuration">Docker Configuration</h2>
 <p>Use environment variables with the <code>PA_SAML_</code> prefix:</p>
-<pre><code class="language-yaml">environment:
+<pre class="highlight"><code class="language-yaml">environment:
   PA_SAML_ENABLED: "true"
   PA_SAML_AUTO_PROVISION: "true"
   PA_SAML_AZURE_ENTITY_ID: "https://sts.windows.net/tenant-id/"
-  PA_SAML_AZURE_SSO_URL: "https://login.microsoftonline.com/tenant-id/saml2"
-</code></pre>
+  PA_SAML_AZURE_SSO_URL: "https://login.microsoftonline.com/tenant-id/saml2"</code></pre>
 <blockquote>
 <p><strong>Note:</strong> The <code>permission_template_mapping</code> and <code>group_mapping</code> settings can be configured via environment variables using the <code>=</code> delimiter and comma-separated entries:</p>
-<p><code>yaml
-PA_SAML_PERMISSION_TEMPLATE_MAPPING: "admins=Administrator,editors=Viewer"
-PA_SAML_GROUP_MAPPING: "admins=Administrators,editors=Editors"</code></p>
+<pre class="highlight"><code class="language-yaml">PA_SAML_PERMISSION_TEMPLATE_MAPPING: "admins=Administrator,editors=Viewer"
+PA_SAML_GROUP_MAPPING: "admins=Administrators,editors=Editors"</code></pre>
 <p>Group names containing colons (e.g., SAML URNs) are supported. Whitespace around commas and delimiters is trimmed automatically.</p>
 <p>For 1:n group mappings, separate the Poweradmin groups with a pipe (<code>|</code>) so one SAML group can grant access to several Poweradmin groups (added in 4.4.0):</p>
-<p><code>yaml
-PA_SAML_GROUP_MAPPING: "team1=Editors|Viewers,team2=Administrators"</code></p>
+<pre class="highlight"><code class="language-yaml">PA_SAML_GROUP_MAPPING: "team1=Editors|Viewers,team2=Administrators"</code></pre>
 </blockquote>
 <p>For certificates and keys, use Docker secrets:</p>
-<pre><code class="language-yaml">secrets:
+<pre class="highlight"><code class="language-yaml">secrets:
   saml_idp_cert:
     file: ./secrets/idp-certificate.crt
   saml_sp_key:
@@ -971,11 +953,10 @@ services:
       PA_SAML_SP_PRIVATE_KEY__FILE: /run/secrets/saml_sp_key
     secrets:
       - saml_idp_cert
-      - saml_sp_key
-</code></pre>
+      - saml_sp_key</code></pre>
 <h2 id="multiple-providers">Multiple Providers</h2>
 <p>Configure multiple SAML providers:</p>
-<pre><code class="language-php">'saml' =&gt; [
+<pre class="highlight"><code class="language-php">'saml' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'azure' =&gt; [
@@ -985,8 +966,7 @@ services:
             // Okta configuration...
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="invalid-signature-error">"Invalid signature" error</h3>
 <ul>

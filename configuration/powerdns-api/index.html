@@ -549,41 +549,36 @@
 </tbody>
 </table>
 <h2 id="modern-configuration-example">Modern Configuration Example</h2>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'pdns_api' =&gt; [
         'display_name' =&gt; 'Production PowerDNS',
         'url' =&gt; 'http://localhost:8081',
         'key' =&gt; 'YOUR_API_KEY',
         'server_name' =&gt; 'localhost',
     ],
-];
-</code></pre>
+];</code></pre>
 <h2 id="legacy-configuration-example">Legacy Configuration Example</h2>
-<pre><code class="language-php">&lt;?php
+<pre class="highlight"><code class="language-php">&lt;?php
 // PowerDNS API settings
 $pdns_api_url = 'http://localhost:8081';
-$pdns_api_key = 'YOUR_API_KEY';
-</code></pre>
+$pdns_api_key = 'YOUR_API_KEY';</code></pre>
 <h2 id="powerdns-server-setup">PowerDNS Server Setup</h2>
 <p>To enable the API in your PowerDNS configuration, add the following to your PowerDNS configuration file:</p>
-<pre><code class="language-conf"># Enable API and webserver
+<pre class="highlight"><code class="language-conf"># Enable API and webserver
 api=yes
 api-key=YOUR_API_KEY
 webserver=yes
 webserver-port=8081
-webserver-address=127.0.0.1  # Restrict to localhost for security
-</code></pre>
+webserver-address=127.0.0.1  # Restrict to localhost for security</code></pre>
 <p>For production environments, it's recommended to secure the API with HTTPS:</p>
-<pre><code class="language-conf">webserver-port=8081
+<pre class="highlight"><code class="language-conf">webserver-port=8081
 webserver-address=0.0.0.0
 webserver-allow-from=192.168.0.0/24,127.0.0.1
 webserver-password=YOUR_PASSWORD
-webserver-loglevel=none
-</code></pre>
+webserver-loglevel=none</code></pre>
 <h2 id="testing-connection">Testing Connection</h2>
 <p>You can verify the API connection by running:</p>
-<pre><code class="language-bash">curl -H "X-API-Key: YOUR_API_KEY" http://localhost:8081/api/v1/servers/localhost
-</code></pre>
+<pre class="highlight"><code class="language-bash">curl -H "X-API-Key: YOUR_API_KEY" http://localhost:8081/api/v1/servers/localhost</code></pre>
 <p>If the connection is successful, you should receive a JSON response with server information.</p>
 <h2 id="functionality-enabled-by-api">Functionality Enabled by API</h2>
 <p>With the PowerDNS API properly configured, Poweradmin gains the following capabilities:</p>
@@ -604,7 +599,7 @@ webserver-loglevel=none
 </ul>
 <h3 id="configuration">Configuration</h3>
 <p>Set <code>dns.backend</code> to <code>api</code> in your <code>config/settings.php</code>:</p>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'dns' =&gt; [
         'backend' =&gt; 'api',
         'hostmaster' =&gt; 'hostmaster.example.com',
@@ -627,12 +622,10 @@ webserver-loglevel=none
     'db_type' =&gt; 'mysql',
 
     // PowerDNS database settings are NOT needed in API mode
-];
-</code></pre>
+];</code></pre>
 <p><strong>Required:</strong> when <code>dns.backend</code> is <code>api</code>, both <code>pdns_api.url</code> and <code>pdns_api.key</code> must be set. Otherwise Poweradmin fails on the first DNS operation with:</p>
-<pre><code>dns.backend is set to "api" but pdns_api.url and/or pdns_api.key are not configured.
-Set both values or change dns.backend to "sql".
-</code></pre>
+<pre class="highlight"><code>dns.backend is set to "api" but pdns_api.url and/or pdns_api.key are not configured.
+Set both values or change dns.backend to "sql".</code></pre>
 <p>There is no SQL fallback, so writes can't bypass the API path by accident.</p>
 <h3 id="new-installation-with-api-backend">New Installation with API Backend</h3>
 <p>The installer (Step 4) offers a choice between "Database" and "API" backend. Selecting API will:</p>
@@ -686,11 +679,10 @@ Set both values or change dns.backend to "sql".
 </ul>
 <h3 id="docker">Docker</h3>
 <p>For Docker deployments, set the backend via environment variable:</p>
-<pre><code class="language-yaml">environment:
+<pre class="highlight"><code class="language-yaml">environment:
   PA_DNS_BACKEND: api
   PA_PDNS_API_URL: http://powerdns:8081
-  PA_PDNS_API_KEY: your-api-key
-</code></pre>
+  PA_PDNS_API_KEY: your-api-key</code></pre>
 <h2 id="security-considerations">Security Considerations</h2>
 <ul>
 <li>Always use HTTPS for production environments</li>

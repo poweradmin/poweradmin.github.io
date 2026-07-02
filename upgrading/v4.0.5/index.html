@@ -530,43 +530,37 @@
 </ul>
 <h3 id="step-1-backup-your-data">Step 1: Backup Your Data</h3>
 <p><strong>Always backup your database and files before upgrading.</strong></p>
-<pre><code class="language-bash"># MySQL/MariaDB backup
+<pre class="highlight"><code class="language-bash"># MySQL/MariaDB backup
 mysqldump -u username -p poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
 
 # PostgreSQL backup
 pg_dump -h localhost -U username poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
 
 # SQLite backup
-cp /path/to/poweradmin.db /path/to/poweradmin_backup_$(date +%Y%m%d).db
-</code></pre>
+cp /path/to/poweradmin.db /path/to/poweradmin_backup_$(date +%Y%m%d).db</code></pre>
 <h3 id="step-2-download-and-extract">Step 2: Download and Extract</h3>
 <ol>
 <li>Download the v4.0.5 release from <a href="https://github.com/poweradmin/poweradmin/releases">GitHub</a></li>
 <li>Extract the archive to a temporary location</li>
 <li>Replace files in your Poweradmin installation directory</li>
 </ol>
-<pre><code class="language-bash">cd /tmp
+<pre class="highlight"><code class="language-bash">cd /tmp
 wget https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.0.5.tar.gz
 tar -xzf v4.0.5.tar.gz
-rsync -av poweradmin-4.0.5/ /var/www/poweradmin/ --exclude=config/settings.php
-</code></pre>
+rsync -av poweradmin-4.0.5/ /var/www/poweradmin/ --exclude=config/settings.php</code></pre>
 <h3 id="step-3-run-database-updates">Step 3: Run Database Updates</h3>
 <p>Version 4.0.5 includes a database schema update to add a primary key to the <code>records_zone_templ</code> table. This improves compatibility with MySQL InnoDB Cluster and other replication systems that require all tables to have primary keys.</p>
-<p><strong>For MySQL/MariaDB:</strong></p>
-<pre><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.0.5.sql
-</code></pre>
-<p><strong>For PostgreSQL:</strong></p>
-<pre><code class="language-bash">psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.0.5.sql
-</code></pre>
-<p><strong>For SQLite:</strong></p>
-<pre><code class="language-bash">sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.0.5.sql
-</code></pre>
+<p><strong>For MySQL/MariaDB:</strong>
+</p><pre class="highlight"><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.0.5.sql</code></pre><p></p>
+<p><strong>For PostgreSQL:</strong>
+</p><pre class="highlight"><code class="language-bash">psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.0.5.sql</code></pre><p></p>
+<p><strong>For SQLite:</strong>
+</p><pre class="highlight"><code class="language-bash">sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.0.5.sql</code></pre><p></p>
 <h3 id="step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart</h3>
-<pre><code class="language-bash"># Restart PHP-FPM to clear opcache
+<pre class="highlight"><code class="language-bash"># Restart PHP-FPM to clear opcache
 sudo systemctl restart php-fpm
 # or for Apache
-sudo systemctl restart apache2
-</code></pre>
+sudo systemctl restart apache2</code></pre>
 <h3 id="step-5-verify-upgrade">Step 5: Verify Upgrade</h3>
 <ol>
 <li>Log in to Poweradmin</li>
@@ -593,11 +587,10 @@ sudo systemctl restart apache2
 <h3 id="show_forward_zone_associations"><code>show_forward_zone_associations</code></h3>
 <p>A new configuration option has been added to address performance issues when viewing reverse zones with many associated forward zones.</p>
 <p><strong>Location:</strong> <code>config/settings.php</code></p>
-<pre><code class="language-php">'interface' =&gt; [
+<pre class="highlight"><code class="language-php">'interface' =&gt; [
     // ... other settings ...
     'show_forward_zone_associations' =&gt; true, // Default: true (added in 4.0.5)
-],
-</code></pre>
+],</code></pre>
 <p><strong>Description:</strong> When set to <code>true</code> (default), the reverse zone list displays associated forward zones for each PTR record. When set to <code>false</code>, this lookup is disabled, which can significantly improve page load times for large installations with many reverse zones.</p>
 <p><strong>When to disable:</strong> If you experience Gateway Timeout errors or slow loading on the reverse zones page, set this option to <code>false</code>.</p>
 <h2 id="bug-fixes">Bug Fixes</h2>
@@ -625,22 +618,19 @@ sudo systemctl restart apache2
 <p>Added missing XML extension check in the requirements step of the installer.</p>
 <h2 id="docker-users">Docker Users</h2>
 <p>If using the official Docker image, simply pull the new version:</p>
-<pre><code class="language-bash">docker pull poweradmin/poweradmin:4.0.5
-</code></pre>
+<pre class="highlight"><code class="language-bash">docker pull poweradmin/poweradmin:4.0.5</code></pre>
 <p>The database migration will need to be run manually against your database unless using a fresh installation.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="duplicate-key-value-violates-unique-constraint-postgresql">"Duplicate key value violates unique constraint" (PostgreSQL)</h3>
 <p>If you see this error when adding permission templates after upgrading, the sequence synchronization may not have run correctly. Manually run:</p>
-<pre><code class="language-sql">SELECT setval('perm_items_id_seq', (SELECT MAX(id) FROM perm_items));
+<pre class="highlight"><code class="language-sql">SELECT setval('perm_items_id_seq', (SELECT MAX(id) FROM perm_items));
 SELECT setval('perm_templ_id_seq', (SELECT MAX(id) FROM perm_templ));
-SELECT setval('perm_templ_items_id_seq', (SELECT MAX(id) FROM perm_templ_items));
-</code></pre>
+SELECT setval('perm_templ_items_id_seq', (SELECT MAX(id) FROM perm_templ_items));</code></pre>
 <h3 id="gateway-timeout-on-reverse-zones">Gateway Timeout on Reverse Zones</h3>
 <p>If the reverse zones page times out, add this to your <code>config/settings.php</code>:</p>
-<pre><code class="language-php">'interface' =&gt; [
+<pre class="highlight"><code class="language-php">'interface' =&gt; [
     'show_forward_zone_associations' =&gt; false,
-],
-</code></pre>
+],</code></pre>
 <h3 id="migration-script-errors">Migration Script Errors</h3>
 <p>If the MySQL migration fails with "Duplicate column name 'id'", the table already has a primary key and no migration is needed. This can happen if you previously applied a fix manually or are upgrading from a development version.</p>
               

@@ -593,7 +593,7 @@
 </tbody>
 </table>
 <h2 id="configuration-example">Configuration Example</h2>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'api' =&gt; [
         'enabled' =&gt; true,
         'basic_auth_enabled' =&gt; true,
@@ -601,8 +601,7 @@
         'docs_enabled' =&gt; true,
         'max_keys_per_user' =&gt; 5,  // Admin users have no limit
     ],
-];
-</code></pre>
+];</code></pre>
 <h2 id="web-server-requirements">Web Server Requirements</h2>
 <p>The API requires proper web server configuration to function correctly. The PHP router handles API path parsing from <code>REQUEST_URI</code>, so explicit per-endpoint rewrite rules are not needed—just route all <code>/api/*</code> requests to <code>index.php</code>.</p>
 <h3 id="key-requirements">Key Requirements</h3>
@@ -648,7 +647,7 @@
 </ul>
 <h3 id="minimal-nginx-example">Minimal Nginx Example</h3>
 <p>If you need a minimal configuration, ensure these key elements are present:</p>
-<pre><code class="language-nginx"># CORS and API routing
+<pre class="highlight"><code class="language-nginx"># CORS and API routing
 location ~ ^/api {
     add_header Access-Control-Allow-Origin "*" always;
     add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS" always;
@@ -667,8 +666,7 @@ location ~ \.php$ {
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     fastcgi_param HTTP_AUTHORIZATION $http_authorization;
     include fastcgi_params;
-}
-</code></pre>
+}</code></pre>
 <h2 id="authentication-methods">Authentication Methods</h2>
 <h3 id="api-key-authentication">API Key Authentication</h3>
 <p>API keys provide secure, token-based authentication:</p>
@@ -678,16 +676,14 @@ location ~ \.php$ {
 <li><strong>Revocation</strong> - Easily revoke compromised keys</li>
 </ol>
 <h4 id="using-api-keys">Using API Keys</h4>
-<pre><code class="language-bash">curl -H "X-API-Key: your-api-key-here" \
+<pre class="highlight"><code class="language-bash">curl -H "X-API-Key: your-api-key-here" \
      -H "Content-Type: application/json" \
-     https://your-domain.com/api/v1/zones
-</code></pre>
+     https://your-domain.com/api/v1/zones</code></pre>
 <h3 id="http-basic-authentication">HTTP Basic Authentication</h3>
 <p>Traditional username/password authentication:</p>
-<pre><code class="language-bash">curl -u username:password \
+<pre class="highlight"><code class="language-bash">curl -u username:password \
      -H "Content-Type: application/json" \
-     https://your-domain.com/api/v1/zones
-</code></pre>
+     https://your-domain.com/api/v1/zones</code></pre>
 <h2 id="api-endpoints">API Endpoints</h2>
 <p>Poweradmin provides two API versions. API v2 (introduced in v4.1.0) is recommended for all new integrations. API v1 remains available for backward compatibility.</p>
 <h3 id="api-v2-endpoints-v410">API v2 Endpoints <em>(v4.1.0+)</em></h3>
@@ -790,12 +786,11 @@ location ~ \.php$ {
 </ul>
 <h2 id="security-considerations">Security Considerations</h2>
 <h3 id="production-setup">Production Setup</h3>
-<pre><code class="language-php">'api' =&gt; [
+<pre class="highlight"><code class="language-php">'api' =&gt; [
     'enabled' =&gt; true,
     'basic_auth_enabled' =&gt; false, // Use API keys only
     'docs_enabled' =&gt; false,       // Disable docs in production
-],
-</code></pre>
+],</code></pre>
 <blockquote>
 <p><strong>Tip:</strong> To enable audit logging for API operations, use the <a href="../logging/">audit logging settings</a> (<code>logging.database_enabled</code> and <code>logging.syslog_enabled</code>) instead.</p>
 </blockquote>
@@ -808,15 +803,14 @@ location ~ \.php$ {
 </ol>
 <h2 id="requestresponse-format">Request/Response Format</h2>
 <h3 id="request-format">Request Format</h3>
-<pre><code class="language-json">{
+<pre class="highlight"><code class="language-json">{
     "name": "example.com",
     "type": "A",
     "content": "192.168.1.100",
     "ttl": 3600
-}
-</code></pre>
+}</code></pre>
 <h3 id="response-format">Response Format</h3>
-<pre><code class="language-json">{
+<pre class="highlight"><code class="language-json">{
     "success": true,
     "data": {
         "id": 123,
@@ -827,10 +821,9 @@ location ~ \.php$ {
         "created_at": "2023-01-01T12:00:00Z",
         "updated_at": "2023-01-01T12:00:00Z"
     }
-}
-</code></pre>
+}</code></pre>
 <h3 id="error-response">Error Response</h3>
-<pre><code class="language-json">{
+<pre class="highlight"><code class="language-json">{
     "success": false,
     "error": {
         "code": "VALIDATION_ERROR",
@@ -840,8 +833,7 @@ location ~ \.php$ {
             "value": "INVALID"
         }
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="common-issues">Common Issues</h3>
 <ol>
@@ -851,16 +843,15 @@ location ~ \.php$ {
 </ol>
 <h3 id="debugging">Debugging</h3>
 <p>Enable diagnostic logging for troubleshooting:</p>
-<pre><code class="language-php">'logging' =&gt; [
+<pre class="highlight"><code class="language-php">'logging' =&gt; [
     'type' =&gt; 'native',
     'level' =&gt; 'debug',
-],
-</code></pre>
+],</code></pre>
 <p>This writes diagnostic messages to PHP's <code>error_log</code>. For audit logging of API operations, enable <code>logging.database_enabled</code> and/or <code>logging.syslog_enabled</code> - see <a href="../logging/">Logging Configuration</a>.</p>
 <h2 id="powerdns-metrics-api-v403">PowerDNS Metrics API <em>(v4.0.3+)</em></h2>
 <p>Poweradmin can integrate with PowerDNS metrics endpoints for monitoring and status information.</p>
 <h3 id="configuration">Configuration</h3>
-<pre><code class="language-php">'pdns' =&gt; [
+<pre class="highlight"><code class="language-php">'pdns' =&gt; [
     'api_url' =&gt; 'http://localhost:8081/api/v1',
     'api_key' =&gt; 'your-powerdns-api-key',
     'server_id' =&gt; 'localhost',
@@ -871,12 +862,11 @@ location ~ \.php$ {
             'password' =&gt; 'your-password',
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h3 id="basic-authentication-for-metrics-v403">Basic Authentication for Metrics <em>(v4.0.3+)</em></h3>
 <p>Starting with v4.0.3, Poweradmin supports Basic Authentication for accessing PowerDNS metrics endpoints (issue #800). This is useful when your PowerDNS API is protected with Basic Auth in addition to API keys.</p>
 <p><strong>Example configuration:</strong></p>
-<pre><code class="language-php">'pdns' =&gt; [
+<pre class="highlight"><code class="language-php">'pdns' =&gt; [
     'metrics' =&gt; [
         'enabled' =&gt; true,
         'basic_auth' =&gt; [
@@ -884,21 +874,18 @@ location ~ \.php$ {
             'password' =&gt; 'secure_password',
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h2 id="pagination-v401">Pagination <em>(v4.0.1+)</em></h2>
 <h3 id="optional-pagination-parameters">Optional Pagination Parameters</h3>
 <p>Starting with v4.0.1, pagination is optional for zones and users endpoints (issue #803). You can now request all records without pagination limits.</p>
-<p><strong>Without pagination (returns all results):</strong></p>
-<pre><code class="language-bash">GET /api/v1/zones
-GET /api/v1/users
-</code></pre>
-<p><strong>With pagination:</strong></p>
-<pre><code class="language-bash">GET /api/v1/zones?page=1&amp;limit=50
-GET /api/v1/users?page=2&amp;limit=25
-</code></pre>
+<p><strong>Without pagination (returns all results):</strong>
+</p><pre class="highlight"><code class="language-bash">GET /api/v1/zones
+GET /api/v1/users</code></pre><p></p>
+<p><strong>With pagination:</strong>
+</p><pre class="highlight"><code class="language-bash">GET /api/v1/zones?page=1&amp;limit=50
+GET /api/v1/users?page=2&amp;limit=25</code></pre><p></p>
 <h3 id="pagination-response">Pagination Response</h3>
-<pre><code class="language-json">{
+<pre class="highlight"><code class="language-json">{
     "success": true,
     "data": [...],
     "pagination": {
@@ -907,8 +894,7 @@ GET /api/v1/users?page=2&amp;limit=25
         "limit": 50,
         "pages": 3
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="version-history">Version History</h2>
 <h3 id="v420">v4.2.0</h3>
 <ul>

@@ -575,16 +575,14 @@
 </blockquote>
 <h2 id="quick-start">Quick Start</h2>
 <h3 id="sqlite-default">SQLite (Default)</h3>
-<pre><code class="language-bash">docker run -d --name poweradmin -p 80:80 \
+<pre class="highlight"><code class="language-bash">docker run -d --name poweradmin -p 80:80 \
   -e PA_CREATE_ADMIN=1 \
   -v poweradmin-db:/db \
-  poweradmin/poweradmin:stable
-</code></pre>
+  poweradmin/poweradmin:stable</code></pre>
 <p>Check logs for the generated admin password:</p>
-<pre><code class="language-bash">docker logs poweradmin | grep -i password
-</code></pre>
+<pre class="highlight"><code class="language-bash">docker logs poweradmin | grep -i password</code></pre>
 <h3 id="mysql">MySQL</h3>
-<pre><code class="language-bash">docker run -d --name poweradmin -p 80:80 \
+<pre class="highlight"><code class="language-bash">docker run -d --name poweradmin -p 80:80 \
   -e PA_CREATE_ADMIN=1 \
   -e DB_TYPE=mysql \
   -e DB_HOST=mysql-server \
@@ -594,10 +592,9 @@
   -e DNS_NS1=ns1.example.com \
   -e DNS_NS2=ns2.example.com \
   -e DNS_HOSTMASTER=hostmaster.example.com \
-  poweradmin/poweradmin:stable
-</code></pre>
+  poweradmin/poweradmin:stable</code></pre>
 <h3 id="postgresql">PostgreSQL</h3>
-<pre><code class="language-bash">docker run -d --name poweradmin -p 80:80 \
+<pre class="highlight"><code class="language-bash">docker run -d --name poweradmin -p 80:80 \
   -e PA_CREATE_ADMIN=1 \
   -e DB_TYPE=pgsql \
   -e DB_HOST=postgres-server \
@@ -607,15 +604,14 @@
   -e DNS_NS1=ns1.example.com \
   -e DNS_NS2=ns2.example.com \
   -e DNS_HOSTMASTER=hostmaster.example.com \
-  poweradmin/poweradmin:stable
-</code></pre>
+  poweradmin/poweradmin:stable</code></pre>
 <p>!!! note "Database prerequisites (MySQL/PostgreSQL)"
     The <code>DB_NAME</code> database and the <code>DB_USER</code> (with privileges on it) must already exist - the container does not create them. With the official <code>mysql</code>/<code>postgres</code> images, set <code>MYSQL_DATABASE</code>/<code>MYSQL_USER</code>/<code>MYSQL_PASSWORD</code> (or <code>POSTGRES_DB</code>/<code>POSTGRES_USER</code>/<code>POSTGRES_PASSWORD</code>) so they are provisioned on first start. Setting only the root password leaves the server with no Poweradmin database or user and fails with <code>ERROR 1045 Access denied</code>.</p>
 <pre><code>On startup the container loads the Poweradmin schema into an empty `DB_NAME` database automatically; an already-populated database is left untouched. PowerDNS stores its own zones and records in a separate database that PowerDNS (not Poweradmin) creates and initializes. If you instead keep both in one shared database, set `PA_INIT_PDNS_SCHEMA=true` to have the container load the PowerDNS schema into an empty `DB_NAME` as well; it is off by default and skipped when `PA_PDNS_DB_NAME` is set.
 </code></pre>
 <h2 id="docker-compose">Docker Compose</h2>
 <h3 id="basic-setup-with-mysql">Basic Setup with MySQL</h3>
-<pre><code class="language-yaml">version: '3.8'
+<pre class="highlight"><code class="language-yaml">version: '3.8'
 
 services:
   poweradmin:
@@ -647,10 +643,9 @@ services:
       - mysql-data:/var/lib/mysql
 
 volumes:
-  mysql-data:
-</code></pre>
+  mysql-data:</code></pre>
 <h3 id="with-powerdns">With PowerDNS</h3>
-<pre><code class="language-yaml">version: '3.8'
+<pre class="highlight"><code class="language-yaml">version: '3.8'
 
 services:
   poweradmin:
@@ -701,8 +696,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
-  mysql-data:
-</code></pre>
+  mysql-data:</code></pre>
 <h2 id="admin-user-creation">Admin User Creation</h2>
 <p>The container can automatically create an admin user on first startup:</p>
 <table>
@@ -742,8 +736,7 @@ volumes:
 </tbody>
 </table>
 <p>If <code>PA_ADMIN_PASSWORD</code> is not set, a secure password is generated and logged:</p>
-<pre><code class="language-bash">docker logs poweradmin | grep -i password
-</code></pre>
+<pre class="highlight"><code class="language-bash">docker logs poweradmin | grep -i password</code></pre>
 <p><strong>Note</strong>: The admin user is only created if it doesn't already exist.</p>
 <h2 id="key-environment-variables">Key Environment Variables</h2>
 <h3 id="database">Database</h3>
@@ -1069,11 +1062,10 @@ volumes:
 </tbody>
 </table>
 <p>Use this when connecting to services (OIDC, SAML, LDAP, PowerDNS API) that use self-signed or internal CA certificates:</p>
-<pre><code class="language-bash">docker run -d --name poweradmin -p 80:80 \
+<pre class="highlight"><code class="language-bash">docker run -d --name poweradmin -p 80:80 \
   -e TRUSTED_CA_FILE=/certs/my-ca.crt \
   -v /path/to/my-ca.crt:/certs/my-ca.crt:ro \
-  poweradmin/poweradmin
-</code></pre>
+  poweradmin/poweradmin</code></pre>
 <h3 id="miscellaneous">Miscellaneous</h3>
 <table>
 <thead>
@@ -1165,7 +1157,7 @@ volumes:
 </table>
 <h2 id="secrets">Secrets</h2>
 <p>For production, use Docker secrets instead of environment variables for sensitive data. See <a href="../docker-secrets/">Docker Secrets</a> for details.</p>
-<pre><code class="language-yaml">secrets:
+<pre class="highlight"><code class="language-yaml">secrets:
   db_password:
     file: ./secrets/db_password.txt
 
@@ -1174,8 +1166,7 @@ services:
     environment:
       DB_PASS__FILE: /run/secrets/db_password
     secrets:
-      - db_password
-</code></pre>
+      - db_password</code></pre>
 <h2 id="non-root-rootless-deployment">Non-Root / Rootless Deployment</h2>
 <p>The Poweradmin image supports running as a non-root user for restricted Kubernetes clusters and OpenShift. No separate image variant is needed - the entrypoint adapts automatically.</p>
 <h3 id="behavior">Behavior</h3>
@@ -1204,12 +1195,11 @@ services:
 </tbody>
 </table>
 <h3 id="docker-non-root">Docker (Non-Root)</h3>
-<pre><code class="language-bash">docker run --rm --user 82:82 -p 8080:8080 \
+<pre class="highlight"><code class="language-bash">docker run --rm --user 82:82 -p 8080:8080 \
   -e DB_TYPE=sqlite \
-  poweradmin/poweradmin:stable
-</code></pre>
+  poweradmin/poweradmin:stable</code></pre>
 <h3 id="kubernetes-restricted">Kubernetes (Restricted)</h3>
-<pre><code class="language-yaml">spec:
+<pre class="highlight"><code class="language-yaml">spec:
   securityContext:
     runAsNonRoot: true
     runAsUser: 82
@@ -1226,13 +1216,11 @@ services:
           drop: ["ALL"]
       env:
         - name: DB_TYPE
-          value: sqlite
-</code></pre>
+          value: sqlite</code></pre>
 <p><code>fsGroup: 82</code> ensures volumes are group-writable for <code>www-data</code> (GID 82).</p>
 <h3 id="custom-port">Custom Port</h3>
 <p>Override the auto-detected port with <code>SERVER_PORT</code>:</p>
-<pre><code class="language-bash">docker run --rm -e SERVER_PORT=9090 -p 9090:9090 poweradmin/poweradmin
-</code></pre>
+<pre class="highlight"><code class="language-bash">docker run --rm -e SERVER_PORT=9090 -p 9090:9090 poweradmin/poweradmin</code></pre>
 <h3 id="limitations-non-root">Limitations (Non-Root)</h3>
 <ul>
 <li><code>TRUSTED_CA_FILE</code> requires root - a warning is logged if set in non-root mode</li>
@@ -1240,11 +1228,9 @@ services:
 </ul>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="check-container-logs">Check container logs</h3>
-<pre><code class="language-bash">docker logs poweradmin
-</code></pre>
+<pre class="highlight"><code class="language-bash">docker logs poweradmin</code></pre>
 <h3 id="access-container-shell">Access container shell</h3>
-<pre><code class="language-bash">docker exec -it poweradmin /bin/sh
-</code></pre>
+<pre class="highlight"><code class="language-bash">docker exec -it poweradmin /bin/sh</code></pre>
 <h3 id="database-connection-issues">Database connection issues</h3>
 <ol>
 <li>Verify database is accessible from container</li>
@@ -1252,10 +1238,9 @@ services:
 <li>Ensure database exists and user has permissions</li>
 </ol>
 <h3 id="permission-issues-with-volumes">Permission issues with volumes</h3>
-<pre><code class="language-bash">docker run --user root ...
+<pre class="highlight"><code class="language-bash">docker run --user root ...
 # or fix permissions on host
-sudo chown -R 1000:1000 /path/to/volume
-</code></pre>
+sudo chown -R 1000:1000 /path/to/volume</code></pre>
 <h2 id="related-documentation">Related Documentation</h2>
 <ul>
 <li><a href="../docker-secrets/">Docker Secrets</a></li>

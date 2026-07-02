@@ -478,36 +478,32 @@
 <p>Poweradmin supports custom header and footer templates through the theme system. These templates replace the visible logo/title area at the top of the page and the footer line at the bottom. They do not inject content into the page <code>&lt;head&gt;</code> element (see <a href="#injecting-content-into-head">Injecting content into <code>&lt;head&gt;</code></a> below if you need that for analytics or custom meta tags).</p>
 <h3 id="configuration">Configuration</h3>
 <p>First, configure your theme settings in <code>settings.php</code>:</p>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'interface' =&gt; [
         'theme' =&gt; 'custom',  // Set to 'custom' to use your custom templates
         'style' =&gt; 'light',   // Options: 'light', 'dark'
         'theme_base_path' =&gt; 'templates', // Base path for theme templates
         'title' =&gt; 'DNS Server 1', // Custom title to distinguish multiple server instances
     ],
-];
-</code></pre>
+];</code></pre>
 <p><strong>Tip</strong>: If you manage multiple DNS servers, customize the <code>title</code> setting to easily distinguish between them. For example, use server names like "Production DNS", "ns1.example.com", or "DNS Server - East Coast" to quickly identify which server you're managing.</p>
 <h3 id="creating-custom-templates">Creating Custom Templates</h3>
 <ol>
 <li>Create a directory structure for your custom theme (see below)</li>
 <li>Create the following files (see sections below)</li>
 </ol>
-<pre><code>templates/
+<pre class="highlight"><code>templates/
 └── custom/
     ├── header.html
     ├── footer.html
-    └── other template files...
-</code></pre>
+    └── other template files...</code></pre>
 <h4 id="custom-header-templatescustomheaderhtml">Custom Header (templates/custom/header.html)</h4>
-<pre><code class="language-html">&lt;!-- Your custom header content goes here --&gt;
+<pre class="highlight"><code class="language-html">&lt;!-- Your custom header content goes here --&gt;
 &lt;img src="assets/your-logo.png" height="32"&gt;
-&lt;span class="fs-4"&gt;Your Custom Title&lt;/span&gt;
-</code></pre>
+&lt;span class="fs-4"&gt;Your Custom Title&lt;/span&gt;</code></pre>
 <h4 id="custom-footer-templatescustomfooterhtml">Custom Footer (templates/custom/footer.html)</h4>
-<pre><code class="language-html">&lt;!-- Your custom footer content goes here --&gt;
-&lt;p&gt;© 2025 Your Organization - Powered by &lt;strong&gt;Poweradmin&lt;/strong&gt;&lt;/p&gt;
-</code></pre>
+<pre class="highlight"><code class="language-html">&lt;!-- Your custom footer content goes here --&gt;
+&lt;p&gt;© 2025 Your Organization - Powered by &lt;strong&gt;Poweradmin&lt;/strong&gt;&lt;/p&gt;</code></pre>
 <p>Here are examples of custom templates in action:</p>
 <h4 id="custom-header-file-structure">Custom Header File Structure</h4>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../screenshots/custom_header.png" data-desc-position="bottom"><img alt="Custom Header Structure" src="../../../screenshots/custom_header.png"></a></p>
@@ -529,32 +525,29 @@
 </ul>
 <h3 id="examples">Examples</h3>
 <h4 id="corporate-branding-header">Corporate Branding Header</h4>
-<pre><code class="language-html">&lt;img src="assets/corporate-logo.png" height="40"&gt;
-&lt;span class="fs-4 ms-2"&gt;Corporate DNS Management Portal&lt;/span&gt;
-</code></pre>
+<pre class="highlight"><code class="language-html">&lt;img src="assets/corporate-logo.png" height="40"&gt;
+&lt;span class="fs-4 ms-2"&gt;Corporate DNS Management Portal&lt;/span&gt;</code></pre>
 <h4 id="extended-footer-with-links">Extended Footer with Links</h4>
-<pre><code class="language-html">&lt;div class="d-flex flex-column"&gt;
+<pre class="highlight"><code class="language-html">&lt;div class="d-flex flex-column"&gt;
   &lt;p class="mb-1"&gt;© 2025 Your Organization - DNS Management&lt;/p&gt;
   &lt;p class="mb-0 small"&gt;
     &lt;a href="https://support.example.com" class="text-decoration-none"&gt;Support&lt;/a&gt; |
     &lt;a href="https://docs.example.com" class="text-decoration-none"&gt;Documentation&lt;/a&gt; |
     &lt;a href="mailto:dns-admin@example.com" class="text-decoration-none"&gt;Contact&lt;/a&gt;
   &lt;/p&gt;
-&lt;/div&gt;
-</code></pre>
+&lt;/div&gt;</code></pre>
 <h2 id="custom-favicon-and-logo">Custom Favicon and Logo</h2>
 <p>Poweradmin renders the favicon (<code>&lt;link rel="icon"&gt;</code>) and the header logo from two <code>interface</code> settings (added in 4.4.0):</p>
 <ul>
 <li><strong>favicon_path</strong>: Path or URL to a custom favicon. Empty uses the bundled <code>favicon.ico</code>. Default: <code>''</code></li>
 <li><strong>logo_path</strong>: Path or URL to a custom header logo image. Empty uses the bundled <code>assets/logo.png</code>. Default: <code>''</code></li>
 </ul>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'interface' =&gt; [
         'favicon_path' =&gt; '/branding/favicon.png',
         'logo_path' =&gt; 'https://cdn.example.com/branding/dns-logo.svg',
     ],
-];
-</code></pre>
+];</code></pre>
 <p>Absolute URLs (<code>https://cdn.example.com/...</code>) are used as-is. Path values are served from the Poweradmin web root and automatically get <code>base_url_prefix</code> applied, so <code>/branding/favicon.png</code> works unchanged whether Poweradmin runs at the domain root or in a subfolder.</p>
 <p>Notes:</p>
 <ul>
@@ -569,13 +562,12 @@
 <li><strong>position_record_form_top</strong>: Place the "Add record" form at the top of the page. Default: <code>false</code></li>
 <li><strong>position_save_button_top</strong>: Place the "Save changes" button at the top of the page. Default: <code>false</code></li>
 </ul>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'interface' =&gt; [
         'position_record_form_top' =&gt; true,
         'position_save_button_top' =&gt; true,
     ],
-];
-</code></pre>
+];</code></pre>
 <h3 id="content-display-options">Content Display Options</h3>
 <p>Configure which information is displayed in the user interface:</p>
 <ul>
@@ -586,7 +578,7 @@
 <li><strong>display_template_in_zone_list</strong>: Show template information in zone list. Default: <code>false</code></li>
 <li><strong>show_zone_record_count</strong>: Show record count column in zone lists. Each user can override this in their preferences. Default: <code>true</code></li>
 </ul>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'interface' =&gt; [
         'show_record_id' =&gt; true,
         'show_zone_comments' =&gt; true,
@@ -594,43 +586,39 @@
         'display_serial_in_zone_list' =&gt; true,
         'show_zone_record_count' =&gt; true,
     ],
-];
-</code></pre>
+];</code></pre>
 <h2 id="display-mode">Display Mode</h2>
 <p>Configure how the main index page displays information:</p>
 <ul>
 <li><strong>index_display</strong>: Choose between card view or list view. Options: <code>cards</code>, <code>list</code>. Default: <code>cards</code></li>
 </ul>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'interface' =&gt; [
         'index_display' =&gt; 'list',
     ],
-];
-</code></pre>
+];</code></pre>
 <h2 id="pagination">Pagination</h2>
 <p>Control how many items appear per page:</p>
 <ul>
 <li><strong>rows_per_page</strong>: Number of items displayed per page. Default: <code>10</code></li>
 </ul>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'interface' =&gt; [
         'rows_per_page' =&gt; 20,
     ],
-];
-</code></pre>
+];</code></pre>
 <h2 id="zone-editing-features">Zone Editing Features</h2>
 <p>Enable or disable special editing features:</p>
 <ul>
 <li><strong>add_reverse_record</strong>: Add the checkbox option to create PTR records from A/AAAA record view. Default: <code>true</code></li>
 <li><strong>add_domain_record</strong>: Add the checkbox option to create A/AAAA records from PTR record view. Default: <code>true</code></li>
 </ul>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'interface' =&gt; [
         'add_reverse_record' =&gt; true,
         'add_domain_record' =&gt; true,
     ],
-];
-</code></pre>
+];</code></pre>
 <h2 id="notes">Notes</h2>
 <ul>
 <li>The custom templates use a simple templating system</li>
@@ -643,19 +631,17 @@
 <ol>
 <li>
 <p>Copy your active theme's header to a custom theme directory, e.g.:</p>
-<p><code>bash
-mkdir -p templates/custom
-cp templates/default/header.html templates/custom/header.html</code></p>
+<pre class="highlight"><code class="language-bash">mkdir -p templates/custom
+cp templates/default/header.html templates/custom/header.html</code></pre>
 </li>
 <li>
 <p>Set <code>theme: 'custom'</code> in <code>settings.php</code> (see the configuration block earlier on this page).</p>
 </li>
 <li>
 <p>Open <code>templates/custom/header.html</code> and paste your snippet immediately before <code>&lt;/head&gt;</code>. For example, a Matomo <code>&lt;noscript&gt;</code> tracker:</p>
-<p><code>html
-    &lt;script type="text/javascript" src="{{ base_url_prefix }}/assets/userSettings.js?time={{ file_version }}"&gt;&lt;/script&gt;
+<pre class="highlight"><code class="language-html">    &lt;script type="text/javascript" src="{{ base_url_prefix }}/assets/userSettings.js?time={{ file_version }}"&gt;&lt;/script&gt;
     &lt;noscript&gt;&lt;p&gt;&lt;img src="https://analytics.example.com/matomo.php?idsite=23" style="border:0;" alt="" /&gt;&lt;/p&gt;&lt;/noscript&gt;
-&lt;/head&gt;</code></p>
+&lt;/head&gt;</code></pre>
 <p>The full JavaScript tracker from Matomo/GA/Plausible goes in the same place.</p>
 </li>
 <li>
@@ -664,13 +650,12 @@ cp templates/default/header.html templates/custom/header.html</code></p>
 </ol>
 <h3 id="option-2-reverse-proxy-injection-upgrade-safe">Option 2: Reverse-proxy injection (upgrade-safe)</h3>
 <p>If Poweradmin sits behind Nginx or Apache, inject the snippet at the proxy layer so application updates never touch it. Example for Nginx with <code>ngx_http_sub_module</code>:</p>
-<pre><code class="language-nginx">location / {
+<pre class="highlight"><code class="language-nginx">location / {
     proxy_pass http://poweradmin_upstream;
     sub_filter '&lt;/head&gt;' '&lt;script src="https://analytics.example.com/matomo.js" async&gt;&lt;/script&gt;&lt;/head&gt;';
     sub_filter_once on;
     sub_filter_types text/html;
-}
-</code></pre>
+}</code></pre>
 <p>This is the recommended path for production deployments because it survives Poweradmin upgrades with no patching.</p>
 <h3 id="why-no-configuration-setting">Why no configuration setting?</h3>
 <p>A <code>custom_head_html</code> config value would mean pasting a multi-line HTML/JavaScript block into <code>config/settings.php</code>. The configuration file is intended for short scalar settings, so HTML injection lives in templates or at the proxy layer instead.</p>

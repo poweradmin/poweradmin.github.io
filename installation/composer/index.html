@@ -470,14 +470,13 @@
 <p>See <a href="../../getting-started/requirements/">System Requirements</a> for the full list.</p>
 <h2 id="installing-poweradmin">Installing Poweradmin</h2>
 <p>To install the latest stable version of Poweradmin, you can use the following Composer command:</p>
-<pre><code class="language-sh">composer create-project --no-dev poweradmin/poweradmin
-</code></pre>
+<pre class="highlight"><code class="language-sh">composer create-project --no-dev poweradmin/poweradmin</code></pre>
 <p>This command will create a poweradmin folder in the current directory, download, and set up Poweradmin without
 development dependencies. After running the Composer command, you need to create or modify the configuration file at
 <code>config/settings.php</code> with your database and application settings.</p>
 <h2 id="directory-structure">Directory Structure</h2>
 <p>After installation, you should have the following structure:</p>
-<pre><code>poweradmin/
+<pre class="highlight"><code>poweradmin/
 ├── ...
 ├── config/
 │ ├── settings.defaults.php
@@ -486,11 +485,10 @@ development dependencies. After running the Composer command, you need to create
 ├── ...
 ├── vendor/
 ├── composer.json
-└── composer.lock
-</code></pre>
+└── composer.lock</code></pre>
 <h2 id="basic-configuration">Basic Configuration</h2>
 <p>Here is an example of what the <code>config/settings.php</code> file should look like:</p>
-<pre><code class="language-php">&lt;?php
+<pre class="highlight"><code class="language-php">&lt;?php
 
 return [
     /**
@@ -519,16 +517,14 @@ return [
         'ns1' =&gt; 'ns1.example.com',
         'ns2' =&gt; 'ns2.example.com',
     ],
-];
-</code></pre>
+];</code></pre>
 <p>See <a href="../../configuration/basic/">Basic Configuration</a> for all available options.</p>
 <h2 id="sqlite-database-settings">SQLite Database Settings</h2>
 <p>If you are using SQLite, modify the database section in the <code>config/settings.php</code> file:</p>
-<pre><code class="language-php">'database' =&gt; [
+<pre class="highlight"><code class="language-php">'database' =&gt; [
     'type' =&gt; 'sqlite',
     'file' =&gt; '/path/to/your/sqlite.db',
-],
-</code></pre>
+],</code></pre>
 <p><strong>Important:</strong> Ensure proper file permissions and directory location for the SQLite database file.</p>
 <h2 id="updating-poweradmin">Updating Poweradmin</h2>
 <p>If you installed Poweradmin using <code>composer create-project --no-dev poweradmin/poweradmin</code>, here's how to update it
@@ -536,15 +532,13 @@ later:</p>
 <ol>
 <li>Navigate to your project directory in the terminal:</li>
 </ol>
-<pre><code class="language-sh">cd /path/to/poweradmin
-</code></pre>
+<pre class="highlight"><code class="language-sh">cd /path/to/poweradmin</code></pre>
 <ol>
 <li>If you want to update to a newer version of the Poweradmin package itself, you'll need to modify the version
    constraint in your <code>composer.json</code> file, then run the update command. For specifically updating just the Poweradmin
    package:</li>
 </ol>
-<pre><code class="language-sh">composer update poweradmin/poweradmin --no-dev
-</code></pre>
+<pre class="highlight"><code class="language-sh">composer update poweradmin/poweradmin --no-dev</code></pre>
 <p>If the project has specific update instructions, check the documentation or GitHub repository for any additional steps
 that might be required (such as database migrations).</p>
 <p>The <code>--no-dev</code> flag ensures that development dependencies aren't installed, keeping your production environment clean,
@@ -561,19 +555,16 @@ just like when you initially installed the project.</p>
 <p>If you're not using the web installer or prefer to set up your admin user directly in the database, follow these steps:</p>
 <h3 id="1-generate-a-password-hash">1. Generate a password hash</h3>
 <p>You'll need to create a secure password hash. You can use PHP from the command line to generate one:</p>
-<pre><code class="language-sh">php -r 'echo password_hash("your_secure_password", PASSWORD_BCRYPT, ["cost" =&gt; 12]) . "\n";'
-</code></pre>
+<pre class="highlight"><code class="language-sh">php -r 'echo password_hash("your_secure_password", PASSWORD_BCRYPT, ["cost" =&gt; 12]) . "\n";'</code></pre>
 <p>This matches what the web installer does (bcrypt with cost 12). The default cost is configurable via <code>security.password_cost</code> in <code>config/settings.php</code>.</p>
-<p>Copy the resulting hash which will look something like:</p>
-<pre><code>$2y$10$abcdefghijklmnopqrstuOzxLkPHAUXTCg9vRMf/Q4WrCQI3K.0jK
-</code></pre>
+<p>Copy the resulting hash which will look something like:
+</p><pre class="highlight"><code>$2y$10$abcdefghijklmnopqrstuOzxLkPHAUXTCg9vRMf/Q4WrCQI3K.0jK</code></pre><p></p>
 <h3 id="2-insert-the-admin-user-into-the-database">2. Insert the admin user into the database</h3>
 <p>The same SQL works for MySQL/MariaDB, PostgreSQL, and SQLite:</p>
-<pre><code class="language-sql">INSERT INTO users
+<pre class="highlight"><code class="language-sql">INSERT INTO users
     (username, password, fullname, email, description, perm_templ, active, use_ldap, auth_method)
 VALUES
-    ('admin', 'THE_PASSWORD_HASH_YOU_GENERATED', 'Administrator', 'admin@example.com', 'System Administrator', 1, 1, 0, 'sql');
-</code></pre>
+    ('admin', 'THE_PASSWORD_HASH_YOU_GENERATED', 'Administrator', 'admin@example.com', 'System Administrator', 1, 1, 0, 'sql');</code></pre>
 <blockquote>
 <p><strong>Note:</strong> Administrative rights come from the <code>perm_templ</code> column on the <code>users</code> row, not from a separate join table. Permission template <code>id = 1</code> is the seeded "Administrator template with full rights".</p>
 </blockquote>

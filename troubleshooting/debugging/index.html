@@ -459,18 +459,16 @@
 <p>To help diagnose issues, you can enable various debug settings in your Poweradmin configuration. Below are the available debug settings and how to enable them.</p>
 <h2 id="configuration-location">Configuration Location</h2>
 <p>Debugging settings should be added to your <code>config/settings.php</code> file. If you're still using the legacy configuration in <code>inc/config.inc.php</code>, consider migrating to the new configuration format using the provided script:</p>
-<pre><code class="language-bash">php config/migrate-config.php
-</code></pre>
+<pre class="highlight"><code class="language-bash">php config/migrate-config.php</code></pre>
 <h2 id="available-debug-settings">Available Debug Settings</h2>
 <h3 id="1-php-error-reporting">1. PHP Error Reporting</h3>
 <p>To display PHP errors directly in the browser, add the following lines to your <code>index.php</code> or any other entry point file:</p>
-<pre><code class="language-php">ini_set('display_errors', 1);
+<pre class="highlight"><code class="language-php">ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-</code></pre>
+error_reporting(E_ALL);</code></pre>
 <h3 id="2-logger-settings">2. Logger Settings</h3>
 <p>Configure the logging settings in your <code>config/settings.php</code>:</p>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     // Other settings...
 
     'logging' =&gt; [
@@ -480,12 +478,11 @@ error_reporting(E_ALL);
     ],
 
     // Other settings...
-];
-</code></pre>
+];</code></pre>
 <p>These settings are primarily used for logging authentication issues and other system events.</p>
 <h3 id="3-database-debugging">3. Database Debugging</h3>
 <p>Enable or disable database debugging to log detailed database operations and errors:</p>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     // Other settings...
 
     'database' =&gt; [
@@ -494,11 +491,10 @@ error_reporting(E_ALL);
     ],
 
     // Other settings...
-];
-</code></pre>
+];</code></pre>
 <h3 id="4-dnssec-debugging">4. DNSSEC Debugging</h3>
 <p>Enable or disable DNSSEC debugging to log detailed DNSSEC operations and errors:</p>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     // Other settings...
 
     'dnssec' =&gt; [
@@ -507,11 +503,10 @@ error_reporting(E_ALL);
     ],
 
     // Other settings...
-];
-</code></pre>
+];</code></pre>
 <h3 id="5-ldap-debugging">5. LDAP Debugging</h3>
 <p>Enable or disable LDAP debugging to log detailed LDAP operations and errors:</p>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     // Other settings...
 
     'ldap' =&gt; [
@@ -520,11 +515,10 @@ error_reporting(E_ALL);
     ],
 
     // Other settings...
-];
-</code></pre>
+];</code></pre>
 <h2 id="display-statistics">Display Statistics</h2>
 <p>To see memory usage and execution time at the bottom of each page, enable the display_stats option:</p>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     // Other settings...
 
     'misc' =&gt; [
@@ -533,8 +527,7 @@ error_reporting(E_ALL);
     ],
 
     // Other settings...
-];
-</code></pre>
+];</code></pre>
 <p>By enabling these settings, you can gain more insight into the application's behavior and troubleshoot issues more effectively.</p>
 <h2 id="common-configuration-issues">Common Configuration Issues</h2>
 <h3 id="password-character-issues">Password Character Issues</h3>
@@ -549,9 +542,8 @@ Avoid these characters in database, LDAP, and SMTP passwords:
 - Double quotes (<code>"</code>)
 - Backslashes (<code>\</code>)
 - Line breaks</p>
-<p><strong>Example Error:</strong></p>
-<pre><code>Parse error: syntax error, unexpected 'password' in config/settings.php on line 42
-</code></pre>
+<p><strong>Example Error:</strong>
+</p><pre class="highlight"><code>Parse error: syntax error, unexpected 'password' in config/settings.php on line 42</code></pre><p></p>
 <p><strong>Debugging Steps:</strong>
 1. Check your password for the problematic characters listed above
 2. Use <code>var_dump((new AppConfiguration())-&gt;getAll())</code> to inspect parsed configuration values

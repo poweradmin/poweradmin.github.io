@@ -466,34 +466,30 @@
 <p>Poweradmin 4.0.0 allows you to customize which DNS record types are available when creating or editing records in both domain (forward) zones and reverse zones. This feature helps simplify the user interface by showing only the record types relevant to your specific DNS needs.</p>
 <h2 id="configuration-options">Configuration Options</h2>
 <p>The record type customization is configured in the <code>dns</code> section of your <code>settings.php</code> file with two key settings:</p>
-<pre><code class="language-php">'dns' =&gt; [
+<pre class="highlight"><code class="language-php">'dns' =&gt; [
     // Other DNS settings...
 
     // Record Type Settings
     'domain_record_types' =&gt; null,  // For forward zones (A, AAAA, MX, etc.)
     'reverse_record_types' =&gt; null, // For reverse zones (PTR, etc.)
-]
-</code></pre>
+]</code></pre>
 <h3 id="default-behavior">Default Behavior</h3>
 <p>By default, both settings are set to <code>null</code>, which means Poweradmin will display all supported record types for the respective zone type.</p>
 <h2 id="customizing-domain-forward-zone-record-types">Customizing Domain (Forward) Zone Record Types</h2>
 <p>To customize which record types are available when editing forward zones:</p>
-<pre><code class="language-php">'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT', 'SRV', 'CAA'],
-</code></pre>
+<pre class="highlight"><code class="language-php">'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT', 'SRV', 'CAA'],</code></pre>
 <p>This example shows a typical configuration with common record types. You can add or remove types based on your requirements.</p>
 <h2 id="customizing-reverse-zone-record-types">Customizing Reverse Zone Record Types</h2>
 <p>Similarly, you can customize which record types are available when editing reverse zones:</p>
-<pre><code class="language-php">'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA', 'TXT', 'CNAME'],
-</code></pre>
+<pre class="highlight"><code class="language-php">'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA', 'TXT', 'CNAME'],</code></pre>
 <h2 id="zone-templates">Zone Templates</h2>
 <p>When editing zone templates, Poweradmin will automatically show the combined list of both <code>domain_record_types</code> and <code>reverse_record_types</code> to ensure all potential record types for template use are available.</p>
 <h2 id="pinning-popular-record-types-to-the-top-440">Pinning Popular Record Types to the Top (4.4.0)</h2>
 <p>By default, record types appear alphabetically in selectors. If you regularly create the same handful of record types, you can pin them to the top of every record type dropdown using <code>top_record_types</code>:</p>
-<pre><code class="language-php">'dns' =&gt; [
+<pre class="highlight"><code class="language-php">'dns' =&gt; [
     // Other DNS settings...
     'top_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'TXT', 'MX'],
-]
-</code></pre>
+]</code></pre>
 <p>Pinned types appear first in the order you list them; all remaining types follow alphabetically. Leave the setting as <code>null</code> (the default) for the original alphabetical-only behavior.</p>
 <p>Notes:</p>
 <ul>
@@ -597,20 +593,17 @@
 </ol>
 <h2 id="example-configurations">Example Configurations</h2>
 <h3 id="basic-web-server-configuration">Basic Web Server Configuration</h3>
-<pre><code class="language-php">'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'TXT'],
-'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA'],
-</code></pre>
+<pre class="highlight"><code class="language-php">'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'TXT'],
+'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA'],</code></pre>
 <h3 id="dnssec-focused-configuration">DNSSEC-Focused Configuration</h3>
-<pre><code class="language-php">'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT', 'DNSKEY', 'DS'],
-'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA'],
-</code></pre>
+<pre class="highlight"><code class="language-php">'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT', 'DNSKEY', 'DS'],
+'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA'],</code></pre>
 <h3 id="full-featured-configuration">Full-Featured Configuration</h3>
-<pre><code class="language-php">'domain_record_types' =&gt; [
+<pre class="highlight"><code class="language-php">'domain_record_types' =&gt; [
     'A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT', 'SRV', 'CAA', 
     'DNSKEY', 'DS', 'NAPTR', 'SSHFP', 'TLSA'
 ],
-'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA', 'TXT', 'CNAME'],
-</code></pre>
+'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA', 'TXT', 'CNAME'],</code></pre>
               
 
             </div>

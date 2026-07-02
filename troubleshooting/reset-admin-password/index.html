@@ -451,34 +451,28 @@
 <h2 id="1-generate-a-new-password-hash">1. Generate a New Password Hash</h2>
 <p>Run this on the same host as Poweradmin so the PHP version matches. Replace <code>NewPassword123</code> with the password you want.</p>
 <p><strong>bcrypt (default):</strong></p>
-<pre><code class="language-bash">php -r 'echo password_hash("NewPassword123", PASSWORD_BCRYPT, ["cost" =&gt; 12]) . "\n";'
-</code></pre>
+<pre class="highlight"><code class="language-bash">php -r 'echo password_hash("NewPassword123", PASSWORD_BCRYPT, ["cost" =&gt; 12]) . "\n";'</code></pre>
 <p>The <code>cost</code> value should match <code>security.password_cost</code> in your configuration (default: <code>12</code>).</p>
 <p><strong>argon2i:</strong></p>
-<pre><code class="language-bash">php -r 'echo password_hash("NewPassword123", PASSWORD_ARGON2I) . "\n";'
-</code></pre>
+<pre class="highlight"><code class="language-bash">php -r 'echo password_hash("NewPassword123", PASSWORD_ARGON2I) . "\n";'</code></pre>
 <p><strong>argon2id:</strong></p>
-<pre><code class="language-bash">php -r 'echo password_hash("NewPassword123", PASSWORD_ARGON2ID) . "\n";'
-</code></pre>
+<pre class="highlight"><code class="language-bash">php -r 'echo password_hash("NewPassword123", PASSWORD_ARGON2ID) . "\n";'</code></pre>
 <p>Copy the resulting hash (it begins with <code>$2y$</code>, <code>$argon2i$</code>, or <code>$argon2id$</code>).</p>
 <h3 id="legacy-versions-poweradmin-3x-or-42-and-older">Legacy versions (Poweradmin 3.x, or 4.2 and older)</h3>
 <p>The 3.x LTS branch and pre-4.3 releases still accept <code>md5</code> and <code>md5salt</code> hashes. Use these only if <code>security.password_encryption</code> is set to one of those values; otherwise stick with the bcrypt/argon2 commands above.</p>
 <p><strong>md5</strong> (the default on Poweradmin 2.x and on 3.x installs that were never reconfigured):</p>
-<pre><code class="language-bash">php -r 'echo md5("NewPassword123") . "\n";'
-</code></pre>
+<pre class="highlight"><code class="language-bash">php -r 'echo md5("NewPassword123") . "\n";'</code></pre>
 <p><strong>md5salt</strong> (<code>security.password_encryption = 'md5salt'</code>):</p>
-<pre><code class="language-bash">php -r '$salt = bin2hex(random_bytes(3)); echo md5($salt . "NewPassword123") . ":" . $salt . "\n";'
-</code></pre>
+<pre class="highlight"><code class="language-bash">php -r '$salt = bin2hex(random_bytes(3)); echo md5($salt . "NewPassword123") . ":" . $salt . "\n";'</code></pre>
 <p>The stored format is <code>md5(salt + password) + ":" + salt</code>. Any printable salt works; the verifier splits on the <code>:</code>.</p>
 <h2 id="2-update-the-user-record">2. Update the User Record</h2>
 <p>Open your database client and run the appropriate statement. The <code>users</code> table is the same on MySQL/MariaDB, PostgreSQL, and SQLite.</p>
-<pre><code class="language-sql">UPDATE users
+<pre class="highlight"><code class="language-sql">UPDATE users
 SET password = '&lt;paste-hash-here&gt;',
     active = 1,
     use_ldap = 0,
     auth_method = 'sql'
-WHERE username = 'admin';
-</code></pre>
+WHERE username = 'admin';</code></pre>
 <p>Notes:</p>
 <ul>
 <li>Quote the hash with single quotes. Bcrypt and argon2 hashes contain <code>$</code> characters but no embedded single quotes, so they are safe inside <code>'...'</code>.</li>
@@ -488,13 +482,11 @@ WHERE username = 'admin';
 </ul>
 <h2 id="3-clear-mfa-only-if-you-lost-the-device">3. Clear MFA (Only If You Lost the Device)</h2>
 <p>If multi-factor authentication is enabled for that user and the second factor is no longer available, disable it before logging in. MFA state lives in the separate <code>user_mfa</code> table:</p>
-<pre><code class="language-sql">DELETE FROM user_mfa WHERE user_id = (SELECT id FROM users WHERE username = 'admin');
-</code></pre>
+<pre class="highlight"><code class="language-sql">DELETE FROM user_mfa WHERE user_id = (SELECT id FROM users WHERE username = 'admin');</code></pre>
 <p>Removing the row is the safest option - the next login will not prompt for a second factor, and you can re-enrol MFA from the user profile afterwards. If you prefer to keep the secret on file (for example to restore it later), update the row instead:</p>
-<pre><code class="language-sql">UPDATE user_mfa
+<pre class="highlight"><code class="language-sql">UPDATE user_mfa
 SET enabled = 0
-WHERE user_id = (SELECT id FROM users WHERE username = 'admin');
-</code></pre>
+WHERE user_id = (SELECT id FROM users WHERE username = 'admin');</code></pre>
 <h2 id="4-log-in-and-change-the-password">4. Log In and Change the Password</h2>
 <p>Log in with the temporary password, then change it through the web UI under your user profile. Poweradmin will re-hash the password using the currently configured algorithm and cost, which keeps the stored hash aligned with <code>security.password_encryption</code> and <code>security.password_cost</code>.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>

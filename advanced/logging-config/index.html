@@ -472,36 +472,32 @@
 <p>Poweradmin supports several logging methods that can be combined for comprehensive monitoring:</p>
 <h3 id="1-native-logging">1. Native Logging</h3>
 <p>Uses PHP's <code>error_log()</code> function to write logs to the configured PHP error log destination.</p>
-<pre><code class="language-php">'logging' =&gt; [
+<pre class="highlight"><code class="language-php">'logging' =&gt; [
     'type' =&gt; 'native',
     'level' =&gt; 'info',
     // other settings...
-],
-</code></pre>
+],</code></pre>
 <h3 id="2-null-logging">2. Null Logging</h3>
 <p>Disables all application logging (except database logging if enabled separately).</p>
-<pre><code class="language-php">'logging' =&gt; [
+<pre class="highlight"><code class="language-php">'logging' =&gt; [
     'type' =&gt; 'null',
     // other settings...
-],
-</code></pre>
+],</code></pre>
 <h3 id="3-database-logging">3. Database Logging</h3>
 <p>Logs user actions and zone changes to the Poweradmin database. This is independent of the main logger type.</p>
-<pre><code class="language-php">'logging' =&gt; [
+<pre class="highlight"><code class="language-php">'logging' =&gt; [
     // Can be combined with any type
     'database_enabled' =&gt; true, 
     // other settings...
-],
-</code></pre>
+],</code></pre>
 <h3 id="4-syslog-logging">4. Syslog Logging</h3>
 <p>Logs authentication and security events to the system's syslog.</p>
-<pre><code class="language-php">'logging' =&gt; [
+<pre class="highlight"><code class="language-php">'logging' =&gt; [
     'syslog_enabled' =&gt; true,
     'syslog_identity' =&gt; 'poweradmin',    // Program identifier in syslog
     'syslog_facility' =&gt; LOG_USER,        // Standard PHP syslog facility constant
     // other settings...
-],
-</code></pre>
+],</code></pre>
 <p>Authentication events use a fixed, parseable format
 (<code>client_ip:X user:Y operation:Z auth_method:W ...</code>) - see
 <a href="../fail2ban/">fail2ban Integration</a> for the full event taxonomy and a
@@ -509,34 +505,31 @@ ready-to-use filter.</p>
 <h2 id="environment-specific-configurations">Environment-Specific Configurations</h2>
 <h3 id="production-environment-configuration">Production Environment Configuration</h3>
 <p>For a standard production environment:</p>
-<pre><code class="language-php">'logging' =&gt; [
+<pre class="highlight"><code class="language-php">'logging' =&gt; [
     'type' =&gt; 'native',
     'level' =&gt; 'warning',        // Only log warning and above
     'database_enabled' =&gt; true,  // Track user actions and zone changes
     'syslog_enabled' =&gt; true,    // Log security events to syslog
     'syslog_identity' =&gt; 'poweradmin',
     'syslog_facility' =&gt; LOG_LOCAL0,
-],
-</code></pre>
+],</code></pre>
 <h3 id="development-environment-configuration">Development Environment Configuration</h3>
 <p>For a development environment:</p>
-<pre><code class="language-php">'logging' =&gt; [
+<pre class="highlight"><code class="language-php">'logging' =&gt; [
     'type' =&gt; 'native',
     'level' =&gt; 'debug',         // Log everything including debug messages
     'database_enabled' =&gt; true, // Track changes for debugging
     'syslog_enabled' =&gt; false,  // Usually not needed in development
-],
-</code></pre>
+],</code></pre>
 <h3 id="minimal-logging-configuration">Minimal Logging Configuration</h3>
 <p>For minimal performance impact:</p>
-<pre><code class="language-php">'logging' =&gt; [
+<pre class="highlight"><code class="language-php">'logging' =&gt; [
     'type' =&gt; 'null',            // Disable application logging
     'database_enabled' =&gt; false, // Disable database logging
     'syslog_enabled' =&gt; true,    // Keep security logging
     'syslog_identity' =&gt; 'poweradmin',
     'syslog_facility' =&gt; LOG_USER,
-],
-</code></pre>
+],</code></pre>
 <h2 id="best-practices">Best Practices</h2>
 <ol>
 <li><strong>Production environments</strong>: Use <code>warning</code> or <code>error</code> levels to avoid excessive logging</li>

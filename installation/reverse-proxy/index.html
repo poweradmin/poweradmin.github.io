@@ -461,12 +461,11 @@
 <h2 id="client-ip-resolution">Client IP Resolution</h2>
 <p>When running behind a reverse proxy, the container sees the proxy's IP address instead of the real client IP. This affects both access logs (<code>docker logs</code>) and application audit logs.</p>
 <p>To fix this, set the <code>TRUSTED_PROXIES</code> environment variable so Caddy resolves the real client IP from proxy headers:</p>
-<pre><code class="language-yaml">services:
+<pre class="highlight"><code class="language-yaml">services:
   poweradmin:
     image: poweradmin/poweradmin:stable
     environment:
-      TRUSTED_PROXIES: private_ranges
-</code></pre>
+      TRUSTED_PROXIES: private_ranges</code></pre>
 <p>The <code>private_ranges</code> value trusts all private IP ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) and is recommended for most Docker deployments. For specific CIDRs, use a comma-separated list: <code>TRUSTED_PROXIES=172.17.0.0/16,10.0.0.0/8</code>.</p>
 <p>Both <code>X-Forwarded-For</code> and <code>X-Real-IP</code> headers are supported. Your reverse proxy must forward at least one of these headers - see the examples below for proxy-specific configuration.</p>
 <h3 id="two-trust-layers-docker">Two trust layers (Docker)</h3>
@@ -478,14 +477,13 @@
 <p>The <code>private_ranges</code> keyword applies to Caddy only; the application always trusts private/loopback peers. Set <code>PA_TRUSTED_PROXIES</code> if the application allowlist must differ from the Caddy list.</p>
 <h3 id="non-docker-installs">Non-Docker installs</h3>
 <p>Outside Docker, set the application allowlist directly in <code>config/settings.php</code>. This is required when the proxy connects from a public address:</p>
-<pre><code class="language-php">'security' =&gt; [
+<pre class="highlight"><code class="language-php">'security' =&gt; [
     'trusted_proxies' =&gt; ['203.0.113.10', '2001:db8::/32'],
-],
-</code></pre>
+],</code></pre>
 <p>See <a href="../../configuration/security-policies/">Security Policies</a> for details.</p>
 <h2 id="traefik">Traefik</h2>
 <h3 id="basic-setup-http-only">Basic Setup (HTTP only)</h3>
-<pre><code class="language-yaml">services:
+<pre class="highlight"><code class="language-yaml">services:
   traefik:
     image: traefik:v3.3
     command:
@@ -511,11 +509,10 @@
       - traefik.http.services.poweradmin.loadbalancer.server.port=80
 
 volumes:
-  poweradmin-db:
-</code></pre>
+  poweradmin-db:</code></pre>
 <h3 id="https-with-http-to-https-redirect">HTTPS with HTTP-to-HTTPS Redirect</h3>
 <p>When using HTTPS, you need two routers: one for the <code>websecure</code> entrypoint to serve traffic, and one for the <code>web</code> entrypoint to redirect HTTP to HTTPS.</p>
-<pre><code class="language-yaml">services:
+<pre class="highlight"><code class="language-yaml">services:
   traefik:
     image: traefik:v3.3
     command:
@@ -555,22 +552,20 @@ volumes:
 
 volumes:
   poweradmin-db:
-  letsencrypt:
-</code></pre>
+  letsencrypt:</code></pre>
 <p>A common mistake is defining the <code>redirect-https</code> middleware without creating an HTTP router that uses it. Without the HTTP router (<code>poweradmin_http</code> above), requests on port 80 have no matching route and Traefik returns 404.</p>
 <h3 id="global-http-to-https-redirect">Global HTTP-to-HTTPS Redirect</h3>
 <p>Instead of adding redirect labels to each service, you can configure a global redirect in Traefik's static configuration:</p>
-<pre><code class="language-yaml">services:
+<pre class="highlight"><code class="language-yaml">services:
   traefik:
     command:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-</code></pre>
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"</code></pre>
 <p>With this approach, you only need the <code>websecure</code> router on each service.</p>
 <h2 id="nginx">Nginx</h2>
-<pre><code class="language-nginx">server {
+<pre class="highlight"><code class="language-nginx">server {
     listen 80;
     server_name poweradmin.example.com;
     return 301 https://$host$request_uri;
@@ -590,16 +585,14 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="caddy">Caddy</h2>
-<pre><code>poweradmin.example.com {
+<pre class="highlight"><code>poweradmin.example.com {
     reverse_proxy localhost:8080
-}
-</code></pre>
+}</code></pre>
 <p>Caddy automatically provisions TLS certificates via Let's Encrypt.</p>
 <h2 id="apache">Apache</h2>
-<pre><code class="language-apache">&lt;VirtualHost *:80&gt;
+<pre class="highlight"><code class="language-apache">&lt;VirtualHost *:80&gt;
     ServerName poweradmin.example.com
     Redirect permanent / https://poweradmin.example.com/
 &lt;/VirtualHost&gt;
@@ -614,8 +607,7 @@ server {
     ProxyPreserveHost On
     ProxyPass / http://localhost:8080/
     ProxyPassReverse / http://localhost:8080/
-&lt;/VirtualHost&gt;
-</code></pre>
+&lt;/VirtualHost&gt;</code></pre>
 <p>Requires <code>mod_proxy</code>, <code>mod_proxy_http</code>, and <code>mod_ssl</code> modules.</p>
               
 

@@ -490,27 +490,23 @@
 <h3 id="2-import-database-structure">2. Import Database Structure</h3>
 <p>Import the Poweradmin database structure as a database superuser. The schema bundles the tables Poweradmin needs alongside the PowerDNS tables your authoritative server already uses.</p>
 <h4 id="for-mysqlmariadb">For MySQL/MariaDB:</h4>
-<pre><code class="language-bash">mysql -u root -p powerdns &lt; sql/poweradmin-mysql-db-structure.sql
-</code></pre>
+<pre class="highlight"><code class="language-bash">mysql -u root -p powerdns &lt; sql/poweradmin-mysql-db-structure.sql</code></pre>
 <h4 id="for-postgresql">For PostgreSQL:</h4>
-<pre><code class="language-bash">psql -U postgres -d powerdns -f sql/poweradmin-pgsql-db-structure.sql
-</code></pre>
+<pre class="highlight"><code class="language-bash">psql -U postgres -d powerdns -f sql/poweradmin-pgsql-db-structure.sql</code></pre>
 <h4 id="for-sqlite">For SQLite:</h4>
-<pre><code class="language-bash">sqlite3 /path/to/your/powerdns.db &lt; sql/poweradmin-sqlite-db-structure.sql
-</code></pre>
+<pre class="highlight"><code class="language-bash">sqlite3 /path/to/your/powerdns.db &lt; sql/poweradmin-sqlite-db-structure.sql</code></pre>
 <blockquote>
 <p><strong>Note:</strong> Unlike the web installer, importing the schema does not create an admin user automatically. You will create the <code>admin</code> account by hand in step 4. Until then, there is no way to log in.</p>
 </blockquote>
 <h3 id="3-create-database-user">3. Create Database User</h3>
 <p>After importing the schema, create a database user with SELECT, INSERT, UPDATE, DELETE rights on the database. Grant the runtime user only what it needs - never reuse the superuser credentials from step 2 in <code>config/settings.php</code>.</p>
 <h4 id="for-mysqlmariadb_1">For MySQL/MariaDB:</h4>
-<pre><code class="language-sql">CREATE USER 'poweradmin'@'localhost' IDENTIFIED BY 'secure_password';
+<pre class="highlight"><code class="language-sql">CREATE USER 'poweradmin'@'localhost' IDENTIFIED BY 'secure_password';
 GRANT SELECT, INSERT, UPDATE, DELETE ON powerdns.* TO 'poweradmin'@'localhost';
-FLUSH PRIVILEGES;
-</code></pre>
+FLUSH PRIVILEGES;</code></pre>
 <h4 id="for-postgresql_1">For PostgreSQL:</h4>
 <p>Run these as the <code>postgres</code> superuser inside the target database (<code>\c powerdns</code> in <code>psql</code>). The <code>ALTER DEFAULT PRIVILEGES</code> step is required so that any tables added by future schema updates are automatically covered:</p>
-<pre><code class="language-sql">CREATE USER poweradmin WITH PASSWORD 'secure_password';
+<pre class="highlight"><code class="language-sql">CREATE USER poweradmin WITH PASSWORD 'secure_password';
 GRANT CONNECT ON DATABASE powerdns TO poweradmin;
 GRANT USAGE ON SCHEMA public TO poweradmin;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO poweradmin;
@@ -518,18 +514,15 @@ GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public TO poweradmin;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO poweradmin;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
-    GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO poweradmin;
-</code></pre>
+    GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO poweradmin;</code></pre>
 <h3 id="4-create-the-admin-user">4. Create the Admin User</h3>
 <p>The web installer normally creates the built-in <code>admin</code> account for you. Since you are skipping the installer, insert it by hand. The wizard hashes the password with PHP's <code>password_hash()</code> and bcrypt by default - do the same for compatibility:</p>
-<pre><code class="language-sh">php -r 'echo password_hash("your_admin_password", PASSWORD_BCRYPT, ["cost" =&gt; 12]) . "\n";'
-</code></pre>
+<pre class="highlight"><code class="language-sh">php -r 'echo password_hash("your_admin_password", PASSWORD_BCRYPT, ["cost" =&gt; 12]) . "\n";'</code></pre>
 <p>Copy the resulting hash (it will start with <code>$2y$</code>) and insert the row, pointing <code>perm_templ</code> at the seeded Administrator template (id <code>1</code>):</p>
-<pre><code class="language-sql">INSERT INTO users
+<pre class="highlight"><code class="language-sql">INSERT INTO users
     (username, password, fullname, email, description, perm_templ, active, use_ldap, auth_method)
 VALUES
-    ('admin', '&lt;PASTE_HASH_HERE&gt;', 'Administrator', 'admin@example.net', 'Administrator with full rights.', 1, 1, 0, 'sql');
-</code></pre>
+    ('admin', '&lt;PASTE_HASH_HERE&gt;', 'Administrator', 'admin@example.net', 'Administrator with full rights.', 1, 1, 0, 'sql');</code></pre>
 <blockquote>
 <p><strong>Note:</strong> Administrative rights come from the <code>perm_templ</code> column on the <code>users</code> row, not from a separate join table. Permission template <code>id = 1</code> is the seeded "Administrator template with full rights".</p>
 </blockquote>
@@ -538,7 +531,7 @@ VALUES
 <blockquote>
 <p><strong>Warning:</strong> When creating passwords for database, LDAP, or SMTP authentication, avoid using single quotes (<code>'</code>), double quotes (<code>"</code>), backslashes (<code>\</code>), and line breaks. These characters can cause configuration file generation to fail during installation with cryptic PHP syntax errors.</p>
 </blockquote>
-<pre><code class="language-php">&lt;?php
+<pre class="highlight"><code class="language-php">&lt;?php
 /**
  * Poweradmin Custom Settings Configuration File
  */
@@ -571,8 +564,7 @@ return [
         'ns1' =&gt; 'ns1.example.com',
         'ns2' =&gt; 'ns2.example.com',
     ],
-];
-</code></pre>
+];</code></pre>
 <p>For detailed configuration options, see <a href="../../configuration/basic/">Basic Configuration</a> and <a href="../../configuration/database/">Database Configuration</a>.</p>
 <h3 id="6-secure-the-installation">6. Secure the Installation</h3>
 <ul>
@@ -586,12 +578,11 @@ return [
 <ol>
 <li>Enable the required Apache modules:</li>
 </ol>
-<pre><code class="language-bash">a2enmod rewrite headers
-</code></pre>
+<pre class="highlight"><code class="language-bash">a2enmod rewrite headers</code></pre>
 <ol>
 <li>Configure your VirtualHost. If you are using PHP-FPM instead of <code>mod_php</code>, also include the <code>SetHandler</code> block shown below to forward <code>.php</code> requests to the FPM socket:</li>
 </ol>
-<pre><code class="language-apache">&lt;VirtualHost *:80&gt;
+<pre class="highlight"><code class="language-apache">&lt;VirtualHost *:80&gt;
     ServerName your-domain.com
     DocumentRoot /path/to/poweradmin
 
@@ -611,8 +602,7 @@ return [
     RewriteEngine On
     RewriteRule ^/update(.*)$ /dynamic_update.php [L]
     RewriteRule ^/nic/update(.*)$ /dynamic_update.php [L]
-&lt;/VirtualHost&gt;
-</code></pre>
+&lt;/VirtualHost&gt;</code></pre>
 <blockquote>
 <p><strong>Warning:</strong> If you see 404 errors when accessing Poweradmin (e.g., on <code>/login</code>), check that: (1) <code>mod_rewrite</code> is enabled: <code>a2enmod rewrite &amp;&amp; systemctl restart apache2</code>, (2) <code>AllowOverride All</code> is set in your VirtualHost or Apache configuration, (3) The <code>.htaccess</code> file is present in the Poweradmin root directory.</p>
 </blockquote>

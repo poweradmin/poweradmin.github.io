@@ -479,10 +479,9 @@
 <li><strong>Check release notes for SQL updates</strong> - Only run database migration scripts if explicitly mentioned in the release notes for that version</li>
 <li><strong>Clear PHP opcache</strong> - If your environment uses opcache, restart PHP-FPM or your web server to clear cached bytecode:</li>
 </ol>
-<pre><code class="language-bash">sudo systemctl restart php-fpm
+<pre class="highlight"><code class="language-bash">sudo systemctl restart php-fpm
 # or
-sudo systemctl restart apache2
-</code></pre>
+sudo systemctl restart apache2</code></pre>
 <ol>
 <li><strong>Verify functionality</strong> - Test login and basic operations</li>
 </ol>
@@ -494,16 +493,15 @@ sudo systemctl restart apache2
 <li>The same file replacement process applies as major upgrades</li>
 </ul>
 <p><strong>Alternative: Symlink Strategy</strong></p>
-<p>For easier rollbacks, consider using symlinks:</p>
-<pre><code class="language-bash"># Extract new version to versioned directory
+<p>For easier rollbacks, consider using symlinks:
+</p><pre class="highlight"><code class="language-bash"># Extract new version to versioned directory
 tar -xzf poweradmin-4.0.4.tar.gz -C /var/www/
 
 # Update symlink to point to new version
 ln -sfn /var/www/poweradmin-4.0.4 /var/www/poweradmin
 
 # Keep config outside versioned directories
-ln -s /etc/poweradmin/settings.php /var/www/poweradmin/config/settings.php
-</code></pre>
+ln -s /etc/poweradmin/settings.php /var/www/poweradmin/config/settings.php</code></pre><p></p>
 <p>This allows quick rollback by simply changing the symlink back to the previous version.</p>
 <h2 id="important-considerations">Important Considerations</h2>
 <ul>

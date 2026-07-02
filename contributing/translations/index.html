@@ -409,6 +409,18 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#steps">Steps</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#tips">Tips</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#checking-translation-progress">Checking Translation Progress</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tools">Tools</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#poedit">Poedit</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#command-line">Command-line</a>
+    </li>
         </ul>
     </li>
     </ul>
@@ -519,7 +531,7 @@
 </tbody>
 </table>
 <h2 id="file-structure">File Structure</h2>
-<pre><code>locale/
+<pre class="highlight"><code>locale/
 ├── i18n-template-php.pot          # Master template (source of truth)
 ├── en_EN/
 │   └── LC_MESSAGES/
@@ -529,8 +541,7 @@
 │   └── LC_MESSAGES/
 │       ├── messages.po
 │       └── messages.mo
-└── ...
-</code></pre>
+└── ...</code></pre>
 <ul>
 <li><strong><code>.pot</code></strong> (PO Template) — Master template extracted from source code containing all translatable strings.</li>
 <li><strong><code>.po</code></strong> (Portable Object) — Human-editable translation file for each locale.</li>
@@ -547,21 +558,18 @@
 <ol>
 <li>
 <p><strong>Fork and clone the repository:</strong></p>
-<p><code>bash
-git clone https://github.com/poweradmin/poweradmin.git
-cd poweradmin</code></p>
+<pre class="highlight"><code class="language-bash">git clone https://github.com/poweradmin/poweradmin.git
+cd poweradmin</code></pre>
 </li>
 <li>
 <p><strong>Open the PO file</strong> for your language, for example German:</p>
-<p><code>locale/de_DE/LC_MESSAGES/messages.po</code></p>
+<pre class="highlight"><code>locale/de_DE/LC_MESSAGES/messages.po</code></pre>
 </li>
 <li>
 <p><strong>Translate the strings.</strong> Each entry looks like this:</p>
-<p>```po</p>
-<h1 id="libapplicationcontrollerzonecontrollerphp45">: lib/Application/Controller/ZoneController.php:45</h1>
-<p>msgid "Zone has been added successfully."
-msgstr "Zone wurde erfolgreich hinzugefügt."
-```</p>
+<pre class="highlight"><code class="language-po">#: lib/Application/Controller/ZoneController.php:45
+msgid "Zone has been added successfully."
+msgstr "Zone wurde erfolgreich hinzugefügt."</code></pre>
 <ul>
 <li><code>#:</code> shows the source file and line where the string is used</li>
 <li><code>msgid</code> is the original English string (do not modify)</li>
@@ -570,26 +578,22 @@ msgstr "Zone wurde erfolgreich hinzugefügt."
 </li>
 <li>
 <p><strong>Handle format strings</strong> carefully. Strings with <code>%s</code>, <code>%d</code>, or <code>%1$s</code> placeholders must keep those placeholders intact:</p>
-<p>```po</p>
-<h1 id="php-format">, php-format</h1>
-<p>msgid "There are %d zones in the database."
-msgstr "Es gibt %d Zonen in der Datenbank."
-```</p>
+<pre class="highlight"><code class="language-po">#, php-format
+msgid "There are %d zones in the database."
+msgstr "Es gibt %d Zonen in der Datenbank."</code></pre>
 </li>
 <li>
 <p><strong>Handle plural forms.</strong> Some strings have plural variants:</p>
-<p><code>po
-msgid "One zone"
+<pre class="highlight"><code class="language-po">msgid "One zone"
 msgid_plural "%d zones"
 msgstr[0] "Eine Zone"
-msgstr[1] "%d Zonen"</code></p>
+msgstr[1] "%d Zonen"</code></pre>
 <p>The number of <code>msgstr[]</code> entries depends on the language's plural rules defined in the PO file header.</p>
 </li>
 <li>
 <p><strong>Compile your changes:</strong></p>
-<p><code>bash
-msgfmt locale/de_DE/LC_MESSAGES/messages.po \
-    -o locale/de_DE/LC_MESSAGES/messages.mo</code></p>
+<pre class="highlight"><code class="language-bash">msgfmt locale/de_DE/LC_MESSAGES/messages.po \
+    -o locale/de_DE/LC_MESSAGES/messages.mo</code></pre>
 </li>
 <li>
 <p><strong>Submit a pull request</strong> with both the <code>.po</code> and <code>.mo</code> files.</p>
@@ -606,24 +610,21 @@ msgfmt locale/de_DE/LC_MESSAGES/messages.po \
 </ul>
 <h2 id="checking-translation-progress">Checking Translation Progress</h2>
 <p>To see how complete a translation is:</p>
-<pre><code class="language-bash">msgfmt --statistics locale/de_DE/LC_MESSAGES/messages.po
-</code></pre>
+<pre class="highlight"><code class="language-bash">msgfmt --statistics locale/de_DE/LC_MESSAGES/messages.po</code></pre>
 <p>Output example:</p>
-<pre><code>2650 translated messages, 45 fuzzy translations, 25 untranslated messages.
-</code></pre>
+<pre class="highlight"><code>2650 translated messages, 45 fuzzy translations, 25 untranslated messages.</code></pre>
 <h2 id="tools">Tools</h2>
 <h3 id="poedit">Poedit</h3>
 <p><a href="https://poedit.net/">Poedit</a> is a cross-platform PO file editor with syntax highlighting, validation, and translation memory. It compiles <code>.mo</code> files automatically on save.</p>
 <h3 id="command-line">Command-line</h3>
-<pre><code class="language-bash"># Compile PO to MO
+<pre class="highlight"><code class="language-bash"># Compile PO to MO
 msgfmt messages.po -o messages.mo
 
 # Check PO file for errors
 msgfmt --check messages.po
 
 # Show translation statistics
-msgfmt --statistics messages.po
-</code></pre>
+msgfmt --statistics messages.po</code></pre>
               
 
             </div>

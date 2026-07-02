@@ -508,19 +508,17 @@
 <p>When debugging, always append <code>&amp;verbose=1</code> so you get the readable equivalent instead of a two-letter code.</p>
 <h3 id="special-values">Special Values</h3>
 <p>You can use <code>whatismyip</code> for the IP parameters to automatically detect your address:</p>
-<pre><code class="language-bash">curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=whatismyip&amp;verbose=1"
-</code></pre>
+<pre class="highlight"><code class="language-bash">curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=whatismyip&amp;verbose=1"</code></pre>
 <h3 id="multiple-ip-management">Multiple IP Management</h3>
 <p>The system supports managing multiple IP addresses per host:</p>
-<pre><code class="language-bash"># Update multiple IPv4 addresses
+<pre class="highlight"><code class="language-bash"># Update multiple IPv4 addresses
 curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1,192.0.2.2"
 
 # Update multiple IPv6 addresses
 curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip6=2001:db8::1,2001:db8::2"
 
 # Update both IPv4 and IPv6 with cleanup
-curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1,192.0.2.2&amp;myip6=2001:db8::1,2001:db8::2&amp;dualstack_update=1"
-</code></pre>
+curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1,192.0.2.2&amp;myip6=2001:db8::1,2001:db8::2&amp;dualstack_update=1"</code></pre>
 <p>If any of these return a short error code like <code>!yours</code> or <code>badauth2</code>, re-run the same URL with <code>&amp;verbose=1</code> appended to get a readable message.</p>
 <p>When using multiple IPs:</p>
 <ul>
@@ -534,9 +532,8 @@ curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;m
 <li>Download the dynamic DNS client script</li>
 <li>Make it executable and run:</li>
 </ol>
-<pre><code class="language-bash">chmod 755 dynamic_dns_client.sh
-./dynamic_dns_client.sh
-</code></pre>
+<pre class="highlight"><code class="language-bash">chmod 755 dynamic_dns_client.sh
+./dynamic_dns_client.sh</code></pre>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../../screenshots/dynamic_update05.png" data-desc-position="bottom"><img alt="Shell Script Configuration" src="../../../screenshots/dynamic_update05.png"></a></p>
 <h2 id="basic-authentication">Basic Authentication</h2>
 <p>You can also create a client that uses HTTP basic authentication with username and password.</p>
@@ -545,54 +542,46 @@ curl "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;m
 <p><code>ddclient</code> and other dyndns2 clients expect the update endpoint at <code>/nic/update</code>. Poweradmin exposes the endpoint at <code>/dynamic_update.php</code>, so you need a small web-server rewrite to make stock clients work.</p>
 <h3 id="apache">Apache</h3>
 <p>Add to your virtual host (or <code>.htaccess</code> if rewrites are enabled):</p>
-<pre><code class="language-apache">RewriteEngine On
-RewriteRule ^/?nic/update$ /dynamic_update.php [QSA,L]
-</code></pre>
+<pre class="highlight"><code class="language-apache">RewriteEngine On
+RewriteRule ^/?nic/update$ /dynamic_update.php [QSA,L]</code></pre>
 <h3 id="nginx">nginx</h3>
 <p>Inside the <code>server { ... }</code> block that serves Poweradmin:</p>
-<pre><code class="language-nginx">location = /nic/update {
+<pre class="highlight"><code class="language-nginx">location = /nic/update {
     rewrite ^ /dynamic_update.php last;
-}
-</code></pre>
+}</code></pre>
 <h3 id="ddclientconf"><code>ddclient.conf</code></h3>
-<pre><code>protocol=dyndns2
+<pre class="highlight"><code>protocol=dyndns2
 use=web, web=https://dns.example.com/addons/clientip.php
 ssl=yes
 server=dns.example.com
 login=ddns-user
 password='your-password'
-home.example.com
-</code></pre>
+home.example.com</code></pre>
 <p>Run <code>ddclient -daemon=0 -debug -verbose -noquiet</code> to watch the exchange. The server returns either <code>good\n</code> (no IP suffix on older builds) or the dyndns2-compliant <code>good &lt;ip&gt;\n</code> depending on Poweradmin version. Both forms are accepted by <code>ddclient</code>.</p>
 <h3 id="other-clients">Other clients</h3>
 <p><code>inadyn</code>, OPNsense's built-in DDNS client, and most router firmwares can target the same endpoint. Configure the service URL as <code>https://dns.example.com/nic/update?hostname=%h&amp;myip=%i</code> (or the equivalent template for your client) and set the protocol to <code>dyndns2</code> or "custom".</p>
 <h2 id="client-script-installation">Client Script Installation</h2>
 <h3 id="shell-script">Shell Script</h3>
-<pre><code class="language-bash">chmod 755 dynamic_dns_client.sh
-./dynamic_dns_client.sh
-</code></pre>
+<pre class="highlight"><code class="language-bash">chmod 755 dynamic_dns_client.sh
+./dynamic_dns_client.sh</code></pre>
 <h3 id="python-script">Python Script</h3>
 <ol>
 <li>Install required dependencies:</li>
 </ol>
-<pre><code class="language-bash">pip install requests
-</code></pre>
+<pre class="highlight"><code class="language-bash">pip install requests</code></pre>
 <ol>
 <li>Run the script:</li>
 </ol>
-<pre><code class="language-bash">python dynamic_dns_client.py
-</code></pre>
+<pre class="highlight"><code class="language-bash">python dynamic_dns_client.py</code></pre>
 <h3 id="perl-script">Perl Script</h3>
 <ol>
 <li>Install required modules:</li>
 </ol>
-<pre><code class="language-bash">cpan install LWP::UserAgent
-</code></pre>
+<pre class="highlight"><code class="language-bash">cpan install LWP::UserAgent</code></pre>
 <ol>
 <li>Run the script:</li>
 </ol>
-<pre><code class="language-bash">perl dynamic_dns_client.pl
-</code></pre>
+<pre class="highlight"><code class="language-bash">perl dynamic_dns_client.pl</code></pre>
               
 
             </div>

@@ -534,7 +534,7 @@
 <li>Configure your PowerDNS server with API access</li>
 <li>Update your Poweradmin configuration file with the following settings:</li>
 </ol>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'dnssec' =&gt; [
         'enabled' =&gt; true,
         'debug' =&gt; false,
@@ -543,8 +543,7 @@
         'url' =&gt; 'http://localhost:8081',
         'key' =&gt; 'your-api-key',
     ],
-];
-</code></pre>
+];</code></pre>
 <p>The API method provides several advantages:
 - No need to configure special permissions for the web server user
 - More secure as it doesn't require shell access
@@ -552,7 +551,7 @@
 - Full support for all DNSSEC operations</p>
 <h3 id="option-2-pdnsutil-method-legacy">Option 2: pdnsutil Method (Legacy)</h3>
 <p>If you can't use the API method, you can still use the legacy pdnsutil approach:</p>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'dnssec' =&gt; [
         'enabled' =&gt; true,
         'debug' =&gt; false,
@@ -562,27 +561,23 @@
         'url' =&gt; '',
         'key' =&gt; '',
     ],
-];
-</code></pre>
+];</code></pre>
 <p>Configure permissions for the web server user to run pdnsutil:</p>
-<p>For example, on Ubuntu with Apache:</p>
-<pre><code class="language-bash"># Add the web server user to the root group
+<p>For example, on Ubuntu with Apache:
+</p><pre class="highlight"><code class="language-bash"># Add the web server user to the root group
 adduser www-data root
 
 # Make pdns.conf readable by the web server user
-chmod 640 /etc/powerdns/pdns.conf
-</code></pre>
+chmod 640 /etc/powerdns/pdns.conf</code></pre><p></p>
 <p><strong>Important Note</strong>: The pdnsutil method requires the web server user to have access to the PowerDNS configuration file, which poses security risks. The API method is strongly recommended.</p>
 <h2 id="powerdns-configuration">PowerDNS Configuration</h2>
 <p>Make sure to enable DNSSEC in your PowerDNS configuration:</p>
-<pre><code class="language-conf">dnssec=yes
+<pre class="highlight"><code class="language-conf">dnssec=yes
 api=yes
-api-key=your_api_key
-</code></pre>
+api-key=your_api_key</code></pre>
 <h2 id="verification">Verification</h2>
 <p>Check DNSSEC status using:</p>
-<pre><code class="language-bash">dig +dnssec example.com SOA
-</code></pre>
+<pre class="highlight"><code class="language-bash">dig +dnssec example.com SOA</code></pre>
 <h2 id="migration">Migration</h2>
 <p>If you're currently using the pdnsutil method, it's recommended to migrate to the API method:</p>
 <ol>

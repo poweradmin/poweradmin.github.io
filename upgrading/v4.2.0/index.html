@@ -592,36 +592,30 @@
 <li>Database backup</li>
 </ul>
 <h3 id="step-1-backup-your-data">Step 1: Backup Your Data</h3>
-<pre><code class="language-bash"># MySQL/MariaDB
+<pre class="highlight"><code class="language-bash"># MySQL/MariaDB
 mysqldump -u username -p poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
 
 # PostgreSQL
 pg_dump -h localhost -U username poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
 
 # SQLite
-cp /path/to/poweradmin.db /path/to/poweradmin_backup_$(date +%Y%m%d).db
-</code></pre>
+cp /path/to/poweradmin.db /path/to/poweradmin_backup_$(date +%Y%m%d).db</code></pre>
 <h3 id="step-2-download-and-extract">Step 2: Download and Extract</h3>
-<pre><code class="language-bash">cd /tmp
+<pre class="highlight"><code class="language-bash">cd /tmp
 wget https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.2.0.tar.gz
 tar -xzf v4.2.0.tar.gz
-rsync -av poweradmin-4.2.0/ /var/www/poweradmin/ --exclude=config/settings.php
-</code></pre>
+rsync -av poweradmin-4.2.0/ /var/www/poweradmin/ --exclude=config/settings.php</code></pre>
 <h3 id="step-3-run-database-updates">Step 3: Run Database Updates</h3>
-<p><strong>MySQL/MariaDB:</strong></p>
-<pre><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.2.0.sql
-</code></pre>
-<p><strong>PostgreSQL:</strong></p>
-<pre><code class="language-bash">psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.2.0.sql
-</code></pre>
-<p><strong>SQLite:</strong></p>
-<pre><code class="language-bash">sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.2.0.sql
-</code></pre>
+<p><strong>MySQL/MariaDB:</strong>
+</p><pre class="highlight"><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.2.0.sql</code></pre><p></p>
+<p><strong>PostgreSQL:</strong>
+</p><pre class="highlight"><code class="language-bash">psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.2.0.sql</code></pre><p></p>
+<p><strong>SQLite:</strong>
+</p><pre class="highlight"><code class="language-bash">sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.2.0.sql</code></pre><p></p>
 <h3 id="step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart</h3>
-<pre><code class="language-bash">sudo systemctl restart php-fpm
+<pre class="highlight"><code class="language-bash">sudo systemctl restart php-fpm
 # or
-sudo systemctl restart apache2
-</code></pre>
+sudo systemctl restart apache2</code></pre>
 <h3 id="step-5-verify">Step 5: Verify</h3>
 <ol>
 <li>Log in and check the new Groups menu item in the sidebar</li>

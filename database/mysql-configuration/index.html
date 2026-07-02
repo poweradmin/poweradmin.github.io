@@ -474,7 +474,7 @@
 <ol>
 <li>Create a configuration file at <code>/config/settings.php</code> based on the example below:</li>
 </ol>
-<pre><code class="language-php">&lt;?php
+<pre class="highlight"><code class="language-php">&lt;?php
 /**
  * Poweradmin MySQL Configuration
  */
@@ -502,24 +502,21 @@ return [
     ],
 
     // Other configuration sections remain the same as in settings.defaults.php
-];
-</code></pre>
+];</code></pre>
 <h2 id="database-creation">Database Creation</h2>
 <h3 id="creating-the-database">Creating the Database</h3>
-<pre><code class="language-sql">CREATE DATABASE powerdns CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+<pre class="highlight"><code class="language-sql">CREATE DATABASE powerdns CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 CREATE USER 'poweradmin'@'localhost' IDENTIFIED BY 'your_password';
 GRANT ALL PRIVILEGES ON powerdns.* TO 'poweradmin'@'localhost';
-FLUSH PRIVILEGES;
-</code></pre>
+FLUSH PRIVILEGES;</code></pre>
 <h3 id="schema-installation">Schema Installation</h3>
 <p>The SQL schema files are located in the <code>sql/</code> directory:</p>
 <ul>
 <li>For a new installation: Use <code>sql/poweradmin-mysql-db-structure.sql</code></li>
 <li>For PowerDNS schema: Check the appropriate version in <code>sql/pdns/[version]/schema.mysql.sql</code></li>
 </ul>
-<pre><code class="language-bash">mysql -u poweradmin -p powerdns &lt; sql/poweradmin-mysql-db-structure.sql
-mysql -u poweradmin -p powerdns &lt; sql/pdns/[version]/schema.mysql.sql
-</code></pre>
+<pre class="highlight"><code class="language-bash">mysql -u poweradmin -p powerdns &lt; sql/poweradmin-mysql-db-structure.sql
+mysql -u poweradmin -p powerdns &lt; sql/pdns/[version]/schema.mysql.sql</code></pre>
 <h2 id="ssltls-configuration">SSL/TLS Configuration</h2>
 <p><em>Added in version 4.1.0</em></p>
 <p>Poweradmin supports SSL/TLS encrypted connections to MySQL/MariaDB servers.</p>
@@ -561,7 +558,7 @@ mysql -u poweradmin -p powerdns &lt; sql/pdns/[version]/schema.mysql.sql
 </tbody>
 </table>
 <h3 id="example-ssl-with-certificate-verification">Example: SSL with Certificate Verification</h3>
-<pre><code class="language-php">'database' =&gt; [
+<pre class="highlight"><code class="language-php">'database' =&gt; [
     'type' =&gt; 'mysql',
     'host' =&gt; 'mysql.example.com',
     'port' =&gt; '3306',
@@ -572,10 +569,9 @@ mysql -u poweradmin -p powerdns &lt; sql/pdns/[version]/schema.mysql.sql
     'ssl' =&gt; true,
     'ssl_verify' =&gt; true,
     'ssl_ca' =&gt; '/path/to/ca-cert.pem',
-],
-</code></pre>
+],</code></pre>
 <h3 id="example-ssl-without-verification-self-signed-certificates">Example: SSL without Verification (Self-Signed Certificates)</h3>
-<pre><code class="language-php">'database' =&gt; [
+<pre class="highlight"><code class="language-php">'database' =&gt; [
     'type' =&gt; 'mysql',
     'host' =&gt; 'mysql.example.com',
     'port' =&gt; '3306',
@@ -585,8 +581,7 @@ mysql -u poweradmin -p powerdns &lt; sql/pdns/[version]/schema.mysql.sql
     'charset' =&gt; 'utf8mb4',
     'ssl' =&gt; true,
     'ssl_verify' =&gt; false,
-],
-</code></pre>
+],</code></pre>
 <h3 id="backwards-compatibility-note">Backwards Compatibility Note</h3>
 <p>By default (<code>ssl=false</code>), Poweradmin disables SSL certificate verification to maintain backwards compatibility with servers that don't use SSL or use self-signed certificates. This addresses issues with newer MariaDB connector libraries that enforce SSL verification by default.</p>
               

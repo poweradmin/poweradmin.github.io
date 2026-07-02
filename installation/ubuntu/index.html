@@ -471,33 +471,29 @@
 <p>Poweradmin is a frontend for an existing PowerDNS authoritative server - it does not install or run PowerDNS itself. If you do not already have PowerDNS running, install it first and configure a database backend (MySQL/MariaDB, PostgreSQL, or SQLite). See the <a href="https://doc.powerdns.com/authoritative/installation.html">PowerDNS installation guide</a> for details.</p>
 <h3 id="install-php-and-extensions">Install PHP and Extensions</h3>
 <p>Install PHP and the extensions Poweradmin requires:</p>
-<pre><code class="language-bash">apt install php php-cli php-intl php-mbstring php-xml php-curl php-fpm
-</code></pre>
+<pre class="highlight"><code class="language-bash">apt install php php-cli php-intl php-mbstring php-xml php-curl php-fpm</code></pre>
 <blockquote>
 <p><strong>Note:</strong> <code>gettext</code> and <code>tokenizer</code> are built into <code>php-cli</code> on Ubuntu and do not need separate packages. <code>php-fpm</code> is required only if you plan to use Nginx or choose not to use <code>mod_php</code> with Apache.</p>
 </blockquote>
 <h3 id="database-support">Database Support</h3>
 <p>Install the appropriate PHP database driver based on your preferred database:</p>
-<pre><code class="language-bash"># For MySQL/MariaDB
+<pre class="highlight"><code class="language-bash"># For MySQL/MariaDB
 apt install php-mysql
 
 # For PostgreSQL
 apt install php-pgsql
 
 # For SQLite
-apt install php-sqlite3
-</code></pre>
+apt install php-sqlite3</code></pre>
 <h2 id="web-server-configuration">Web Server Configuration</h2>
 <h3 id="apache">Apache</h3>
 <p>Install Apache if it is not already present:</p>
-<pre><code class="language-bash">apt install apache2 libapache2-mod-php
-</code></pre>
+<pre class="highlight"><code class="language-bash">apt install apache2 libapache2-mod-php</code></pre>
 <p>Then:</p>
 <ol>
 <li>Enable the required Apache modules:</li>
 </ol>
-<pre><code class="language-bash">a2enmod rewrite headers
-</code></pre>
+<pre class="highlight"><code class="language-bash">a2enmod rewrite headers</code></pre>
 <ol>
 <li>
 <p>Either place Poweradmin in the default webroot (<code>/var/www/html/</code>) or create a virtual host configuration.</p>
@@ -509,8 +505,7 @@ apt install php-sqlite3
 <p>The <code>.htaccess</code> file included with Poweradmin handles URL routing, API support, and security rules automatically.</p>
 <h3 id="nginx-configuration">Nginx Configuration</h3>
 <p>If you prefer Nginx, first install it:</p>
-<pre><code class="language-bash">apt install nginx
-</code></pre>
+<pre class="highlight"><code class="language-bash">apt install nginx</code></pre>
 <p>Then use the configuration example provided in the Poweradmin repository. The configuration includes API routing, CORS support, security rules, and clean URL handling.</p>
 <p><strong>Version-specific configuration files:</strong></p>
 <ul>
@@ -524,10 +519,9 @@ apt install php-sqlite3
 <li><code>fastcgi_pass</code> - Adjust PHP-FPM socket path to match your installed PHP version (e.g., <code>unix:/var/run/php/php8.3-fpm.sock</code> on Ubuntu 24.04, <code>unix:/var/run/php/php8.2-fpm.sock</code> on Debian 12)</li>
 </ul>
 <p>Then enable the site:</p>
-<pre><code class="language-bash">ln -s /etc/nginx/sites-available/poweradmin /etc/nginx/sites-enabled/
+<pre class="highlight"><code class="language-bash">ln -s /etc/nginx/sites-available/poweradmin /etc/nginx/sites-enabled/
 nginx -t  # Test the configuration
-systemctl reload nginx
-</code></pre>
+systemctl reload nginx</code></pre>
 <h3 id="caddy-configuration">Caddy Configuration</h3>
 <p>For Caddy servers, use the configuration example from the repository:</p>
 <ul>
@@ -537,16 +531,14 @@ systemctl reload nginx
 <h2 id="installing-poweradmin">Installing Poweradmin</h2>
 <h3 id="obtain-poweradmin-source-code">Obtain Poweradmin Source Code</h3>
 <p>Download the latest release from the <a href="https://github.com/poweradmin/poweradmin/releases">stable line</a> (currently the 4.2.x series). Always check the releases page for the most recent version - the example below uses v4.2.3:</p>
-<pre><code class="language-bash">VERSION=4.2.3
+<pre class="highlight"><code class="language-bash">VERSION=4.2.3
 wget https://github.com/poweradmin/poweradmin/archive/refs/tags/v${VERSION}.zip
-unzip v${VERSION}.zip
-</code></pre>
+unzip v${VERSION}.zip</code></pre>
 <p>Or download directly from your browser and transfer the files to your server.</p>
 <h3 id="deploy-to-web-server">Deploy to Web Server</h3>
 <p>Move the Poweradmin files to your web server's document root:</p>
-<pre><code class="language-bash">cp -r poweradmin-${VERSION}/* /var/www/html/
-chown -R www-data:www-data /var/www/html/
-</code></pre>
+<pre class="highlight"><code class="language-bash">cp -r poweradmin-${VERSION}/* /var/www/html/
+chown -R www-data:www-data /var/www/html/</code></pre>
 <blockquote>
 <p><strong>Note:</strong> You can safely remove the default index.html (or derivative) if it exists.</p>
 </blockquote>

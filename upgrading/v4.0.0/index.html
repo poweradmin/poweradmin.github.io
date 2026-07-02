@@ -530,8 +530,7 @@
 <h2 id="configuration-migration">Configuration Migration</h2>
 <h3 id="automatic-migration-recommended">Automatic Migration (Recommended)</h3>
 <p>If you're upgrading from an older version of Poweradmin (pre-4.0.0), use the automatic migration script:</p>
-<pre><code class="language-bash">php config/migrate-config.php
-</code></pre>
+<pre class="highlight"><code class="language-bash">php config/migrate-config.php</code></pre>
 <p>This will convert your old <code>inc/config.inc.php</code> settings to the new <code>config/settings.php</code> format.</p>
 <h3 id="post-migration-cleanup">Post-Migration Cleanup</h3>
 <p>After successfully running the migration script and verifying your new configuration works:</p>
@@ -542,11 +541,10 @@
 <li>Delete it once you're confident everything works: <code>rm inc/config.inc.php.bak</code></li>
 </ol>
 <p><strong>If you kept the original file (answered "n"):</strong></p>
-<pre><code class="language-bash"># Backup and remove the old config
+<pre class="highlight"><code class="language-bash"># Backup and remove the old config
 mv inc/config.inc.php inc/config.inc.php.backup
 # Store it safely outside the web root
-mv inc/config.inc.php.backup ~/poweradmin-backups/config.inc.php.$(date +%Y%m%d)
-</code></pre>
+mv inc/config.inc.php.backup ~/poweradmin-backups/config.inc.php.$(date +%Y%m%d)</code></pre>
 <ol>
 <li><strong>Clean up other legacy files:</strong></li>
 <li>You can safely remove <code>.old</code>, <code>.bak</code>, or other backup files from the <code>inc/</code> directory</li>
@@ -576,15 +574,14 @@ mv inc/config.inc.php.backup ~/poweradmin-backups/config.inc.php.$(date +%Y%m%d)
 </tbody>
 </table>
 <h4 id="configuration-format-examples">Configuration Format Examples</h4>
-<p><strong>Old Format (pre-4.0.0):</strong></p>
-<pre><code class="language-php">$db_host = 'localhost';
+<p><strong>Old Format (pre-4.0.0):</strong>
+</p><pre class="highlight"><code class="language-php">$db_host = 'localhost';
 $db_user = 'poweradmin';
 $db_pass = 'password';
 $db_name = 'powerdns';
-$db_type = 'mysql';
-</code></pre>
-<p><strong>New Format (4.0.0+):</strong></p>
-<pre><code class="language-php">return [
+$db_type = 'mysql';</code></pre><p></p>
+<p><strong>New Format (4.0.0+):</strong>
+</p><pre class="highlight"><code class="language-php">return [
     'database' =&gt; [
         'host' =&gt; 'localhost',
         'user' =&gt; 'poweradmin',
@@ -592,8 +589,7 @@ $db_type = 'mysql';
         'name' =&gt; 'powerdns',
         'type' =&gt; 'mysql',
     ],
-];
-</code></pre>
+];</code></pre><p></p>
 <h3 id="manual-migration-steps">Manual Migration Steps</h3>
 <p>If the automatic migration script doesn't work for your setup:</p>
 <ol>
@@ -617,18 +613,15 @@ $db_type = 'mysql';
 </ul>
 <h3 id="database-migration-files">Database Migration Files</h3>
 <p><strong>Important</strong>: Instead of running individual SQL statements, use the dedicated migration files from the Poweradmin repository:</p>
-<p><strong>MySQL:</strong></p>
-<pre><code class="language-bash">mysql -u [username] -p [database_name] &lt; sql/poweradmin-mysql-update-to-4.0.0.sql
-</code></pre>
-<p>Download: <a href="https://github.com/poweradmin/poweradmin/blob/master/sql/poweradmin-mysql-update-to-4.0.0.sql">poweradmin-mysql-update-to-4.0.0.sql</a></p>
-<p><strong>PostgreSQL:</strong></p>
-<pre><code class="language-bash">psql -U [username] -d [database_name] -f sql/poweradmin-pgsql-update-to-4.0.0.sql
-</code></pre>
-<p>Download: <a href="https://github.com/poweradmin/poweradmin/blob/master/sql/poweradmin-pgsql-update-to-4.0.0.sql">poweradmin-pgsql-update-to-4.0.0.sql</a></p>
-<p><strong>SQLite:</strong></p>
-<pre><code class="language-bash">sqlite3 [database_file] &lt; sql/poweradmin-sqlite-update-to-4.0.0.sql
-</code></pre>
-<p>Download: <a href="https://github.com/poweradmin/poweradmin/blob/master/sql/poweradmin-sqlite-update-to-4.0.0.sql">poweradmin-sqlite-update-to-4.0.0.sql</a></p>
+<p><strong>MySQL:</strong>
+</p><pre class="highlight"><code class="language-bash">mysql -u [username] -p [database_name] &lt; sql/poweradmin-mysql-update-to-4.0.0.sql</code></pre>
+Download: <a href="https://github.com/poweradmin/poweradmin/blob/master/sql/poweradmin-mysql-update-to-4.0.0.sql">poweradmin-mysql-update-to-4.0.0.sql</a><p></p>
+<p><strong>PostgreSQL:</strong>
+</p><pre class="highlight"><code class="language-bash">psql -U [username] -d [database_name] -f sql/poweradmin-pgsql-update-to-4.0.0.sql</code></pre>
+Download: <a href="https://github.com/poweradmin/poweradmin/blob/master/sql/poweradmin-pgsql-update-to-4.0.0.sql">poweradmin-pgsql-update-to-4.0.0.sql</a><p></p>
+<p><strong>SQLite:</strong>
+</p><pre class="highlight"><code class="language-bash">sqlite3 [database_file] &lt; sql/poweradmin-sqlite-update-to-4.0.0.sql</code></pre>
+Download: <a href="https://github.com/poweradmin/poweradmin/blob/master/sql/poweradmin-sqlite-update-to-4.0.0.sql">poweradmin-sqlite-update-to-4.0.0.sql</a><p></p>
 <h3 id="migration-prerequisites-and-upgrading-from-older-versions">Migration Prerequisites and Upgrading from Older Versions</h3>
 <p><strong>Important</strong>: If you're upgrading from a version earlier than v3.9.0, you must upgrade incrementally:</p>
 <ol>
@@ -640,24 +633,22 @@ $db_type = 'mysql';
 <p>This incremental approach ensures all database migrations are applied correctly and configurations are properly migrated.</p>
 <h3 id="verify-database-migration-completeness">Verify Database Migration Completeness</h3>
 <p>After running the migration, verify your database contains all 8 new tables:</p>
-<p><strong>Verification Query (MySQL):</strong></p>
-<pre><code class="language-sql">SELECT TABLE_NAME FROM information_schema.TABLES 
+<p><strong>Verification Query (MySQL):</strong>
+</p><pre class="highlight"><code class="language-sql">SELECT TABLE_NAME FROM information_schema.TABLES 
 WHERE TABLE_SCHEMA = 'your_database_name' 
-AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user_preferences', 'zone_template_sync', 'password_reset_tokens', 'user_agreements');
-</code></pre>
+AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user_preferences', 'zone_template_sync', 'password_reset_tokens', 'user_agreements');</code></pre><p></p>
 <p><strong>Expected Result:</strong> You should see all 8 tables listed in the "New Tables Added in v4.0.0" section above.</p>
 <p>If any tables are missing, the migration may have failed. Check the migration logs for errors.</p>
 <h2 id="new-feature-dns-record-type-customization">New Feature: DNS Record Type Customization</h2>
 <p>Version 4.0.0 introduces the ability to customize which DNS record types are available in the interface. This feature helps simplify the user interface by showing only the record types that are relevant to your specific DNS needs.</p>
 <p>To configure this feature, add the following to your <code>config/settings.php</code> file:</p>
-<pre><code class="language-php">'dns' =&gt; [
+<pre class="highlight"><code class="language-php">'dns' =&gt; [
     // Other DNS settings...
 
     // Record Type Settings
     'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT'], // For forward zones
     'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA'],                            // For reverse zones
-]
-</code></pre>
+]</code></pre>
 <p>For full documentation on this feature, see <a href="../../configuration/record-types/">Record Type Customization</a>.</p>
 <h2 id="new-features-in-v400">New Features in v4.0.0</h2>
 <h3 id="enhanced-security-features">Enhanced Security Features</h3>
@@ -858,28 +849,26 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
 </li>
 </ul>
 <h3 id="configuration-examples">Configuration Examples</h3>
-<p><strong>Enable MFA:</strong></p>
-<pre><code class="language-php">'security' =&gt; [
+<p><strong>Enable MFA:</strong>
+</p><pre class="highlight"><code class="language-php">'security' =&gt; [
     'mfa' =&gt; [
         'enabled' =&gt; true,
         'app_enabled' =&gt; true,
         'email_enabled' =&gt; true,
         'recovery_codes' =&gt; 8,
     ],
-],
-</code></pre>
-<p><strong>Configure Account Lockout:</strong></p>
-<pre><code class="language-php">'security' =&gt; [
+],</code></pre><p></p>
+<p><strong>Configure Account Lockout:</strong>
+</p><pre class="highlight"><code class="language-php">'security' =&gt; [
     'account_lockout' =&gt; [
         'enable_lockout' =&gt; true,
         'lockout_attempts' =&gt; 5,
         'lockout_duration' =&gt; 15,
         'whitelist_ip_addresses' =&gt; ['127.0.0.1', '192.168.1.0/24'],
     ],
-],
-</code></pre>
-<p><strong>Enable API with reCAPTCHA:</strong></p>
-<pre><code class="language-php">'api' =&gt; [
+],</code></pre><p></p>
+<p><strong>Enable API with reCAPTCHA:</strong>
+</p><pre class="highlight"><code class="language-php">'api' =&gt; [
     'enabled' =&gt; true,
     'docs_enabled' =&gt; true,
 ],
@@ -890,27 +879,24 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
         'secret_key' =&gt; 'your_secret_key',
         'version' =&gt; 'v3',
     ],
-],
-</code></pre>
-<p><strong>Configure User Agreement System:</strong></p>
-<pre><code class="language-php">'user_agreement' =&gt; [
+],</code></pre><p></p>
+<p><strong>Configure User Agreement System:</strong>
+</p><pre class="highlight"><code class="language-php">'user_agreement' =&gt; [
     'enabled' =&gt; true,                           // Enable user agreement system
     'current_version' =&gt; '2.0',                  // Current agreement version
     'require_on_version_change' =&gt; true,         // Force re-acceptance on version updates
-],
-</code></pre>
-<p><strong>Enable Administrative Tools:</strong></p>
-<pre><code class="language-php">'interface' =&gt; [
+],</code></pre><p></p>
+<p><strong>Enable Administrative Tools:</strong>
+</p><pre class="highlight"><code class="language-php">'interface' =&gt; [
     'enable_consistency_checks' =&gt; true,        // Enable database consistency checker
     'show_pdns_status' =&gt; true,                 // Show PowerDNS server status page
 ],
 'misc' =&gt; [
     'email_previews_enabled' =&gt; true,           // Enable email template previews
     'edit_conflict_resolution' =&gt; 'only_latest_version', // Prevent concurrent edit conflicts
-],
-</code></pre>
-<p><strong>Configure Enhanced Interface Options:</strong></p>
-<pre><code class="language-php">'interface' =&gt; [
+],</code></pre><p></p>
+<p><strong>Configure Enhanced Interface Options:</strong>
+</p><pre class="highlight"><code class="language-php">'interface' =&gt; [
     'display_hostname_only' =&gt; true,            // Strip zone suffix in edit forms
     'display_fullname_in_zone_list' =&gt; true,    // Show full names instead of usernames
     'reverse_zone_sort' =&gt; 'hierarchical',      // Use hierarchical reverse zone sorting
@@ -921,8 +907,7 @@ AND TABLE_NAME IN ('migrations', 'login_attempts', 'api_keys', 'user_mfa', 'user
 'misc' =&gt; [
     'show_generated_passwords' =&gt; false,        // Hide generated passwords for security
     'display_errors' =&gt; false,                  // Disable PHP error display for production
-],
-</code></pre>
+],</code></pre><p></p>
 <h2 id="notes">Notes</h2>
 <ul>
 <li><strong>Legacy configuration cleanup required</strong>: After migrating to the new configuration format, remove or rename <code>inc/config.inc.php</code> to prevent conflicts</li>

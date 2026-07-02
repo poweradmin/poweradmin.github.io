@@ -453,7 +453,7 @@
 <li>Update database structure based on your database type:</li>
 </ol>
 <h3 id="mysql">MySQL</h3>
-<pre><code class="language-sql">CREATE TABLE `log_users`
+<pre class="highlight"><code class="language-sql">CREATE TABLE `log_users`
 (
     `id`         int(11) NOT NULL AUTO_INCREMENT,
     `event`      varchar(2048) NOT NULL,
@@ -470,10 +470,9 @@ CREATE TABLE `log_zones`
     `priority`   int(11) NOT NULL,
     `zone_id`    int(11) DEFAULT NULL,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-</code></pre>
+) ENGINE=InnoDB;</code></pre>
 <h3 id="postgresql">PostgreSQL</h3>
-<pre><code class="language-sql">CREATE SEQUENCE log_users_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
+<pre class="highlight"><code class="language-sql">CREATE SEQUENCE log_users_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
 
 CREATE TABLE "log_users"
 (
@@ -494,17 +493,15 @@ CREATE TABLE "log_zones"
     "priority"   integer,
     "zone_id"    integer,
     CONSTRAINT "log_zones_pkey" PRIMARY KEY ("id")
-) WITH (oids = false);
-</code></pre>
+) WITH (oids = false);</code></pre>
 <h3 id="sqlite">SQLite</h3>
-<pre><code class="language-sql">CREATE TABLE log_users (id integer PRIMARY KEY, event VARCHAR(2048) NOT NULL, created_at timestamp DEFAULT current_timestamp, priority integer NOT NULL);
+<pre class="highlight"><code class="language-sql">CREATE TABLE log_users (id integer PRIMARY KEY, event VARCHAR(2048) NOT NULL, created_at timestamp DEFAULT current_timestamp, priority integer NOT NULL);
 
-CREATE TABLE log_zones (id integer PRIMARY KEY, event VARCHAR(2048) NOT NULL, created_at timestamp DEFAULT current_timestamp, priority integer NOT NULL, zone_id integer);
-</code></pre>
+CREATE TABLE log_zones (id integer PRIMARY KEY, event VARCHAR(2048) NOT NULL, created_at timestamp DEFAULT current_timestamp, priority integer NOT NULL, zone_id integer);</code></pre>
 <ol>
 <li>Add the following new configuration options to your <code>inc/config.inc.php</code> file:</li>
 </ol>
-<pre><code class="language-php">'interface' =&gt; [
+<pre class="highlight"><code class="language-php">'interface' =&gt; [
     // ... existing configuration ...
     'index_display' =&gt; 'cards',  // Options: 'cards', 'list' (added in 3.2.0)
     // ... existing configuration ...
@@ -514,8 +511,7 @@ CREATE TABLE log_zones (id integer PRIMARY KEY, event VARCHAR(2048) NOT NULL, cr
     // ... existing configuration ...
     'database_enabled' =&gt; false,  // Enable logging zone and record changes to the database (added in 3.2.0)
     // ... existing configuration ...
-],
-</code></pre>
+],</code></pre>
 <h2 id="new-features">New Features</h2>
 <h3 id="database-logging-system">Database Logging System</h3>
 <ul>

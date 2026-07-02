@@ -473,52 +473,44 @@
 <p>Poweradmin is a frontend for an existing PowerDNS authoritative server - it does not install or run PowerDNS itself. If you do not already have PowerDNS running, install it first and configure a database backend (MySQL/MariaDB, PostgreSQL, or SQLite). See the <a href="https://doc.powerdns.com/authoritative/installation.html">PowerDNS installation guide</a> for details.</p>
 <h3 id="enable-a-php-82-stream">Enable a PHP 8.2+ Stream</h3>
 <p>Rocky Linux 9, AlmaLinux 9, and RHEL 9 ship PHP 8.0 by default, which does not meet Poweradmin's PHP 8.2 minimum. Switch to a newer stream before installing PHP packages:</p>
-<pre><code class="language-bash">dnf module reset php -y
-dnf module enable php:8.2 -y   # or php:8.3
-</code></pre>
+<pre class="highlight"><code class="language-bash">dnf module reset php -y
+dnf module enable php:8.2 -y   # or php:8.3</code></pre>
 <p>Alternatively, install PHP from the <a href="https://rpms.remirepo.net/">Remi repository</a> if you need an even newer release.</p>
 <h3 id="install-php-and-extensions">Install PHP and Extensions</h3>
-<pre><code class="language-bash">dnf install -y php php-cli php-intl php-gettext php-mbstring php-xml php-pdo php-fpm
-</code></pre>
+<pre class="highlight"><code class="language-bash">dnf install -y php php-cli php-intl php-gettext php-mbstring php-xml php-pdo php-fpm</code></pre>
 <h3 id="database-support">Database Support</h3>
 <p>Install the appropriate PHP database driver based on your preferred database:</p>
-<pre><code class="language-bash"># For MySQL/MariaDB
+<pre class="highlight"><code class="language-bash"># For MySQL/MariaDB
 dnf install -y php-mysqlnd
 
 # For PostgreSQL
-dnf install -y php-pgsql
-</code></pre>
+dnf install -y php-pgsql</code></pre>
 <blockquote>
 <p><strong>Note:</strong> SQLite support is built into <code>php-pdo</code> on RHEL-family distributions - there is no separate <code>php-sqlite3</code> package in the default AppStream repositories. If you plan to use SQLite, <code>php-pdo</code> alone is sufficient.</p>
 </blockquote>
 <h2 id="web-server-configuration">Web Server Configuration</h2>
 <h3 id="apache">Apache</h3>
 <p><strong>1. Install Apache if not already installed:</strong></p>
-<pre><code class="language-bash">dnf install -y httpd
-</code></pre>
+<pre class="highlight"><code class="language-bash">dnf install -y httpd</code></pre>
 <p><strong>2. Enable and start the Apache service:</strong></p>
-<pre><code class="language-bash">systemctl enable httpd
-systemctl start httpd
-</code></pre>
+<pre class="highlight"><code class="language-bash">systemctl enable httpd
+systemctl start httpd</code></pre>
 <p><strong>3. Configure SELinux if it's enabled:</strong></p>
-<pre><code class="language-bash"># Allow Apache to connect to the database
+<pre class="highlight"><code class="language-bash"># Allow Apache to connect to the database
 setsebool -P httpd_can_network_connect_db 1
 
 # If using a non-standard directory, set the correct context
 semanage fcontext -a -t httpd_sys_content_t "/path/to/poweradmin(/.*)?"
-restorecon -Rv /path/to/poweradmin
-</code></pre>
+restorecon -Rv /path/to/poweradmin</code></pre>
 <p><strong>4. Configure your firewall:</strong></p>
-<pre><code class="language-bash">firewall-cmd --permanent --add-service=http
+<pre class="highlight"><code class="language-bash">firewall-cmd --permanent --add-service=http
 firewall-cmd --permanent --add-service=https  # If using HTTPS
-firewall-cmd --reload
-</code></pre>
+firewall-cmd --reload</code></pre>
 <p><strong>5.</strong> Ensure <code>AllowOverride All</code> is set in your Apache configuration to allow the <code>.htaccess</code> file to function properly. The <code>.htaccess</code> file handles URL routing, API support, and security rules automatically.</p>
 <h3 id="nginx-configuration">Nginx Configuration</h3>
 <p>If you prefer Nginx, use the configuration example provided in the Poweradmin repository. The configuration includes API routing, CORS support, security rules, and clean URL handling.</p>
 <p><strong>1. Install Nginx:</strong></p>
-<pre><code class="language-bash">dnf install -y nginx
-</code></pre>
+<pre class="highlight"><code class="language-bash">dnf install -y nginx</code></pre>
 <p><strong>2.</strong> Download the appropriate configuration file:</p>
 <p><strong>Version-specific configuration files:</strong></p>
 <ul>
@@ -532,9 +524,8 @@ firewall-cmd --reload
 <li><code>fastcgi_pass</code> - Use <code>unix:/var/run/php-fpm/www.sock</code> for RHEL/CentOS</li>
 </ul>
 <p><strong>4. Enable and start Nginx and PHP-FPM:</strong></p>
-<pre><code class="language-bash">systemctl enable nginx php-fpm
-systemctl start nginx php-fpm
-</code></pre>
+<pre class="highlight"><code class="language-bash">systemctl enable nginx php-fpm
+systemctl start nginx php-fpm</code></pre>
 <p><strong>5.</strong> Configure SELinux and firewall as with Apache.</p>
 <h3 id="caddy-configuration">Caddy Configuration</h3>
 <p>For Caddy servers, use the configuration example from the repository:</p>
@@ -545,23 +536,20 @@ systemctl start nginx php-fpm
 <h2 id="installing-poweradmin">Installing Poweradmin</h2>
 <h3 id="obtain-poweradmin-source-code">Obtain Poweradmin Source Code</h3>
 <p>Download the latest release from the <a href="https://github.com/poweradmin/poweradmin/releases">stable line</a> (currently the 4.2.x series). Always check the releases page for the most recent version - the example below uses v4.2.3:</p>
-<pre><code class="language-bash">VERSION=4.2.3
+<pre class="highlight"><code class="language-bash">VERSION=4.2.3
 curl -Lo v${VERSION}.zip https://github.com/poweradmin/poweradmin/archive/refs/tags/v${VERSION}.zip
-unzip v${VERSION}.zip
-</code></pre>
+unzip v${VERSION}.zip</code></pre>
 <p>If you don't have curl or unzip installed:</p>
-<pre><code class="language-bash">dnf install -y curl unzip
-</code></pre>
+<pre class="highlight"><code class="language-bash">dnf install -y curl unzip</code></pre>
 <h3 id="deploy-to-web-server">Deploy to Web Server</h3>
 <p>Move the Poweradmin files to your web server's document root:</p>
-<pre><code class="language-bash"># For Apache (default directory)
+<pre class="highlight"><code class="language-bash"># For Apache (default directory)
 cp -r poweradmin-${VERSION}/* /var/www/html/
 chown -R apache:apache /var/www/html/
 
 # For Nginx (if using a different directory)
 cp -r poweradmin-${VERSION}/* /usr/share/nginx/html/
-chown -R nginx:nginx /usr/share/nginx/html/
-</code></pre>
+chown -R nginx:nginx /usr/share/nginx/html/</code></pre>
 <h2 id="complete-the-installation">Complete the Installation</h2>
 <ol>
 <li>Visit http://your-server/install/ in your browser</li>

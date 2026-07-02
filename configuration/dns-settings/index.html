@@ -656,24 +656,22 @@
 <li><strong>reverse_record_types</strong>: Array of record types for reverse zones. Set to <code>null</code> to use defaults.</li>
 <li><strong>top_record_types</strong> (4.4.0): Array of record types to pin to the top of record type selectors, in the given order. Remaining types follow alphabetically. Set to <code>null</code> to keep the original alphabetical order.</li>
 </ul>
-<p>Example custom configuration:</p>
-<pre><code class="language-php">'dns' =&gt; [
+<p>Example custom configuration:
+</p><pre class="highlight"><code class="language-php">'dns' =&gt; [
     'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT', 'SRV', 'CAA'],
     'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA', 'TXT', 'CNAME'],
     'top_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'TXT', 'MX'],
-],
-</code></pre>
+],</code></pre><p></p>
 <h2 id="custom-tld-whitelist">Custom TLD Whitelist</h2>
 <p>The <code>custom_tlds</code> option lets you whitelist non-IANA TLDs so they pass validation. It applies in two places:</p>
 <ul>
 <li><strong>CNAME targets</strong> are normally restricted to alphabetic TLDs, which rejects experimental networks like DN42 (<code>.dn42</code>).</li>
 <li><strong>Zone names</strong> are normally restricted to the official IANA list plus reserved special-use names when <code>strict_tld_check</code> is enabled. With <code>strict_tld_check</code> off (the default), any alphabetic TLD is accepted and this whitelist is not consulted.</li>
 </ul>
-<pre><code class="language-php">'dns' =&gt; [
+<pre class="highlight"><code class="language-php">'dns' =&gt; [
     'strict_tld_check' =&gt; true,
     'custom_tlds' =&gt; ['dn42', 'home', 'lan', 'corp'],
-],
-</code></pre>
+],</code></pre>
 <p>With this configuration, both a zone named <code>office.lan</code> and a CNAME target like <code>ns1.example.dn42</code> pass validation. Matching is case-insensitive.</p>
 <p><strong>Note</strong>: Standard alphabetic TLDs (like <code>.com</code>, <code>.org</code>, <code>.net</code>) always work regardless of this setting.</p>
 <h3 id="pre-whitelisted-special-use-tlds">Pre-whitelisted special-use TLDs</h3>
@@ -730,12 +728,11 @@
 <li>The check runs only at creation time; it does not retroactively flag zones that already overlap.</li>
 </ul>
 <p>To allow cross-owner overlapping zones, set it to <code>false</code>:</p>
-<pre><code class="language-php">'dns' =&gt; [
+<pre class="highlight"><code class="language-php">'dns' =&gt; [
     'parent_zone_ownership_check' =&gt; false,
-],
-</code></pre>
+],</code></pre>
 <h2 id="modern-configuration-example">Modern Configuration Example</h2>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'dns' =&gt; [
         'hostmaster' =&gt; 'hostmaster.example.com',
         'ns1' =&gt; 'ns1.example.com',
@@ -762,10 +759,9 @@
         'reverse_record_types' =&gt; null, // Uses default types
         'custom_tlds' =&gt; [], // Custom TLDs for CNAME validation
     ],
-];
-</code></pre>
+];</code></pre>
 <h2 id="legacy-configuration-example">Legacy Configuration Example</h2>
-<pre><code class="language-php">&lt;?php
+<pre class="highlight"><code class="language-php">&lt;?php
 // DNS settings
 $dns_hostmaster = 'hostmaster.example.com';
 $dns_ns1 = 'ns1.example.com';
@@ -778,8 +774,7 @@ $dns_strict_tld_check = false;
 $dns_top_level_tld_check = false;
 $dns_third_level_check = false;
 $dns_txt_auto_quote = false;
-$iface_zone_type_default = 'MASTER';
-</code></pre>
+$iface_zone_type_default = 'MASTER';</code></pre>
               
 
             </div>

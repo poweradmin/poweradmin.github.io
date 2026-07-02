@@ -463,18 +463,17 @@
 </table>
 <h2 id="schema">Schema</h2>
 <p>The <code>app_settings</code> table is created by the 4.5.0 schema update (<code>sql/poweradmin-{mysql,pgsql,sqlite}-update-to-4.5.0.sql</code>):</p>
-<pre><code class="language-sql">CREATE TABLE app_settings (
+<pre class="highlight"><code class="language-sql">CREATE TABLE app_settings (
     setting_key   varchar(128) NOT NULL PRIMARY KEY,
     setting_value text         NOT NULL,
     value_type    varchar(16)  NOT NULL DEFAULT 'string',
     created_at    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-</code></pre>
+);</code></pre>
 <p><code>value_type</code> is a hint (<code>string</code>, <code>int</code>, <code>bool</code>, <code>json</code>) that <code>AppSettingsService</code> uses to cast <code>setting_value</code> on read.</p>
 <h2 id="for-developers">For developers</h2>
 <p><code>AppSettingsService</code> exposes typed getters and setters:</p>
-<pre><code class="language-php">$service = new AppSettingsService($config, $repository);
+<pre class="highlight"><code class="language-php">$service = new AppSettingsService($config, $repository);
 
 $theme  = $service-&gt;getString('interface.theme', 'light');
 $ttl    = $service-&gt;getInt('dns.ttl', 86400);
@@ -482,8 +481,7 @@ $debug  = $service-&gt;getBool('app.debug', false);
 $types  = $service-&gt;getArray('dns.top_record_types', ['A', 'AAAA']);
 
 $service-&gt;setString('interface.theme', 'dark');
-$service-&gt;clear('dns.ttl'); // falls back to ConfigurationManager
-</code></pre>
+$service-&gt;clear('dns.ttl'); // falls back to ConfigurationManager</code></pre>
 <p>When the schema update hasn't been applied yet, <code>DbAppSettingRepository::isReady()</code> returns false and reads degrade silently to the <code>ConfigurationManager</code> path - no user-visible breakage.</p>
 <h2 id="whats-not-in-450">What's not in 4.5.0</h2>
 <ul>

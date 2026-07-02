@@ -450,40 +450,32 @@
 </blockquote>
 <h2 id="basic-update-examples">Basic Update Examples</h2>
 <h3 id="update-ipv4-address">Update IPv4 Address</h3>
-<pre><code class="language-bash">curl -u username:password "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1"
-</code></pre>
+<pre class="highlight"><code class="language-bash">curl -u username:password "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1"</code></pre>
 <h3 id="automatic-ip-detection">Automatic IP Detection</h3>
-<pre><code class="language-bash">curl -u username:password "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=whatismyip"
-</code></pre>
+<pre class="highlight"><code class="language-bash">curl -u username:password "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=whatismyip"</code></pre>
 <h3 id="update-ipv6-address">Update IPv6 Address</h3>
-<pre><code class="language-bash">curl -u username:password "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip6=2001:db8::1"
-</code></pre>
+<pre class="highlight"><code class="language-bash">curl -u username:password "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip6=2001:db8::1"</code></pre>
 <h2 id="advanced-usage">Advanced Usage</h2>
 <h3 id="combined-multiple-ipv4-and-ipv6-update">Combined Multiple IPv4 and IPv6 Update</h3>
-<pre><code class="language-bash"># Update multiple A records and single AAAA record in one request
-curl -u user:pass "https://yourhost/dynamic_update.php?hostname=host.example.com&amp;myip=1.2.3.4,5.6.7.8&amp;myip6=2001:db8::1&amp;dualstack_update=1"
-</code></pre>
+<pre class="highlight"><code class="language-bash"># Update multiple A records and single AAAA record in one request
+curl -u user:pass "https://yourhost/dynamic_update.php?hostname=host.example.com&amp;myip=1.2.3.4,5.6.7.8&amp;myip6=2001:db8::1&amp;dualstack_update=1"</code></pre>
 <h3 id="dual-stack-update">Dual-Stack Update</h3>
-<pre><code class="language-bash">curl -u username:password "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1&amp;myip6=2001:db8::1&amp;dualstack_update=1"
-</code></pre>
+<pre class="highlight"><code class="language-bash">curl -u username:password "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1&amp;myip6=2001:db8::1&amp;dualstack_update=1"</code></pre>
 <h3 id="multiple-ip-addresses">Multiple IP Addresses</h3>
-<pre><code class="language-bash">curl -u username:password "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1,192.0.2.2"
-</code></pre>
+<pre class="highlight"><code class="language-bash">curl -u username:password "https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1,192.0.2.2"</code></pre>
 <h3 id="using-url-parameters-instead-of-basic-auth">Using URL Parameters Instead of Basic Auth</h3>
-<pre><code class="language-bash">curl "https://dns.example.com/dynamic_update.php?username=user&amp;password=pass&amp;hostname=host.example.com&amp;myip=192.0.2.1"
-</code></pre>
+<pre class="highlight"><code class="language-bash">curl "https://dns.example.com/dynamic_update.php?username=user&amp;password=pass&amp;hostname=host.example.com&amp;myip=192.0.2.1"</code></pre>
 <h2 id="scripting-examples">Scripting Examples</h2>
 <h3 id="basic-update-script">Basic Update Script</h3>
-<pre><code class="language-bash">#!/bin/bash
+<pre class="highlight"><code class="language-bash">#!/bin/bash
 USERNAME="your_username"
 PASSWORD="your_password"
 HOSTNAME="your.hostname.com"
 SERVER="https://dns.example.com/dynamic_update.php"
 
-curl -s -u "$USERNAME:$PASSWORD" "$SERVER?hostname=$HOSTNAME&amp;myip=whatismyip"
-</code></pre>
+curl -s -u "$USERNAME:$PASSWORD" "$SERVER?hostname=$HOSTNAME&amp;myip=whatismyip"</code></pre>
 <h3 id="periodic-update-script">Periodic Update Script</h3>
-<pre><code class="language-bash">#!/bin/bash
+<pre class="highlight"><code class="language-bash">#!/bin/bash
 USERNAME="your_username"
 PASSWORD="your_password"
 HOSTNAME="your.hostname.com"
@@ -493,17 +485,15 @@ INTERVAL=300  # Update every 5 minutes
 while true; do
     curl -s -u "$USERNAME:$PASSWORD" "$SERVER?hostname=$HOSTNAME&amp;myip=whatismyip"
     sleep $INTERVAL
-done
-</code></pre>
+done</code></pre>
 <h2 id="error-handling">Error Handling</h2>
 <p>The update script returns HTTP status codes and messages that can be captured:</p>
-<pre><code class="language-bash">response=$(curl -s -w "%{http_code}" -u "$USERNAME:$PASSWORD" "$SERVER?hostname=$HOSTNAME&amp;myip=whatismyip")
+<pre class="highlight"><code class="language-bash">response=$(curl -s -w "%{http_code}" -u "$USERNAME:$PASSWORD" "$SERVER?hostname=$HOSTNAME&amp;myip=whatismyip")
 if [ $response -eq 200 ]; then
     echo "Update successful"
 else
     echo "Update failed with code: $response"
-fi
-</code></pre>
+fi</code></pre>
 <h2 id="security-considerations">Security Considerations</h2>
 <ul>
 <li>Always use HTTPS to protect credentials</li>

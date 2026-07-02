@@ -547,7 +547,7 @@
 </tbody>
 </table>
 <h2 id="modern-configuration-example">Modern Configuration Example</h2>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'ldap' =&gt; [
         'enabled' =&gt; true,
         'debug' =&gt; false,
@@ -560,11 +560,10 @@
         'search_filter' =&gt; '(objectClass=account)',
         'session_cache_timeout' =&gt; 300,  // Cache for 5 minutes (v4.1.0+)
     ],
-];
-</code></pre>
+];</code></pre>
 <h2 id="ldap-search-filter-examples">LDAP Search Filter Examples</h2>
 <p>The search filter is used to limit which LDAP accounts can authenticate to Poweradmin:</p>
-<pre><code class="language-php">// Only users that are members of the 'powerdns' group
+<pre class="highlight"><code class="language-php">// Only users that are members of the 'powerdns' group
 $ldap_search_filter = '(memberOf=cn=powerdns,ou=groups,dc=poweradmin,dc=org)';
 
 // All accounts
@@ -574,8 +573,7 @@ $ldap_search_filter = '(objectClass=account)';
 $ldap_search_filter = '(objectClass=person)(memberOf=cn=admins,ou=groups,dc=poweradmin,dc=org)';
 
 // Users with 'admin' in their common name
-$ldap_search_filter = '(cn=*admin*)';
-</code></pre>
+$ldap_search_filter = '(cn=*admin*)';</code></pre>
 <h2 id="basic-setup">Basic Setup</h2>
 <ol>
 <li>Enable LDAP authentication by setting <code>'enabled' =&gt; true</code> in the configuration array.</li>
@@ -587,8 +585,7 @@ $ldap_search_filter = '(cn=*admin*)';
 <h2 id="advanced-configuration">Advanced Configuration</h2>
 <h3 id="ssltls-connection">SSL/TLS Connection</h3>
 <p>For secure LDAP (LDAPS), use the following configuration:</p>
-<pre><code class="language-php">'uri' =&gt; 'ldaps://domaincontroller.example.com',
-</code></pre>
+<pre class="highlight"><code class="language-php">'uri' =&gt; 'ldaps://domaincontroller.example.com',</code></pre>
 <h3 id="user-attribute-mapping">User Attribute Mapping</h3>
 <p>Configure how Poweradmin maps LDAP attributes to user properties:</p>
 <ul>
@@ -597,7 +594,7 @@ $ldap_search_filter = '(cn=*admin*)';
 </ul>
 <h2 id="example-directory-configurations">Example Directory Configurations</h2>
 <h3 id="active-directory">Active Directory</h3>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'ldap' =&gt; [
         'enabled' =&gt; true,
         'uri' =&gt; 'ldap://ad.company.com',
@@ -607,10 +604,9 @@ $ldap_search_filter = '(cn=*admin*)';
         'user_attribute' =&gt; 'sAMAccountName',
         'search_filter' =&gt; '(&amp;(objectClass=user)(sAMAccountName=%s))',
     ],
-];
-</code></pre>
+];</code></pre>
 <h3 id="openldap">OpenLDAP</h3>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'ldap' =&gt; [
         'enabled' =&gt; true,
         'uri' =&gt; 'ldap://ldap.company.com',
@@ -620,8 +616,7 @@ $ldap_search_filter = '(cn=*admin*)';
         'user_attribute' =&gt; 'uid',
         'search_filter' =&gt; '(&amp;(objectClass=posixAccount)(uid=%s))',
     ],
-];
-</code></pre>
+];</code></pre>
 <h2 id="security-considerations">Security Considerations</h2>
 <ul>
 <li>Always use LDAPS (LDAP over SSL/TLS) in production environments</li>

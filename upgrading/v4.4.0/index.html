@@ -527,36 +527,30 @@
 </ul>
 <p>If you are upgrading from 4.2.x, run the 4.3.0 migration script first, then the 4.4.0 migration script. Do not skip intermediate versions.</p>
 <h3 id="step-1-backup-your-data">Step 1: Backup Your Data</h3>
-<pre><code class="language-bash"># MySQL/MariaDB
+<pre class="highlight"><code class="language-bash"># MySQL/MariaDB
 mysqldump -u username -p poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
 
 # PostgreSQL
 pg_dump -h localhost -U username poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
 
 # SQLite
-cp /path/to/poweradmin.db /path/to/poweradmin_backup_$(date +%Y%m%d).db
-</code></pre>
+cp /path/to/poweradmin.db /path/to/poweradmin_backup_$(date +%Y%m%d).db</code></pre>
 <h3 id="step-2-download-and-extract">Step 2: Download and Extract</h3>
-<pre><code class="language-bash">cd /tmp
+<pre class="highlight"><code class="language-bash">cd /tmp
 wget https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.4.0.tar.gz
 tar -xzf v4.4.0.tar.gz
-rsync -av poweradmin-4.4.0/ /var/www/poweradmin/ --exclude=config/settings.php
-</code></pre>
+rsync -av poweradmin-4.4.0/ /var/www/poweradmin/ --exclude=config/settings.php</code></pre>
 <h3 id="step-3-run-database-update">Step 3: Run Database Update</h3>
 <p><strong>MySQL/MariaDB:</strong></p>
-<pre><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.4.0.sql
-</code></pre>
+<pre class="highlight"><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.4.0.sql</code></pre>
 <p><strong>PostgreSQL:</strong></p>
-<pre><code class="language-bash">psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.4.0.sql
-</code></pre>
+<pre class="highlight"><code class="language-bash">psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.4.0.sql</code></pre>
 <p><strong>SQLite:</strong></p>
-<pre><code class="language-bash">sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.4.0.sql
-</code></pre>
+<pre class="highlight"><code class="language-bash">sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.4.0.sql</code></pre>
 <h3 id="step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart</h3>
-<pre><code class="language-bash">sudo systemctl restart php-fpm
+<pre class="highlight"><code class="language-bash">sudo systemctl restart php-fpm
 # or
-sudo systemctl restart apache2
-</code></pre>
+sudo systemctl restart apache2</code></pre>
 <h2 id="new-features">New Features</h2>
 <h3 id="powerdns-capability-detection">PowerDNS Capability Detection</h3>
 <p>Poweradmin queries the connected PowerDNS server's version on first use and adapts the UI to match what that version supports.</p>
@@ -590,22 +584,20 @@ sudo systemctl restart apache2
 <li>It can also be configured via <code>dns.default_zone_template</code> in <code>config/settings.php</code> (template id as int, or template name as string; <code>null</code> means no default).</li>
 <li>Only one template can be the default at a time.</li>
 </ul>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'dns' =&gt; [
         'default_zone_template' =&gt; 'default-internal', // or a numeric id, or null
     ],
-];
-</code></pre>
+];</code></pre>
 <h3 id="zone-audit-log-for-owners">Zone Audit Log for Owners</h3>
 <p>Zone owners can now read the audit log for their own zones. Previously this was restricted to administrators. Owners see only entries for zones they own (directly or via group ownership).</p>
 <h3 id="zone-ownership-mode">Zone Ownership Mode</h3>
 <p>A new <code>dns.zone_ownership_mode</code> setting controls which ownership models are exposed:</p>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'dns' =&gt; [
         'zone_ownership_mode' =&gt; 'both', // 'both', 'users_only', or 'groups_only'
     ],
-];
-</code></pre>
+];</code></pre>
 <ul>
 <li><code>both</code> (default) - users and groups can both own zones, matching prior behavior.</li>
 <li><code>users_only</code> - only direct user ownership is shown. Group-ownership UI is hidden.</li>
@@ -617,12 +609,11 @@ sudo systemctl restart apache2
 <p>The site-wide <code>dns.display_hostname_only</code> continues to act as the default for users who haven't set a personal preference.</p>
 <h3 id="configurable-powerdns-api-timeout">Configurable PowerDNS API Timeout</h3>
 <p>The PowerDNS API request timeout is now configurable:</p>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'pdns_api' =&gt; [
         'timeout' =&gt; 10, // seconds; default 10
     ],
-];
-</code></pre>
+];</code></pre>
 <p>GET requests are retried once on transient PowerDNS API failures (network errors, 5xx responses). Write requests are not retried.</p>
 <h3 id="new-locales">New Locales</h3>
 <p>Eight new locales were added: Serbian, Hungarian, Slovak, Romanian, Croatian, Latvian, Estonian, and Finnish. They are available in the installer language picker and the runtime locale selector.</p>
@@ -638,12 +629,11 @@ sudo systemctl restart apache2
 <h2 id="breaking-changes">Breaking Changes</h2>
 <h3 id="interfaceapplication_url-is-now-required-for-password-reset-emails"><code>interface.application_url</code> is now required for password reset emails</h3>
 <p>If <code>security.password_reset.enabled = true</code> and <code>interface.application_url</code> is empty, the forgot-password endpoint accepts the request but stops short of sending mail and logs <code>Password reset email NOT sent: interface.application_url must be configured to build a trustworthy reset link</code>. Set <code>application_url</code> to the full public URL of the install before upgrading:</p>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'interface' =&gt; [
         'application_url' =&gt; 'https://dns.example.com/poweradmin',
     ],
-];
-</code></pre>
+];</code></pre>
 <p>Username recovery continues to send emails when <code>application_url</code> is empty, falling back to the web server's <code>SERVER_NAME</code>; if neither is available, the email omits the login link but still includes the username. See <a href="../../configuration/security-policies/#interfaceapplication_url-is-required">Security Policies</a> and <a href="../../configuration/username-recovery/#requirements">Username Recovery</a> for the full details.</p>
 <h3 id="other-changes">Other changes</h3>
 <p>All other new features in 4.4.0 are additive or opt-in:</p>

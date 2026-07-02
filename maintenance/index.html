@@ -475,7 +475,7 @@
 <h3 id="database-maintenance">Database Maintenance</h3>
 <p>Regular database maintenance helps keep your Poweradmin installation running smoothly:</p>
 <h4 id="mysqlmariadb">MySQL/MariaDB</h4>
-<pre><code class="language-sql">-- Optimize tables to reclaim space and improve performance
+<pre class="highlight"><code class="language-sql">-- Optimize tables to reclaim space and improve performance
 OPTIMIZE TABLE users;
 OPTIMIZE TABLE zones;
 OPTIMIZE TABLE records;
@@ -489,34 +489,30 @@ ANALYZE TABLE zones;
 ANALYZE TABLE records;
 ANALYZE TABLE domains;
 ANALYZE TABLE supermasters;
-ANALYZE TABLE domainmetadata;
-</code></pre>
+ANALYZE TABLE domainmetadata;</code></pre>
 <h4 id="postgresql">PostgreSQL</h4>
-<pre><code class="language-sql">-- Update statistics
+<pre class="highlight"><code class="language-sql">-- Update statistics
 VACUUM ANALYZE users;
 VACUUM ANALYZE zones;
 VACUUM ANALYZE records;
 VACUUM ANALYZE domains;
 VACUUM ANALYZE supermasters;
-VACUUM ANALYZE domainmetadata;
-</code></pre>
+VACUUM ANALYZE domainmetadata;</code></pre>
 <h4 id="sqlite">SQLite</h4>
-<pre><code class="language-sql">-- Rebuild the database to optimize performance
-VACUUM;
-</code></pre>
+<pre class="highlight"><code class="language-sql">-- Rebuild the database to optimize performance
+VACUUM;</code></pre>
 <h3 id="log-management">Log Management</h3>
 <p>To prevent logs from consuming excessive disk space:</p>
 <ol>
 <li><strong>Database Logs</strong>: Implement a log rotation strategy for Poweradmin's database logs:</li>
 </ol>
-<pre><code class="language-sql">-- Example log cleanup (retain only the last 90 days)
+<pre class="highlight"><code class="language-sql">-- Example log cleanup (retain only the last 90 days)
 DELETE FROM log_users WHERE created &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
-DELETE FROM log_zones WHERE created &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
-</code></pre>
+DELETE FROM log_zones WHERE created &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);</code></pre>
 <ol>
 <li><strong>System Logs</strong>: Configure log rotation for your web server and PHP logs:</li>
 </ol>
-<pre><code># Example logrotate configuration (/etc/logrotate.d/poweradmin)
+<pre class="highlight"><code># Example logrotate configuration (/etc/logrotate.d/poweradmin)
 /var/log/apache2/poweradmin-*.log {
     rotate 14
     daily
@@ -525,25 +521,22 @@ DELETE FROM log_zones WHERE created &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
     missingok
     notifempty
     create 640 www-data adm
-}
-</code></pre>
+}</code></pre>
 <h3 id="backup-procedures">Backup Procedures</h3>
 <h4 id="database-backup">Database Backup</h4>
 <p>Regular database backups are essential:</p>
-<pre><code class="language-bash"># MySQL/MariaDB backup
+<pre class="highlight"><code class="language-bash"># MySQL/MariaDB backup
 mysqldump -u username -p --opt powerdns &gt; powerdns_$(date +%Y%m%d).sql
 
 # PostgreSQL backup
 pg_dump -U username powerdns &gt; powerdns_$(date +%Y%m%d).sql
 
 # SQLite backup
-sqlite3 poweradmin.sqlite .dump &gt; poweradmin_$(date +%Y%m%d).sql
-</code></pre>
+sqlite3 poweradmin.sqlite .dump &gt; poweradmin_$(date +%Y%m%d).sql</code></pre>
 <h4 id="configuration-backup">Configuration Backup</h4>
 <p>Back up your Poweradmin configuration files:</p>
-<pre><code class="language-bash"># Create a compressed archive of configuration files
-tar -czf poweradmin_config_$(date +%Y%m%d).tar.gz /path/to/poweradmin/inc/config.inc.php /path/to/poweradmin/config/
-</code></pre>
+<pre class="highlight"><code class="language-bash"># Create a compressed archive of configuration files
+tar -czf poweradmin_config_$(date +%Y%m%d).tar.gz /path/to/poweradmin/inc/config.inc.php /path/to/poweradmin/config/</code></pre>
 <h3 id="security-updates">Security Updates</h3>
 <ol>
 <li><strong>Poweradmin Updates</strong>: Regularly check for and apply updates to Poweradmin</li>
@@ -560,12 +553,11 @@ tar -czf poweradmin_config_$(date +%Y%m%d).tar.gz /path/to/poweradmin/inc/config
 </ol>
 <h3 id="error-monitoring">Error Monitoring</h3>
 <p>Regularly check error logs for issues:</p>
-<pre><code class="language-bash"># Check Poweradmin-related PHP errors
+<pre class="highlight"><code class="language-bash"># Check Poweradmin-related PHP errors
 grep -i "poweradmin" /var/log/php/error.log
 
 # Check web server errors
-grep -i "poweradmin" /var/log/apache2/error.log
-</code></pre>
+grep -i "poweradmin" /var/log/apache2/error.log</code></pre>
 <h2 id="routine-checks">Routine Checks</h2>
 <p>Establish a routine maintenance schedule:</p>
 <ul>

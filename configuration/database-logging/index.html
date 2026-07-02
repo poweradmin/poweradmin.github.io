@@ -510,19 +510,16 @@
 </tbody>
 </table>
 <h2 id="modern-configuration">Modern Configuration</h2>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'logging' =&gt; [
         'database_enabled' =&gt; true,
     ],
-];
-</code></pre>
+];</code></pre>
 <h2 id="legacy-configuration">Legacy Configuration</h2>
-<pre><code class="language-php">$dblog_use = true;
-</code></pre>
+<pre class="highlight"><code class="language-php">$dblog_use = true;</code></pre>
 <h2 id="docker-configuration">Docker Configuration</h2>
-<pre><code class="language-yaml">environment:
-  PA_LOGGING_DATABASE_ENABLED: "true"
-</code></pre>
+<pre class="highlight"><code class="language-yaml">environment:
+  PA_LOGGING_DATABASE_ENABLED: "true"</code></pre>
 <h2 id="log-tables">Log Tables</h2>
 <h3 id="log_users">log_users</h3>
 <table>
@@ -702,7 +699,7 @@
 <p>From v4.4.0, zone owners can read the audit log for the zones they own (directly or via group ownership) without being administrators. They see only entries for their own zones - the filter is applied server-side. Administrators continue to see everything.</p>
 <h2 id="querying-logs">Querying Logs</h2>
 <p>You can query logs directly from the database:</p>
-<pre><code class="language-sql">-- Recent user events
+<pre class="highlight"><code class="language-sql">-- Recent user events
 SELECT * FROM log_users
 ORDER BY created_at DESC
 LIMIT 100;
@@ -724,16 +721,14 @@ LIMIT 100;
 
 -- Events in date range
 SELECT * FROM log_users
-WHERE created_at BETWEEN '2025-01-01' AND '2025-01-31';
-</code></pre>
+WHERE created_at BETWEEN '2025-01-01' AND '2025-01-31';</code></pre>
 <h2 id="log-retention">Log Retention</h2>
 <p>Database logs can grow large over time. Consider implementing a retention policy:</p>
-<pre><code class="language-sql">-- Delete logs older than 90 days
+<pre class="highlight"><code class="language-sql">-- Delete logs older than 90 days
 DELETE FROM log_users WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
 DELETE FROM log_api WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
 DELETE FROM log_zones WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
-DELETE FROM log_groups WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
-</code></pre>
+DELETE FROM log_groups WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);</code></pre>
 <p>You can automate this with a cron job or scheduled task.</p>
 <h2 id="performance-considerations">Performance Considerations</h2>
 <ol>
@@ -743,13 +738,12 @@ DELETE FROM log_groups WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
 </ol>
 <h2 id="combining-with-syslog">Combining with Syslog</h2>
 <p>For comprehensive auditing, combine database logging with syslog:</p>
-<pre><code class="language-php">'logging' =&gt; [
+<pre class="highlight"><code class="language-php">'logging' =&gt; [
     'database_enabled' =&gt; true,
     'syslog_enabled' =&gt; true,
     'syslog_identity' =&gt; 'poweradmin',
     'syslog_facility' =&gt; LOG_USER,
-],
-</code></pre>
+],</code></pre>
 <p>This provides both persistent database records and real-time syslog events.</p>
 <h2 id="related-documentation">Related Documentation</h2>
 <ul>

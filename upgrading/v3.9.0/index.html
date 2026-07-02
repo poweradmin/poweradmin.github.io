@@ -455,13 +455,11 @@
 <li>Update your database schema based on the database system you're using:</li>
 </ol>
 <h3 id="mysql">MySQL</h3>
-<pre><code class="language-sql">ALTER TABLE zone_templ_records MODIFY COLUMN content varchar(2048) NOT NULL;
-</code></pre>
+<pre class="highlight"><code class="language-sql">ALTER TABLE zone_templ_records MODIFY COLUMN content varchar(2048) NOT NULL;</code></pre>
 <h3 id="postgresql">PostgreSQL</h3>
-<pre><code class="language-sql">ALTER TABLE zone_templ_records ALTER COLUMN content TYPE varchar(2048), ALTER COLUMN content SET NOT NULL;
-</code></pre>
+<pre class="highlight"><code class="language-sql">ALTER TABLE zone_templ_records ALTER COLUMN content TYPE varchar(2048), ALTER COLUMN content SET NOT NULL;</code></pre>
 <h3 id="sqlite">SQLite</h3>
-<pre><code class="language-sql">BEGIN;
+<pre class="highlight"><code class="language-sql">BEGIN;
 CREATE TABLE zone_templ_records_new (
     "id"            integer NULL PRIMARY KEY AUTOINCREMENT,
     "zone_templ_id" integer NOT NULL,
@@ -475,12 +473,11 @@ CREATE TABLE zone_templ_records_new (
 INSERT INTO zone_templ_records_new SELECT * FROM zone_templ_records;
 DROP TABLE zone_templ_records;
 ALTER TABLE zone_templ_records_new RENAME TO zone_templ_records;
-COMMIT;
-</code></pre>
+COMMIT;</code></pre>
 <ol>
 <li>Add the following new configuration options to your <code>inc/config.inc.php</code> file:</li>
 </ol>
-<pre><code class="language-php">'security' =&gt; [
+<pre class="highlight"><code class="language-php">'security' =&gt; [
     // ... existing security configuration ...
     'login_token_validation' =&gt; true,        // Enable token validation for login form
     'global_token_validation' =&gt; true,       // Enable token validation for all forms
@@ -503,8 +500,7 @@ COMMIT;
 'misc' =&gt; [
     // ... existing misc configuration ...
     'record_comments_sync' =&gt; false,      // Enable bidirectional comment sync between A and PTR records
-],
-</code></pre>
+],</code></pre>
 <h2 id="new-features-and-improvements">New Features and Improvements</h2>
 <h3 id="enhanced-security">Enhanced Security</h3>
 <ul>

@@ -560,28 +560,26 @@
 <li>Database backup</li>
 </ul>
 <h3 id="step-1-backup-your-data">Step 1: Backup Your Data</h3>
-<pre><code class="language-bash"># MySQL/MariaDB
+<pre class="highlight"><code class="language-bash"># MySQL/MariaDB
 mysqldump -u username -p poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
 
 # PostgreSQL
 pg_dump -h localhost -U username poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
 
 # SQLite
-cp /path/to/poweradmin.db /path/to/poweradmin_backup_$(date +%Y%m%d).db
-</code></pre>
+cp /path/to/poweradmin.db /path/to/poweradmin_backup_$(date +%Y%m%d).db</code></pre>
 <h3 id="step-2-download-and-extract">Step 2: Download and Extract</h3>
-<pre><code class="language-bash">cd /tmp
+<pre class="highlight"><code class="language-bash">cd /tmp
 wget https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.3.0.tar.gz
 tar -xzf v4.3.0.tar.gz
-rsync -av poweradmin-4.3.0/ /var/www/poweradmin/ --exclude=config/settings.php
-</code></pre>
+rsync -av poweradmin-4.3.0/ /var/www/poweradmin/ --exclude=config/settings.php</code></pre>
 <h3 id="step-3-run-database-updates">Step 3: Run Database Updates</h3>
 <p><strong>Warning: Separate PowerDNS database (MySQL/MariaDB with <code>pdns_db_name</code>)</strong></p>
 <p>The 4.3.0 MySQL upgrade script backfills <code>zones.zone_name</code>, <code>zone_type</code>, and <code>zone_master</code> by joining the PowerDNS <code>domains</code> table. If you have <code>pdns_db_name</code> set (i.e. PowerDNS tables live in a separate database), the unqualified <code>domains</code> reference in the script will not resolve against your Poweradmin database.</p>
 <p>Before running the script, edit <code>sql/poweradmin-mysql-update-to-4.3.0.sql</code> and replace <code>`domains`</code> with the fully qualified table name, e.g. <code>`pdns`.`domains`</code> (using your actual <code>pdns_db_name</code> value). Your MySQL user must have <code>SELECT</code> privileges on that database.</p>
 <p>This only applies to MySQL/MariaDB. <code>pdns_db_name</code> is not supported on PostgreSQL or SQLite - those deployments always keep Poweradmin and PowerDNS tables in the same database, and no edit is needed.</p>
 <p><strong>If you already ran the original script and ended up with <code>NULL</code> values in <code>zones.zone_name</code>:</strong> re-run just the backfill query against your Poweradmin database with the qualified name, for example:</p>
-<pre><code class="language-sql">UPDATE `zones` z
+<pre class="highlight"><code class="language-sql">UPDATE `zones` z
 INNER JOIN `pdns`.`domains` d ON z.domain_id = d.id
 INNER JOIN (
     SELECT domain_id, MIN(id) AS min_id FROM `zones` GROUP BY domain_id
@@ -589,46 +587,39 @@ INNER JOIN (
 SET z.zone_name = d.name,
     z.zone_type = d.type,
     z.zone_master = d.master
-WHERE z.zone_name IS NULL;
-</code></pre>
+WHERE z.zone_name IS NULL;</code></pre>
 <p>Replace <code>`pdns`</code> with your actual <code>pdns_db_name</code>. The columns and unique index added by the earlier run stay in place - only the backfill needs re-running.</p>
-<p><strong>MySQL/MariaDB:</strong></p>
-<pre><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.3.0.sql
-</code></pre>
-<p><strong>PostgreSQL:</strong></p>
-<pre><code class="language-bash">psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.3.0.sql
-</code></pre>
-<p><strong>SQLite:</strong></p>
-<pre><code class="language-bash">sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.3.0.sql
-</code></pre>
+<p><strong>MySQL/MariaDB:</strong>
+</p><pre class="highlight"><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.3.0.sql</code></pre><p></p>
+<p><strong>PostgreSQL:</strong>
+</p><pre class="highlight"><code class="language-bash">psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.3.0.sql</code></pre><p></p>
+<p><strong>SQLite:</strong>
+</p><pre class="highlight"><code class="language-bash">sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.3.0.sql</code></pre><p></p>
 <h3 id="step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart</h3>
-<pre><code class="language-bash">sudo systemctl restart php-fpm
+<pre class="highlight"><code class="language-bash">sudo systemctl restart php-fpm
 # or
-sudo systemctl restart apache2
-</code></pre>
+sudo systemctl restart apache2</code></pre>
 <h2 id="switching-to-api-backend-mode">Switching to API Backend Mode</h2>
 <p>If you want to switch from SQL backend to API backend mode:</p>
 <h3 id="prerequisites_1">Prerequisites</h3>
 <ol>
 <li>PowerDNS API must be enabled in your PowerDNS configuration:</li>
 </ol>
-<pre><code class="language-conf">api=yes
+<pre class="highlight"><code class="language-conf">api=yes
 api-key=YOUR_API_KEY
 webserver=yes
 webserver-port=8081
-webserver-address=127.0.0.1
-</code></pre>
+webserver-address=127.0.0.1</code></pre>
 <ol>
 <li>Verify the API is reachable:</li>
 </ol>
-<pre><code class="language-bash">curl -H "X-API-Key: YOUR_API_KEY" http://localhost:8081/api/v1/servers/localhost
-</code></pre>
+<pre class="highlight"><code class="language-bash">curl -H "X-API-Key: YOUR_API_KEY" http://localhost:8081/api/v1/servers/localhost</code></pre>
 <h3 id="configuration">Configuration</h3>
 <h4 id="new-installation">New Installation</h4>
 <p>The installer (Step 4) now offers a choice between "Database" and "API" backend. Selecting API will prompt for the PowerDNS API URL and key, and will skip PowerDNS database configuration.</p>
 <h4 id="existing-installation">Existing Installation</h4>
 <p>Update your <code>config/settings.php</code>:</p>
-<pre><code class="language-php">return [
+<pre class="highlight"><code class="language-php">return [
     'dns' =&gt; [
         'backend' =&gt; 'api',   // Change from 'sql' to 'api'
         // ... existing dns settings (hostmaster, ns1, ns2, etc.)
@@ -644,8 +635,7 @@ webserver-address=127.0.0.1
     // PowerDNS database settings are no longer needed in API mode
     // You can remove pdns_db_host, pdns_db_port, pdns_db_user, pdns_db_pass, pdns_db_name
     // Keep the Poweradmin database settings (db_host, db_port, etc.)
-];
-</code></pre>
+];</code></pre>
 <p><strong>Both <code>pdns_api.url</code> and <code>pdns_api.key</code> are required when <code>dns.backend</code> is <code>api</code>.</strong> Missing values cause Poweradmin to error out on the first DNS operation. There is no silent fallback to SQL.</p>
 <h3 id="what-happens-after-switching">What Happens After Switching</h3>
 <ol>
@@ -709,11 +699,10 @@ webserver-address=127.0.0.1
 <li>Default bcrypt cost aligned to 12 across all code paths.</li>
 </ul>
 <p>Update your <code>config/settings.php</code> if you were using md5 or md5salt:</p>
-<pre><code class="language-php">'security' =&gt; [
+<pre class="highlight"><code class="language-php">'security' =&gt; [
     'password_encryption' =&gt; 'bcrypt',  // Options: bcrypt, argon2i, argon2id
     'password_cost' =&gt; 12,
-],
-</code></pre>
+],</code></pre>
 <h2 id="breaking-changes">Breaking Changes</h2>
 <p>None. API backend mode is opt-in. Existing SQL-mode installations continue to work without any configuration changes. Password hashing changes are backward-compatible - legacy hashes are auto-upgraded on login.</p>
 <h2 id="rollback">Rollback</h2>

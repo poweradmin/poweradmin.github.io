@@ -727,9 +727,8 @@
 <li>Edit the CSS files with your customizations</li>
 <li>Changes are automatically loaded for the corresponding theme</li>
 </ol>
-<pre><code class="language-bash">cp custom_light.css.example custom_light.css
-cp custom_dark.css.example custom_dark.css
-</code></pre>
+<pre class="highlight"><code class="language-bash">cp custom_light.css.example custom_light.css
+cp custom_dark.css.example custom_dark.css</code></pre>
 <p>See <a href="../../configuration/ui/custom-css/">Custom CSS</a> for details.</p>
 <h3 id="username-recovery">Username Recovery</h3>
 <p>Users can recover forgotten usernames via email:</p>
@@ -780,27 +779,25 @@ cp custom_dark.css.example custom_dark.css
 </ul>
 <h3 id="step-1-backup-your-data">Step 1: Backup Your Data</h3>
 <p><strong>Always backup your database and files before upgrading.</strong></p>
-<pre><code class="language-bash"># Example MySQL backup
+<pre class="highlight"><code class="language-bash"># Example MySQL backup
 mysqldump -u username -p poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
 
 # Example PostgreSQL backup
 pg_dump -h localhost -U username poweradmin_db &gt; poweradmin_backup_$(date +%Y%m%d).sql
 
 # Example SQLite backup
-cp /path/to/poweradmin.db /path/to/poweradmin_backup_$(date +%Y%m%d).db
-</code></pre>
+cp /path/to/poweradmin.db /path/to/poweradmin_backup_$(date +%Y%m%d).db</code></pre>
 <h3 id="step-2-download-and-extract">Step 2: Download and Extract</h3>
 <ol>
 <li>Download the latest v4.1.0 release from <a href="https://github.com/poweradmin/poweradmin/releases">GitHub</a></li>
 <li>Extract the archive to a temporary location</li>
 <li>Replace files in your Poweradmin installation directory</li>
 </ol>
-<pre><code class="language-bash"># Example upgrade process
+<pre class="highlight"><code class="language-bash"># Example upgrade process
 cd /tmp
 wget https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.1.0.tar.gz
 tar -xzf v4.1.0.tar.gz
-rsync -av poweradmin-4.1.0/ /var/www/poweradmin/ --exclude=config/settings.php
-</code></pre>
+rsync -av poweradmin-4.1.0/ /var/www/poweradmin/ --exclude=config/settings.php</code></pre>
 <h3 id="step-3-run-database-updates">Step 3: Run Database Updates</h3>
 <p>Version 4.1.0 includes significant database schema changes:</p>
 <ul>
@@ -812,44 +809,38 @@ rsync -av poweradmin-4.1.0/ /var/www/poweradmin/ --exclude=config/settings.php
 <li>Username recovery request tracking table</li>
 </ul>
 <p><strong>Apply the 4.1.0 migration:</strong></p>
-<p><strong>For MySQL/MariaDB:</strong></p>
-<pre><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.1.0.sql
-</code></pre>
-<p><strong>For PostgreSQL:</strong></p>
-<pre><code class="language-bash">psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.1.0.sql
-</code></pre>
-<p><strong>For SQLite:</strong></p>
-<pre><code class="language-bash">sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.1.0.sql
-</code></pre>
+<p><strong>For MySQL/MariaDB:</strong>
+</p><pre class="highlight"><code class="language-bash">mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.1.0.sql</code></pre><p></p>
+<p><strong>For PostgreSQL:</strong>
+</p><pre class="highlight"><code class="language-bash">psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.1.0.sql</code></pre><p></p>
+<p><strong>For SQLite:</strong>
+</p><pre class="highlight"><code class="language-bash">sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.1.0.sql</code></pre><p></p>
 <p><strong>Note:</strong> If you're upgrading from v4.0.0-4.0.3, you may also need to apply the v4.0.2 migration if not already applied. Check if the <code>password_reset_tokens</code> table has a default value for the <code>used</code> field:</p>
-<pre><code class="language-sql">-- MySQL/MariaDB
+<pre class="highlight"><code class="language-sql">-- MySQL/MariaDB
 SHOW CREATE TABLE password_reset_tokens;
 
 -- PostgreSQL
 \d password_reset_tokens
 
 -- SQLite
-.schema password_reset_tokens
-</code></pre>
+.schema password_reset_tokens</code></pre>
 <p>If the <code>used</code> field doesn't have <code>DEFAULT 0</code>, apply the 4.0.2 migration first:</p>
-<pre><code class="language-bash"># MySQL/MariaDB
+<pre class="highlight"><code class="language-bash"># MySQL/MariaDB
 mysql -u username -p poweradmin_db &lt; sql/poweradmin-mysql-update-to-4.0.2.sql
 
 # PostgreSQL
 psql -h localhost -U username -d poweradmin_db -f sql/poweradmin-pgsql-update-to-4.0.2.sql
 
 # SQLite
-sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.0.2.sql
-</code></pre>
+sqlite3 /path/to/poweradmin.db &lt; sql/poweradmin-sqlite-update-to-4.0.2.sql</code></pre>
 <h3 id="step-4-clear-cache-and-restart-services">Step 4: Clear Cache and Restart Services</h3>
-<pre><code class="language-bash"># Clear PHP opcache (if applicable)
+<pre class="highlight"><code class="language-bash"># Clear PHP opcache (if applicable)
 sudo systemctl restart php-fpm
 # or
 sudo systemctl restart apache2
 
 # Clear any application cache
-rm -rf cache/* tmp/*
-</code></pre>
+rm -rf cache/* tmp/*</code></pre>
 <h3 id="step-5-verify-the-upgrade">Step 5: Verify the Upgrade</h3>
 <ol>
 <li><strong>Check the web interface</strong>: Ensure Poweradmin loads without errors</li>
@@ -952,7 +943,7 @@ rm -rf cache/* tmp/*
 <p>If you use any of the following features, review your configuration:</p>
 <h4 id="email-configuration">Email Configuration</h4>
 <p>With the improved SMTP handling, verify your email transport settings in <code>config/settings.php</code>:</p>
-<pre><code class="language-php">'mail' =&gt; [
+<pre class="highlight"><code class="language-php">'mail' =&gt; [
     'transport' =&gt; 'smtp',  // or 'sendmail', 'mail'
     'smtp' =&gt; [
         'host' =&gt; 'smtp.example.com',
@@ -963,12 +954,11 @@ rm -rf cache/* tmp/*
         'password' =&gt; 'your-password',
     ],
     'debug' =&gt; false,  // Set to true to enable detailed logging
-],
-</code></pre>
+],</code></pre>
 <p><strong>Note:</strong> The TLS/STARTTLS handling has been fixed in v4.1.0. If you experienced email issues in earlier versions, they should now be resolved.</p>
 <h4 id="powerdns-api-configuration">PowerDNS API Configuration</h4>
 <p>If you use PowerDNS metrics or API features, you can now use Basic Auth:</p>
-<pre><code class="language-php">'pdns' =&gt; [
+<pre class="highlight"><code class="language-php">'pdns' =&gt; [
     'api_url' =&gt; 'http://localhost:8081/api/v1',
     'api_key' =&gt; 'your-api-key',
     'server_id' =&gt; 'localhost',
@@ -979,8 +969,7 @@ rm -rf cache/* tmp/*
             'password' =&gt; 'your-password',
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h4 id="enhanced-dns-record-validation">Enhanced DNS Record Validation</h4>
 <p>DKIM and long TXT records are now properly supported. No configuration changes needed, but you can now add DKIM records without worrying about the 255-character limit.</p>
 <h2 id="post-upgrade-verification">Post-Upgrade Verification</h2>
@@ -1040,13 +1029,12 @@ rm -rf cache/* tmp/*
 <ol>
 <li>Check database indexes are present:</li>
 </ol>
-<pre><code class="language-sql">-- MySQL
+<pre class="highlight"><code class="language-sql">-- MySQL
 SHOW INDEX FROM zones;
 SHOW INDEX FROM records;
 
 -- PostgreSQL
-\di
-</code></pre>
+\di</code></pre>
 <ol>
 <li>Analyze query performance: Enable slow query log</li>
 <li>Consider adding indexes for frequently filtered columns</li>
@@ -1061,49 +1049,44 @@ SHOW INDEX FROM records;
 <h3 id="404-error-on-login-or-other-pages">404 Error on /login or Other Pages</h3>
 <p>If you see a 404 error when accessing Poweradmin after upgrading to v4.1.0:</p>
 <ol>
-<li><strong>Apache</strong>: Verify <code>mod_rewrite</code> is enabled:</li>
-</ol>
-<pre><code class="language-bash">apache2ctl -M | grep rewrite
+<li>
+<p><strong>Apache</strong>: Verify <code>mod_rewrite</code> is enabled:
+</p><pre class="highlight"><code class="language-bash">apache2ctl -M | grep rewrite
 # If not listed, enable it:
 a2enmod rewrite
-systemctl restart apache2
-</code></pre>
-<ol>
-<li><strong>Apache</strong>: Verify <code>AllowOverride All</code> is set in your VirtualHost:</li>
-</ol>
-<pre><code class="language-apache">&lt;Directory /path/to/poweradmin&gt;
+systemctl restart apache2</code></pre><p></p>
+</li>
+<li>
+<p><strong>Apache</strong>: Verify <code>AllowOverride All</code> is set in your VirtualHost:
+</p><pre class="highlight"><code class="language-apache">&lt;Directory /path/to/poweradmin&gt;
     AllowOverride All
-&lt;/Directory&gt;
-</code></pre>
-<ol>
+&lt;/Directory&gt;</code></pre><p></p>
+</li>
 <li>
 <p><strong>Apache</strong>: Verify the <code>.htaccess</code> file is present in the Poweradmin root directory and is the version from v4.1.0 (not v4.0.x)</p>
 </li>
 <li>
-<p><strong>Nginx</strong>: Verify your configuration includes the <code>try_files</code> directive:</p>
-</li>
-</ol>
-<pre><code class="language-nginx">location / {
+<p><strong>Nginx</strong>: Verify your configuration includes the <code>try_files</code> directive:
+</p><pre class="highlight"><code class="language-nginx">location / {
     try_files $uri $uri/ /index.php$is_args$args;
-}
-</code></pre>
-<ol>
-<li><strong>All servers</strong>: Check error logs for more details:</li>
-</ol>
-<pre><code class="language-bash"># Apache
+}</code></pre><p></p>
+</li>
+<li>
+<p><strong>All servers</strong>: Check error logs for more details:
+</p><pre class="highlight"><code class="language-bash"># Apache
 tail -f /var/log/apache2/error.log
 
 # Nginx
-tail -f /var/log/nginx/error.log
-</code></pre>
+tail -f /var/log/nginx/error.log</code></pre><p></p>
+</li>
+</ol>
 <h3 id="permission-issues-after-upgrade">Permission Issues After Upgrade</h3>
 <p>If you see permission denied errors:</p>
-<pre><code class="language-bash"># Fix file permissions
+<pre class="highlight"><code class="language-bash"># Fix file permissions
 sudo chown -R www-data:www-data /var/www/poweradmin
 sudo chmod -R 755 /var/www/poweradmin
 sudo chmod -R 775 /var/www/poweradmin/cache
-sudo chmod -R 775 /var/www/poweradmin/tmp
-</code></pre>
+sudo chmod -R 775 /var/www/poweradmin/tmp</code></pre>
 <h2 id="rollback-instructions">Rollback Instructions</h2>
 <p>If you need to rollback to your previous version:</p>
 <ol>

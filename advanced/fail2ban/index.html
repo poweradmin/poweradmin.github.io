@@ -462,25 +462,23 @@ escalate to <strong>IP-level bans</strong> at the firewall.</p>
 <ol>
 <li>
 <p>Enable syslog output in <code>config/settings.php</code>:</p>
-<p><code>php
-'logging' =&gt; [
+<pre class="highlight"><code class="language-php">'logging' =&gt; [
     'syslog_enabled' =&gt; true,
     'syslog_identity' =&gt; 'poweradmin',
     'syslog_facility' =&gt; LOG_USER,
-],</code></p>
+],</code></pre>
 </li>
 <li>
 <p>Make sure your syslog daemon writes Poweradmin's events to a file you
    can point fail2ban at - for example <code>/var/log/poweradmin.log</code> via
    rsyslog:</p>
-<p><code>:programname, isequal, "poweradmin"   /var/log/poweradmin.log
-&amp; stop</code></p>
+<pre class="highlight"><code>:programname, isequal, "poweradmin"   /var/log/poweradmin.log
+&amp; stop</code></pre>
 </li>
 </ol>
 <h2 id="event-types">Event Types</h2>
 <p>Every Poweradmin authentication event uses the same field order:</p>
-<pre><code>client_ip:&lt;ip&gt; user:&lt;username&gt; operation:&lt;op&gt; auth_method:&lt;sql|ldap|oidc|saml&gt; [reason:&lt;code&gt;] [mfa_type:&lt;app|email&gt;]
-</code></pre>
+<pre class="highlight"><code>client_ip:&lt;ip&gt; user:&lt;username&gt; operation:&lt;op&gt; auth_method:&lt;sql|ldap|oidc|saml&gt; [reason:&lt;code&gt;] [mfa_type:&lt;app|email&gt;]</code></pre>
 <p>The <code>operation:</code> token is what fail2ban filters on.</p>
 <table>
 <thead>
@@ -540,7 +538,7 @@ the <strong>Login error</strong> event filter), so operators can investigate, bu
 fail2ban skips them.</p>
 <h2 id="fail2ban-filter">fail2ban Filter</h2>
 <p>Create <code>/etc/fail2ban/filter.d/poweradmin.conf</code>:</p>
-<pre><code class="language-ini">[Definition]
+<pre class="highlight"><code class="language-ini">[Definition]
 # Match credential failures and MFA brute force.
 # Deliberately excludes operation:login_error (backend/IdP outages) and
 # operation:login_locked (already throttled at the application layer).
@@ -549,8 +547,7 @@ failregex = ^.*\bpoweradmin\b.*client_ip:&lt;HOST&gt; .*operation:(login_failed|
 ignoreregex =
 
 # fail2ban journal hint: the same regex works whether logs come from
-# rsyslog or systemd-journal, as long as syslog_identity is "poweradmin".
-</code></pre>
+# rsyslog or systemd-journal, as long as syslog_identity is "poweradmin".</code></pre>
 <p>The <code>&lt;HOST&gt;</code> token tells fail2ban which capture group is the client IP.
 The regex anchors on:</p>
 <ul>
@@ -561,7 +558,7 @@ The regex anchors on:</p>
 </ul>
 <h2 id="fail2ban-jail">fail2ban Jail</h2>
 <p>Add to <code>/etc/fail2ban/jail.local</code>:</p>
-<pre><code class="language-ini">[poweradmin]
+<pre class="highlight"><code class="language-ini">[poweradmin]
 enabled  = true
 filter   = poweradmin
 logpath  = /var/log/poweradmin.log
@@ -569,31 +566,27 @@ maxretry = 5
 findtime = 10m
 bantime  = 1h
 # Optional: ban for longer on repeat offenders
-# bantime.increment = true
-</code></pre>
+# bantime.increment = true</code></pre>
 <p>Tune <code>maxretry</code>/<code>findtime</code> to match your application-level
 <code>account_lockout.lockout_attempts</code> if you want fail2ban to fire at the
 same time the account-level lockout does, or set it higher to use
 fail2ban only as a secondary line.</p>
 <p>Reload fail2ban:</p>
-<pre><code class="language-sh">fail2ban-client reload
-</code></pre>
+<pre class="highlight"><code class="language-sh">fail2ban-client reload</code></pre>
 <h2 id="verifying-it-works">Verifying It Works</h2>
 <ol>
 <li>
 <p>Tail your Poweradmin log file:</p>
-<p><code>sh
-tail -f /var/log/poweradmin.log</code></p>
+<pre class="highlight"><code class="language-sh">tail -f /var/log/poweradmin.log</code></pre>
 </li>
 <li>
 <p>From a test machine, hit the login form with a wrong password a few
    times. You should see:</p>
-<p><code>May 21 22:00:01 host poweradmin[1234]: client_ip:203.0.113.42 user:admin operation:login_failed auth_method:sql reason:wrong_password</code></p>
+<pre class="highlight"><code>May 21 22:00:01 host poweradmin[1234]: client_ip:203.0.113.42 user:admin operation:login_failed auth_method:sql reason:wrong_password</code></pre>
 </li>
 <li>
 <p>After <code>maxretry</code> attempts, fail2ban should ban the IP:</p>
-<p><code>sh
-fail2ban-client status poweradmin</code></p>
+<pre class="highlight"><code class="language-sh">fail2ban-client status poweradmin</code></pre>
 </li>
 </ol>
 <h2 id="combining-with-the-built-in-lockout">Combining with the Built-In Lockout</h2>

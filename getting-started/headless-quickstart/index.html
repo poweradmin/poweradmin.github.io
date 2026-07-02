@@ -471,11 +471,10 @@ happen entirely over the REST API.</p>
 <p>The Docker image is the fastest path. Set <code>PA_API_ENABLED=true</code> so the API is
 exposed, and <code>PA_API_DOCS_ENABLED=true</code> so you can explore endpoints
 interactively.</p>
-<pre><code class="language-bash">docker run -d --name poweradmin -p 8080:80 \
+<pre class="highlight"><code class="language-bash">docker run -d --name poweradmin -p 8080:80 \
   -e PA_API_ENABLED=true \
   -e PA_API_DOCS_ENABLED=true \
-  poweradmin/poweradmin:latest
-</code></pre>
+  poweradmin/poweradmin:latest</code></pre>
 <p>The default image uses SQLite with a pre-seeded admin account
 (<code>admin</code> / <code>testadmin</code>). For a production setup, point at MySQL or PostgreSQL
 with the <code>DB_*</code> variables described in
@@ -490,27 +489,24 @@ exists, you can do everything else from scripts.</p>
    The full key is only shown once.</li>
 </ol>
 <p>Store it somewhere your scripts can read it:</p>
-<pre><code class="language-bash">export PA_API_KEY="paste-the-key-here"
-export PA_URL="http://localhost:8080"
-</code></pre>
+<pre class="highlight"><code class="language-bash">export PA_API_KEY="paste-the-key-here"
+export PA_URL="http://localhost:8080"</code></pre>
 <h2 id="3-verify-the-key-works">3. Verify the key works</h2>
-<pre><code class="language-bash">curl -H "X-API-Key: $PA_API_KEY" "$PA_URL/api/v2/zones"
-</code></pre>
+<pre class="highlight"><code class="language-bash">curl -H "X-API-Key: $PA_API_KEY" "$PA_URL/api/v2/zones"</code></pre>
 <p>You should get back a JSON envelope with an empty <code>data</code> array (or your existing
 zones if any).</p>
 <h2 id="4-create-a-zone">4. Create a zone</h2>
-<pre><code class="language-bash">curl -X POST \
+<pre class="highlight"><code class="language-bash">curl -X POST \
   -H "X-API-Key: $PA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "example.com",
     "type": "MASTER"
   }' \
-  "$PA_URL/api/v2/zones"
-</code></pre>
+  "$PA_URL/api/v2/zones"</code></pre>
 <p>The response includes the zone <code>id</code> you will use for subsequent requests.</p>
 <h2 id="5-add-a-record">5. Add a record</h2>
-<pre><code class="language-bash">ZONE_ID=1  # from the previous response
+<pre class="highlight"><code class="language-bash">ZONE_ID=1  # from the previous response
 
 curl -X POST \
   -H "X-API-Key: $PA_API_KEY" \
@@ -521,14 +517,12 @@ curl -X POST \
     "content": "192.0.2.10",
     "ttl": 3600
   }' \
-  "$PA_URL/api/v2/zones/$ZONE_ID/records"
-</code></pre>
+  "$PA_URL/api/v2/zones/$ZONE_ID/records"</code></pre>
 <p>Poweradmin validates the record, writes it to PowerDNS, and bumps the SOA
 serial so secondaries pick up the change.</p>
 <h2 id="6-explore-the-rest-interactively">6. Explore the rest interactively</h2>
 <p>With <code>PA_API_DOCS_ENABLED=true</code> the full OpenAPI explorer is available at:</p>
-<pre><code>http://localhost:8080/api/docs
-</code></pre>
+<pre class="highlight"><code>http://localhost:8080/api/docs</code></pre>
 <p>You can paste your API key into the "Authorize" dialog and try every endpoint
 from the browser.</p>
 <h2 id="when-to-use-this-mode">When to use this mode</h2>

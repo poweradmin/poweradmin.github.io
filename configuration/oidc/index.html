@@ -551,7 +551,7 @@
 <blockquote>
 <p><strong>Note:</strong> Matching is <strong>case-sensitive</strong> and <strong>exact</strong> - the group name in the token must match the mapping key exactly.</p>
 </blockquote>
-<pre><code class="language-php">'oidc' =&gt; [
+<pre class="highlight"><code class="language-php">'oidc' =&gt; [
     'enabled' =&gt; true,
     'default_permission_template' =&gt; 'Guest',
     'permission_template_mapping' =&gt; [
@@ -559,8 +559,7 @@
         'dns-operators' =&gt; 'Viewer',
         'dns-viewers' =&gt; 'Guest',
     ],
-],
-</code></pre>
+],</code></pre>
 <p>In this example, a user whose OIDC token contains the group <code>poweradmin-admins</code> receives the "Administrator" permission template. A user with no matching groups receives the "Guest" template.</p>
 <p>Predefined permission templates:</p>
 <ul>
@@ -570,7 +569,7 @@
 </ul>
 <h3 id="using-custom-group-claim-names">Using custom group claim names</h3>
 <p>By default, Poweradmin reads groups from the <code>groups</code> claim in the OIDC token. If your identity provider uses a different claim name (e.g., <code>roles</code>, <code>realm_roles</code>, or <code>memberOf</code>), configure it in <code>user_mapping.groups</code>:</p>
-<pre><code class="language-php">'providers' =&gt; [
+<pre class="highlight"><code class="language-php">'providers' =&gt; [
     'keycloak' =&gt; [
         // ... other settings ...
         'user_mapping' =&gt; [
@@ -578,22 +577,19 @@
             'groups' =&gt; 'roles',  // Read groups from the 'roles' claim instead
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <p>For Docker deployments using the generic provider, set <code>PA_OIDC_GENERIC_GROUPS_ATTR</code>:</p>
-<pre><code class="language-yaml">environment:
-  PA_OIDC_GENERIC_GROUPS_ATTR: "roles"
-</code></pre>
+<pre class="highlight"><code class="language-yaml">environment:
+  PA_OIDC_GENERIC_GROUPS_ATTR: "roles"</code></pre>
 <h3 id="end-to-end-example-keycloak-with-roles">End-to-end example: Keycloak with roles</h3>
 <p>Suppose your Keycloak access token includes a <code>roles</code> claim:</p>
-<pre><code class="language-json">{
+<pre class="highlight"><code class="language-json">{
   "sub": "user-uuid",
   "email": "user@example.com",
   "roles": ["dns-admin", "dns-viewer"]
-}
-</code></pre>
+}</code></pre>
 <p>To map <code>dns-admin</code> to the "Administrator" template:</p>
-<pre><code class="language-php">'oidc' =&gt; [
+<pre class="highlight"><code class="language-php">'oidc' =&gt; [
     'enabled' =&gt; true,
     'default_permission_template' =&gt; 'Guest',
     'permission_template_mapping' =&gt; [
@@ -613,8 +609,7 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <p>Since the user has both <code>dns-admin</code> and <code>dns-viewer</code>, the <strong>first match</strong> in the mapping order wins - they get the "Administrator" template.</p>
 <h2 id="group-membership-mapping">Group Membership Mapping</h2>
 <p>Separate from permission templates, you can also map OIDC groups to Poweradmin groups. This controls zone ownership and access through group membership.</p>
@@ -623,7 +618,7 @@
 <li><code>permission_template_mapping</code> assigns <strong>one</strong> permission template per user</li>
 <li><code>group_mapping</code> assigns <strong>multiple</strong> Poweradmin groups per user</li>
 </ul>
-<pre><code class="language-php">'oidc' =&gt; [
+<pre class="highlight"><code class="language-php">'oidc' =&gt; [
     'enabled' =&gt; true,
     'group_mapping' =&gt; [
         'external-admins' =&gt; 'Administrators',
@@ -632,15 +627,13 @@
         'dns-viewers' =&gt; 'Viewers',
         'dns-guests' =&gt; 'Guests',
     ],
-],
-</code></pre>
+],</code></pre>
 <p>A single OIDC group can also be mapped to multiple Poweradmin groups by giving an array as the value (added in 4.4.0). The user is added to every Poweradmin group listed:</p>
-<pre><code class="language-php">'group_mapping' =&gt; [
+<pre class="highlight"><code class="language-php">'group_mapping' =&gt; [
     'team1' =&gt; ['Editors', 'Viewers'],
     'team2' =&gt; ['Editors'],
     'platform-admins' =&gt; 'Administrators', // single-value form still works
-],
-</code></pre>
+],</code></pre>
 <p>Predefined Poweradmin groups:</p>
 <ul>
 <li><strong>Administrators</strong> - Full administrative access to all system functions</li>
@@ -717,7 +710,7 @@
 <li>Create a client secret</li>
 <li>Configure optional claims for groups if needed</li>
 </ol>
-<pre><code class="language-php">'oidc' =&gt; [
+<pre class="highlight"><code class="language-php">'oidc' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'azure' =&gt; [
@@ -740,8 +733,7 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <p><strong>Note</strong>: For group claims, configure "Group claims" in Azure AD App &gt; Token configuration.</p>
 <h3 id="google">Google</h3>
 <ol>
@@ -749,7 +741,7 @@
 <li>Create an OAuth 2.0 Client ID</li>
 <li>Add authorized redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></li>
 </ol>
-<pre><code class="language-php">'oidc' =&gt; [
+<pre class="highlight"><code class="language-php">'oidc' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'google' =&gt; [
@@ -770,8 +762,7 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h3 id="keycloak">Keycloak</h3>
 <ol>
 <li>Create a client in Keycloak Admin Console</li>
@@ -779,7 +770,7 @@
 <li>Add valid redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></li>
 <li>Enable "groups" scope if using group mapping</li>
 </ol>
-<pre><code class="language-php">'oidc' =&gt; [
+<pre class="highlight"><code class="language-php">'oidc' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'keycloak' =&gt; [
@@ -803,15 +794,14 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h3 id="okta">Okta</h3>
 <ol>
 <li>Create an OIDC application in Okta Admin Console</li>
 <li>Set Sign-in redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></li>
 <li>Note your Okta domain (e.g., your-org.okta.com)</li>
 </ol>
-<pre><code class="language-php">'oidc' =&gt; [
+<pre class="highlight"><code class="language-php">'oidc' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'okta' =&gt; [
@@ -834,15 +824,14 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h3 id="authentik">Authentik</h3>
 <ol>
 <li>Create an OAuth2/OpenID Provider in Authentik</li>
 <li>Create an Application linked to the provider</li>
 <li>Add redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></li>
 </ol>
-<pre><code class="language-php">'oidc' =&gt; [
+<pre class="highlight"><code class="language-php">'oidc' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'authentik' =&gt; [
@@ -866,15 +855,14 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h3 id="auth0">Auth0</h3>
 <ol>
 <li>Create an application in Auth0 Dashboard</li>
 <li>Set Application Type to "Regular Web Application"</li>
 <li>Add callback URL: <code>https://your-poweradmin.com/oidc/callback</code></li>
 </ol>
-<pre><code class="language-php">'oidc' =&gt; [
+<pre class="highlight"><code class="language-php">'oidc' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'auth0' =&gt; [
@@ -897,11 +885,10 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h3 id="generic-oidc-provider">Generic OIDC Provider</h3>
 <p>For providers not listed above, use manual endpoint configuration:</p>
-<pre><code class="language-php">'oidc' =&gt; [
+<pre class="highlight"><code class="language-php">'oidc' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'custom' =&gt; [
@@ -925,8 +912,7 @@
             ],
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h2 id="user-mapping">User Mapping</h2>
 <p>The <code>user_mapping</code> array maps OIDC claims to Poweradmin user fields:</p>
 <table>
@@ -977,31 +963,27 @@
 </table>
 <h2 id="docker-configuration">Docker Configuration</h2>
 <p>Use environment variables with the <code>PA_OIDC_</code> prefix:</p>
-<pre><code class="language-yaml">environment:
+<pre class="highlight"><code class="language-yaml">environment:
   PA_OIDC_ENABLED: "true"
   PA_OIDC_AUTO_PROVISION: "true"
   PA_OIDC_DEFAULT_PERMISSION_TEMPLATE: "Guest"
   PA_OIDC_KEYCLOAK_CLIENT_ID: "poweradmin"
   PA_OIDC_KEYCLOAK_CLIENT_SECRET: "your-secret"
   PA_OIDC_KEYCLOAK_BASE_URL: "https://keycloak.example.com"
-  PA_OIDC_KEYCLOAK_REALM: "master"
-</code></pre>
+  PA_OIDC_KEYCLOAK_REALM: "master"</code></pre>
 <p>To change the groups claim name for the generic OIDC provider, use <code>PA_OIDC_GENERIC_GROUPS_ATTR</code>:</p>
-<pre><code class="language-yaml">environment:
-  PA_OIDC_GENERIC_GROUPS_ATTR: "roles"  # Default: "groups"
-</code></pre>
+<pre class="highlight"><code class="language-yaml">environment:
+  PA_OIDC_GENERIC_GROUPS_ATTR: "roles"  # Default: "groups"</code></pre>
 <blockquote>
 <p><strong>Note:</strong> The <code>permission_template_mapping</code> and <code>group_mapping</code> settings can be configured via environment variables using the <code>=</code> delimiter and comma-separated entries:</p>
-<p><code>yaml
-PA_OIDC_PERMISSION_TEMPLATE_MAPPING: "admins=Administrator,editors=Viewer"
-PA_OIDC_GROUP_MAPPING: "admins=Administrators,editors=Editors"</code></p>
+<pre class="highlight"><code class="language-yaml">PA_OIDC_PERMISSION_TEMPLATE_MAPPING: "admins=Administrator,editors=Viewer"
+PA_OIDC_GROUP_MAPPING: "admins=Administrators,editors=Editors"</code></pre>
 <p>Group names containing colons (e.g., SAML URNs) are supported. Whitespace around commas and delimiters is trimmed automatically.</p>
 <p>For 1:n group mappings, separate the Poweradmin groups with a pipe (<code>|</code>) so one OIDC group can grant access to several Poweradmin groups (added in 4.4.0):</p>
-<p><code>yaml
-PA_OIDC_GROUP_MAPPING: "team1=Editors|Viewers,team2=Administrators"</code></p>
+<pre class="highlight"><code class="language-yaml">PA_OIDC_GROUP_MAPPING: "team1=Editors|Viewers,team2=Administrators"</code></pre>
 </blockquote>
 <p>For secrets, use the <code>__FILE</code> suffix:</p>
-<pre><code class="language-yaml">secrets:
+<pre class="highlight"><code class="language-yaml">secrets:
   oidc_client_secret:
     file: ./secrets/oidc_client_secret.txt
 
@@ -1010,11 +992,10 @@ services:
     environment:
       PA_OIDC_KEYCLOAK_CLIENT_SECRET__FILE: /run/secrets/oidc_client_secret
     secrets:
-      - oidc_client_secret
-</code></pre>
+      - oidc_client_secret</code></pre>
 <h2 id="multiple-providers">Multiple Providers</h2>
 <p>You can configure multiple OIDC providers. Users will see all enabled providers on the login page:</p>
-<pre><code class="language-php">'oidc' =&gt; [
+<pre class="highlight"><code class="language-php">'oidc' =&gt; [
     'enabled' =&gt; true,
     'providers' =&gt; [
         'azure' =&gt; [
@@ -1024,8 +1005,7 @@ services:
             // Google configuration...
         ],
     ],
-],
-</code></pre>
+],</code></pre>
 <h2 id="security-considerations">Security Considerations</h2>
 <ol>
 <li><strong>Use HTTPS</strong>: OIDC requires HTTPS for redirect URIs in production</li>
@@ -1065,9 +1045,8 @@ services:
 </ul>
 <h3 id="provider-discovery-fails-behind-a-web-proxy">Provider discovery fails behind a web proxy</h3>
 <p>If your Poweradmin host can only reach the internet through an HTTP proxy, OIDC discovery (the <code>.well-known/openid-configuration</code> fetch) will time out unless the proxy is exported in the environment. From v4.4.0, the discovery client honors the standard <code>HTTPS_PROXY</code> / <code>http_proxy</code> variables. Set them where PHP can see them - typically in the systemd unit, the FPM pool, or the Docker environment:</p>
-<pre><code class="language-bash">HTTPS_PROXY=http://proxy.internal:3128
-NO_PROXY=localhost,127.0.0.1,.internal
-</code></pre>
+<pre class="highlight"><code class="language-bash">HTTPS_PROXY=http://proxy.internal:3128
+NO_PROXY=localhost,127.0.0.1,.internal</code></pre>
 <p>Restart the web server (or <code>php-fpm</code>) so the new environment is picked up. Earlier versions ignored these variables and required a manual <code>cURL</code> build with proxy support.</p>
 <h2 id="related-documentation">Related Documentation</h2>
 <ul>

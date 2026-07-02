@@ -483,7 +483,7 @@
 <ol>
 <li>Create a configuration file at <code>/config/settings.php</code> based on the example below:</li>
 </ol>
-<pre><code class="language-php">&lt;?php
+<pre class="highlight"><code class="language-php">&lt;?php
 /**
  * Poweradmin PostgreSQL Configuration
  */
@@ -511,30 +511,26 @@ return [
     ],
 
     // Other configuration sections remain the same as in settings.defaults.php
-];
-</code></pre>
+];</code></pre>
 <h2 id="database-creation">Database Creation</h2>
 <h3 id="creating-the-database">Creating the Database</h3>
-<pre><code class="language-sql">CREATE DATABASE powerdns ENCODING 'UTF8';
+<pre class="highlight"><code class="language-sql">CREATE DATABASE powerdns ENCODING 'UTF8';
 CREATE USER poweradmin WITH ENCRYPTED PASSWORD 'your_password';
 GRANT ALL PRIVILEGES ON DATABASE powerdns TO poweradmin;
 \c powerdns
-GRANT ALL ON SCHEMA public TO poweradmin;
-</code></pre>
+GRANT ALL ON SCHEMA public TO poweradmin;</code></pre>
 <h3 id="schema-installation">Schema Installation</h3>
 <p>The SQL schema files are located in the <code>sql/</code> directory:</p>
 <ul>
 <li>For a new installation: Use <code>sql/poweradmin-pgsql-db-structure.sql</code></li>
 <li>For PowerDNS schema: Check the appropriate version in <code>sql/pdns/[version]/schema.pgsql.sql</code></li>
 </ul>
-<pre><code class="language-bash">psql -U poweradmin -d powerdns -f sql/poweradmin-pgsql-db-structure.sql
-psql -U poweradmin -d powerdns -f sql/pdns/[version]/schema.pgsql.sql
-</code></pre>
+<pre class="highlight"><code class="language-bash">psql -U poweradmin -d powerdns -f sql/poweradmin-pgsql-db-structure.sql
+psql -U poweradmin -d powerdns -f sql/pdns/[version]/schema.pgsql.sql</code></pre>
 <h2 id="postgresql-specific-considerations">PostgreSQL-Specific Considerations</h2>
 <h3 id="sequences">Sequences</h3>
 <p>PostgreSQL uses sequences for auto-incrementing primary keys. If you're migrating from MySQL or experiencing issues with IDs, you may need to reset sequences:</p>
-<pre><code class="language-sql">SELECT setval('sequence_name', (SELECT MAX(id) FROM table_name));
-</code></pre>
+<pre class="highlight"><code class="language-sql">SELECT setval('sequence_name', (SELECT MAX(id) FROM table_name));</code></pre>
 <h3 id="case-sensitivity">Case Sensitivity</h3>
 <p>PostgreSQL is case-sensitive for identifiers unless quoted. All table and column names in Poweradmin should be accessed in lowercase.</p>
 <h3 id="performance-tuning">Performance Tuning</h3>
@@ -618,7 +614,7 @@ psql -U poweradmin -d powerdns -f sql/pdns/[version]/schema.pgsql.sql
 </tbody>
 </table>
 <h3 id="example-ssl-with-certificate-verification">Example: SSL with Certificate Verification</h3>
-<pre><code class="language-php">'database' =&gt; [
+<pre class="highlight"><code class="language-php">'database' =&gt; [
     'type' =&gt; 'pgsql',
     'host' =&gt; 'postgres.example.com',
     'port' =&gt; '5432',
@@ -628,10 +624,9 @@ psql -U poweradmin -d powerdns -f sql/pdns/[version]/schema.pgsql.sql
     'ssl' =&gt; true,
     'ssl_verify' =&gt; true,
     'ssl_ca' =&gt; '/path/to/ca-cert.pem',
-],
-</code></pre>
+],</code></pre>
 <h3 id="example-ssl-without-verification">Example: SSL without Verification</h3>
-<pre><code class="language-php">'database' =&gt; [
+<pre class="highlight"><code class="language-php">'database' =&gt; [
     'type' =&gt; 'pgsql',
     'host' =&gt; 'postgres.example.com',
     'port' =&gt; '5432',
@@ -640,8 +635,7 @@ psql -U poweradmin -d powerdns -f sql/pdns/[version]/schema.pgsql.sql
     'name' =&gt; 'powerdns',
     'ssl' =&gt; true,
     'ssl_verify' =&gt; false,
-],
-</code></pre>
+],</code></pre>
 <h3 id="backwards-compatibility-note">Backwards Compatibility Note</h3>
 <p>By default (<code>ssl=false</code>), Poweradmin uses <code>sslmode=prefer</code>, which attempts SSL connections but falls back to non-SSL if the server doesn't support it. This maintains backwards compatibility with existing configurations.</p>
               

@@ -484,14 +484,13 @@
 <p>For production deployments, use Docker secrets to securely manage sensitive configuration values instead of plain environment variables.</p>
 <h2 id="overview">Overview</h2>
 <p>Any Poweradmin environment variable can be provided via a file by appending <code>__FILE</code> to the variable name. The container reads the file contents and uses them as the actual value.</p>
-<pre><code class="language-bash"># Instead of this:
+<pre class="highlight"><code class="language-bash"># Instead of this:
 -e DB_PASS=mySecretPassword
 
 # Use this:
--e DB_PASS__FILE=/run/secrets/db_password
-</code></pre>
+-e DB_PASS__FILE=/run/secrets/db_password</code></pre>
 <h2 id="docker-compose-example">Docker Compose Example</h2>
-<pre><code class="language-yaml">version: '3.8'
+<pre class="highlight"><code class="language-yaml">version: '3.8'
 
 services:
   poweradmin:
@@ -530,10 +529,9 @@ secrets:
   pdns_api_key:
     file: ./secrets/pdns_api_key.txt
   smtp_password:
-    file: ./secrets/smtp_password.txt
-</code></pre>
+    file: ./secrets/smtp_password.txt</code></pre>
 <h2 id="docker-swarm-example">Docker Swarm Example</h2>
-<pre><code class="language-yaml">version: '3.8'
+<pre class="highlight"><code class="language-yaml">version: '3.8'
 
 services:
   poweradmin:
@@ -553,12 +551,10 @@ services:
 
 secrets:
   db_password:
-    external: true
-</code></pre>
+    external: true</code></pre>
 <p>Create external secrets:</p>
-<pre><code class="language-bash">echo "mySecretPassword" | docker secret create db_password -
-echo "pdns_api_key_12345" | docker secret create pdns_api_key -
-</code></pre>
+<pre class="highlight"><code class="language-bash">echo "mySecretPassword" | docker secret create db_password -
+echo "pdns_api_key_12345" | docker secret create pdns_api_key -</code></pre>
 <h2 id="supported-secret-variables">Supported Secret Variables</h2>
 <h3 id="database">Database</h3>
 <table>
@@ -722,7 +718,7 @@ echo "pdns_api_key_12345" | docker secret create pdns_api_key -
 </table>
 <h2 id="multi-line-secrets">Multi-line Secrets</h2>
 <p>For certificates and private keys, create files with the full content:</p>
-<pre><code class="language-bash"># Create certificate secret
+<pre class="highlight"><code class="language-bash"># Create certificate secret
 cat &gt; ./secrets/saml_cert.txt &lt;&lt; 'EOF'
 MIICnTCCAYUCBgF...
 ...certificate content...
@@ -734,21 +730,17 @@ cat &gt; ./secrets/saml_key.txt &lt;&lt; 'EOF'
 MIIEvgIBADANBg...
 ...key content...
 -----END PRIVATE KEY-----
-EOF
-</code></pre>
+EOF</code></pre>
 <h2 id="security-best-practices">Security Best Practices</h2>
 <p><strong>1. File permissions:</strong> Set restrictive permissions on secret files:</p>
-<pre><code class="language-bash">chmod 600 ./secrets/*
-</code></pre>
+<pre class="highlight"><code class="language-bash">chmod 600 ./secrets/*</code></pre>
 <p><strong>2. Read-only mounts:</strong> Mount secrets as read-only:</p>
-<pre><code class="language-yaml">volumes:
-  - ./secrets/db_password.txt:/run/secrets/db_password:ro
-</code></pre>
+<pre class="highlight"><code class="language-yaml">volumes:
+  - ./secrets/db_password.txt:/run/secrets/db_password:ro</code></pre>
 <p><strong>3. Exclude from version control:</strong> Add secrets to <code>.gitignore</code>:</p>
-<pre><code>secrets/
+<pre class="highlight"><code>secrets/
 *.key
-*.pem
-</code></pre>
+*.pem</code></pre>
 <ol>
 <li>
 <p><strong>Use external secrets in production</strong>: For Swarm deployments, use external secrets managed outside of compose files</p>
@@ -774,15 +766,12 @@ EOF
 </ul>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="check-secret-loading">Check secret loading</h3>
-<pre><code class="language-bash">docker logs poweradmin | grep -i secret
-</code></pre>
-<p>Look for messages like:</p>
-<pre><code>[2025-01-18 10:30:00] Getting secret DB_PASS from /run/secrets/db_password
-</code></pre>
+<pre class="highlight"><code class="language-bash">docker logs poweradmin | grep -i secret</code></pre>
+<p>Look for messages like:
+</p><pre class="highlight"><code>[2025-01-18 10:30:00] Getting secret DB_PASS from /run/secrets/db_password</code></pre><p></p>
 <h3 id="enable-debug-mode">Enable debug mode</h3>
-<pre><code class="language-yaml">environment:
-  DEBUG: "true"
-</code></pre>
+<pre class="highlight"><code class="language-yaml">environment:
+  DEBUG: "true"</code></pre>
 <h3 id="common-issues">Common issues</h3>
 <table>
 <thead>
@@ -812,15 +801,14 @@ EOF
 </table>
 <h2 id="directory-structure">Directory Structure</h2>
 <p>Recommended secrets directory layout:</p>
-<pre><code>project/
+<pre class="highlight"><code>project/
 ├── docker-compose.yml
 └── secrets/
     ├── db_password.txt
     ├── pdns_api_key.txt
     ├── smtp_password.txt
     ├── oidc_client_secret.txt
-    └── saml_sp_key.txt
-</code></pre>
+    └── saml_sp_key.txt</code></pre>
 <h2 id="related-documentation">Related Documentation</h2>
 <ul>
 <li><a href="../docker/">Docker Installation</a></li>
