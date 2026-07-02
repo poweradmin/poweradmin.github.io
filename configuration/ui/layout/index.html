@@ -156,6 +156,8 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#custom-favicon-and-logo">Custom Favicon and Logo</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#ui-element-positioning">UI Element Positioning</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#form-element-positioning">Form Element Positioning</a>
@@ -540,6 +542,26 @@
   &lt;/p&gt;
 &lt;/div&gt;
 </code></pre>
+<h2 id="custom-favicon-and-logo">Custom Favicon and Logo</h2>
+<p>Poweradmin renders the favicon (<code>&lt;link rel="icon"&gt;</code>) and the header logo from two <code>interface</code> settings (added in 4.4.0):</p>
+<ul>
+<li><strong>favicon_path</strong>: Path or URL to a custom favicon. Empty uses the bundled <code>favicon.ico</code>. Default: <code>''</code></li>
+<li><strong>logo_path</strong>: Path or URL to a custom header logo image. Empty uses the bundled <code>assets/logo.png</code>. Default: <code>''</code></li>
+</ul>
+<pre><code class="language-php">return [
+    'interface' =&gt; [
+        'favicon_path' =&gt; '/branding/favicon.png',
+        'logo_path' =&gt; 'https://cdn.example.com/branding/dns-logo.svg',
+    ],
+];
+</code></pre>
+<p>Absolute URLs (<code>https://cdn.example.com/...</code>) are used as-is. Path values are served from the Poweradmin web root and automatically get <code>base_url_prefix</code> applied, so <code>/branding/favicon.png</code> works unchanged whether Poweradmin runs at the domain root or in a subfolder.</p>
+<p>Notes:</p>
+<ul>
+<li><code>logo_path</code> only applies to the standard header markup. If you use a custom header template (see above), the template controls its own logo.</li>
+<li>Files placed inside the Poweradmin web root can be overwritten by upgrades. With Docker, bind-mount your branding files (e.g. <code>-v ./favicon.ico:/app/favicon.ico</code>) or point the settings at an external URL.</li>
+<li>On versions before 4.4.0, replace <code>favicon.ico</code> in the Poweradmin web root (works for installs served at the domain root, browsers request <code>/favicon.ico</code> by convention) or add a <code>&lt;link rel="icon" href="..."&gt;</code> tag through the header template fork described in <a href="#injecting-content-into-head">Injecting content into <code>&lt;head&gt;</code></a>.</li>
+</ul>
 <h2 id="ui-element-positioning">UI Element Positioning</h2>
 <h3 id="form-element-positioning">Form Element Positioning</h3>
 <p>Control the positioning of key UI elements:</p>
@@ -616,7 +638,7 @@
 <li>Custom header/footer templates render inside the page body (logo area / footer line). Scripts placed here run on every page but are not in <code>&lt;head&gt;</code>. For analytics tags, see the next section.</li>
 </ul>
 <h2 id="injecting-content-into-head">Injecting content into <code>&lt;head&gt;</code></h2>
-<p>Tracking snippets (Matomo, Plausible, Google Analytics), custom favicons, and additional meta tags need to live inside the page <code>&lt;head&gt;</code> element, not in the custom header template. Poweradmin does not expose a configuration setting for this - it gives you two supported paths instead.</p>
+<p>Tracking snippets (Matomo, Plausible, Google Analytics) and additional meta tags need to live inside the page <code>&lt;head&gt;</code> element, not in the custom header template. Poweradmin does not expose a configuration setting for this - it gives you two supported paths instead. (For favicons, use the <code>favicon_path</code> setting described in <a href="#custom-favicon-and-logo">Custom Favicon and Logo</a> - no <code>&lt;head&gt;</code> injection needed since 4.4.0.)</p>
 <h3 id="option-1-fork-the-theme-header-template-simple-but-upgrade-aware">Option 1: Fork the theme header template (simple, but upgrade-aware)</h3>
 <ol>
 <li>
