@@ -152,6 +152,16 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#user-info-sync-auto-provisioning-and-group-mapping-v450">User Info Sync, Auto-Provisioning and Group Mapping (v4.5.0+)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#syncing-name-and-email">Syncing name and email</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#auto-provisioning-users">Auto-provisioning users</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#mapping-ldap-groups">Mapping LDAP groups</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#security-considerations">Security Considerations</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#adding-users-to-poweradmin">Adding Users to Poweradmin</a>
@@ -544,6 +554,62 @@
 <td>Cache LDAP validation results (seconds, 0 = disabled)</td>
 <td>4.1.0</td>
 </tr>
+<tr>
+<td>N/A</td>
+<td>ldap.sync_user_info</td>
+<td>false</td>
+<td>Sync fullname/email from LDAP on every login</td>
+<td>4.5.0</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>ldap.fullname_attribute</td>
+<td>displayName</td>
+<td>LDAP attribute for full name (<code>displayName</code> for AD, <code>cn</code> for OpenLDAP)</td>
+<td>4.5.0</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>ldap.email_attribute</td>
+<td>mail</td>
+<td>LDAP attribute for email address</td>
+<td>4.5.0</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>ldap.auto_provision</td>
+<td>false</td>
+<td>Create missing users on first successful LDAP login</td>
+<td>4.5.0</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>ldap.default_permission_template</td>
+<td>Guest</td>
+<td>Template for auto-provisioned users when no mapping matches</td>
+<td>4.5.0</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>ldap.groups_attribute</td>
+<td>memberOf</td>
+<td>LDAP attribute holding group memberships</td>
+<td>4.5.0</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>ldap.permission_template_mapping</td>
+<td>[]</td>
+<td>Maps LDAP groups to permission template names</td>
+<td>4.5.0</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>ldap.group_mapping</td>
+<td>[]</td>
+<td>Maps LDAP groups to Poweradmin group(s)</td>
+<td>4.5.0</td>
+</tr>
 </tbody>
 </table>
 <h2 id="modern-configuration-example">Modern Configuration Example</h2>
@@ -617,6 +683,45 @@ $ldap_search_filter = '(cn=*admin*)';</code></pre>
         'search_filter' =&gt; '(&amp;(objectClass=posixAccount)(uid=%s))',
     ],
 ];</code></pre>
+<h2 id="user-info-sync-auto-provisioning-and-group-mapping-v450">User Info Sync, Auto-Provisioning and Group Mapping (v4.5.0+)</h2>
+<p>Since 4.5.0, LDAP can drive user identity, permissions and group membership the same way OIDC/SAML do. All features are off by default, preserving the classic "admin pre-creates the account" workflow.</p>
+<h3 id="syncing-name-and-email">Syncing name and email</h3>
+<pre class="highlight"><code class="language-php">'ldap' =&gt; [
+    // ...
+    'sync_user_info' =&gt; true,
+    'fullname_attribute' =&gt; 'displayName',  // 'cn' for OpenLDAP
+    'email_attribute' =&gt; 'mail',
+],</code></pre>
+<p>On every (non-cached) login, the user's fullname and email are refreshed from the directory. Empty attributes never blank existing values. With this enabled, the profile fields stay read-only in Poweradmin and the directory is the source of truth.</p>
+<h3 id="auto-provisioning-users">Auto-provisioning users</h3>
+<pre class="highlight"><code class="language-php">'ldap' =&gt; [
+    // ...
+    'auto_provision' =&gt; true,
+    'default_permission_template' =&gt; 'Guest',
+],</code></pre>
+<p>A user who authenticates successfully against LDAP but has no Poweradmin account gets one created automatically (with <code>use_ldap</code> enabled). The permission template comes from <code>permission_template_mapping</code> when a group matches, otherwise from <code>default_permission_template</code>. Provisioning fails if the username is already taken by a local (non-LDAP) account.</p>
+<h3 id="mapping-ldap-groups">Mapping LDAP groups</h3>
+<pre class="highlight"><code class="language-php">'ldap' =&gt; [
+    // ...
+    'groups_attribute' =&gt; 'memberOf',
+    'permission_template_mapping' =&gt; [
+        'dns-admins' =&gt; 'Administrator',
+        'cn=dns-operators,ou=groups,dc=example,dc=com' =&gt; 'Viewer',
+    ],
+    'group_mapping' =&gt; [
+        'dns-admins' =&gt; 'Administrators',
+        'dns-operators' =&gt; ['Zone Managers', 'Editors'],  // 1:n mapping
+    ],
+],</code></pre>
+<p>Mapping keys match a group value exactly (full DN) or the first RDN value of a DN, so <code>dns-admins</code> matches <code>cn=dns-admins,ou=groups,dc=example,dc=com</code>. Semantics mirror the <a href="../oidc/">OIDC</a> settings:</p>
+<ul>
+<li><code>permission_template_mapping</code> assigns <strong>one</strong> permission template per user; the first matching entry wins.</li>
+<li><code>group_mapping</code> assigns <strong>multiple</strong> Poweradmin groups; memberships are re-evaluated (added and removed) on every login.</li>
+<li>A template assigned via mapping is revoked back to <code>default_permission_template</code> if the user later matches no mapping; admin-assigned templates are never touched.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> <code>memberOf</code> requires the overlay to be enabled on OpenLDAP; it is available out of the box on Active Directory. Nested group membership is not expanded.</p>
+</blockquote>
 <h2 id="security-considerations">Security Considerations</h2>
 <ul>
 <li>Always use LDAPS (LDAP over SSL/TLS) in production environments</li>
