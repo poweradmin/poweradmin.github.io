@@ -160,6 +160,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#mapping-ldap-groups">Mapping LDAP groups</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#granting-access-to-an-active-directory-group-without-pre-creating-users">Granting access to an Active Directory group without pre-creating users</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#security-considerations">Security Considerations</a>
@@ -628,7 +630,7 @@
     ],
 ];</code></pre>
 <h2 id="ldap-search-filter-examples">LDAP Search Filter Examples</h2>
-<p>The search filter is used to limit which LDAP accounts can authenticate to Poweradmin:</p>
+<p>The search filter is used to limit which LDAP accounts can authenticate to Poweradmin. Poweradmin combines it with the username lookup as <code>(&amp;(&lt;user_attribute&gt;=&lt;login&gt;)&lt;search_filter&gt;)</code>, so the filter should only contain the extra conditions - do not repeat the username clause:</p>
 <pre class="highlight"><code class="language-php">// Only users that are members of the 'powerdns' group
 $ldap_search_filter = '(memberOf=cn=powerdns,ou=groups,dc=poweradmin,dc=org)';
 
@@ -668,7 +670,7 @@ $ldap_search_filter = '(cn=*admin*)';</code></pre>
         'bind_dn' =&gt; 'CN=ServiceAccount,OU=Users,DC=company,DC=com',
         'bind_password' =&gt; 'password',
         'user_attribute' =&gt; 'sAMAccountName',
-        'search_filter' =&gt; '(&amp;(objectClass=user)(sAMAccountName=%s))',
+        'search_filter' =&gt; '(objectClass=user)',
     ],
 ];</code></pre>
 <h3 id="openldap">OpenLDAP</h3>
@@ -680,7 +682,7 @@ $ldap_search_filter = '(cn=*admin*)';</code></pre>
         'bind_dn' =&gt; 'cn=admin,dc=company,dc=com',
         'bind_password' =&gt; 'password',
         'user_attribute' =&gt; 'uid',
-        'search_filter' =&gt; '(&amp;(objectClass=posixAccount)(uid=%s))',
+        'search_filter' =&gt; '(objectClass=posixAccount)',
     ],
 ];</code></pre>
 <h2 id="user-info-sync-auto-provisioning-and-group-mapping-v450">User Info Sync, Auto-Provisioning and Group Mapping (v4.5.0+)</h2>
@@ -721,6 +723,29 @@ $ldap_search_filter = '(cn=*admin*)';</code></pre>
 </ul>
 <blockquote>
 <p><strong>Note:</strong> <code>memberOf</code> requires the overlay to be enabled on OpenLDAP; it is available out of the box on Active Directory. Nested group membership is not expanded.</p>
+</blockquote>
+<h3 id="granting-access-to-an-active-directory-group-without-pre-creating-users">Granting access to an Active Directory group without pre-creating users</h3>
+<p>A common request: everyone in an AD group (say <code>PA_users</code>) should be able to use Poweradmin, without an admin creating each account by hand. Combine auto-provisioning with a <code>search_filter</code> that gates login on group membership:</p>
+<pre class="highlight"><code class="language-php">'ldap' =&gt; [
+    'enabled' =&gt; true,
+    'uri' =&gt; 'ldaps://ad.company.com',
+    'base_dn' =&gt; 'DC=company,DC=com',
+    'bind_dn' =&gt; 'CN=ServiceAccount,OU=Users,DC=company,DC=com',
+    'bind_password' =&gt; 'password',
+    'user_attribute' =&gt; 'sAMAccountName',
+    // only PA_users members may log in
+    'search_filter' =&gt; '(memberOf=cn=PA_users,ou=groups,dc=company,dc=com)',
+    'auto_provision' =&gt; true,
+    'permission_template_mapping' =&gt; [
+        'PA_users' =&gt; 'Administrator',
+    ],
+    'group_mapping' =&gt; [
+        'PA_users' =&gt; 'DNS Admins',
+    ],
+],</code></pre>
+<p>Group members are created in Poweradmin on their first login with the mapped permission template and group memberships; nobody outside <code>PA_users</code> can authenticate. On Active Directory, nested groups can be matched in the login filter with the matching-rule-in-chain syntax: <code>(memberOf:1.2.840.113556.1.4.1941:=cn=PA_users,ou=groups,dc=company,dc=com)</code> (the mapping arrays still only see direct <code>memberOf</code> values).</p>
+<blockquote>
+<p><strong>Warning:</strong> with <code>auto_provision</code> enabled and no group condition in <code>search_filter</code>, any user in the directory can log in and receives <code>default_permission_template</code>.</p>
 </blockquote>
 <h2 id="security-considerations">Security Considerations</h2>
 <ul>
