@@ -494,6 +494,7 @@
 <blockquote>
 <p><strong>Note:</strong> MFA enforcement requires both the global <code>mfa.enabled</code> and <code>mfa.enforced</code> settings to be set to <code>true</code> in your configuration. See <a href="#configuration">Configuration</a> below.</p>
 </blockquote>
+<p>Since 4.5.0, enforcement can be waived for users who log in through an external identity provider (LDAP, OIDC, SAML) by setting <code>mfa.skip_for_external_auth</code> to <code>true</code>. Use this when the IdP already enforces MFA - it avoids a second OTP prompt in Poweradmin. Local (password) logins are still enforced, and external users can still enable Poweradmin MFA voluntarily.</p>
 <h2 id="disabling-mfa">Disabling MFA</h2>
 <p>To disable MFA on your account:</p>
 <ol>
@@ -523,6 +524,7 @@
     'mfa' =&gt; [
         'enabled' =&gt; true,
         'enforced' =&gt; true,
+        'skip_for_external_auth' =&gt; false,
         'app_enabled' =&gt; true,
         'email_enabled' =&gt; true,
         'recovery_codes' =&gt; 8,
@@ -532,6 +534,7 @@
 <ul>
 <li><strong>enabled</strong> - enable MFA functionality globally. Default: <code>false</code></li>
 <li><strong>enforced</strong> - enable MFA enforcement (works with <code>user_enforce_mfa</code> permission). Default: <code>false</code></li>
+<li><strong>skip_for_external_auth</strong> - do not enforce MFA for LDAP, OIDC, or SAML logins; the identity provider is trusted to enforce it. Default: <code>false</code> (added in 4.5.0)</li>
 <li><strong>app_enabled</strong> - allow authenticator app method. Default: <code>true</code></li>
 <li><strong>email_enabled</strong> - allow email verification method (requires <a href="../../configuration/mail/">mail configuration</a>). Default: <code>true</code></li>
 <li><strong>recovery_codes</strong> - number of recovery codes to generate per user. Default: <code>8</code></li>
