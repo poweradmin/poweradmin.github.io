@@ -146,6 +146,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#provider-configuration">Provider Configuration</a>
         <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#response-mode-response_mode">Response mode (response_mode)</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#azure-ad-microsoft">Azure AD (Microsoft)</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#google">Google</a>
@@ -697,12 +699,36 @@
 <td>Provider logout endpoint</td>
 </tr>
 <tr>
+<td><code>response_mode</code></td>
+<td>No</td>
+<td>How the provider returns the authorization code: <code>query</code> (default) or <code>form_post</code></td>
+</tr>
+<tr>
 <td><code>user_mapping</code></td>
 <td>No</td>
 <td>Map OIDC claims to user fields</td>
 </tr>
 </tbody>
 </table>
+<h3 id="response-mode-response_mode">Response mode (<code>response_mode</code>)</h3>
+<p>By default the provider returns the authorization code in the callback URL query
+string (<code>response_mode</code> = <code>query</code>). Setting <code>response_mode</code> to <code>form_post</code> asks the
+provider to return the code in an HTTP POST body instead, so it never appears in
+URLs, proxy logs, or browser history.</p>
+<pre class="highlight"><code class="language-php">'response_mode' =&gt; 'form_post',</code></pre>
+<p>Notes:</p>
+<ul>
+<li>Default is <code>query</code>; existing deployments are unaffected until you opt in.</li>
+<li><code>form_post</code> requires HTTPS (the callback runs over a cross-site POST that needs a
+  secure cookie). It is also allowed on <code>localhost</code> for development. On a plain-HTTP
+  deployment Poweradmin logs a warning and falls back to <code>query</code>.</li>
+<li>Set <code>interface.application_url</code> to your external HTTPS URL when Poweradmin runs
+  behind a TLS-terminating proxy, so the HTTPS requirement is judged by the
+  browser-facing URL rather than the backend request.</li>
+<li>Works with any provider that supports the OpenID Connect Form Post Response Mode
+  (Azure AD, Keycloak, Okta, Auth0, and others). PKCE (S256) is always used
+  regardless of <code>response_mode</code>.</li>
+</ul>
 <h3 id="azure-ad-microsoft">Azure AD (Microsoft)</h3>
 <ol>
 <li>Register an application in Azure Portal &gt; App registrations</li>

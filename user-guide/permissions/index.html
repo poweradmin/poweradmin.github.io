@@ -205,6 +205,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#zone_content_edit_own_as_client">zone_content_edit_own_as_client</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#zone_content_edit_ns_subzone">zone_content_edit_ns_subzone</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#zone_delete_own">zone_delete_own</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#zone_delete_others">zone_delete_others</a>
@@ -573,6 +575,17 @@
 <li>Provides restricted zone management capabilities</li>
 <li>Common use case: tenant or end-customer self-service, where users can manage their own A/AAAA/CNAME/MX/TXT records but must not touch the zone's authority (SOA) or delegation (NS) records</li>
 <li>Enforced uniformly in the web UI and across the v1/v2 record APIs (since 4.2.3); creating, editing, or deleting an SOA or NS record returns HTTP 403 for users limited to this permission</li>
+<li>To additionally allow managing delegation NS records for subdomains, grant <code>zone_content_edit_ns_subzone</code></li>
+</ul>
+<h3 id="zone_content_edit_ns_subzone">zone_content_edit_ns_subzone</h3>
+<ul>
+<li>Allows users limited to <code>zone_content_edit_own_as_client</code> to add, edit, and delete NS records below the zone apex</li>
+<li>SOA and apex NS records remain restricted regardless of this permission</li>
+<li>Use case: end customers who delegate subdomains (e.g. <code>subdomain.example.com</code>) to another DNS provider while the zone's own NS set stays under the operator's control</li>
+<li>Not granted to any permission template by default; assign it explicitly in the permission template editor</li>
+<li>Has no effect on its own - it only extends <code>zone_content_edit_own_as_client</code></li>
+<li>Applies to the web UI and the v1/v2 record APIs</li>
+<li>Added in v4.5.0</li>
 </ul>
 <h3 id="zone_delete_own">zone_delete_own</h3>
 <ul>
