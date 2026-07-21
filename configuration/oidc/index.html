@@ -148,6 +148,8 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#response-mode-response_mode">Response mode (response_mode)</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#scopes-scopes">Scopes (scopes)</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#azure-ad-microsoft">Azure AD (Microsoft)</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#google">Google</a>
@@ -646,7 +648,22 @@
 </ul>
 <blockquote>
 <p><strong>Note:</strong> Both <code>permission_template_mapping</code> and <code>group_mapping</code> read from the same token claim specified by <code>user_mapping.groups</code>. Group memberships are also re-evaluated on every login.</p>
+<p><strong>Important:</strong> Group mapping only works if the provider actually returns a groups claim. Many providers (SimpleSAML, Keycloak, Okta, and most generic OIDC providers) only include it when the <code>groups</code> scope is explicitly requested - add it to that provider's <code>scopes</code> list (see <a href="#scopes-scopes">Scopes</a>). Azure AD and Google surface group/role membership through other mechanisms; see their provider sections.</p>
 </blockquote>
+<p>The <code>scopes</code> field lives on the individual provider, not on the top-level <code>oidc</code> block:</p>
+<pre class="highlight"><code class="language-php">'oidc' =&gt; [
+    'enabled' =&gt; true,
+    'group_mapping' =&gt; [
+        'dns-managers' =&gt; 'Zone Managers',
+        'dns-editors' =&gt; 'Editors',
+    ],
+    'providers' =&gt; [
+        'simplesaml' =&gt; [
+            // ... client_id, client_secret, endpoints/discovery ...
+            'scopes' =&gt; 'openid profile email groups', // 'groups' required for the groups claim
+        ],
+    ],
+],</code></pre>
 <h2 id="provider-configuration">Provider Configuration</h2>
 <p>Each provider requires specific configuration. All providers share these common fields:</p>
 <table>
@@ -729,6 +746,13 @@ URLs, proxy logs, or browser history.</p>
   (Azure AD, Keycloak, Okta, Auth0, and others). PKCE (S256) is always used
   regardless of <code>response_mode</code>.</li>
 </ul>
+<h3 id="scopes-scopes">Scopes (<code>scopes</code>)</h3>
+<p>Each provider's <code>scopes</code> string controls which OAuth scopes Poweradmin requests at login. The default is <code>openid profile email</code>, which does <strong>not</strong> include group information.</p>
+<p>If you use <code>group_mapping</code> or <code>permission_template_mapping</code>, the provider must return a groups claim, and many providers only include it when a <code>groups</code> scope is requested explicitly. Add it to that provider's <code>scopes</code>:</p>
+<pre class="highlight"><code class="language-php">'scopes' =&gt; 'openid profile email groups',</code></pre>
+<blockquote>
+<p><strong>Note:</strong> <code>groups</code> is not a universal scope. SimpleSAML, Keycloak, and Okta expose group membership through it, but Azure AD and Google do not - they surface groups/roles via provider-specific configuration (see their sections below). The scope name is also independent of the claim name, which you set with <code>user_mapping.groups</code> (default <code>groups</code>).</p>
+</blockquote>
 <h3 id="azure-ad-microsoft">Azure AD (Microsoft)</h3>
 <ol>
 <li>Register an application in Azure Portal &gt; App registrations</li>
@@ -927,7 +951,7 @@ URLs, proxy logs, or browser history.</p>
             'token_url' =&gt; 'https://provider.example.com/oauth/token',
             'userinfo_url' =&gt; 'https://provider.example.com/oauth/userinfo',
             'logout_url' =&gt; 'https://provider.example.com/oauth/logout',
-            'scopes' =&gt; 'openid profile email',
+            'scopes' =&gt; 'openid profile email',  // add 'groups' if your provider requires it for group claims
             'user_mapping' =&gt; [
                 'username' =&gt; 'preferred_username',
                 'email' =&gt; 'email',
