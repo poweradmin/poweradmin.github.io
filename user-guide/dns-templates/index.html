@@ -483,9 +483,12 @@
 <ul>
 <li><code>[ZONE]</code> - replaced with the actual domain name</li>
 <li><code>[SERIAL]</code> - replaced with current date + sequence (YYYYMMDD00)</li>
+<li><code>[UNIXTIME]</code> - replaced with the current UNIX timestamp</li>
+<li><code>[COUNTER]</code> - replaced with 1, the starting value for a simple incremental serial</li>
 <li><code>[NS1]</code>, <code>[NS2]</code>, etc. - replaced with configured nameservers</li>
 <li><code>[HOSTMASTER]</code> - replaced with configured hostmaster email</li>
 </ul>
+<p>The serial placeholders (<code>[SERIAL]</code>, <code>[UNIXTIME]</code>, <code>[COUNTER]</code>) control the initial SOA serial of a zone created from the template; later record changes increment the serial automatically. When Poweradmin runs against the PowerDNS API backend, the <code>SOA-EDIT-API</code> zone metadata governs how subsequent serials are generated - it can be chosen per zone on the add-zone form or on the zone metadata page (<code>EPOCH</code> pairs with <code>[UNIXTIME]</code>, <code>INCREASE</code> with <code>[COUNTER]</code>), with defaults from <code>dns.soa_edit_api</code>.</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/template-editor.png" data-desc-position="bottom"><img alt="Template Editor" src="../../screenshots/template-editor.png"></a></p>
 <h2 id="zone-template-application">Zone Template Application</h2>
 <h3 id="when-changing-a-zones-template">When Changing a Zone's Template</h3>

@@ -195,7 +195,7 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#how-permissions-work">How Permissions Work</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#access-templates">Access Templates</a>
+    <li class="toctree-l3"><a class="reference internal" href="#permission-templates">Permission Templates</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#sso-group-mapping">SSO Group Mapping</a>
     </li>
@@ -462,7 +462,7 @@
 <li><strong>Groups</strong> are collections of users that share access to a set of zones</li>
 <li>A user can belong to <strong>multiple groups</strong> simultaneously</li>
 <li>A zone can be owned by a <strong>user, one or more groups, or both</strong></li>
-<li>Each group has an <strong>access template</strong> that defines what its members can do with the group's zones</li>
+<li>Each group has a <strong>permission template</strong> that defines what its members can do with the group's zones</li>
 <li>Permissions from all sources (user template + group memberships) are <strong>combined</strong> - if any source grants access, the user has it</li>
 </ul>
 <h2 id="group-list">Group List</h2>
@@ -474,12 +474,12 @@
 <li>Click <strong>Add group</strong> from the group list</li>
 <li>Enter a <strong>Group Name</strong> (must be unique)</li>
 <li>Optionally add a <strong>Description</strong></li>
-<li>Select an <strong>Access template</strong> - this determines what permissions group members have for zones owned by this group</li>
+<li>Select a <strong>Permission template</strong> - this determines what permissions group members have for zones owned by this group</li>
 <li>Click <strong>Create Group</strong></li>
 </ol>
 <p>After creation, you can add members and assign zones.</p>
 <h2 id="editing-a-group">Editing a Group</h2>
-<p>The edit page shows the group details on the left, with members and zones on the right. You can update the group name, description, and access template. Members and zones can be quickly removed from here, or managed in bulk through dedicated screens.</p>
+<p>The edit page shows the group details on the left, with members and zones on the right. You can update the group name, description, and permission template. Members and zones can be quickly removed from here, or managed in bulk through dedicated screens.</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/groups-edit.png" data-desc-position="bottom"><img alt="Edit group view" src="../../screenshots/groups-edit.png"></a></p>
 <h2 id="managing-members">Managing Members</h2>
 <p>The member management screen has two panels:</p>
@@ -495,29 +495,29 @@
 <li><strong>Owned Zones</strong> (left) - zones currently assigned to the group</li>
 <li><strong>Available Zones</strong> (right) - zones that can be assigned</li>
 </ul>
-<p>All group members get access to owned zones based on the group's access template.</p>
+<p>All group members get access to owned zones based on the group's permission template.</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/groups-zones.png" data-desc-position="bottom"><img alt="Group zones management" src="../../screenshots/groups-zones.png"></a></p>
 <h2 id="how-permissions-work">How Permissions Work</h2>
 <p>Poweradmin combines permissions from all sources. A user's effective permissions are the union of:</p>
 <ul>
-<li>Their <strong>personal access template</strong> (applies globally)</li>
+<li>Their <strong>personal permission template</strong> (applies globally)</li>
 <li>Permissions from <strong>each group they belong to</strong> (apply only to that group's zones)</li>
 </ul>
 <p>For example, if a user has a "Viewer" personal template but belongs to an "Editors" group that owns <code>example.com</code>, that user can edit records in <code>example.com</code> while having read-only access to everything else.</p>
 <blockquote>
-<p><strong>Note:</strong> Group access templates only apply to zones owned by that group. They do not grant permissions for zones the user owns personally or through other groups.</p>
+<p><strong>Note:</strong> Group permission templates only apply to zones owned by that group. They do not grant permissions for zones the user owns personally or through other groups.</p>
 </blockquote>
-<h2 id="access-templates">Access Templates</h2>
-<p>Access templates come in two types:</p>
+<h2 id="permission-templates">Permission Templates</h2>
+<p>Permission templates come in two types:</p>
 <ul>
 <li><strong>User templates</strong> - assigned directly to users, apply globally</li>
 <li><strong>Group templates</strong> - assigned to groups, apply only to group-owned zones</li>
 </ul>
-<p>You can manage access templates under <strong>Access</strong> in the navigation bar. See <a href="../permissions/">Permissions</a> for details on available permissions.</p>
+<p>You can manage permission templates under <strong>Permissions</strong> in the navigation bar. See <a href="../permissions/">Permissions</a> for details on available permissions.</p>
 <h2 id="sso-group-mapping">SSO Group Mapping</h2>
 <p>If you use OIDC or SAML authentication, you can automatically assign users to groups based on their SSO claims. See the <a href="../../configuration/oidc/">OIDC</a> or <a href="../../configuration/saml/">SAML</a> configuration pages for setup details.</p>
 <h2 id="mfa-enforcement">MFA Enforcement</h2>
-<p>Groups can enforce MFA for all their members. This is done by adding the <code>user_enforce_mfa</code> permission to the group's access template. When this permission is present, all group members are required to set up two-factor authentication on their next login. See <a href="../mfa/">MFA Enforcement</a> for details.</p>
+<p>Groups can enforce MFA for all their members. This is done by adding the <code>user_enforce_mfa</code> permission to the group's permission template. When this permission is present, all group members are required to set up two-factor authentication on their next login. See <a href="../mfa/">MFA Enforcement</a> for details.</p>
 <h2 id="deleting-a-group">Deleting a Group</h2>
 <p>Deleting a group removes the group and all its membership and zone associations. It does not delete the users or zones themselves. Click the delete button from the group list or the edit page.</p>
 <blockquote>

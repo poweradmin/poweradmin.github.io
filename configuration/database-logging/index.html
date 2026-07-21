@@ -483,7 +483,7 @@
 <p>Database logging records operations across four log tables:</p>
 <ul>
 <li><strong>User events</strong> (<code>log_users</code>): login/logout, user creation/editing/deletion, MFA, password resets</li>
-<li><strong>API events</strong> (<code>log_api</code>): API key creation, editing, deletion, regeneration, and toggling</li>
+<li><strong>API events</strong> (<code>log_api</code>): API key management, plus optional per-request public API audit entries and permission violations (401/403)</li>
 <li><strong>Zone events</strong> (<code>log_zones</code>): zone and record creation, modification, and deletion</li>
 <li><strong>Group events</strong> (<code>log_groups</code>): group creation/editing/deletion, membership and zone assignment changes</li>
 </ul>
@@ -501,6 +501,16 @@
 <td><code>logging.database_enabled</code></td>
 <td>false</td>
 <td>Enable database logging</td>
+</tr>
+<tr>
+<td><code>logging.api_request_logging</code></td>
+<td>false</td>
+<td>Log every public API request to <code>log_api</code> (requires <code>database_enabled</code>); permission violations are logged regardless (added in v4.5.0)</td>
+</tr>
+<tr>
+<td><code>logging.api_log_retention_days</code></td>
+<td>0</td>
+<td>Days to keep <code>log_api</code> rows; 0 = keep forever (added in v4.5.0)</td>
 </tr>
 <tr>
 <td><code>logging.dblog.use</code></td>
@@ -672,6 +682,8 @@
 <ul>
 <li>API key creation, editing, and deletion</li>
 <li>API key regeneration and toggling (enable/disable)</li>
+<li>Permission violations (401/403 responses) on the public API - logged whenever <code>database_enabled</code> is on</li>
+<li>Per-request public API calls (method, path, status, key id, user, client IP) - only when <code>api_request_logging</code> is enabled, since this is high volume</li>
 </ul>
 <h3 id="zone-events">Zone Events</h3>
 <ul>
@@ -691,7 +703,7 @@
 <p>Administrators can view logs through the web interface:</p>
 <ul>
 <li><strong>Users</strong> &gt; <strong>User logs</strong> - user and authentication events</li>
-<li><strong>Tools</strong> &gt; <strong>API Logs</strong> - API key management events</li>
+<li><strong>Tools</strong> &gt; <strong>API Logs</strong> - API key management, per-request API activity, and permission violations</li>
 <li><strong>Zones</strong> &gt; <strong>Zone logs</strong> - zone and record events</li>
 <li><strong>Groups</strong> &gt; <strong>Group logs</strong> - group membership and zone assignment events</li>
 </ul>
@@ -730,6 +742,7 @@ DELETE FROM log_api WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
 DELETE FROM log_zones WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);
 DELETE FROM log_groups WHERE created_at &lt; DATE_SUB(NOW(), INTERVAL 90 DAY);</code></pre>
 <p>You can automate this with a cron job or scheduled task.</p>
+<p>The <code>log_api</code> table has built-in retention: set <code>logging.api_log_retention_days</code> to a positive number of days and Poweradmin prunes older API log rows automatically (opportunistically, during API request logging). Leave it at <code>0</code> to keep API logs forever and manage them manually as above. This applies only to <code>log_api</code>; the other log tables have no built-in pruning.</p>
 <h2 id="performance-considerations">Performance Considerations</h2>
 <ol>
 <li><strong>Index optimization</strong>: Ensure indexes on <code>zone_id</code>, <code>group_id</code>, and <code>created_at</code> columns</li>
