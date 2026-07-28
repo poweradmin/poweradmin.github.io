@@ -90,6 +90,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#community-reported-compatibility">Community-Reported Compatibility</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#api-backend-mode">API Backend Mode</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#why-poweradmin-has-broad-powerdns-compatibility">Why Poweradmin Has Broad PowerDNS Compatibility</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#powerdns-version-recommendations">PowerDNS Version Recommendations</a>
@@ -774,6 +776,15 @@ should work as long as the environment is properly configured.</p>
 <li>PowerDNS 4.9.x</li>
 <li>PowerDNS 5.0.x and newer</li>
 </ul>
+<h3 id="api-backend-mode">API Backend Mode</h3>
+<p>API backend mode (<code>dns.backend = api</code>) works on any supported version, but it is
+noticeably faster from <strong>PowerDNS 4.7</strong> onward:</p>
+<ul>
+<li><strong>4.7+</strong>: zone lists fetch only the SOA record when drawing zone health badges. Older servers ignore the filter and return the whole zone, so listing pages transfer far more data.</li>
+<li><strong>4.3+</strong>: zone lists skip the per-zone DNSSEC lookup when no column needs it.</li>
+</ul>
+<p>Nothing breaks on older versions - PowerDNS ignores query parameters it does not
+know - so this is a performance recommendation, not a requirement.</p>
 <h3 id="why-poweradmin-has-broad-powerdns-compatibility">Why Poweradmin Has Broad PowerDNS Compatibility</h3>
 <p>Poweradmin maintains compatibility across PowerDNS versions due to its architectural design:</p>
 <ul>

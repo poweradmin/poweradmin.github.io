@@ -658,6 +658,7 @@ sudo systemctl restart apache2</code></pre>
 <h3 id="zone-list-and-ui">Zone List and UI</h3>
 <ul>
 <li>Owner, group, and record-count columns in zone lists can be toggled (<code>interface.display_owner_in_zone_list</code>, <code>display_group_in_zone_list</code>, <code>show_zone_record_count</code>).</li>
+<li>Zone lists in API backend mode are considerably faster on installations with many zones: record counts are now fetched only for the zones on the current page instead of for every zone, and repeated reads of the same PowerDNS data are reused within a request. As a consequence the Records column is no longer sortable in API backend mode - counts are known only for the visible page, so ordering by them would sort just that page. It remains sortable in SQL backend mode.</li>
 <li>Record comments show author and last-modified time in a tooltip.</li>
 <li>API-backend zone lists indicate zones with a pending NOTIFY.</li>
 <li>The "Permission templates" menu item is now labeled "Permissions".</li>
