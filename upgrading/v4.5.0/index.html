@@ -658,7 +658,7 @@ sudo systemctl restart apache2</code></pre>
 <h3 id="zone-list-and-ui">Zone List and UI</h3>
 <ul>
 <li>Owner, group, and record-count columns in zone lists can be toggled (<code>interface.display_owner_in_zone_list</code>, <code>display_group_in_zone_list</code>, <code>show_zone_record_count</code>).</li>
-<li>Zone lists in API backend mode are considerably faster on installations with many zones: record counts are now fetched only for the zones on the current page instead of for every zone, and repeated reads of the same PowerDNS data are reused within a request. As a consequence the Records column is no longer sortable in API backend mode - counts are known only for the visible page, so ordering by them would sort just that page. It remains sortable in SQL backend mode.</li>
+<li>Zone lists in API backend mode are considerably faster on installations with many zones: record counts are now fetched only for the zones on the current page instead of for every zone, and repeated reads of the same PowerDNS data are reused within a request. This changes how the Records column sorts, see <a href="#other-changes">Other changes</a>.</li>
 <li>Record comments show author and last-modified time in a tooltip.</li>
 <li>API-backend zone lists indicate zones with a pending NOTIFY.</li>
 <li>The "Permission templates" menu item is now labeled "Permissions".</li>
@@ -673,6 +673,7 @@ sudo systemctl restart apache2</code></pre>
 <p>With <code>ldap.sync_user_info</code> enabled, fullname and email of LDAP accounts are managed by the directory and read-only in the user editor. With sync disabled (the default), they remain editable as before.</p>
 <h3 id="other-changes">Other changes</h3>
 <ul>
+<li>The Records column in zone lists is no longer sortable in API backend mode. Record counts are now resolved only for the zones on the current page, so ordering by them would sort just that page rather than the whole list. The column header is plain text instead of a sort link, and a stale <code>count_records</code> sort carried over in a session falls back to sorting by name. SQL backend mode is unaffected and still sorts by record count.</li>
 <li>The MFA failure counter is tracked per authentication stage; repeated wrong MFA codes can lock an account even after a correct password.</li>
 <li>All other new features are additive or opt-in: new tables start empty, new settings default to prior behavior, and new permissions (except the auto-granted view split) are not assigned to any template.</li>
 </ul>
