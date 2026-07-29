@@ -290,6 +290,12 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#ldap-identity-fields-become-read-only-when-sync-is-enabled">LDAP identity fields become read-only when sync is enabled</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#lua-enabling-zone-metadata-is-restricted-to-administrators">Lua-enabling zone metadata is restricted to administrators</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#lua-records-are-restricted-to-editors-above-client-level">LUA records are restricted to editors above client level</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#identity-providers-can-no-longer-grant-administrator-rights">Identity providers can no longer grant administrator rights</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#other-changes">Other changes</a>
     </li>
         </ul>
@@ -671,6 +677,36 @@ sudo systemctl restart apache2</code></pre>
 <p><code>zone_content_view_own</code>/<code>zone_content_view_others</code> no longer imply seeing zone metadata or zone owners. The migration auto-grants the new <code>zone_metadata_view_*</code> and <code>zone_ownership_view_*</code> permissions to every template holding the matching content-view permission, so nothing changes visibly on upgrade - but new templates need the permissions granted explicitly, and admins can now revoke them to hide those sections.</p>
 <h3 id="ldap-identity-fields-become-read-only-when-sync-is-enabled">LDAP identity fields become read-only when sync is enabled</h3>
 <p>With <code>ldap.sync_user_info</code> enabled, fullname and email of LDAP accounts are managed by the directory and read-only in the user editor. With sync disabled (the default), they remain editable as before.</p>
+<h3 id="lua-enabling-zone-metadata-is-restricted-to-administrators">Lua-enabling zone metadata is restricted to administrators</h3>
+<p><code>ENABLE-LUA-RECORDS</code> and <code>LUA-AXFR-SCRIPT</code> make PowerDNS evaluate Lua, which reaches
+every zone the server hosts, so they can now only be set by a user holding
+<code>user_is_ueberuser</code>. Zone-level editors keep full access to every other metadata kind.
+Values an administrator has already set are left alone: the editor compares what was
+submitted against what is stored and only rejects an actual change, so a zone editor
+is not locked out of saving unrelated metadata on a zone that has these kinds set.</p>
+<h3 id="lua-records-are-restricted-to-editors-above-client-level">LUA records are restricted to editors above client level</h3>
+<p><code>LUA</code> joins <code>SOA</code> and <code>NS</code> as a record type that <code>zone_content_edit_own_as_client</code> may
+not create, edit or delete. PowerDNS executes the script content of a LUA record, so it
+is not something a client-level tenant should be able to introduce. Owners and
+administrators (<code>zone_content_edit_own</code> / <code>zone_content_edit_others</code>) are unaffected, and
+existing LUA records keep resolving - only editing them through Poweradmin is gated.</p>
+<p>Note this only ever mattered where the server has LUA enabled, either globally with
+<code>enable-lua-records=yes</code> or per zone via <code>ENABLE-LUA-RECORDS</code> - which the same release
+restricts to administrators.</p>
+<h3 id="identity-providers-can-no-longer-grant-administrator-rights">Identity providers can no longer grant administrator rights</h3>
+<p><code>oidc</code>/<code>saml</code>/<code>ldap.allow_superuser_provisioning</code> defaults to <code>false</code>. With it unset,
+Poweradmin refuses to provision superuser from an IdP assertion in either of the two ways
+that previously worked:</p>
+<ul>
+<li>a <code>permission_template_mapping</code> entry resolving to a template that grants
+  <code>user_is_ueberuser</code>, and</li>
+<li>a <code>group_mapping</code> entry resolving to a group whose template grants it - note the
+  installer ships an <code>Administrators</code> group bound to exactly such a template.</li>
+</ul>
+<p><strong>If your deployment relies on the IdP deciding who is an administrator, those logins will
+stop being administrators after this upgrade.</strong> Both refusals are logged, so a login that
+silently loses rights can be traced. Either set the flag to <code>true</code>, or grant administrator
+rights inside Poweradmin, where an existing administrator has to act.</p>
 <h3 id="other-changes">Other changes</h3>
 <ul>
 <li>The Records column in zone lists is no longer sortable in API backend mode. Record counts are now resolved only for the zones on the current page, so ordering by them would sort just that page rather than the whole list. The column header is plain text instead of a sort link, and a stale <code>count_records</code> sort carried over in a session falls back to sorting by name. SQL backend mode is unaffected and still sorts by record count.</li>

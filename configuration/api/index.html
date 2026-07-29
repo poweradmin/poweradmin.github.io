@@ -208,7 +208,7 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#api-v1-endpoints-legacy">API v1 Endpoints (Legacy)</a>
+    <li class="toctree-l3"><a class="reference internal" href="#api-v1-endpoints-legacy-removed-in-450">API v1 Endpoints (Legacy, removed in 4.5.0)</a>
     </li>
         </ul>
     </li>
@@ -680,14 +680,14 @@ location ~ \.php$ {
 <h4 id="using-api-keys">Using API Keys</h4>
 <pre class="highlight"><code class="language-bash">curl -H "X-API-Key: your-api-key-here" \
      -H "Content-Type: application/json" \
-     https://your-domain.com/api/v1/zones</code></pre>
+     https://your-domain.com/api/v2/zones</code></pre>
 <h3 id="http-basic-authentication">HTTP Basic Authentication</h3>
 <p>Traditional username/password authentication:</p>
 <pre class="highlight"><code class="language-bash">curl -u username:password \
      -H "Content-Type: application/json" \
-     https://your-domain.com/api/v1/zones</code></pre>
+     https://your-domain.com/api/v2/zones</code></pre>
 <h2 id="api-endpoints">API Endpoints</h2>
-<p>Poweradmin provides two API versions. API v2 (introduced in v4.1.0) is recommended for all new integrations. API v1 remains available for backward compatibility.</p>
+<p>API v2 (introduced in v4.1.0) is the current API and is recommended for every integration. API v1 was deprecated in 4.3.0 and removed in 4.5.0; on 4.2.x-4.4.x it is still available for backward compatibility.</p>
 <h3 id="api-v2-endpoints-v410">API v2 Endpoints <em>(v4.1.0+)</em></h3>
 <h4 id="zone-management">Zone Management</h4>
 <ul>
@@ -764,8 +764,8 @@ location ~ \.php$ {
 <li><code>POST /api/v2/groups/{id}/zones</code> - Assign zone to group</li>
 <li><code>DELETE /api/v2/groups/{id}/zones/{zone_id}</code> - Remove zone from group</li>
 </ul>
-<h3 id="api-v1-endpoints-legacy">API v1 Endpoints (Legacy)</h3>
-<p>API v1 is available for backward compatibility. Consider migrating to v2 for new integrations.</p>
+<h3 id="api-v1-endpoints-legacy-removed-in-450">API v1 Endpoints (Legacy, removed in 4.5.0)</h3>
+<p>API v1 is available on 4.2.x-4.4.x for backward compatibility. It was deprecated in 4.3.0 and removed in 4.5.0, where every <code>/api/v1</code> path answers <code>410 Gone</code> with a pointer to <code>/api/v2</code>. Migrate to v2 before upgrading.</p>
 <ul>
 <li><code>GET/POST /api/v1/zones</code> - List / create zones</li>
 <li><code>GET/PUT/DELETE /api/v1/zones/{id}</code> - Get / update / delete zone</li>
@@ -881,11 +881,11 @@ location ~ \.php$ {
 <h3 id="optional-pagination-parameters">Optional Pagination Parameters</h3>
 <p>Starting with v4.0.1, pagination is optional for zones and users endpoints (issue #803). You can now request all records without pagination limits.</p>
 <p><strong>Without pagination (returns all results):</strong>
-</p><pre class="highlight"><code class="language-bash">GET /api/v1/zones
-GET /api/v1/users</code></pre><p></p>
+</p><pre class="highlight"><code class="language-bash">GET /api/v2/zones
+GET /api/v2/users</code></pre><p></p>
 <p><strong>With pagination:</strong>
-</p><pre class="highlight"><code class="language-bash">GET /api/v1/zones?page=1&amp;limit=50
-GET /api/v1/users?page=2&amp;limit=25</code></pre><p></p>
+</p><pre class="highlight"><code class="language-bash">GET /api/v2/zones?page=1&amp;limit=50
+GET /api/v2/users?page=2&amp;limit=25</code></pre><p></p>
 <h3 id="pagination-response">Pagination Response</h3>
 <pre class="highlight"><code class="language-json">{
     "success": true,

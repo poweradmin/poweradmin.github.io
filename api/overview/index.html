@@ -469,18 +469,26 @@ For the full list of configuration options and security recommendations, see
 <td><strong>v2</strong></td>
 <td><code>/api/v2</code></td>
 <td>Recommended</td>
-<td>All new integrations. Consistent response envelope, RRset endpoints, bulk record creation, zone owners, zone templates, groups.</td>
+<td>All integrations. Consistent response envelope, RRset endpoints, bulk record creation, zone owners, zone templates, groups.</td>
 </tr>
 <tr>
 <td><strong>v1</strong></td>
 <td><code>/api/v1</code></td>
-<td>Legacy, still supported</td>
-<td>Existing integrations that have not migrated yet.</td>
+<td>Removed in 4.5.0</td>
+<td>Nothing new. Deprecated in 4.3.0, still present in 4.2.x-4.4.x.</td>
 </tr>
 </tbody>
 </table>
-<p>Both versions ship together. You can use v1 and v2 from the same client; the
-API keys and authentication are shared.</p>
+<p>On 4.4.x and older, both versions ship together and share API keys and
+authentication, so you can use v1 and v2 from the same client.</p>
+<p>From 4.5.0 on, v1 is gone. Every <code>/api/v1</code> path answers <code>410 Gone</code> for every
+HTTP method, with a <code>Link: &lt;/api/v2/&gt;; rel="successor-version"</code> header and a
+body of <code>{"error": true, "message": "..."}</code>. Migrate before upgrading.</p>
+<p>Two v2 differences catch most v1 clients out: v2 wraps every response in the
+envelope below, so list payloads are nested (<code>data.zones</code>, <code>data.users</code>,
+<code>data.templates</code>, <code>data.records</code>) rather than a bare <code>data</code> array; and API keys
+restricted to read-only or a narrow operation scope are now enforced on every
+request, where v1 requests were exempt.</p>
 <h2 id="response-envelope">Response envelope</h2>
 <p>API v2 wraps every response in a consistent envelope:</p>
 <pre class="highlight"><code class="language-json">{

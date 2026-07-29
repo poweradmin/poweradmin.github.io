@@ -576,7 +576,7 @@
 <li>Limited permission for users who should only modify certain record types</li>
 <li>Provides restricted zone management capabilities</li>
 <li>Common use case: tenant or end-customer self-service, where users can manage their own A/AAAA/CNAME/MX/TXT records but must not touch the zone's authority (SOA) or delegation (NS) records</li>
-<li>Enforced uniformly in the web UI and across the v1/v2 record APIs (since 4.2.3); creating, editing, or deleting an SOA or NS record returns HTTP 403 for users limited to this permission</li>
+<li>Enforced uniformly in the web UI and across the record APIs (since 4.2.3); creating, editing, or deleting an SOA or NS record returns HTTP 403 for users limited to this permission</li>
 <li>To additionally allow managing delegation NS records for subdomains, grant <code>zone_content_edit_ns_subzone</code></li>
 </ul>
 <h3 id="zone_content_edit_ns_subzone">zone_content_edit_ns_subzone</h3>
@@ -586,7 +586,7 @@
 <li>Use case: end customers who delegate subdomains (e.g. <code>subdomain.example.com</code>) to another DNS provider while the zone's own NS set stays under the operator's control</li>
 <li>Not granted to any permission template by default; assign it explicitly in the permission template editor</li>
 <li>Has no effect on its own - it only extends <code>zone_content_edit_own_as_client</code></li>
-<li>Applies to the web UI and the v1/v2 record APIs</li>
+<li>Applies to the web UI and the record APIs</li>
 <li>Added in v4.5.0</li>
 </ul>
 <h3 id="zone_delete_own">zone_delete_own</h3>
@@ -665,6 +665,13 @@
 <li>Can modify permission sets used for multiple users</li>
 <li>Useful for maintaining consistent permission groups</li>
 </ul>
+<blockquote>
+<p><strong>Neither permission can hand out administrator rights.</strong> A template's permission
+list is itself a grant of authority, so a holder of <code>templ_perm_add</code>/<code>templ_perm_edit</code>
+who is not already an administrator cannot put <code>user_is_ueberuser</code> into a template,
+and cannot edit a template that already carries it. The latter also prevents stripping
+permissions off the Administrator template. Administrators are unaffected.</p>
+</blockquote>
 <h2 id="supermaster-permissions">Supermaster Permissions</h2>
 <h3 id="supermaster_view">supermaster_view</h3>
 <ul>

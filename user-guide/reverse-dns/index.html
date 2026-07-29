@@ -680,7 +680,7 @@ Goal: the client manages PTRs for 10.0.0.64 through 10.0.0.127.</p>
 <p>If you're delegating on an octet boundary - the whole /24 inside a /16, for instance - just create the child zone directly (<code>5.10.in-addr.arpa</code> under <code>10.in-addr.arpa</code>) and assign the owner. No CNAMEs needed.</p>
 <p>RFC 2317 only applies when the sub-range doesn't align with a DNS label boundary, i.e. anything smaller than /24 for IPv4 or anything not on a nibble boundary for IPv6.</p>
 <h2 id="per-record-type-default-ttls-450">Per-Record-Type Default TTLs (4.5.0)</h2>
-<p>Admins can configure default TTLs per record type from <strong>Tools → TTL defaults</strong> (<code>/tools/record-type-defaults</code>). Values stored there take precedence over the legacy <code>dns.ttl_reverse</code> config and <code>dns.ttl</code> fallback. The same default applies to every record-creation path (UI forms, batch PTR, the v1/v2 record APIs, RRSets, bulk records, and the DNS wizard) when the caller omits a <code>ttl</code> field. Leave a row empty to fall back to the legacy chain.</p>
+<p>Admins can configure default TTLs per record type from <strong>Tools → TTL defaults</strong> (<code>/tools/record-type-defaults</code>). Values stored there take precedence over the legacy <code>dns.ttl_reverse</code> config and <code>dns.ttl</code> fallback. The same default applies to every record-creation path (UI forms, batch PTR, the record APIs, RRSets, bulk records, and the DNS wizard) when the caller omits a <code>ttl</code> field. Leave a row empty to fall back to the legacy chain.</p>
 <p>The fallback chain (first non-null wins):</p>
 <ol>
 <li><code>record_type_defaults</code> row for the submitted type (admin-managed via the UI above)</li>
@@ -688,7 +688,7 @@ Goal: the client manages PTRs for 10.0.0.64 through 10.0.0.127.</p>
 <li><code>dns.ttl</code></li>
 </ol>
 <h2 id="default-ttl-for-ptr-records-legacy">Default TTL for PTR Records (legacy)</h2>
-<p><code>dns.ttl_reverse</code> in <code>config/settings.php</code> is the legacy config-file knob that predates the per-type table. It still works as a fallback when no per-type row is configured: when set, it pre-fills the TTL field on the add-record form for reverse zones, applies to batch PTR creation, and is used for PTRs auto-created alongside a forward record. When unset, PTRs fall back to <code>dns.ttl</code>. Originally added in 4.4.0; extended to the v1/v2 record APIs, RRSets, bulk records, and the DNS wizard in 4.5.0.</p>
+<p><code>dns.ttl_reverse</code> in <code>config/settings.php</code> is the legacy config-file knob that predates the per-type table. It still works as a fallback when no per-type row is configured: when set, it pre-fills the TTL field on the add-record form for reverse zones, applies to batch PTR creation, and is used for PTRs auto-created alongside a forward record. When unset, PTRs fall back to <code>dns.ttl</code>. Originally added in 4.4.0; extended to the record APIs, RRSets, bulk records, and the DNS wizard in 4.5.0.</p>
 <pre class="highlight"><code class="language-php">'dns' =&gt; [
     'ttl' =&gt; 86400,
     'ttl_reverse' =&gt; 300, // 5 minutes for all PTR records

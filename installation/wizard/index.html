@@ -119,6 +119,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#step-8-installation-complete">Step 8: Installation Complete</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#restricting-who-can-reach-the-wizard">Restricting Who Can Reach the Wizard</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#post-installation">Post-Installation</a>
     </li>
     </ul>
@@ -510,6 +512,21 @@
 <h2 id="step-8-installation-complete">Step 8: Installation Complete</h2>
 <p>Once <code>config/settings.php</code> is in place, the installation is finished. For security, remove or rename the <code>install/</code> directory so that the wizard cannot be re-run.</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/install-step8-complete.png" data-desc-position="bottom"><img alt="Installation complete" src="../../screenshots/install-step8-complete.png"></a></p>
+<h2 id="restricting-who-can-reach-the-wizard">Restricting Who Can Reach the Wizard</h2>
+<p><code>install/config.php</code> can limit the wizard to a set of addresses:</p>
+<pre class="highlight"><code class="language-php">'ip_access' =&gt; [
+    'enabled' =&gt; true,
+    'allowed_ips' =&gt; ['127.0.0.1', '::1'],
+    'allowed_ranges' =&gt; ['192.168.0.0/16'],
+    // Reverse proxies whose X-Forwarded-For header may be believed.
+    'trusted_proxies' =&gt; [],
+],</code></pre>
+<p>The allow-list is matched against the address the web server actually sees. An
+<code>X-Forwarded-For</code> header is only read when the connecting address appears in
+<code>trusted_proxies</code> - otherwise any client could set that header and name an allowed
+address. Leave <code>trusted_proxies</code> empty unless Poweradmin sits behind a reverse proxy,
+and list only the proxy addresses themselves.</p>
+<p>This gate is a convenience, not a substitute for removing <code>install/</code> once setup is done.</p>
 <h2 id="post-installation">Post-Installation</h2>
 <ol>
 <li>Log in at <code>/login</code> with username <strong><code>admin</code></strong> and the Poweradmin account password from step 4.</li>

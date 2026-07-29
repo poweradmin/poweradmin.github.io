@@ -507,7 +507,13 @@
 </ul>
 <p>For example, if a user has a "Viewer" personal template but belongs to an "Editors" group that owns <code>example.com</code>, that user can edit records in <code>example.com</code> while having read-only access to everything else.</p>
 <blockquote>
-<p><strong>Note:</strong> Group permission templates only apply to zones owned by that group. They do not grant permissions for zones the user owns personally or through other groups.</p>
+<p><strong>Note:</strong> Zone-scoped permissions from a group template apply only to zones that group owns - they do not extend to zones the user owns personally or through other groups.</p>
+<p>This scoping is about <em>zones</em>, not about the permission set itself. Permissions that are
+not zone-scoped take effect globally for every member: a group template carrying
+<code>user_is_ueberuser</code> makes each member a full administrator everywhere, not just within
+the group's zones. The installer ships an <code>Administrators</code> group bound to exactly such a
+template. Creating and editing groups, and changing who belongs to one, is therefore
+restricted to administrators.</p>
 </blockquote>
 <h2 id="permission-templates">Permission Templates</h2>
 <p>Permission templates come in two types:</p>

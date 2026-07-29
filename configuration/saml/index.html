@@ -135,6 +135,12 @@
     <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#global-settings">Global Settings</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#superuser-rights-are-never-provisioned-from-an-identity-provider">Superuser rights are never provisioned from an identity provider</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#account-linking-and-template-resolution">Account linking and template resolution</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#permission-template-mapping">Permission Template Mapping</a>
     </li>
@@ -537,6 +543,33 @@
 </tr>
 </tbody>
 </table>
+<h3 id="superuser-rights-are-never-provisioned-from-an-identity-provider">Superuser rights are never provisioned from an identity provider</h3>
+<p><code>saml.allow_superuser_provisioning</code> (default <code>false</code>, added in 4.5.0) blocks two ways an
+IdP claim could otherwise mint a global administrator:</p>
+<ul>
+<li>a <code>permission_template_mapping</code> entry pointing at a template that grants
+  <code>user_is_ueberuser</code>, and</li>
+<li>a <code>group_mapping</code> entry pointing at a Poweradmin group whose template grants it - note
+  the installer ships an <code>Administrators</code> group bound to exactly such a template.</li>
+</ul>
+<p>With the default in place, both are refused and logged. If your deployment genuinely
+relies on the IdP deciding who is an administrator, set the flag to <code>true</code>; otherwise
+grant administrator rights in Poweradmin itself, where an existing administrator has to
+act.</p>
+<h3 id="account-linking-and-template-resolution">Account linking and template resolution</h3>
+<p><code>saml.default_permission_template</code> must name a template that exists. When a new
+user matches no group mapping and the named template cannot be found, provisioning
+is refused rather than falling back to an arbitrary template - the lowest template
+id is normally the bundled Administrator template.</p>
+<p><code>saml.link_by_email</code> only links an incoming identity to an existing local account when:</p>
+<ul>
+<li>the assertion carries no <code>email_verified</code> claim, or carries one that is true. An
+  address the provider has not vouched for is not treated as proof of identity.</li>
+<li>the matched local account does not hold <code>user_is_ueberuser</code>. A superuser account
+  is never claimed by email; link it explicitly by subject instead.</li>
+</ul>
+<p>Both checks are logged when they block a link, so a login that stops working after
+an upgrade can be traced in the application log.</p>
 <h2 id="permission-template-mapping">Permission Template Mapping</h2>
 <p>Map SAML groups/roles to Poweradmin permission templates:</p>
 <pre class="highlight"><code class="language-php">'saml' =&gt; [

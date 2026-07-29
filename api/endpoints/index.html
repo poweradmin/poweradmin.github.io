@@ -621,6 +621,18 @@ permission error). Edit the records on the primary instead.</p>
 </tr>
 </tbody>
 </table>
+<p>Writing <code>perm_templ</code> is gated separately from the write itself, and a rejected
+assignment returns <code>403</code>:</p>
+<ul>
+<li>Callers holding <code>user_is_ueberuser</code> may assign any template.</li>
+<li>Callers holding <code>user_edit_templ_perm</code> may assign any template that does <strong>not</strong>
+  grant <code>user_is_ueberuser</code>, and may not change their own account's template unless
+  they also hold <code>user_edit_others</code>.</li>
+<li>Everyone else may not send <code>perm_templ</code> at all.</li>
+</ul>
+<p>Omitting <code>perm_templ</code> on create assigns the least-privileged non-superuser template,
+whoever the caller is; it no longer falls back to template id 1. If no such template
+exists, the request fails rather than granting administrator rights.</p>
 <h3 id="groups-v420">Groups (v4.2.0+)</h3>
 <table>
 <thead>
@@ -793,12 +805,13 @@ permission error). Edit the records on the primary instead.</p>
 </tbody>
 </table>
 <h2 id="api-v1-endpoints">API v1 endpoints</h2>
-<p>API v1 remains available for backward compatibility under <code>/api/v1</code>. The
-endpoint surface is similar but the response envelope is less consistent and
-several v2 features (RRsets, bulk records, zone owners, groups, zone
-templates) are not available. See
-<a href="../../configuration/api/#api-v1-endpoints-legacy">API Configuration</a> for the
-v1 endpoint list and consider migrating new code to v2.</p>
+<p><strong>Removed in 4.5.0.</strong> On 4.5.0 and later, every <code>/api/v1</code> path answers
+<code>410 Gone</code> and points at <code>/api/v2</code>.</p>
+<p>On 4.2.x-4.4.x, v1 is still available under <code>/api/v1</code>. The endpoint surface is
+similar but the response envelope is less consistent and several v2 features
+(RRsets, bulk records, zone owners, groups, zone templates) are not available.
+See <a href="../../configuration/api/#api-v1-endpoints-legacy">API Configuration</a> for
+the v1 endpoint list, and migrate to v2 before upgrading to 4.5.0.</p>
 <h2 id="pagination">Pagination</h2>
 <p>List endpoints for zones and users accept <code>page</code> and <code>limit</code> query
 parameters:</p>
