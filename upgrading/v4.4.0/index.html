@@ -640,7 +640,9 @@ sudo systemctl restart apache2</code></pre>
         'application_url' =&gt; 'https://dns.example.com/poweradmin',
     ],
 ];</code></pre>
-<p>Username recovery continues to send emails when <code>application_url</code> is empty, falling back to the web server's <code>SERVER_NAME</code>; if neither is available, the email omits the login link but still includes the username. See <a href="../../configuration/security-policies/#interfaceapplication_url-is-required">Security Policies</a> and <a href="../../configuration/username-recovery/#requirements">Username Recovery</a> for the full details.</p>
+<p>Username recovery continues to send emails when <code>application_url</code> is empty; the email omits the login link but still includes the username. See <a href="../../configuration/security-policies/#interfaceapplication_url-is-required">Security Policies</a> and <a href="../../configuration/username-recovery/#requirements">Username Recovery</a> for the full details.</p>
+<p>!!! warning "Extended in later patch releases"
+    Later 4.2.x, 4.3.x, 4.4.x and 4.5.0 releases extend this requirement to OIDC, SAML and OIDC logout, which now refuse to build IdP-bound URLs rather than deriving a host from the request. See <a href="../v4.5.0/#interfaceapplication_url-is-now-required-for-oidc-and-saml">Upgrading to 4.5.0</a>.</p>
 <h3 id="api-and-client-facing-changes">API and client-facing changes</h3>
 <ul>
 <li><strong>HTTP status codes</strong> on existing user and zone endpoints are now accurate: missing templates or transfer targets return 404, conflicts (duplicate template names, deleting the last super admin) return 409, and internal failures return 500 where a blanket 400 was returned before. Error message strings are unchanged. Clients that branch on status codes should be reviewed.</li>

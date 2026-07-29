@@ -132,6 +132,12 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#interfaceapplication_url-must-be-set">interface.application_url must be set</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#global-settings">Global Settings</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#superuser-rights-are-never-provisioned-from-an-identity-provider">Superuser rights are never provisioned from an identity provider</a>
@@ -512,6 +518,16 @@
 <li>Support for multiple providers simultaneously</li>
 <li>PKCE (Proof Key for Code Exchange) for enhanced security</li>
 </ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="interfaceapplication_url-must-be-set"><code>interface.application_url</code> must be set</h3>
+<p>OIDC will not start without it. The OAuth <code>redirect_uri</code> sent to the provider is built from <code>interface.application_url</code> alone, and no request header is consulted. With it unset, login fails and Poweradmin reports:</p>
+<pre class="highlight"><code>Failed to initiate OIDC authentication: interface.application_url must be configured
+before OIDC can be used: it defines the OAuth redirect_uri registered with the provider.</code></pre>
+<p>Set it to the full public URL of the install, matching the redirect URI registered with your provider:</p>
+<pre class="highlight"><code class="language-php">'interface' =&gt; [
+    'application_url' =&gt; 'https://dns.example.com/poweradmin',
+],</code></pre>
+<p>Earlier versions derived the host from the web server's <code>SERVER_NAME</code> when this was empty. That fallback has been removed: under the official Docker image (FrankenPHP/Caddy) and under Apache's default <code>UseCanonicalName Off</code>, <code>SERVER_NAME</code> comes from the client's <code>Host</code> header, so a forged header could redirect the authorization code to another host.</p>
 <h2 id="global-settings">Global Settings</h2>
 <table>
 <thead>

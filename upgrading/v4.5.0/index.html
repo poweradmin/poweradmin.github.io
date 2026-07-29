@@ -284,6 +284,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking Changes</a>
         <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#interfaceapplication_url-is-now-required-for-oidc-and-saml">interface.application_url is now required for OIDC and SAML</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#password-reset-tokens-are-stored-hashed">Password reset tokens are stored hashed</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#metadata-and-ownership-view-permissions-are-split-out-of-content-view">Metadata and ownership view permissions are split out of content view</a>
@@ -671,6 +673,47 @@ sudo systemctl restart apache2</code></pre>
 <li><code>dns.parent_zone_ownership_check</code> (default on) blocks creating a zone that overlaps an existing zone owned by another user.</li>
 </ul>
 <h2 id="breaking-changes">Breaking Changes</h2>
+<h3 id="interfaceapplication_url-is-now-required-for-oidc-and-saml"><code>interface.application_url</code> is now required for OIDC and SAML</h3>
+<p>Poweradmin no longer derives a host from the request when building URLs that leave the application. Under the official Docker image (FrankenPHP/Caddy) and under Apache's default <code>UseCanonicalName Off</code>, the web server takes <code>SERVER_NAME</code> from the client's <code>Host</code> header, so the previous fallback let a forged header steer the OAuth <code>redirect_uri</code> and the SAML <code>entityID</code>/ACS to another host.</p>
+<p><strong>If OIDC or SAML is enabled and <code>interface.application_url</code> is empty, single sign-on stops working until you set it.</strong> Set it to the full public URL of the install before upgrading:</p>
+<pre class="highlight"><code class="language-php">return [
+    'interface' =&gt; [
+        'application_url' =&gt; 'https://dns.example.com/poweradmin',
+    ],
+];</code></pre>
+<p>The value must match the redirect URI already registered with your identity provider. For deployments that were working before the upgrade this is the host users already reach Poweradmin on, so no provider-side change is needed.</p>
+<p>What changes per feature when <code>application_url</code> is empty:</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OIDC login</td>
+<td>Fails with <code>interface.application_url must be configured before OIDC can be used</code></td>
+</tr>
+<tr>
+<td>SAML login and <code>/saml/metadata</code></td>
+<td>Fail unless <code>sp.entity_id</code>, <code>sp.assertion_consumer_service_url</code> and <code>sp.single_logout_service_url</code> are all set explicitly</td>
+</tr>
+<tr>
+<td>OIDC logout</td>
+<td>Still redirects to the provider, but without <code>post_logout_redirect_uri</code>, so users are not returned to the login page</td>
+</tr>
+<tr>
+<td>Zone-access notification email</td>
+<td>Still sent, with the "Manage Zone" link omitted</td>
+</tr>
+<tr>
+<td>API docs page</td>
+<td>Still works; the embedded spec URL becomes relative</td>
+</tr>
+</tbody>
+</table>
+<p>This also ships in the 4.2.x, 4.3.x and 4.4.x patch releases. See <a href="../../configuration/oidc/#interfaceapplication_url-must-be-set">OIDC</a> and <a href="../../configuration/saml/#interfaceapplication_url-must-be-set">SAML</a>.</p>
 <h3 id="password-reset-tokens-are-stored-hashed">Password reset tokens are stored hashed</h3>
 <p>Reset tokens are now stored as sha256 hashes. Plaintext tokens issued before the upgrade cannot be validated afterwards - affected users simply request a new reset link; old rows expire within the token lifetime (1 hour by default).</p>
 <h3 id="metadata-and-ownership-view-permissions-are-split-out-of-content-view">Metadata and ownership view permissions are split out of content view</h3>
