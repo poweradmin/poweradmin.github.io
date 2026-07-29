@@ -399,6 +399,12 @@
     <li class="toctree-l3"><a class="reference internal" href="#records">Records</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#users">Users</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#permission-template-and-groups-on-reads-v450">Permission template and groups on reads (v4.5.0+)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#assigning-groups-on-create-v450">Assigning groups on create (v4.5.0+)</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#groups-v420">Groups (v4.2.0+)</a>
     </li>
@@ -633,6 +639,49 @@ assignment returns <code>403</code>:</p>
 <p>Omitting <code>perm_templ</code> on create assigns the least-privileged non-superuser template,
 whoever the caller is; it no longer falls back to template id 1. If no such template
 exists, the request fails rather than granting administrator rights.</p>
+<h4 id="permission-template-and-groups-on-reads-v450">Permission template and groups on reads (v4.5.0+)</h4>
+<p>User reads carry the assigned permission template by ID and by name, plus the
+groups the user belongs to:</p>
+<pre class="highlight"><code class="language-json">{
+  "user_id": 5,
+  "username": "svc-acme",
+  "perm_templ": 2,
+  "perm_templ_name": "Zone Manager",
+  "groups": [{ "id": 3, "name": "dns-operators" }]
+}</code></pre>
+<p><code>perm_templ_name</code> is <code>null</code> when the stored template no longer exists or is a
+group template rather than a user template.</p>
+<h4 id="assigning-groups-on-create-v450">Assigning groups on create (v4.5.0+)</h4>
+<p><code>POST /users</code> accepts an optional <code>groups</code> array holding integer group IDs,
+exact group names, or a mix of both:</p>
+<pre class="highlight"><code class="language-json">{
+  "username": "svc-acme",
+  "password": "...",
+  "perm_templ": 2,
+  "groups": [3, "dns-operators"]
+}</code></pre>
+<p>The response lists the memberships that were actually created, so a caller does
+not have to assume the request took full effect:</p>
+<pre class="highlight"><code class="language-json">{ "user_id": 5, "groups": [{ "id": 3, "name": "dns-operators" }] }</code></pre>
+<p>Rules worth knowing before you script against it:</p>
+<ul>
+<li>Sending <code>groups</code> requires <code>user_is_ueberuser</code>, because a group carries its own
+  permission template. Callers without it get <code>403</code>, even when they may otherwise
+  create users.</li>
+<li>Names are matched exactly, including case and accents. <code>"Viewers"</code> resolves,
+  <code>"viewers"</code> does not. This is deliberate: MySQL's default collation would
+  otherwise accept variants that PostgreSQL and SQLite reject.</li>
+<li>Numeric strings are treated as names, not IDs. Send <code>3</code> to reference group 3;
+  <code>"3"</code> is looked up as a group named <code>3</code> and will normally fail.</li>
+<li>If any entry does not resolve to a group, the whole request returns <code>400</code> and
+  no user is created.</li>
+<li>Naming the same group more than once, whether by ID and by name or by
+  repeating one value, still creates a single membership.</li>
+<li>The array may hold up to 50 groups. A longer list returns <code>400</code> and creates
+  nothing.</li>
+</ul>
+<p>Membership changes after creation go through
+<code>POST</code>/<code>DELETE /groups/{id}/members</code>; <code>PUT /users/{id}</code> does not accept <code>groups</code>.</p>
 <h3 id="groups-v420">Groups (v4.2.0+)</h3>
 <table>
 <thead>
