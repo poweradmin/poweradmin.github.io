@@ -530,6 +530,7 @@ escalate to <strong>IP-level bans</strong> at the firewall.</p>
 </tr>
 </tbody>
 </table>
+<p>From 4.5.0 the application also limits MFA attempts on its own, so a code-guessing run stops at the application layer whether or not fail2ban is configured. Banning on <code>mfa_failed</code> is still worthwhile: it cuts the attacker off at the network edge instead of letting them resume each time the lockout expires. See <a href="../../configuration/security-policies/#second-factor-attempt-limit">Second-factor attempt limit</a>.</p>
 <h3 id="why-login_error-is-separate">Why <code>login_error</code> is separate</h3>
 <p>If you put <code>operation:login_error</code> into the same filter as
 <code>login_failed</code>, an LDAP outage or a misconfigured IdP would cause every

@@ -158,6 +158,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#account-lockout">Account Lockout</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#second-factor-attempt-limit">Second-Factor Attempt Limit</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#ip-address-management">IP Address Management</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#example-configuration">Example Configuration</a>
@@ -477,6 +479,20 @@
 <li><strong>track_ip_address</strong>: Lock accounts based on IP address. Default: <code>true</code></li>
 <li><strong>clear_attempts_on_success</strong>: Clear failed attempts after successful login. Default: <code>true</code></li>
 </ul>
+<p>These settings govern the password stage only. The second factor is throttled separately - see <a href="#second-factor-attempt-limit">Second-factor attempt limit</a> below.</p>
+<h2 id="second-factor-attempt-limit">Second-Factor Attempt Limit</h2>
+<p>A six-digit second factor is small enough to guess, so MFA verification is rate limited on its own, independently of the account lockout above. This limit is always active when MFA is enabled: it does not require <code>enable_lockout</code>, which ships disabled (added in 4.5.0).</p>
+<ul>
+<li><strong>mfa.max_verify_attempts</strong>: Wrong MFA codes tolerated before verification is refused. Default: <code>5</code></li>
+<li><strong>mfa.verify_lockout_duration</strong>: Minutes to keep refusing attempts once the limit is reached. Default: <code>15</code></li>
+</ul>
+<p>Three behaviours differ from the password lockout, all deliberate:</p>
+<ul>
+<li>MFA failures are counted per account across every source address. <code>track_ip_address</code> does not apply, because an attacker rotating addresses would otherwise reset the counter on each request.</li>
+<li><code>whitelist_ip_addresses</code> does not exempt the second factor. The whitelist exists so a bot cannot lock staff out of password login; the second factor is the only barrier left once a password is known, so it is never waived. The blacklist still applies.</li>
+<li>Reaching the limit invalidates any pending emailed code, and no replacement is sent until the lockout expires.</li>
+</ul>
+<p>MFA failures are tracked separately from password failures, so a wrong code never blocks a later password login, and a fresh password login does not reset the MFA counter. Setting either value to <code>0</code> is treated as <code>1</code> rather than as "unlimited"; to remove the limit entirely, disable MFA.</p>
 <h2 id="ip-address-management">IP Address Management</h2>
 <p>Control which IP addresses can access the system:</p>
 <ul>
@@ -507,6 +523,8 @@
             'email_enabled' =&gt; true,
             'recovery_codes' =&gt; 8,
             'recovery_code_length' =&gt; 10,
+            'max_verify_attempts' =&gt; 5,
+            'verify_lockout_duration' =&gt; 15,
         ],
         'password_reset' =&gt; [
             'enabled' =&gt; true,

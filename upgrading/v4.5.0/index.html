@@ -298,6 +298,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#identity-providers-can-no-longer-grant-administrator-rights">Identity providers can no longer grant administrator rights</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#user_edit_templ_perm-no-longer-hands-out-administrator-rights">user_edit_templ_perm no longer hands out administrator rights</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#other-changes">Other changes</a>
     </li>
         </ul>
@@ -658,7 +660,8 @@ sudo systemctl restart apache2</code></pre>
 <h3 id="authentication-and-mfa">Authentication and MFA</h3>
 <ul>
 <li><strong>OIDC <code>form_post</code> response mode</strong> - per-provider opt-in (<code>response_mode =&gt; 'form_post'</code>, HTTPS only) for providers or proxy setups where query-mode callbacks are problematic.</li>
-<li><strong>MFA stage throttling</strong> - failed MFA codes are throttled separately from password failures, so a fresh password success no longer resets the MFA counter.</li>
+<li><strong>MFA verification is now rate limited</strong> - a six-digit second factor is small enough to guess, so wrong codes are counted and verification is refused once the limit is reached. This applies whenever MFA is enabled and does <strong>not</strong> require <code>security.account_lockout.enable_lockout</code>, which ships disabled. Tune it with <code>security.mfa.max_verify_attempts</code> (default <code>5</code>) and <code>security.mfa.verify_lockout_duration</code> (default <code>15</code> minutes). Existing installations gain the limit on upgrade with no configuration change.</li>
+<li><strong>MFA stage throttling</strong> - failed MFA codes are counted separately from password failures, so a wrong code never blocks a later password login and a fresh password success no longer resets the MFA counter. Unlike password lockout, MFA failures are counted per account across all source addresses and are not exempted by <code>whitelist_ip_addresses</code>.</li>
 <li><code>security.mfa.skip_for_external_auth</code> - skip Poweradmin's MFA enforcement for LDAP/OIDC/SAML logins when the IdP already enforces it.</li>
 </ul>
 <h3 id="api-request-logging">API Request Logging</h3>
@@ -736,6 +739,13 @@ existing LUA records keep resolving - only editing them through Poweradmin is ga
 <p>Note this only ever mattered where the server has LUA enabled, either globally with
 <code>enable-lua-records=yes</code> or per zone via <code>ENABLE-LUA-RECORDS</code> - which the same release
 restricts to administrators.</p>
+<p>The same restriction ships in 4.4.1 and 4.3.5, so it is not exclusive to this release.
+It also covers zone templates: a template record is written straight to the backend when
+the template is applied, so it never passes the record-level checks. Storing a <code>LUA</code>
+record in a template therefore requires <code>zone_content_edit_own</code> or
+<code>zone_content_edit_others</code>, a stricter bar than the client rule alone. Saving an existing
+zone as a template skips record types the caller may not author and names them in the
+resulting message rather than failing the whole save.</p>
 <h3 id="identity-providers-can-no-longer-grant-administrator-rights">Identity providers can no longer grant administrator rights</h3>
 <p><code>oidc</code>/<code>saml</code>/<code>ldap.allow_superuser_provisioning</code> defaults to <code>false</code>. With it unset,
 Poweradmin refuses to provision superuser from an IdP assertion in either of the two ways
@@ -750,6 +760,15 @@ that previously worked:</p>
 stop being administrators after this upgrade.</strong> Both refusals are logged, so a login that
 silently loses rights can be traced. Either set the flag to <code>true</code>, or grant administrator
 rights inside Poweradmin, where an existing administrator has to act.</p>
+<h3 id="user_edit_templ_perm-no-longer-hands-out-administrator-rights"><code>user_edit_templ_perm</code> no longer hands out administrator rights</h3>
+<p>The permission delegates template management, not the granting of administrator rights. A
+holder who is not themselves an administrator can no longer assign a template that grants
+<code>user_is_ueberuser</code> - on the user editor, the user create form, or the REST API user
+endpoints - and can only change their own template if they also hold <code>user_edit_others</code>.
+Assigning any ordinary template is unaffected, so a delegated user administrator keeps
+working as before unless they were relying on handing out the Administrator template.</p>
+<p>This ships across the supported lines, not only here: 4.4.1, 4.3.5, 4.2.6 and 3.9.12 carry
+the same rule.</p>
 <h3 id="other-changes">Other changes</h3>
 <ul>
 <li>The Records column in zone lists is no longer sortable in API backend mode. Record counts are now resolved only for the zones on the current page, so ordering by them would sort just that page rather than the whole list. The column header is plain text instead of a sort link, and a stale <code>count_records</code> sort carried over in a session falls back to sorting by name. SQL backend mode is unaffected and still sorts by record count.</li>
