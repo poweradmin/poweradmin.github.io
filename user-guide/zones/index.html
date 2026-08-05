@@ -219,6 +219,14 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#zone-metadata">Zone Metadata</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#restrictions-with-the-powerdns-api-backend">Restrictions with the PowerDNS API backend</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#metadata-over-the-api">Metadata over the API</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#bulk-operations">Bulk Operations</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#csv-export">CSV Export</a>
@@ -546,6 +554,60 @@
 <p>Starting in v4.1.0, the zone editor supports configurable columns. You can show or hide columns such as Priority, TTL, or DNSSEC-related fields to reduce clutter depending on your workflow.</p>
 <h3 id="sorting">Sorting</h3>
 <p>Starting in v4.1.0, you can sort records by clicking column headers. This helps when working with large zones to quickly find specific records.</p>
+<h2 id="zone-metadata">Zone Metadata</h2>
+<p>Starting in v4.5.0, the <strong>Metadata</strong> button on the zone editor opens an editor for the zone's
+PowerDNS domain metadata - the per-zone settings that control transfers, notifies, serial
+policy and DNSSEC behaviour. Each row is a metadata <em>kind</em> and one value.</p>
+<p>Kinds with a fixed set of valid values (<code>SOA-EDIT</code>, <code>SOA-EDIT-API</code>, <code>SOA-EDIT-DNSUPDATE</code>,
+<code>API-RECTIFY</code>, <code>NSEC3NARROW</code>) offer a dropdown instead of a free-text field. Kinds your
+PowerDNS version does not support yet are listed but disabled, with the required version
+shown. Kinds not in the built-in list can be added through the <strong>Custom</strong> entry.</p>
+<p>Some kinds accept several values - <code>ALLOW-AXFR-FROM</code>, <code>ALLOW-DNSUPDATE-FROM</code>, <code>ALSO-NOTIFY</code>,
+<code>TSIG-ALLOW-AXFR</code>, <code>TSIG-ALLOW-DNSUPDATE</code>, <code>GSS-ALLOW-AXFR-PRINCIPAL</code> and <code>PUBLISH-CDS</code>. Add
+one row per value. Every other kind holds a single value.</p>
+<h3 id="restrictions-with-the-powerdns-api-backend">Restrictions with the PowerDNS API backend</h3>
+<p>When Poweradmin talks to PowerDNS over its HTTP API rather than directly to the database,
+PowerDNS itself limits what can be written, and the editor marks the affected rows
+<strong>Read-only</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SOA-EDIT</code>, <code>SOA-EDIT-API</code>, <code>API-RECTIFY</code>, <code>NSEC3PARAM</code>, <code>NSEC3NARROW</code></td>
+<td>Writable, but stored as zone properties rather than metadata entries</td>
+</tr>
+<tr>
+<td><code>PRESIGNED</code>, <code>LUA-AXFR-SCRIPT</code>, <code>ENABLE-LUA-RECORDS</code></td>
+<td>Read-only - PowerDNS offers no API route for them. Use <code>pdnsutil</code> or the database</td>
+</tr>
+<tr>
+<td><code>AXFR-MASTER-TSIG</code></td>
+<td>Read-only - PowerDNS requires a TSIG key id, which Poweradmin cannot supply yet</td>
+</tr>
+<tr>
+<td><code>CATALOG-HASH</code></td>
+<td>Read-only - PowerDNS maintains it for catalog zones</td>
+</tr>
+</tbody>
+</table>
+<p>Two further rules apply in this mode:</p>
+<ul>
+<li><strong>Custom kinds must start with <code>X-</code>.</strong> PowerDNS rejects any other unknown kind.</li>
+<li><strong><code>NSEC3NARROW</code> needs <code>NSEC3PARAM</code>.</strong> PowerDNS ignores narrow mode unless the zone also
+  carries NSEC3 parameters, so the editor asks for both.</li>
+</ul>
+<p>Editing a restricted kind reports an error rather than silently doing nothing. None of these
+restrictions apply when Poweradmin writes to the PowerDNS database directly.</p>
+<h3 id="metadata-over-the-api">Metadata over the API</h3>
+<p>The v2 API exposes the same data at <code>/api/v2/zones/{id}/metadata</code>, with <code>GET</code>, <code>PUT</code> and
+<code>DELETE</code> on <code>/api/v2/zones/{id}/metadata/{kind}</code>. It enforces the same value vocabularies and
+the same backend restrictions, and requires the <code>zone_meta_edit_own</code> or
+<code>zone_meta_edit_others</code> permission.</p>
 <h2 id="bulk-operations">Bulk Operations</h2>
 <p>Starting in v4.0.0, you can add multiple records to a zone at once:</p>
 <ol>
