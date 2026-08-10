@@ -156,6 +156,8 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#general-security-settings">General Security Settings</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#rotating-the-session-key">Rotating the Session Key</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#account-lockout">Account Lockout</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#second-factor-attempt-limit">Second-Factor Attempt Limit</a>
@@ -470,6 +472,24 @@
 <li><strong>global_token_validation</strong>: Enable token validation for all forms. Default: <code>true</code></li>
 <li><strong>trusted_proxies</strong>: Reverse proxy addresses allowed to set forwarded client-IP headers (<code>X-Forwarded-For</code>, <code>X-Real-IP</code>, <code>Client-IP</code>). Supports IPs, CIDRs (IPv4/IPv6), and IPv4 wildcards. Private and loopback peers are always trusted; add public proxy addresses here so their forwarded headers are honored. Default: <code>[]</code> (added in 4.5.0)</li>
 </ul>
+<h2 id="rotating-the-session-key">Rotating the Session Key</h2>
+<p><code>session_key</code> encrypts the credentials Poweradmin holds in the session. Its strength decides whether a leaked session store yields only password hashes or usable plaintext passwords, so it is worth treating as a secret in its own right.</p>
+<p>Replace the current value if any of these apply:</p>
+<ul>
+<li>It is still <code>change_this_key</code>, or <code>p0w3r4dm1n</code> on the 3.x line. Both are published defaults and are in the public source tree.</li>
+<li>The configuration file has ever been committed to version control, copied between environments, or shared in a support thread.</li>
+<li>The key was written for you by the web installer before 4.5.0 (4.4.2, 4.3.6, 4.2.7 and 3.9.13 on the older lines). Those releases built it with <code>mt_rand()</code>, which is seeded from a 32-bit value, so the key is far weaker than its length suggests. Installations set up through Docker are unaffected: the entrypoint has always used <code>openssl rand</code>.</li>
+</ul>
+<p>Generate a replacement from a real random source:</p>
+<pre class="highlight"><code class="language-bash">openssl rand -hex 32</code></pre>
+<p>Then set it in <code>config/settings.php</code>:</p>
+<pre class="highlight"><code class="language-php">return [
+    'security' =&gt; [
+        'session_key' =&gt; 'the-generated-value',
+    ],
+];</code></pre>
+<p>Rotating logs everyone out, because sessions encrypted under the old key can no longer be read. Nothing else is affected: stored password hashes, API keys, zone data and permissions do not depend on this value.</p>
+<p>Poweradmin shows a warning in the page header, visible to superusers, when the configured key is missing, is one of the shipped defaults, or is shorter than 32 characters. The check can only judge length and known values, not the quality of the generator that produced the key, so an installer-generated key of adequate length will not raise a warning. If you do not know where your key came from, rotate it.</p>
 <h2 id="account-lockout">Account Lockout</h2>
 <p>These settings help prevent brute force attacks by temporarily locking accounts after multiple failed login attempts:</p>
 <ul>

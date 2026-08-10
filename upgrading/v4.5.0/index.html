@@ -284,9 +284,13 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking Changes</a>
         <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#api-v1-is-removed">API v1 is removed</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#interfaceapplication_url-is-now-required-for-oidc-and-saml">interface.application_url is now required for OIDC and SAML</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#password-reset-tokens-are-stored-hashed">Password reset tokens are stored hashed</a>
+    <li class="toctree-l4"><a class="reference internal" href="#credentials-are-hashed-at-rest">Credentials are hashed at rest</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#session-keys-written-by-the-web-installer-should-be-rotated">Session keys written by the web installer should be rotated</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#metadata-and-ownership-view-permissions-are-split-out-of-content-view">Metadata and ownership view permissions are split out of content view</a>
     </li>
@@ -575,9 +579,10 @@
 <h2 id="upgrade-instructions">Upgrade Instructions</h2>
 <h3 id="prerequisites">Prerequisites</h3>
 <ul>
-<li>Poweradmin v4.4.0</li>
+<li>Poweradmin v4.4.x</li>
 <li>PHP 8.2 or later</li>
 <li>Database backup</li>
+<li>Any integration still on API v1 migrated to v2 (see <a href="#api-v1-is-removed">Breaking Changes</a>)</li>
 </ul>
 <p>If you are upgrading from an older release, run the intermediate migration scripts first (4.3.0, then 4.4.0, then 4.5.0). Do not skip versions.</p>
 <h3 id="step-1-backup-your-data">Step 1: Backup Your Data</h3>
@@ -676,6 +681,18 @@ sudo systemctl restart apache2</code></pre>
 <li><code>dns.parent_zone_ownership_check</code> (default on) blocks creating a zone that overlaps an existing zone owned by another user.</li>
 </ul>
 <h2 id="breaking-changes">Breaking Changes</h2>
+<h3 id="api-v1-is-removed">API v1 is removed</h3>
+<p>Public API v1 was deprecated in 4.3.0 and is gone in 4.5.0. Every <code>/api/v1</code> path now answers <code>410 Gone</code> for every HTTP verb, with a <code>Link: &lt;/api/v2/&gt;; rel="successor-version"</code> header and a JSON error body. <strong>Migrate your integrations to <code>/api/v2</code> before upgrading</strong>, or they will stop working the moment the new files are in place.</p>
+<p>The original sunset notice named 2026-09-01 and version 4.4.0. Version 4.4.0 shipped with v1 still present, so the removal lands here instead. Only the version label was wrong; the intent is unchanged.</p>
+<p>Two differences catch most v1 clients out:</p>
+<ul>
+<li><strong>Responses are wrapped.</strong> v2 returns <code>{success, data, message}</code>, and list payloads nest one level deeper: <code>data.zones</code>, <code>data.users</code>, <code>data.templates</code>, <code>data.records</code>, where v1 returned a bare array. Zone list items expose <code>id</code>; user records expose <code>user_id</code>.</li>
+<li><strong>One path was renamed.</strong> <code>/api/v1/permission_templates</code> is <code>/api/v2/permission-templates</code>, with a hyphen.</li>
+</ul>
+<p>Your API keys keep working as they are. Authentication is unchanged, and the new read-only and operation-scope restrictions are opt-in, so an existing key stays unrestricted until an administrator narrows it.</p>
+<p>The API documentation is generated from v2 only. <code>/api/docs/v1/json</code> is removed, and the Swagger UI no longer shows a version selector. The unversioned <code>/api/docs/json</code> serves the v2 spec, so existing bookmarks keep working.</p>
+<p>The 4.2.x, 4.3.x and 4.4.x lines still ship v1. If you are not ready to migrate, stay on one of those.</p>
+<p>See the <a href="../../api/overview/">API Overview</a> for the full v1-to-v2 comparison.</p>
 <h3 id="interfaceapplication_url-is-now-required-for-oidc-and-saml"><code>interface.application_url</code> is now required for OIDC and SAML</h3>
 <p>Poweradmin no longer derives a host from the request when building URLs that leave the application. Under the official Docker image (FrankenPHP/Caddy) and under Apache's default <code>UseCanonicalName Off</code>, the web server takes <code>SERVER_NAME</code> from the client's <code>Host</code> header, so the previous fallback let a forged header steer the OAuth <code>redirect_uri</code> and the SAML <code>entityID</code>/ACS to another host.</p>
 <p><strong>If OIDC or SAML is enabled and <code>interface.application_url</code> is empty, single sign-on stops working until you set it.</strong> Set it to the full public URL of the install before upgrading:</p>
@@ -700,7 +717,7 @@ sudo systemctl restart apache2</code></pre>
 </tr>
 <tr>
 <td>SAML login and <code>/saml/metadata</code></td>
-<td>Fail unless <code>sp.entity_id</code>, <code>sp.assertion_consumer_service_url</code> and <code>sp.single_logout_service_url</code> are all set explicitly</td>
+<td>Fail unless <code>sp.entity_id</code>, <code>sp.assertion_consumer_service_url</code> and <code>sp.single_logout_service_url</code> are all set explicitly, or the legacy <code>interface.base_url</code> is set (see below)</td>
 </tr>
 <tr>
 <td>OIDC logout</td>
@@ -717,8 +734,21 @@ sudo systemctl restart apache2</code></pre>
 </tbody>
 </table>
 <p>This also ships in the 4.2.x, 4.3.x and 4.4.x patch releases. See <a href="../../configuration/oidc/#interfaceapplication_url-must-be-set">OIDC</a> and <a href="../../configuration/saml/#interfaceapplication_url-must-be-set">SAML</a>.</p>
-<h3 id="password-reset-tokens-are-stored-hashed">Password reset tokens are stored hashed</h3>
-<p>Reset tokens are now stored as sha256 hashes. Plaintext tokens issued before the upgrade cannot be validated afterwards - affected users simply request a new reset link; old rows expire within the token lifetime (1 hour by default).</p>
+<p><strong>A note on <code>interface.base_url</code>.</strong> SAML has always consulted this undocumented setting before falling back to the request. It still works, and it is still checked, but only after <code>application_url</code>. If you set it manually at some point, your SAML setup keeps working after the upgrade without any change. Prefer <code>application_url</code> going forward: it is the documented setting and the one OIDC, password-reset emails and the API docs page read. This is not the same setting as <code>interface.base_url_prefix</code>, which is unrelated and still current - that one handles subfolder deployments.</p>
+<h3 id="credentials-are-hashed-at-rest">Credentials are hashed at rest</h3>
+<p><strong>Password reset tokens.</strong> Reset tokens are now stored as sha256 hashes. Plaintext tokens issued before the upgrade cannot be validated afterwards - affected users simply request a new reset link; old rows expire within the token lifetime (1 hour by default).</p>
+<p><strong>API keys.</strong> Keys are stored as <code>sha256$&lt;hex&gt;</code> instead of plaintext. No action is needed: an existing key is migrated to its hash the first time it successfully authenticates, so integrations keep working with the key they already hold. Keys that are never used stay plaintext in the table until they are used or rotated.</p>
+<p>Two things worth knowing:</p>
+<ul>
+<li>A database backup taken before the upgrade contains plaintext keys. Restoring one after the upgrade has been running for a while gives you a table with some rows hashed and some plaintext, which still works but undoes the migration for anything restored.</li>
+<li>Poweradmin can no longer show you an existing key's secret, because it no longer has it. This was already true of the interface before 4.5.0 - the secret is only ever displayed once, on the page shown right after creating or regenerating a key - but it is now true of the database as well. If you have lost a key, regenerate it.</li>
+</ul>
+<h3 id="session-keys-written-by-the-web-installer-should-be-rotated">Session keys written by the web installer should be rotated</h3>
+<p>The installer used to build <code>security.session_key</code> with <code>mt_rand()</code>, which is seeded from a 32-bit value, so the key carried far less entropy than its 46 characters suggest. 4.5.0 generates it with <code>random_int()</code> instead, but that only applies to keys created from now on. An existing key in <code>config/settings.php</code> is left exactly as it is, so upgrading on its own does not fix this.</p>
+<p>If your key came from the web installer, replace it:</p>
+<pre class="highlight"><code class="language-bash">openssl rand -hex 32</code></pre>
+<p>Everyone is logged out when you change it, since sessions encrypted under the old key can no longer be read. Nothing else is affected. Installations set up through Docker already used <code>openssl rand</code> and need no action.</p>
+<p>The header warning that flags a default key now also fires when the key is missing or shorter than 32 characters. It cannot tell a weak generator from a strong one, so a full-length installer key will not be flagged - rotate it if you are unsure where yours came from. See <a href="../../configuration/security-policies/#rotating-the-session-key">Security Policies</a>.</p>
 <h3 id="metadata-and-ownership-view-permissions-are-split-out-of-content-view">Metadata and ownership view permissions are split out of content view</h3>
 <p><code>zone_content_view_own</code>/<code>zone_content_view_others</code> no longer imply seeing zone metadata or zone owners. The migration auto-grants the new <code>zone_metadata_view_*</code> and <code>zone_ownership_view_*</code> permissions to every template holding the matching content-view permission, so nothing changes visibly on upgrade - but new templates need the permissions granted explicitly, and admins can now revoke them to hide those sections.</p>
 <h3 id="ldap-identity-fields-become-read-only-when-sync-is-enabled">LDAP identity fields become read-only when sync is enabled</h3>
@@ -773,6 +803,7 @@ the same rule.</p>
 <ul>
 <li>The Records column in zone lists is no longer sortable in API backend mode. Record counts are now resolved only for the zones on the current page, so ordering by them would sort just that page rather than the whole list. The column header is plain text instead of a sort link, and a stale <code>count_records</code> sort carried over in a session falls back to sorting by name. SQL backend mode is unaffected and still sorts by record count.</li>
 <li>The MFA failure counter is tracked per authentication stage; repeated wrong MFA codes can lock an account even after a correct password.</li>
+<li>Two authentication paths that were previously exempt now count towards account lockout: the dynamic DNS endpoint, and HTTP Basic Auth on the public API. This only matters if you have turned lockout on - <code>security.account_lockout.enable_lockout</code> ships disabled - but if you have, an automated client retrying with stale credentials can now lock the account it belongs to. Check any DDNS client or service account whose credentials may be out of date before upgrading. See <a href="../../configuration/security-policies/">Security Policies</a>.</li>
 <li>All other new features are additive or opt-in: new tables start empty, new settings default to prior behavior, and new permissions (except the auto-granted view split) are not assigned to any template.</li>
 </ul>
 <h2 id="rollback">Rollback</h2>
