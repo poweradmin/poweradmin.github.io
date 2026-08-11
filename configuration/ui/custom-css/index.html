@@ -534,10 +534,27 @@ cp custom_dark.css.example custom_dark.css</code></pre>
     color: #333 !important;
 }</code></pre>
 <h3 id="wider-content-area">Wider Content Area</h3>
-<pre class="highlight"><code class="language-css">/* custom_light.css */
-.container-fluid {
+<p>The page shell is built from Bootstrap <code>.container</code> elements, which are capped at 1320px on
+large screens. Release that cap to use the whole browser width:</p>
+<pre class="highlight"><code class="language-css">/* custom_light.css and custom_dark.css */
+.container {
+    max-width: none;
+}</code></pre>
+<p>Use a pixel value instead of <code>none</code> if you want a wider page but still want a limit:</p>
+<pre class="highlight"><code class="language-css">.container {
     max-width: 1600px;
 }</code></pre>
+<p>Put the rule in both <code>custom_light.css</code> and <code>custom_dark.css</code>. The stylesheet filename is
+chosen from the theme saved in the browser, not from the <code>style</code> setting on the server, so a
+user who switches to dark with only <code>custom_light.css</code> present gets a 404 and no widening.</p>
+<p><strong>Version 4.5.0 and later:</strong> this is built in. Each user can turn it on under
+Account &gt; Preferences &gt; Display Settings with the "Full browser width" switch, and
+<code>interface.wide_layout</code> in <code>config/settings.php</code> sets the default for the whole installation.
+The custom CSS above is still the way to do it on 4.1.0 through 4.4.x.</p>
+<p><strong>Version 4.0.x and 3.x:</strong> custom stylesheets were added in 4.1.0, so there is no hook on
+earlier releases. The rule has to go into the theme stylesheet itself, either
+<code>templates/&lt;theme&gt;/style/light.css</code> and <code>dark.css</code> on 4.0.x, or <code>style/ignite.css</code> and
+<code>style/spark.css</code> on 3.x. Those edits are overwritten on upgrade.</p>
 <h2 id="tips">Tips</h2>
 <ul>
 <li>Use <code>!important</code> when needed to ensure your styles override base theme styles</li>
