@@ -65,6 +65,23 @@
                   <li class="toctree-l1"><a class="reference internal" href="../../getting-started/requirements/">System Requirements</a>
                   </li>
               </ul>
+              <p class="caption"><span class="caption-text">What's New</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/v4.5.0/">v4.5.0</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/v4.4.0/">v4.4.0</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/v4.3.0/">v4.3.0</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/v4.2.0/">v4.2.0</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/v4.1.0/">v4.1.0</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/v4.0.0/">v4.0.0</a>
+                  </li>
+              </ul>
               <p class="caption"><span class="caption-text">Installation</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../../installation/">Overview</a>
@@ -170,6 +187,8 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../configuration/database-logging/">Database Logging</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/admin-managed-settings/">Admin-Managed Settings</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../configuration/legacy-configuration/">Legacy Configuration (v3.x)</a>
                   </li>
               </ul>
@@ -194,6 +213,10 @@
                 <li class="toctree-l2 current"><a class="reference internal current" href="#">DNS Templates</a>
     <ul class="current">
     <li class="toctree-l3"><a class="reference internal" href="#template-management">Template Management</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#saving-an-existing-zone-as-a-template">Saving an existing zone as a template</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#zone-template-application">Zone Template Application</a>
         <ul>
@@ -240,6 +263,12 @@
                 <li class="toctree-l2"><a class="reference internal" href="../reverse-dns/">Reverse DNS (PTR)</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../bulk-operations/">Bulk and Batch Operations</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../record-change-log/">Record Change Log</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../secondary-zone-import/">Secondary Zone Import</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../views-networks/">Views and Networks</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../naptr-records/">NAPTR Records</a>
                 </li>
@@ -492,6 +521,25 @@
 </ul>
 <p>The serial placeholders (<code>[SERIAL]</code>, <code>[UNIXTIME]</code>, <code>[COUNTER]</code>) control the initial SOA serial of a zone created from the template; later record changes increment the serial automatically. When Poweradmin runs against the PowerDNS API backend, the <code>SOA-EDIT-API</code> zone metadata governs how subsequent serials are generated - it can be chosen per zone on the add-zone form or on the zone metadata page (<code>EPOCH</code> pairs with <code>[UNIXTIME]</code>, <code>INCREASE</code> with <code>[COUNTER]</code>), with defaults from <code>dns.soa_edit_api</code>.</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/template-editor.png" data-desc-position="bottom"><img alt="Template Editor" src="../../screenshots/template-editor.png"></a></p>
+<h3 id="saving-an-existing-zone-as-a-template">Saving an existing zone as a template</h3>
+<p><em>Available since v4.2.0.</em></p>
+<p>Rather than building a template record by record, you can turn a zone you already have into
+one. On the zone editor, <strong>Save as Template</strong> (<code>/zones/{id}/save-template</code>) asks for a
+template name and description, then copies the zone's records into a new template.</p>
+<p>The copy is not literal. The zone's own name is replaced with <code>[ZONE]</code>, and the configured
+nameserver and hostmaster values are replaced with <code>[NS1]</code> and <code>[HOSTMASTER]</code>, so the
+template applies cleanly to any other zone.</p>
+<p>Two behaviours to expect:</p>
+<ul>
+<li><strong>Record types you are not allowed to add are left out</strong>, and the page tells you which ones
+  were skipped. A user who can read a zone containing record types their permissions do not
+  cover still gets a usable template from the rest.</li>
+<li><strong>A default SOA record is added</strong> if the source zone had none.</li>
+</ul>
+<p>This is the quickest way to capture a house standard: build one zone the way you want every
+zone to look, then save it as the template for the rest.</p>
+<p>It requires the same rights as creating a template by hand - the <code>zone_templ_add</code> permission,
+or superuser.</p>
 <h2 id="zone-template-application">Zone Template Application</h2>
 <h3 id="when-changing-a-zones-template">When Changing a Zone's Template</h3>
 <p>When you change a zone's template on the edit page:</p>

@@ -65,6 +65,23 @@
                   <li class="toctree-l1"><a class="reference internal" href="../../getting-started/requirements/">System Requirements</a>
                   </li>
               </ul>
+              <p class="caption"><span class="caption-text">What's New</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/v4.5.0/">v4.5.0</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/v4.4.0/">v4.4.0</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/v4.3.0/">v4.3.0</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/v4.2.0/">v4.2.0</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/v4.1.0/">v4.1.0</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../whats-new/v4.0.0/">v4.0.0</a>
+                  </li>
+              </ul>
               <p class="caption"><span class="caption-text">Installation</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../../installation/">Overview</a>
@@ -170,6 +187,8 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../configuration/database-logging/">Database Logging</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../configuration/admin-managed-settings/">Admin-Managed Settings</a>
+                  </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../configuration/legacy-configuration/">Legacy Configuration (v3.x)</a>
                   </li>
               </ul>
@@ -196,6 +215,12 @@
                 <li class="toctree-l2"><a class="reference internal" href="../../user-guide/reverse-dns/">Reverse DNS (PTR)</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../user-guide/bulk-operations/">Bulk and Batch Operations</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/record-change-log/">Record Change Log</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/secondary-zone-import/">Secondary Zone Import</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../user-guide/views-networks/">Views and Networks</a>
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="../../user-guide/naptr-records/">NAPTR Records</a>
                 </li>
@@ -394,6 +419,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#using-a-key">Using a key</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#restricting-what-a-key-can-do">Restricting what a key can do</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#rotating-and-revoking-keys">Rotating and revoking keys</a>
     </li>
         </ul>
@@ -478,6 +505,47 @@ users have no limit.</p>
 <p>The key inherits the permissions of the user it belongs to. If that user can
 edit zone X in the web UI, the key can edit zone X over the API; if they
 cannot, the key cannot either.</p>
+<h3 id="restricting-what-a-key-can-do">Restricting what a key can do</h3>
+<p><em>Available since v4.5.0.</em></p>
+<p>By default a key can do everything its owner can. The add and edit forms let you
+narrow that down, which is what you want for a key handed to a monitoring agent, a
+CI job, or a single application.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/api-key-add.png" data-desc-position="bottom"><img alt="Add API Key" src="../../screenshots/api-key-add.png"></a></p>
+<p>Three independent restrictions are available:</p>
+<table>
+<thead>
+<tr>
+<th>Restriction</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Read-only</strong></td>
+<td>Only <code>GET</code> and <code>HEAD</code> requests are accepted. Everything else gets <code>403</code>.</td>
+</tr>
+<tr>
+<td><strong>Allowed operations</strong></td>
+<td>Tick any of <code>view</code>, <code>create</code>, <code>update</code>, <code>delete</code>. A request whose operation is not ticked gets <code>403</code>. Leave all unticked to allow every operation.</td>
+</tr>
+<tr>
+<td><strong>Zone access</strong></td>
+<td>Select specific zones. Requests targeting any other zone get <code>403</code>. Leave empty to allow every zone the owner can reach.</td>
+</tr>
+</tbody>
+</table>
+<p>Operations map onto HTTP methods: <code>POST</code> is create, <code>PUT</code> and <code>PATCH</code> are update,
+<code>DELETE</code> is delete, and everything else is view. Endpoints that do more than one
+thing in a single request, such as a dynamic DNS upsert or a bulk record change,
+must satisfy every operation they perform.</p>
+<p>Restrictions only narrow access - they never widen it. A read-only key belonging to
+a user with no zone permissions still cannot read anything.</p>
+<p>Existing keys are unrestricted after an upgrade, so nothing changes until you
+edit a key and apply restrictions.</p>
+<blockquote>
+<p><strong>Note:</strong> These restrictions are enforced on API v2 only. API v1 was removed in
+4.5.0 and answers <code>410 Gone</code>.</p>
+</blockquote>
 <h3 id="rotating-and-revoking-keys">Rotating and revoking keys</h3>
 <p>From <strong>Settings -&gt; API Keys</strong> you can:</p>
 <ul>
