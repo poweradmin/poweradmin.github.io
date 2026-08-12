@@ -1,11 +1,79 @@
-.announcement {
-  padding: 10px 15px;
-  background-color: #ffeb3b;
-  color: #000;
-  font-weight: bold;
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 16px;
+/* Poweradmin brand palette.
+   #cc0000 is the logo colour and poweradmin.org's accent; #b30000 is its
+   hover/darkened variant. Dark mode uses a lightened red because #cc0000 on a
+   dark background falls below the 4.5:1 contrast minimum. */
+
+/* The second attribute matches the specificity of the theme's own
+   [data-md-color-scheme][data-md-color-primary] rules, which otherwise win on
+   the link colour and leave it indigo. */
+[data-md-color-scheme="default"][data-md-color-accent] {
+  --pa-red: #cc0000;
+  --pa-red-dark: #b30000;
+
+  --md-accent-fg-color: var(--pa-red);
+  --md-accent-fg-color--transparent: rgba(204, 0, 0, 0.1);
+  --md-typeset-a-color: var(--pa-red);
+  --md-footer-bg-color: #1b1f24;
+  --md-footer-bg-color--dark: #14171b;
+}
+
+[data-md-color-scheme="slate"][data-md-color-accent] {
+  --pa-red: #ff7a70;
+  --pa-red-dark: #ff9a92;
+
+  --md-accent-fg-color: var(--pa-red);
+  --md-accent-fg-color--transparent: rgba(255, 122, 112, 0.12);
+  --md-typeset-a-color: var(--pa-red);
+}
+
+.md-typeset a:hover,
+.md-typeset a:focus {
+  color: var(--pa-red-dark);
+}
+
+/* The header keeps a neutral ground so the red stays a signal rather than a
+   background, matching how poweradmin.org uses it. */
+.md-header,
+.md-tabs {
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.md-tabs__link--active,
+.md-nav__link--active,
+.md-nav__link--active code {
+  color: var(--pa-red);
+}
+
+.md-tabs__item--active .md-tabs__link {
+  border-bottom: 2px solid var(--pa-red);
+}
+
+.md-nav__item .md-nav__link--active {
+  font-weight: 600;
+}
+
+/* Blockquote callouts carry the Note/Warning convention used across these
+   docs, so give them more presence than the theme default. */
+/* [dir] matches the theme's own [dir=ltr] rule, which otherwise wins on the
+   border colour. */
+[dir] .md-typeset blockquote {
+  border-left: 4px solid var(--pa-red);
+  border-right: 0;
+  background: var(--md-accent-fg-color--transparent);
+  padding: 0.6rem 0.8rem;
+  color: var(--md-default-fg-color);
+}
+
+.md-typeset blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* Screenshots read as UI, not as page furniture. */
+.md-typeset img[src*="screenshots/"] {
+  border: 1px solid var(--md-default-fg-color--lightest);
   border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--md-default-fg-color--lightest);
 }
