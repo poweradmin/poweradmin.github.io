@@ -510,11 +510,16 @@ rather than in Poweradmin:</p>
 </tbody>
 </table>
 <p>The backend requirement is the one that catches people out. Running PowerDNS 5.1 on <code>gmysql</code>
-looks like it should work, and the pages load, but PowerDNS rejects every view operation.
-<code>pdnsutil</code> says so plainly:</p>
+looks like it should work, because the version is new enough and listing views returns an
+empty list rather than an error. Every attempt to change one is then rejected. <code>pdnsutil</code>
+says so plainly:</p>
 <pre class="highlight"><code>None of the configured backends support views.</code></pre>
 <p>You get the same message on LMDB when <code>views=yes</code> is missing, so check both before
 concluding the backend is wrong.</p>
+<p>Since v4.5.0 Poweradmin checks this for you. It reads the server's <code>launch</code> and <code>views</code>
+settings over the API, keeps both pages and their dashboard entries hidden when they cannot
+work, and names the missing prerequisite if you open the page directly. On PowerDNS 4.x, or
+when the API does not expose its configuration, the pages stay visible as before.</p>
 <p>A minimal PowerDNS configuration for views:</p>
 <pre class="highlight"><code>launch=lmdb
 lmdb-filename=/var/lib/powerdns/pdns.lmdb
