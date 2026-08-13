@@ -6653,9 +6653,11 @@ administrators.</p>
 privileges for these zones. The actual abilities are determined by the permissions in the user's assigned template. For
 example, if a user owns zones but lacks the <code>zone_content_view_own</code> permission, they won't be able to see those zones.</p>
 <h2 id="edit-access-and-zone-integrity">Edit Access and Zone Integrity<a class="headerlink" href="#edit-access-and-zone-integrity" title="Permanent link">¶</a></h2>
-<p>Poweradmin assumes that users with edit permissions for a zone can be trusted with full access to that zone. This is
-because even partial edit access would allow a user to potentially break the zone's functionality. Therefore, if a user
-can edit a zone, they're also granted delete permissions.</p>
+<p>Poweradmin assumes that users with edit permissions for a zone can be trusted with full access to that zone's contents,
+because even partial edit access would allow a user to break the zone's functionality.</p>
+<p>Deleting a zone is separate. Since version 4.1.0 it has its own permissions, <code>zone_delete_own</code> and
+<code>zone_delete_others</code>, checked independently of the edit permissions. A user who can edit a zone cannot delete it unless
+one of those is granted as well.</p>
 <h2 id="security-pitfalls">Security Pitfalls<a class="headerlink" href="#security-pitfalls" title="Permanent link">¶</a></h2>
 <p>Be aware that granting any of these permissions can indirectly give users extensive rights:</p>
 <ul>
