@@ -2010,6 +2010,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Miscellaneous Settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#template-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -6629,6 +6646,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Miscellaneous Settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#template-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -7107,12 +7141,29 @@
 <td>false</td>
 <td>Sync A/PTR record comments</td>
 </tr>
+<tr>
+<td><code>misc.template_cache</code></td>
+<td>false</td>
+<td>Cache compiled Twig templates on disk for faster rendering (v4.5.0+)</td>
+</tr>
+<tr>
+<td><code>misc.template_cache_path</code></td>
+<td><em>(empty)</em></td>
+<td>Directory for compiled templates; empty uses <code>var/cache/twig</code> (v4.5.0+)</td>
+</tr>
 </tbody>
 </table>
 <p>* Conflict resolution strategies:
 - <code>last_writer_wins</code> - Latest save overwrites previous
 - <code>only_latest_version</code> - Reject if record was modified
 - <code>3_way_merge</code> - Attempt automatic merge</p>
+<h3 id="template-caching">Template caching<a class="headerlink" href="#template-caching" title="Permanent link">¶</a></h3>
+<p>Enabling <code>misc.template_cache</code> compiles Twig templates to PHP once and reuses them, which takes the
+compile step out of every request. The cache directory must be writable by the web server user. If
+it cannot be created or written, Poweradmin logs a warning and falls back to uncached rendering
+rather than failing the request.</p>
+<p>Compiled templates are revalidated against their source files, so an upgrade that ships new
+templates takes effect without clearing the cache by hand.</p>
 <h2 id="related-documentation">Related Documentation<a class="headerlink" href="#related-documentation" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="../database/">Database Configuration</a></li>
