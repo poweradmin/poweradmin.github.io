@@ -6599,10 +6599,12 @@ over the wire.</p>
 <h2 id="enabling-the-module">Enabling the module<a class="headerlink" href="#enabling-the-module" title="Permanent link">¶</a></h2>
 <p>The module is off by default:</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="x">return [</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="x">    'secondary_zone_import' =&gt; [</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="x">        'enabled' =&gt; true,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="x">    ],</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="x">];</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="x">    'modules' =&gt; [</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="x">        'secondary_zone_import' =&gt; [</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="x">            'enabled' =&gt; true,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="x">        ],</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="x">    ],</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="x">];</span>
 </code></pre></div>
 <p>It also requires <code>dns.backend</code> set to <code>api</code>. PowerDNS itself performs the transfer, so
 without the API backend the module hides completely - no route, no menu item. See
@@ -6614,8 +6616,9 @@ in:</p>
 <ul>
 <li><strong>Zone name</strong> - the domain to pull, for example <code>example.com</code>.</li>
 <li><strong>Primary server IP address</strong> - IPv4 or IPv6. Separate several primaries with commas.</li>
-<li><strong>Owner</strong> - a user, a group, or neither, following your
-  <a href="../../configuration/dns-settings/">zone ownership mode</a>.</li>
+<li><strong>Owner</strong> - a user, a group, or both, following your
+  <a href="../../configuration/dns-settings/">zone ownership mode</a>. At least one owner is required;
+  submitting neither is rejected.</li>
 </ul>
 <p>Poweradmin creates a secondary zone pointing at that primary and asks PowerDNS to transfer it
 immediately. The page then polls the transfer and tells you how many records have arrived.</p>

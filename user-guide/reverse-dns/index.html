@@ -3328,10 +3328,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#example-delegate-10006425-to-a-client" class="md-nav__link">
+  <a href="#example-delegate-10006426-to-a-client" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example: Delegate 10.0.0.64/25 to a client
+        Example: Delegate 10.0.0.64/26 to a client
       
     </span>
   </a>
@@ -6780,10 +6780,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#example-delegate-10006425-to-a-client" class="md-nav__link">
+  <a href="#example-delegate-10006426-to-a-client" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example: Delegate 10.0.0.64/25 to a client
+        Example: Delegate 10.0.0.64/26 to a client
       
     </span>
   </a>
@@ -6914,7 +6914,7 @@
 <li>Access the Batch PTR Records feature:</li>
 <li>From the top navigation: Zones → Batch PTR Records</li>
 <li>
-<p>From the dashboard: Click the "Batch PTR Records" card</p>
+<p>From the dashboard: Click the "PTR Records" card</p>
 </li>
 <li>
 <p>Complete the form:</p>
@@ -6927,14 +6927,11 @@
 </li>
 <li><strong>Host Prefix</strong>: Base name for the hosts (e.g., <code>server</code>)</li>
 <li><strong>Domain</strong>: Domain suffix for PTR records (e.g., <code>example.com</code>)</li>
-<li><strong>Number of IPv6 Records</strong>: (IPv6 only) How many records to create</li>
-<li><strong>TTL</strong>: Time-to-live value</li>
-<li>
-<p><strong>Priority</strong>: Usually 0 for PTR records</p>
-</li>
-<li>
-<p>Click "Create PTR Records"</p>
-</li>
+<li><strong>IPv6 Count</strong>: (IPv6 only) How many records to create</li>
+</ol>
+<p>The form has no TTL or Priority fields. It shows a "Using default TTL value from configuration" note, the TTL is resolved server-side, and the priority is always 0.</p>
+<ol>
+<li>Click "Create PTR Records"</li>
 </ol>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/ptr-batch-interface.png" data-desc-position="bottom"><img alt="Batch PTR Records interface" src="../../screenshots/ptr-batch-interface.png"></a></p>
 <h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">¶</a></h3>
@@ -6944,27 +6941,29 @@
 <li>Host Prefix: <code>server</code></li>
 <li>Domain: <code>example.com</code></li>
 </ul>
-<p>This will create 256 PTR records:
-- <code>0.1.168.192.in-addr.arpa</code> → <code>server-0.example.com.</code>
-- <code>1.1.168.192.in-addr.arpa</code> → <code>server-1.example.com.</code>
-- ...through...
-- <code>255.1.168.192.in-addr.arpa</code> → <code>server-255.example.com.</code></p>
+<p>This will create 254 PTR records - the network address (<code>.0</code>) and the broadcast address (<code>.255</code>) are skipped:</p>
+<ul>
+<li><code>1.1.168.192.in-addr.arpa</code> → <code>server1.example.com.</code></li>
+<li><code>2.1.168.192.in-addr.arpa</code> → <code>server2.example.com.</code></li>
+<li>...through...</li>
+<li><code>254.1.168.192.in-addr.arpa</code> → <code>server254.example.com.</code></li>
+</ul>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/ptr-ipv4-example.png" data-desc-position="bottom"><img alt="IPv4 Batch PTR Records example" src="../../screenshots/ptr-ipv4-example.png"></a></p>
 <h4 id="ipv6-example">IPv6 Example<a class="headerlink" href="#ipv6-example" title="Permanent link">¶</a></h4>
 <ul>
 <li>Network Prefix: <code>2001:db8:1:1</code></li>
 <li>Host Prefix: <code>vm</code></li>
 <li>Domain: <code>example.com</code></li>
-<li>Number of records: 100</li>
+<li>IPv6 Count: 100</li>
 </ul>
-<p>This will create 100 PTR records with hostnames like <code>vm-0.example.com</code> through <code>vm-99.example.com</code></p>
+<p>This will create 99 PTR records - index 0 is skipped, and the suffix is written in hexadecimal, so the addresses run from <code>2001:db8:1:1::1</code> to <code>2001:db8:1:1::63</code> with hostnames <code>vm1.example.com</code> through <code>vm63.example.com</code>.</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/ptr-ipv6-example.png" data-desc-position="bottom"><img alt="IPv6 Batch PTR Records example" src="../../screenshots/ptr-ipv6-example.png"></a></p>
 <h2 id="tips-for-batch-ptr-records">Tips for Batch PTR Records<a class="headerlink" href="#tips-for-batch-ptr-records" title="Permanent link">¶</a></h2>
 <ul>
 <li><strong>Run Multiple Times Safely</strong>: You can run the batch tool multiple times - existing records will be skipped</li>
 <li><strong>Progress Reporting</strong>: The tool reports how many records were created, skipped, or failed</li>
 <li><strong>Reverse Zone Required</strong>: The appropriate reverse zone must exist before using this feature</li>
-<li><strong>Automated Creation</strong>: All hostnames are generated automatically based on the pattern <code>{prefix}-{number}.{domain}</code></li>
+<li><strong>Automated Creation</strong>: All hostnames are generated automatically based on the pattern <code>{prefix}{number}.{domain}</code> - no separator is inserted between the prefix and the number, and for IPv6 the number is hexadecimal</li>
 </ul>
 <h2 id="permissions-and-access-control">Permissions and Access Control<a class="headerlink" href="#permissions-and-access-control" title="Permanent link">¶</a></h2>
 <p>The Batch PTR Records feature follows Poweradmin's permission system:</p>
@@ -6992,7 +6991,7 @@
 <p><strong>Administrative Setup</strong>:</p>
 </li>
 <li>Administrators can assign these permissions through permission templates</li>
-<li>Users who can only view zones will not see the Batch PTR Records option</li>
+<li>The navigation entry is shown to anyone with a zone content view permission, so view-only users still see "Batch PTR Records" in the Zones menu - they are refused with a permission error when they open it</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
 <ul>
@@ -7002,18 +7001,21 @@
 <li><strong>Feature not visible</strong>: Check if you have the required permissions</li>
 </ul>
 <h2 id="delegating-a-sub-range-rfc-2317">Delegating a Sub-Range (RFC 2317)<a class="headerlink" href="#delegating-a-sub-range-rfc-2317" title="Permanent link">¶</a></h2>
-<p>When you own a /24 reverse zone but want a different team or client to manage PTRs for only part of it (e.g. 10.0.0.64/25), use classless reverse delegation as defined in <a href="https://datatracker.ietf.org/doc/html/rfc2317">RFC 2317</a>. Poweradmin's ownership model is per-zone, so the trick is to create a smaller child zone for the sub-range and assign it to the delegate.</p>
-<h3 id="example-delegate-10006425-to-a-client">Example: Delegate 10.0.0.64/25 to a client<a class="headerlink" href="#example-delegate-10006425-to-a-client" title="Permanent link">¶</a></h3>
+<p>When you own a /24 reverse zone but want a different team or client to manage PTRs for only part of it (e.g. 10.0.0.64/26), use classless reverse delegation as defined in <a href="https://datatracker.ietf.org/doc/html/rfc2317">RFC 2317</a>. Poweradmin's ownership model is per-zone, so the trick is to create a smaller child zone for the sub-range and assign it to the delegate.</p>
+<h3 id="example-delegate-10006426-to-a-client">Example: Delegate 10.0.0.64/26 to a client<a class="headerlink" href="#example-delegate-10006426-to-a-client" title="Permanent link">¶</a></h3>
 <p>Parent zone: <code>0.0.10.in-addr.arpa</code> (owned by you, covers 10.0.0.0/24).
 Goal: the client manages PTRs for 10.0.0.64 through 10.0.0.127.</p>
 <p><strong>1. Create the child zone</strong></p>
 <p>From <strong>Zones → Add master zone</strong>, create:</p>
 <ul>
-<li><strong>Zone name</strong>: <code>64/25.0.0.10.in-addr.arpa</code> (slash notation - preferred)</li>
+<li><strong>Zone name</strong>: <code>64/26.0.0.10.in-addr.arpa</code> (slash notation - preferred)</li>
 <li>Range notation <code>64-127.0.0.10.in-addr.arpa</code> is also accepted.</li>
 <li><strong>Owner</strong>: the client user (or a group the client belongs to)</li>
 </ul>
 <p>Poweradmin's hostname validator accepts both notations. The slash form follows the RFC 2317 example syntax most resolvers and dig output assume.</p>
+<blockquote>
+<p><strong>Note:</strong> In slash notation the subnet number must be aligned with the prefix length. <code>64/26</code> is accepted because 64 is a multiple of the /26 block size of 64. <code>64/25</code> is rejected with "Subnet 64 is not aligned with prefix /25" - a /25 block is 128 addresses and starts only at <code>0</code> or <code>128</code>. Range notation is not checked for alignment.</p>
+</blockquote>
 <p><strong>2. Add delegation NS records in the child zone</strong></p>
 <p>In the new child zone, add NS records pointing to whichever nameservers will be authoritative for it (often the same servers as the parent).</p>
 <p><strong>3. Add CNAME glue in the parent zone</strong></p>
@@ -7030,12 +7032,12 @@ Goal: the client manages PTRs for 10.0.0.64 through 10.0.0.127.</p>
 <tr>
 <td><code>64</code></td>
 <td>CNAME</td>
-<td><code>64.64/25.0.0.10.in-addr.arpa.</code></td>
+<td><code>64.64/26.0.0.10.in-addr.arpa.</code></td>
 </tr>
 <tr>
 <td><code>65</code></td>
 <td>CNAME</td>
-<td><code>65.64/25.0.0.10.in-addr.arpa.</code></td>
+<td><code>65.64/26.0.0.10.in-addr.arpa.</code></td>
 </tr>
 <tr>
 <td>...</td>
@@ -7045,13 +7047,13 @@ Goal: the client manages PTRs for 10.0.0.64 through 10.0.0.127.</p>
 <tr>
 <td><code>127</code></td>
 <td>CNAME</td>
-<td><code>127.64/25.0.0.10.in-addr.arpa.</code></td>
+<td><code>127.64/26.0.0.10.in-addr.arpa.</code></td>
 </tr>
 </tbody>
 </table>
 <p>These CNAMEs tell any resolver doing reverse lookup for 10.0.0.64-127 to chase the answer into the delegated child zone.</p>
 <p><strong>4. Client adds PTRs in the child zone</strong></p>
-<p>The client (who owns the child zone, not the parent) adds PTR records in <code>64/25.0.0.10.in-addr.arpa</code>:</p>
+<p>The client (who owns the child zone, not the parent) adds PTR records in <code>64/26.0.0.10.in-addr.arpa</code>:</p>
 <table>
 <thead>
 <tr>
@@ -7078,7 +7080,7 @@ Goal: the client manages PTRs for 10.0.0.64 through 10.0.0.127.</p>
 <p>If you're delegating on an octet boundary - the whole /24 inside a /16, for instance - just create the child zone directly (<code>5.10.in-addr.arpa</code> under <code>10.in-addr.arpa</code>) and assign the owner. No CNAMEs needed.</p>
 <p>RFC 2317 only applies when the sub-range doesn't align with a DNS label boundary, i.e. anything smaller than /24 for IPv4 or anything not on a nibble boundary for IPv6.</p>
 <h2 id="per-record-type-default-ttls-450">Per-Record-Type Default TTLs (4.5.0)<a class="headerlink" href="#per-record-type-default-ttls-450" title="Permanent link">¶</a></h2>
-<p>Admins can configure default TTLs per record type from <strong>Tools → TTL defaults</strong> (<code>/tools/record-type-defaults</code>). Values stored there take precedence over the legacy <code>dns.ttl_reverse</code> config and <code>dns.ttl</code> fallback. The same default applies to every record-creation path (UI forms, batch PTR, the record APIs, RRSets, bulk records, and the DNS wizard) when the caller omits a <code>ttl</code> field. Leave a row empty to fall back to the legacy chain.</p>
+<p>Admins can configure default TTLs per record type on the <strong>TTL defaults</strong> page (<code>/tools/record-type-defaults</code>). There is no Tools menu entry for it - open it from the "TTL defaults" card on the dashboard or go to the URL directly. Values stored there take precedence over the legacy <code>dns.ttl_reverse</code> config and <code>dns.ttl</code> fallback. The same default applies to every record-creation path (UI forms, batch PTR, the record APIs, RRSets, bulk records, and the DNS wizard) when the caller omits a <code>ttl</code> field. Leave a row empty to fall back to the legacy chain.</p>
 <p>The fallback chain (first non-null wins):</p>
 <ol>
 <li><code>record_type_defaults</code> row for the submitted type (admin-managed via the UI above)</li>

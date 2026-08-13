@@ -6958,12 +6958,14 @@
 <h1 id="database-logging">Database Logging<a class="headerlink" href="#database-logging" title="Permanent link">¶</a></h1>
 <p>Poweradmin can log operations to the database for auditing and tracking purposes.</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¶</a></h2>
-<p>Database logging records operations across four log tables:</p>
+<p>Database logging records operations across six log tables:</p>
 <ul>
 <li><strong>User events</strong> (<code>log_users</code>): login/logout, user creation/editing/deletion, MFA, password resets</li>
 <li><strong>API events</strong> (<code>log_api</code>): API key management, plus optional per-request public API audit entries and permission violations (401/403)</li>
 <li><strong>Zone events</strong> (<code>log_zones</code>): zone and record creation, modification, and deletion</li>
 <li><strong>Group events</strong> (<code>log_groups</code>): group creation/editing/deletion, membership and zone assignment changes</li>
+<li><strong>Record changes</strong> (<code>log_record_changes</code>): the structured change log with before/after values per record</li>
+<li><strong>Changesets</strong> (<code>log_changesets</code>): groups the record changes made in a single save, with the optional change comment</li>
 </ul>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
 <table>
@@ -6990,13 +6992,9 @@
 <td>0</td>
 <td>Days to keep <code>log_api</code> rows; 0 = keep forever (added in v4.5.0)</td>
 </tr>
-<tr>
-<td><code>logging.dblog.use</code></td>
-<td>false</td>
-<td>Legacy setting (v3.x)</td>
-</tr>
 </tbody>
 </table>
+<p>The v3.x equivalent of <code>logging.database_enabled</code> was the flat <code>$dblog_use</code> variable. See <a href="../legacy-configuration/">Legacy Configuration</a>.</p>
 <h2 id="modern-configuration">Modern Configuration<a class="headerlink" href="#modern-configuration" title="Permanent link">¶</a></h2>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="x">return [</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="x">    'logging' =&gt; [</span>
@@ -7172,7 +7170,7 @@
 <li>Zone type changes (MASTER, NATIVE, SLAVE)</li>
 <li>Zone deletion</li>
 <li>Record creation, modification, and deletion</li>
-<li>DNSSEC sign and unsign events (sign events added in v4.4.0; before that only unsign was recorded)</li>
+<li>DNSSEC sign and unsign events (sign events added in v4.3.2; before that only unsign was recorded)</li>
 </ul>
 <h3 id="group-events">Group Events<a class="headerlink" href="#group-events" title="Permanent link">¶</a></h3>
 <ul>

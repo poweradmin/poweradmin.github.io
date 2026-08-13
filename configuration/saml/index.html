@@ -7213,7 +7213,7 @@
 </tr>
 <tr>
 <td><code>saml.default_permission_template</code></td>
-<td>""</td>
+<td>"Guest"</td>
 <td>Default permission template for new users</td>
 </tr>
 </tbody>
@@ -7345,9 +7345,12 @@ an upgrade can be traced in the application log.</p>
 </code></pre></div>
 <h2 id="sp-metadata">SP Metadata<a class="headerlink" href="#sp-metadata" title="Permanent link">¶</a></h2>
 <p>Poweradmin can generate SP metadata for your identity provider. Access it at:</p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>https://your-poweradmin.com/saml/metadata/{provider-id}
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>https://your-poweradmin.com/saml/metadata?provider={provider-id}
 </code></pre></div>
-<p>For example: <code>https://your-poweradmin.com/saml/metadata/azure</code></p>
+<p>For example: <code>https://your-poweradmin.com/saml/metadata?provider=azure</code>. With no <code>provider</code> parameter the first configured provider is used.</p>
+<blockquote>
+<p><strong>Note:</strong> The SP entity ID is the bare <code>https://your-poweradmin.com/saml/metadata</code>, with no provider suffix. The query parameter only selects which IdP the generated document is tailored for.</p>
+</blockquote>
 <h2 id="provider-configuration">Provider Configuration<a class="headerlink" href="#provider-configuration" title="Permanent link">¶</a></h2>
 <p>Each provider requires IdP-specific configuration:</p>
 <table>
@@ -7362,7 +7365,7 @@ an upgrade can be traced in the application log.</p>
 <tr>
 <td><code>name</code></td>
 <td>Yes</td>
-<td>Internal provider identifier</td>
+<td>Display label for the provider. The provider identifier is the array key, not this field</td>
 </tr>
 <tr>
 <td><code>display_name</code></td>
@@ -7401,7 +7404,7 @@ an upgrade can be traced in the application log.</p>
 <li>In Azure Portal, go to Enterprise Applications &gt; New Application</li>
 <li>Create a non-gallery application</li>
 <li>Configure Single Sign-On &gt; SAML</li>
-<li>Set Entity ID: <code>https://your-poweradmin.com/saml/metadata/azure</code></li>
+<li>Set Entity ID: <code>https://your-poweradmin.com/saml/metadata</code> (no provider suffix - it must match the SP entity ID exactly, or the assertion is rejected on audience mismatch)</li>
 <li>Set Reply URL (ACS): <code>https://your-poweradmin.com/saml/acs</code></li>
 <li>Download the Certificate (Base64)</li>
 </ol>
@@ -7432,7 +7435,7 @@ an upgrade can be traced in the application log.</p>
 <li>In Okta Admin Console, go to Applications &gt; Create App Integration</li>
 <li>Select SAML 2.0</li>
 <li>Set Single Sign-On URL: <code>https://your-poweradmin.com/saml/acs</code></li>
-<li>Set Audience URI (SP Entity ID): <code>https://your-poweradmin.com/saml/metadata/okta</code></li>
+<li>Set Audience URI (SP Entity ID): <code>https://your-poweradmin.com/saml/metadata</code> (no provider suffix)</li>
 <li>Configure attribute statements</li>
 <li>Download the IdP metadata or certificate</li>
 </ol>
@@ -7489,7 +7492,7 @@ an upgrade can be traced in the application log.</p>
 <ol>
 <li>In Keycloak Admin Console, create a new Client</li>
 <li>Set Client Protocol to "saml"</li>
-<li>Set Client ID: <code>https://your-poweradmin.com/saml/metadata/keycloak</code></li>
+<li>Set Client ID: <code>https://your-poweradmin.com/saml/metadata</code> (Keycloak uses the client ID as the SP entity ID, so it must carry no provider suffix)</li>
 <li>Configure endpoints and download certificate</li>
 </ol>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="x">'saml' =&gt; [</span>
@@ -7603,6 +7606,7 @@ an upgrade can be traced in the application log.</p>
 <a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="x">    'digestAlgorithm' =&gt; 'http://www.w3.org/2001/04/xmlenc#sha256',</span>
 <a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="x">],</span>
 </code></pre></div>
+<p>Anything you set here overrides the derived defaults below.</p>
 <table>
 <thead>
 <tr>
@@ -7614,7 +7618,7 @@ an upgrade can be traced in the application log.</p>
 <tbody>
 <tr>
 <td><code>wantAssertionsSigned</code></td>
-<td>true</td>
+<td>true when the provider has an <code>x509cert</code>, otherwise false</td>
 <td>Require signed assertions</td>
 </tr>
 <tr>
@@ -7624,8 +7628,23 @@ an upgrade can be traced in the application log.</p>
 </tr>
 <tr>
 <td><code>authnRequestsSigned</code></td>
-<td>false</td>
+<td>true when <code>sp.private_key</code> is set, otherwise false</td>
 <td>Sign authentication requests</td>
+</tr>
+<tr>
+<td><code>logoutRequestSigned</code></td>
+<td>true when <code>sp.private_key</code> is set, otherwise false</td>
+<td>Sign logout requests</td>
+</tr>
+<tr>
+<td><code>logoutResponseSigned</code></td>
+<td>true when <code>sp.private_key</code> is set, otherwise false</td>
+<td>Sign logout responses</td>
+</tr>
+<tr>
+<td><code>signMetadata</code></td>
+<td>true when <code>sp.private_key</code> is set, otherwise false</td>
+<td>Sign the generated SP metadata</td>
 </tr>
 <tr>
 <td><code>signatureAlgorithm</code></td>
@@ -7634,6 +7653,7 @@ an upgrade can be traced in the application log.</p>
 </tr>
 </tbody>
 </table>
+<p>Signing therefore switches on by itself once you configure an SP key and certificate, and assertion signing is required as soon as the provider has an IdP certificate configured.</p>
 <h2 id="sp-signing-optional">SP Signing (Optional)<a class="headerlink" href="#sp-signing-optional" title="Permanent link">¶</a></h2>
 <p>For IdPs that require signed requests, generate a certificate and key:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-nodes<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span>-newkey<span class="w"> </span>rsa:2048<span class="w"> </span><span class="se">\</span>

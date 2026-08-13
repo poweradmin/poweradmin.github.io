@@ -1319,10 +1319,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sqlite-default" class="md-nav__link">
+  <a href="#sqlite" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SQLite (Default)
+        SQLite
       
     </span>
   </a>
@@ -6914,10 +6914,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sqlite-default" class="md-nav__link">
+  <a href="#sqlite" class="md-nav__link">
     <span class="md-ellipsis">
       
-        SQLite (Default)
+        SQLite
       
     </span>
   </a>
@@ -7384,12 +7384,18 @@
 <p><strong>Note:</strong> The <code>next</code> tag was removed when the release branch structure changed. The <code>stable</code> and per-version (<code>v*</code>) tags are the safest choices for production; the branch tags (<code>4.2.x</code>, <code>4.3.x</code>) update on every push and may include unreleased fixes.</p>
 </blockquote>
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">¶</a></h2>
-<h3 id="sqlite-default">SQLite (Default)<a class="headerlink" href="#sqlite-default" title="Permanent link">¶</a></h3>
+<h3 id="sqlite">SQLite<a class="headerlink" href="#sqlite" title="Permanent link">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>poweradmin<span class="w"> </span>-p<span class="w"> </span><span class="m">80</span>:80<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">PA_CREATE_ADMIN</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>-v<span class="w"> </span>poweradmin-db:/db<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span>poweradmin/poweradmin:stable
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DB_TYPE</span><span class="o">=</span>sqlite<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">PA_CREATE_ADMIN</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span>-v<span class="w"> </span>poweradmin-db:/db<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span>poweradmin/poweradmin:stable
 </code></pre></div>
+<blockquote>
+<p><strong>Warning:</strong> <code>DB_TYPE</code> is required. There is no default. A container started
+without it logs <code>ERROR: DB_TYPE environment variable is required</code> and exits
+immediately.</p>
+</blockquote>
 <p>Check logs for the generated admin password:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>logs<span class="w"> </span>poweradmin<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>password
 </code></pre></div>
@@ -7568,8 +7574,8 @@
 <tbody>
 <tr>
 <td><code>DB_TYPE</code></td>
-<td>sqlite</td>
-<td>Database type: sqlite, mysql, pgsql</td>
+<td><em>(required)</em></td>
+<td>Database type: sqlite, mysql, pgsql. The container exits at startup if this is unset</td>
 </tr>
 <tr>
 <td><code>DB_HOST</code></td>

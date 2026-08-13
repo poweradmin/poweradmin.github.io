@@ -2758,10 +2758,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#rdap-server-bootstrap" class="md-nav__link">
+  <a href="#rdap-server-list" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RDAP Server Bootstrap
+        RDAP Server List
       
     </span>
   </a>
@@ -2769,10 +2769,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#performance-optimization" class="md-nav__link">
+  <a href="#performance-considerations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Performance Optimization
+        Performance Considerations
       
     </span>
   </a>
@@ -6811,10 +6811,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#rdap-server-bootstrap" class="md-nav__link">
+  <a href="#rdap-server-list" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RDAP Server Bootstrap
+        RDAP Server List
       
     </span>
   </a>
@@ -6822,10 +6822,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#performance-optimization" class="md-nav__link">
+  <a href="#performance-considerations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Performance Optimization
+        Performance Considerations
       
     </span>
   </a>
@@ -6924,10 +6924,13 @@
 </code></pre></div>
 <p><strong>Lookup priority:</strong></p>
 <ol>
+<li><code>default_server</code>, if set</li>
 <li>Custom servers (from <code>custom_servers</code> config)</li>
 <li>Built-in RDAP server database</li>
-<li><code>default_server</code> (global fallback, if set)</li>
 </ol>
+<blockquote>
+<p><strong>Warning:</strong> <code>default_server</code> is not a fallback. When it is non-empty it is the only server ever queried, and <code>custom_servers</code> and the built-in database are never consulted. Leave it empty unless you want every lookup to go to one server.</p>
+</blockquote>
 <h2 id="rdap-vs-whois">RDAP vs WHOIS<a class="headerlink" href="#rdap-vs-whois" title="Permanent link">¶</a></h2>
 <table>
 <thead>
@@ -6966,7 +6969,7 @@
 <tr>
 <td>Authentication</td>
 <td>None</td>
-<td>OAuth2 support</td>
+<td>OAuth2 in the protocol (not implemented in Poweradmin)</td>
 </tr>
 </tbody>
 </table>
@@ -6975,7 +6978,7 @@
 <ol>
 <li><strong>Structured data</strong> - JSON responses with consistent formatting</li>
 <li><strong>Enhanced security</strong> - HTTPS-based queries</li>
-<li><strong>Better performance</strong> - HTTP-based protocol with caching support</li>
+<li><strong>Better performance</strong> - HTTP-based protocol</li>
 <li><strong>Internationalization</strong> - Full Unicode domain support</li>
 </ol>
 <h3 id="how-to-use-rdap-lookup">How to Use RDAP Lookup<a class="headerlink" href="#how-to-use-rdap-lookup" title="Permanent link">¶</a></h3>
@@ -6996,15 +6999,18 @@
 <li><strong>Remarks</strong>: Additional notes from the registry</li>
 </ul>
 <h3 id="choosing-between-whois-and-rdap">Choosing Between WHOIS and RDAP<a class="headerlink" href="#choosing-between-whois-and-rdap" title="Permanent link">¶</a></h3>
-<p>Use <strong>RDAP</strong> when you need:
-- Machine-readable data for automation
-- International domain names (IDN)
-- Structured contact information
-- OAuth2-protected queries</p>
-<p>Use <strong>WHOIS</strong> when you need:
-- Quick manual lookups
-- Legacy system compatibility
-- Simple text output</p>
+<p>Use <strong>RDAP</strong> when you need:</p>
+<ul>
+<li>Machine-readable data for automation</li>
+<li>International domain names (IDN)</li>
+<li>Structured contact information</li>
+</ul>
+<p>Use <strong>WHOIS</strong> when you need:</p>
+<ul>
+<li>Quick manual lookups</li>
+<li>Legacy system compatibility</li>
+<li>Simple text output</li>
+</ul>
 <h2 id="supported-tlds">Supported TLDs<a class="headerlink" href="#supported-tlds" title="Permanent link">¶</a></h2>
 <p>RDAP supports lookups for:</p>
 <ul>
@@ -7014,11 +7020,13 @@
 </ul>
 <h2 id="security-features">Security Features<a class="headerlink" href="#security-features" title="Permanent link">¶</a></h2>
 <ul>
-<li><strong>HTTPS encryption</strong> - All queries use encrypted connections</li>
 <li><strong>Admin restriction</strong> - Access limited to administrators by default</li>
-<li><strong>Rate limiting compliance</strong> - Respects RDAP server rate limits</li>
-<li><strong>Input validation</strong> - Domain names are validated before queries</li>
+<li><strong>Input validation</strong> - Domain names and server URLs are validated before queries</li>
 </ul>
+<blockquote>
+<p><strong>Warning:</strong> The URL validator accepts <code>http</code> as well as <code>https</code>, so a plain-HTTP <code>default_server</code> or <code>custom_servers</code> entry is queried unencrypted. Use <code>https</code> URLs. Nearly all entries in the built-in server database are HTTPS, but a handful of registries publish <code>http</code> endpoints.</p>
+</blockquote>
+<p>Poweradmin does not throttle RDAP queries or handle HTTP 429 responses; each lookup is a single request with a timeout.</p>
 <h2 id="configuration-best-practices">Configuration Best Practices<a class="headerlink" href="#configuration-best-practices" title="Permanent link">¶</a></h2>
 <h3 id="production-environment">Production Environment<a class="headerlink" href="#production-environment" title="Permanent link">¶</a></h3>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">'rdap' =&gt; [</span>
@@ -7036,19 +7044,18 @@
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="x">    'restrict_to_admin' =&gt; false, // Allow all users for testing</span>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="x">],</span>
 </code></pre></div>
-<h2 id="rdap-server-bootstrap">RDAP Server Bootstrap<a class="headerlink" href="#rdap-server-bootstrap" title="Permanent link">¶</a></h2>
-<p>RDAP uses a bootstrap mechanism to determine the correct server for each TLD:</p>
-<ol>
-<li><strong>Automatic detection</strong> - Queries IANA bootstrap registry</li>
-<li><strong>Cached mappings</strong> - Server mappings are cached for performance</li>
-<li><strong>Fallback servers</strong> - Default server used if bootstrap fails</li>
-</ol>
-<h2 id="performance-optimization">Performance Optimization<a class="headerlink" href="#performance-optimization" title="Permanent link">¶</a></h2>
+<h2 id="rdap-server-list">RDAP Server List<a class="headerlink" href="#rdap-server-list" title="Permanent link">¶</a></h2>
+<p>The TLD-to-server mapping ships with Poweradmin as a static list generated from the IANA RDAP bootstrap registry. It is loaded from disk when the module starts.</p>
 <ul>
-<li><strong>Caching</strong>: RDAP responses can be cached</li>
-<li><strong>Connection pooling</strong>: Reuse HTTP connections</li>
-<li><strong>Timeout tuning</strong>: Balance between reliability and performance</li>
-<li><strong>Error handling</strong>: Graceful fallback to WHOIS if RDAP fails</li>
+<li>Nothing queries IANA at runtime, so a lookup for a TLD missing from the list simply fails</li>
+<li>The list is refreshed between releases; use <code>custom_servers</code> to add or override an entry in the meantime</li>
+<li>There is no fallback from a failed lookup to <code>default_server</code></li>
+</ul>
+<h2 id="performance-considerations">Performance Considerations<a class="headerlink" href="#performance-considerations" title="Permanent link">¶</a></h2>
+<ul>
+<li><strong>Timeout tuning</strong>: <code>request_timeout</code> balances reliability against a blocked interface</li>
+<li><strong>No caching</strong>: every lookup performs a fresh HTTP request; responses are not stored</li>
+<li><strong>Error handling</strong>: a failed RDAP lookup returns an error. There is no automatic fallback to WHOIS, run a WHOIS lookup separately if needed</li>
 </ul>
 
 

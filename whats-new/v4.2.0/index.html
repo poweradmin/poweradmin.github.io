@@ -6708,8 +6708,8 @@ module system made several features optional, and BIND zone files became importa
 <p><strong>Note:</strong> The generated release notes for 4.2.0 on GitHub are cumulative rather than
 incremental, because 4.1.0 and 4.2.0 were developed on parallel branches. Several features
 listed there - SAML, OIDC, avatars, forgot username, database SSL, the zone deletion
-permission split, DNS wizards, WHOIS and RDAP - actually shipped in
-<a href="../v4.1.0/">4.1.0</a>. This page lists only what 4.2.0 genuinely added.</p>
+permission split and DNS wizards - actually shipped in <a href="../v4.1.0/">4.1.0</a>, and WHOIS
+and RDAP go back to <a href="../v4.0.0/">4.0.0</a>. This page lists only what 4.2.0 genuinely added.</p>
 </blockquote>
 <h2 id="highlights">Highlights<a class="headerlink" href="#highlights" title="Permanent link">¶</a></h2>
 <h3 id="user-groups">User groups<a class="headerlink" href="#user-groups" title="Permanent link">¶</a></h3>
@@ -6764,11 +6764,6 @@ zones.</p>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>Save zone as template</td>
-<td>Turn an existing zone into a reusable template</td>
-<td><a href="../../user-guide/dns-templates/">DNS Templates</a></td>
-</tr>
 <tr>
 <td>Per-record comments</td>
 <td>Comments attach to a single record rather than the whole RRset</td>
@@ -6849,8 +6844,9 @@ zones.</p>
 </table>
 <blockquote>
 <p><strong>Warning:</strong> v4.2.5 changed the zone edit form. If you maintain a forked theme, re-sync
-your <code>edit.html</code> against the shipped version. The new hidden marker fields are what tell
-the form which rows changed, and without them a zone save silently persists nothing.</p>
+your <code>edit.html</code> against the shipped version. The new hidden <code>_complete</code> and <code>form_complete</code>
+fields let the server detect a form truncated by PHP's <code>max_input_vars</code>; without them a
+truncated save is not reported and the missing rows are silently dropped.</p>
 </blockquote>
 <h2 id="next">Next<a class="headerlink" href="#next" title="Permanent link">¶</a></h2>
 <ul>

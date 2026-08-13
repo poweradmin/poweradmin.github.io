@@ -6697,12 +6697,11 @@
 <p>To disable MFA on your account:</p>
 <ol>
 <li>Navigate to <strong>Account</strong> in the top navigation bar</li>
-<li>In the MFA section, click <strong>Disable MFA</strong></li>
-<li>Confirm the action</li>
+<li>In the MFA section, click <strong>Disable MFA</strong> - it takes effect immediately, there is no confirmation step</li>
 </ol>
 <p>After disabling, you will only need your password to log in.</p>
 <blockquote>
-<p><strong>Note:</strong> If MFA is enforced for your account through a user or group template, you will be required to set it up again on your next login.</p>
+<p><strong>Note:</strong> If MFA is enforced for your account through a user or group template, you cannot disable it. The <strong>Disable MFA</strong> button is not shown, and a disable request sent anyway is refused with a message saying MFA is required by your organization's security policy. The enforcement has to be removed first.</p>
 </blockquote>
 <h2 id="recovery">Recovery<a class="headerlink" href="#recovery" title="Permanent link">¶</a></h2>
 <p>If you lose access to your authenticator app or email:</p>
@@ -6715,7 +6714,7 @@
 </ul>
 </li>
 </ol>
-<p>If you have no remaining recovery codes and cannot access your authenticator, contact your Poweradmin administrator. An admin can disable MFA on your account so you can set it up again.</p>
+<p>If you have no remaining recovery codes and cannot access your authenticator, contact your Poweradmin administrator. There is no admin screen for this: the user list shows whether MFA is configured, but nobody can clear another user's MFA from the interface or the API. Recovery means removing the user's row from the <code>user_mfa</code> table directly in the database, after which the account logs in with its password alone and can set MFA up again.</p>
 <h3 id="too-many-failed-attempts">Too many failed attempts<a class="headerlink" href="#too-many-failed-attempts" title="Permanent link">¶</a></h3>
 <p>After several wrong codes the verification screen stops accepting attempts for a while, and reports too many failed attempts. Recovery codes are refused during that period too, so a wrong-code lockout cannot be worked around with one. If you use email verification, any pending code is discarded and no replacement is sent until the wait is over.</p>
 <p>Wait for the period to pass and try again with a fresh code. Administrators can change how many attempts are allowed and how long the wait lasts - see <a href="#configuration">Configuration</a>.</p>

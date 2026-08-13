@@ -6649,11 +6649,11 @@
 <h2 id="setting-up-user-permissions">Setting Up User Permissions<a class="headerlink" href="#setting-up-user-permissions" title="Permanent link">¶</a></h2>
 <p>You'll need to create a <strong>dedicated</strong> user with specific permissions for DDNS updates:</p>
 <blockquote>
-<p>Administrator (ueberuser) accounts are deliberately blocked from <code>dynamic_update.php</code>. DDNS credentials are typically stored in plaintext on routers, IoT devices, or <code>ddclient.conf</code> files - low-trust locations. Forcing a dedicated, narrowly-scoped account keeps admin credentials out of those files. If you authenticate with an admin account, the endpoint responds with <code>badauth2</code>.</p>
+<p>Administrator (ueberuser) accounts are deliberately blocked from <code>dynamic_update.php</code>. DDNS credentials are typically stored in plaintext on routers, IoT devices, or <code>ddclient.conf</code> files - low-trust locations. Forcing a dedicated, narrowly-scoped account keeps admin credentials out of those files. If you authenticate with an admin account, the endpoint responds with <code>badauth</code> (<code>badauth2</code> in Poweradmin 4.3.x and earlier, which used a separate code for rejected credentials).</p>
 </blockquote>
 <ol>
 <li>Create a permission template:<ul>
-<li>Navigate to <code>Users &gt; Add permission template</code></li>
+<li>Navigate to <code>Permissions &gt; Add permission template</code> (<code>/permissions/templates/add</code>)</li>
 <li>Provide a meaningful name (e.g., "dynamic") and description</li>
 <li>Select required permissions:<ul>
 <li><code>zone_master_add</code></li>
@@ -6715,7 +6715,10 @@
 <p>A successful response in verbose mode will look like:</p>
 <div class="language-text highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Your hostname has been updated.
 </code></pre></div>
-<p>Without <code>verbose=1</code> you will just receive <code>good\n</code> (or one of the short error codes documented in <a href="../client-setup/">Client Setup</a>).</p>
+<p>Without <code>verbose=1</code> you receive a short status line carrying the applied address: <code>good &lt;ip&gt;\n</code> when a record was written, or <code>nochg &lt;ip&gt;\n</code> when it already matched. A bare <code>good\n</code> only appears when the request resolved no address at all (for example a dual-stack cleanup). Errors come back as one of the short codes documented in <a href="../client-setup/">Client Setup</a>.</p>
+<blockquote>
+<p>The trailing address was added in Poweradmin 4.5.0. Version 4.4.x returns a bare <code>good</code> or <code>nochg</code>, and 4.3.x and earlier return <code>good</code> even when nothing changed.</p>
+</blockquote>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
 <p>If you encounter issues with your DDNS setup:</p>
 <ol>

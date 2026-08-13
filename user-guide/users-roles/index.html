@@ -6659,15 +6659,19 @@ because even partial edit access would allow a user to break the zone's function
 <code>zone_delete_others</code>, checked independently of the edit permissions. A user who can edit a zone cannot delete it unless
 one of those is granted as well.</p>
 <h2 id="security-pitfalls">Security Pitfalls<a class="headerlink" href="#security-pitfalls" title="Permanent link">¶</a></h2>
-<p>Be aware that granting any of these permissions can indirectly give users extensive rights:</p>
+<p>Granting any of these permissions gives a user broad influence over other accounts, so treat them as
+administrative:</p>
 <ul>
 <li><code>user_edit_templ_perm</code></li>
 <li><code>templ_perm_edit</code></li>
 <li><code>user_add_new</code></li>
 </ul>
-<p>Users with these permissions can potentially create or modify templates to grant themselves <code>user_is_ueberuser</code> rights.
-Additionally, anyone with root shell access to the server running Poweradmin or the PowerDNS database server effectively
-has uberuser rights.</p>
+<p>They cannot be used to become an administrator. A user who is not already an administrator cannot put
+<code>user_is_ueberuser</code> into a permission template, cannot edit a template that already carries it, and
+cannot assign such a template to an account. See
+<a href="../permissions/#template-permissions">Permissions</a> for the details.</p>
+<p>Anyone with root shell access to the server running Poweradmin, or to the PowerDNS database server,
+effectively has uberuser rights regardless of the permission system.</p>
 <h2 id="additional-information">Additional Information<a class="headerlink" href="#additional-information" title="Permanent link">¶</a></h2>
 <p>When configuring user permissions, keep the principle of least privilege in mind - only grant the permissions necessary
 for a user to perform their required functions.</p>

@@ -3250,10 +3250,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#configurable-columns" class="md-nav__link">
+  <a href="#optional-columns" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configurable Columns
+        Optional Columns
       
     </span>
   </a>
@@ -6814,10 +6814,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#configurable-columns" class="md-nav__link">
+  <a href="#optional-columns" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configurable Columns
+        Optional Columns
       
     </span>
   </a>
@@ -7017,7 +7017,7 @@
 <ol>
 <li>Navigate to <strong>Zones</strong> and click <strong>Add slave zone</strong></li>
 <li>Enter the <strong>Zone name</strong></li>
-<li>Enter the <strong>Master server IP</strong> address that this slave will pull data from</li>
+<li>Enter the <strong>IP address of master NS</strong> that this slave will pull data from (several IPs can be given, separated by commas)</li>
 <li>Select an <strong>Owner</strong></li>
 <li>Click <strong>Add zone</strong></li>
 </ol>
@@ -7028,13 +7028,14 @@
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/zone-editor.png" data-desc-position="bottom"><img alt="Zone Editor" src="../../screenshots/zone-editor.png"></a></p>
 <p>The zone editor is where you view and modify a zone's DNS records. It shows all records in a table with columns for name, type, content, TTL, and priority.</p>
 <h3 id="editing-records">Editing Records<a class="headerlink" href="#editing-records" title="Permanent link">¶</a></h3>
+<p>Records are edited in the table itself:</p>
 <ul>
-<li>Click the <strong>edit icon</strong> next to a record to modify it inline</li>
-<li>Change the name, type, content, TTL, or priority fields directly in the table</li>
-<li>Click <strong>Save</strong> to apply changes or <strong>Cancel</strong> to discard</li>
+<li>Change the name, type, content, TTL, or priority fields directly in the record row</li>
+<li>Click <strong>Save changes</strong> to apply, or <strong>Reset</strong> to discard</li>
 </ul>
+<p>Enabling <code>interface.show_record_edit_button</code> adds an <strong>Actions</strong> column with a per-record edit button that opens the record on its own page. It is off by default, as is <code>interface.show_record_delete_button</code>, so a default install has no Actions column.</p>
 <h3 id="adding-records">Adding Records<a class="headerlink" href="#adding-records" title="Permanent link">¶</a></h3>
-<p>Use the input row at the top of the record table to add new records:</p>
+<p>By default the zone editor shows an <strong>Add record</strong> button that opens a separate page (<code>/zones/{id}/records/add</code>). Set <code>interface.show_add_record_form</code> to <code>true</code> to get an input row in the record table instead. Either way:</p>
 <ol>
 <li>Enter the record <strong>Name</strong> (just the hostname part, e.g., <code>www</code>)</li>
 <li>Select the record <strong>Type</strong> (A, AAAA, CNAME, MX, TXT, etc.)</li>
@@ -7042,10 +7043,14 @@
 <li>Set the <strong>TTL</strong> and <strong>Priority</strong> if applicable</li>
 <li>Click <strong>Add Record</strong></li>
 </ol>
-<h3 id="configurable-columns">Configurable Columns<a class="headerlink" href="#configurable-columns" title="Permanent link">¶</a></h3>
-<p>Starting in v4.1.0, the zone editor supports configurable columns. You can show or hide columns such as Priority, TTL, or DNSSEC-related fields to reduce clutter depending on your workflow.</p>
+<h3 id="optional-columns">Optional Columns<a class="headerlink" href="#optional-columns" title="Permanent link">¶</a></h3>
+<p>Two columns are optional, and both are off by default:</p>
+<ul>
+<li><code>interface.show_record_id</code> (added in 3.9.0) - adds the record ID column</li>
+<li><code>interface.show_record_edit_button</code> and <code>interface.show_record_delete_button</code> (added in 4.1.0) - add the <strong>Actions</strong> column with per-record edit and delete buttons</li>
+</ul>
 <h3 id="sorting">Sorting<a class="headerlink" href="#sorting" title="Permanent link">¶</a></h3>
-<p>Starting in v4.1.0, you can sort records by clicking column headers. This helps when working with large zones to quickly find specific records.</p>
+<p>You can sort records by clicking column headers. This helps when working with large zones to quickly find specific records.</p>
 <h2 id="zone-metadata">Zone Metadata<a class="headerlink" href="#zone-metadata" title="Permanent link">¶</a></h2>
 <p>Starting in v4.3.0, the <strong>Metadata</strong> button on the zone editor opens an editor for the zone's
 PowerDNS domain metadata - the per-zone settings that control transfers, notifies, serial
@@ -7093,13 +7098,16 @@ PowerDNS itself limits what can be written, and the editor marks the affected ro
 <li><strong><code>NSEC3NARROW</code> needs <code>NSEC3PARAM</code>.</strong> PowerDNS ignores narrow mode unless the zone also
   carries NSEC3 parameters, so the editor asks for both.</li>
 </ul>
-<p>Editing a restricted kind reports an error rather than silently doing nothing. None of these
-restrictions apply when Poweradmin writes to the PowerDNS database directly.</p>
+<p>Editing a restricted kind reports an error rather than silently doing nothing. Apart from
+<code>CATALOG-HASH</code>, which PowerDNS maintains itself and Poweradmin keeps read-only in both modes,
+none of these restrictions apply when Poweradmin writes to the PowerDNS database directly.</p>
 <h3 id="metadata-over-the-api">Metadata over the API<a class="headerlink" href="#metadata-over-the-api" title="Permanent link">¶</a></h3>
 <p>The v2 API exposes the same data at <code>/api/v2/zones/{id}/metadata</code>, with <code>GET</code>, <code>PUT</code> and
 <code>DELETE</code> on <code>/api/v2/zones/{id}/metadata/{kind}</code>. It enforces the same value vocabularies and
-the same backend restrictions, and requires the <code>zone_meta_edit_own</code> or
-<code>zone_meta_edit_others</code> permission.</p>
+the same backend restrictions.</p>
+<p>Reading requires the <code>zone_metadata_view_own</code> or <code>zone_metadata_view_others</code> permission (both
+added in 4.5.0); anyone who may edit metadata keeps view access as well. <code>PUT</code> and <code>DELETE</code>
+require <code>zone_meta_edit_own</code> or <code>zone_meta_edit_others</code>.</p>
 <h2 id="bulk-operations">Bulk Operations<a class="headerlink" href="#bulk-operations" title="Permanent link">¶</a></h2>
 <p>Starting in v4.0.0, you can add multiple records to a zone at once:</p>
 <ol>
@@ -7110,10 +7118,11 @@ the same backend restrictions, and requires the <code>zone_meta_edit_own</code> 
 </ol>
 <p>This is particularly useful when setting up a new zone or adding a batch of similar records.</p>
 <h2 id="csv-export">CSV Export<a class="headerlink" href="#csv-export" title="Permanent link">¶</a></h2>
-<p>Starting in v4.0.0, you can export a zone's records as a CSV file:</p>
+<p>CSV export comes from the <code>csv_export</code> module, which is enabled by default
+(<code>modules.csv_export.enabled</code>):</p>
 <ol>
 <li>Open the zone in the zone editor</li>
-<li>Click the <strong>CSV export</strong> button</li>
+<li>Open the <strong>Export</strong> dropdown and choose <strong>CSV</strong> (route <code>/zones/{id}/export/csv</code>)</li>
 <li>The browser downloads a CSV file containing all records in the zone</li>
 </ol>
 <p>This is useful for documentation, auditing, or migrating zone data to another system.</p>
@@ -7134,9 +7143,9 @@ the same backend restrictions, and requires the <code>zone_meta_edit_own</code> 
 <li><code>users_only</code> - only individual users can be assigned; the group picker is hidden</li>
 <li><code>groups_only</code> - only groups can be assigned; the user picker is hidden, and group membership is the sole way to grant zone access</li>
 </ul>
-<p>Use <code>groups_only</code> to enforce group-based access management across the installation. The setting also applies to the API. API v2 supports group-only zones (pass <code>owner_user_id: null</code> together with <code>group_ids</code>). On 4.2.x-4.4.x, API v1 cannot create group-only zones and returns an error when <code>zone_ownership_mode</code> is set to <code>groups_only</code>.</p>
+<p>Use <code>groups_only</code> to enforce group-based access management across the installation. The setting also applies to the API. API v2 supports group-only zones (pass <code>owner_user_id: null</code> together with <code>group_ids</code>). On 4.4.x, API v1 cannot create group-only zones and returns an error when <code>zone_ownership_mode</code> is set to <code>groups_only</code>.</p>
 <h2 id="disabled-records">Disabled Records<a class="headerlink" href="#disabled-records" title="Permanent link">¶</a></h2>
-<p>Starting in v4.1.0, you can disable individual records without deleting them:</p>
+<p>You can disable individual records without deleting them:</p>
 <ul>
 <li>In the zone editor, toggle the <strong>disabled</strong> checkbox on a record</li>
 <li>Disabled records remain in the database but are not served by PowerDNS</li>

@@ -7268,7 +7268,7 @@
 </tr>
 <tr>
 <td><code>oidc.default_permission_template</code></td>
-<td>""</td>
+<td>"Guest"</td>
 <td>Default permission template for new users</td>
 </tr>
 </tbody>
@@ -7445,7 +7445,7 @@ an upgrade can be traced in the application log.</p>
 <tr>
 <td><code>name</code></td>
 <td>Yes</td>
-<td>Internal provider identifier</td>
+<td>Display label for the provider. The provider identifier is the array key, not this field</td>
 </tr>
 <tr>
 <td><code>display_name</code></td>
@@ -7465,7 +7465,7 @@ an upgrade can be traced in the application log.</p>
 <tr>
 <td><code>auto_discovery</code></td>
 <td>No</td>
-<td>Use OpenID Connect Discovery (default: true)</td>
+<td>Use OpenID Connect Discovery (default: false). When disabled, <code>authorize_url</code>, <code>token_url</code> and <code>userinfo_url</code> are all required or the provider is rejected</td>
 </tr>
 <tr>
 <td><code>metadata_url</code></td>
@@ -7789,15 +7789,22 @@ URLs, proxy logs, or browser history.</p>
 </table>
 <h2 id="docker-configuration">Docker Configuration<a class="headerlink" href="#docker-configuration" title="Permanent link">¶</a></h2>
 <p>Use environment variables with the <code>PA_OIDC_</code> prefix:</p>
+<p>The entrypoint can generate three OIDC providers: <code>azure</code> (<code>PA_OIDC_AZURE_*</code>), <code>google</code> (<code>PA_OIDC_GOOGLE_*</code>) and <code>generic</code> (<code>PA_OIDC_GENERIC_*</code>). Any other IdP - Keycloak, Authentik, Okta - is configured through the generic provider:</p>
 <div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">environment</span><span class="p">:</span>
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">PA_OIDC_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
 <a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nt">PA_OIDC_AUTO_PROVISION</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
 <a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span><span class="nt">PA_OIDC_DEFAULT_PERMISSION_TEMPLATE</span><span class="p">:</span><span class="w"> </span><span class="s">"Guest"</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span><span class="nt">PA_OIDC_KEYCLOAK_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"poweradmin"</span>
-<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">  </span><span class="nt">PA_OIDC_KEYCLOAK_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">"your-secret"</span>
-<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">  </span><span class="nt">PA_OIDC_KEYCLOAK_BASE_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://keycloak.example.com"</span>
-<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">  </span><span class="nt">PA_OIDC_KEYCLOAK_REALM</span><span class="p">:</span><span class="w"> </span><span class="s">"master"</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">"Keycloak"</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_DISPLAY_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">"Sign</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">Keycloak"</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"poweradmin"</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">"your-secret"</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_AUTO_DISCOVERY</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_METADATA_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://keycloak.example.com/realms/master/.well-known/openid-configuration"</span>
 </code></pre></div>
+<blockquote>
+<p><strong>Note:</strong> There are no <code>PA_OIDC_KEYCLOAK_*</code> variables. To run a named Keycloak provider alongside another IdP, configure it in <code>config/settings.php</code> instead - the entrypoint only writes the three providers above.</p>
+</blockquote>
 <p>To change the groups claim name for the generic OIDC provider, use <code>PA_OIDC_GENERIC_GROUPS_ATTR</code>:</p>
 <div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nt">environment</span><span class="p">:</span>
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_GROUPS_ATTR</span><span class="p">:</span><span class="w"> </span><span class="s">"roles"</span><span class="w">  </span><span class="c1"># Default: "groups"</span>
@@ -7820,7 +7827,7 @@ URLs, proxy logs, or browser history.</p>
 <a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="nt">services</span><span class="p">:</span>
 <a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">  </span><span class="nt">poweradmin</span><span class="p">:</span>
 <a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">      </span><span class="nt">PA_OIDC_KEYCLOAK_CLIENT_SECRET__FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/oidc_client_secret</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">      </span><span class="nt">PA_OIDC_GENERIC_CLIENT_SECRET__FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/oidc_client_secret</span>
 <a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">    </span><span class="nt">secrets</span><span class="p">:</span>
 <a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">oidc_client_secret</span>
 </code></pre></div>

@@ -7732,7 +7732,7 @@
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="x">];</span>
 </code></pre></div>
 <h2 id="web-server-requirements">Web Server Requirements<a class="headerlink" href="#web-server-requirements" title="Permanent link">¶</a></h2>
-<p>The API requires proper web server configuration to function correctly. The PHP router handles API path parsing from <code>REQUEST_URI</code>, so explicit per-endpoint rewrite rules are not needed—just route all <code>/api/*</code> requests to <code>index.php</code>.</p>
+<p>The API requires proper web server configuration to function correctly. The PHP router handles API path parsing from <code>REQUEST_URI</code>, so explicit per-endpoint rewrite rules are not needed - just route all <code>/api/*</code> requests to <code>index.php</code>.</p>
 <h3 id="key-requirements">Key Requirements<a class="headerlink" href="#key-requirements" title="Permanent link">¶</a></h3>
 <table>
 <thead>
@@ -7767,12 +7767,12 @@
 <p><strong>Nginx:</strong></p>
 <ul>
 <li><a href="https://github.com/poweradmin/poweradmin/blob/release/4.0.x/nginx.conf.example">nginx.conf.example (4.0.x)</a></li>
-<li><a href="https://github.com/poweradmin/poweradmin/blob/master/nginx.conf.example">nginx.conf.example (4.1.x+)</a> — includes subfolder deployment support</li>
+<li><a href="https://github.com/poweradmin/poweradmin/blob/master/nginx.conf.example">nginx.conf.example (4.1.x+)</a> - includes subfolder deployment support</li>
 </ul>
 <p><strong>Caddy:</strong></p>
 <ul>
 <li><a href="https://github.com/poweradmin/poweradmin/blob/release/4.0.x/Caddyfile.example">Caddyfile.example (4.0.x)</a></li>
-<li><a href="https://github.com/poweradmin/poweradmin/blob/master/caddy.conf.example">caddy.conf.example (4.1.x+)</a> — includes subfolder deployment support</li>
+<li><a href="https://github.com/poweradmin/poweradmin/blob/master/caddy.conf.example">caddy.conf.example (4.1.x+)</a> - includes subfolder deployment support</li>
 </ul>
 <h3 id="minimal-nginx-example">Minimal Nginx Example<a class="headerlink" href="#minimal-nginx-example" title="Permanent link">¶</a></h3>
 <p>If you need a minimal configuration, ensure these key elements are present:</p>
@@ -7841,7 +7841,7 @@
 <li><code>DELETE /api/v2/zones/{id}/records/{record_id}</code> - Delete record</li>
 <li><code>POST /api/v2/zones/{id}/records/bulk</code> - Bulk create records</li>
 </ul>
-<p>When a <code>POST</code> request to any of the create endpoints omits the <code>ttl</code> field, the server applies the configured default: <code>dns.ttl_reverse</code> for PTR records in reverse zones (when set), and <code>dns.ttl</code> otherwise. See <a href="../dns-settings/#configuration-options">DNS settings</a> for details. (4.5.0)</p>
+<p>When a <code>POST</code> request to any of the create endpoints omits the <code>ttl</code> field, the server applies the configured default, in this order: a per-type default from the <code>record_type_defaults</code> table (managed in the UI) for the submitted record type, then <code>dns.ttl_reverse</code> for PTR records in reverse zones (when set), then <code>dns.ttl</code>. A per-type default therefore wins over <code>dns.ttl_reverse</code>, including for PTR. See <a href="../dns-settings/#configuration-options">DNS settings</a> for details. (4.5.0)</p>
 <h4 id="rrset-management">RRset Management<a class="headerlink" href="#rrset-management" title="Permanent link">¶</a></h4>
 <ul>
 <li><code>GET /api/v2/zones/{id}/rrsets</code> - List all RRsets in a zone</li>
@@ -7947,29 +7947,35 @@
 <div class="language-json highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"example.com"</span><span class="p">,</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">        </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A"</span><span class="p">,</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">        </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.100"</span><span class="p">,</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">        </span><span class="nt">"ttl"</span><span class="p">:</span><span class="w"> </span><span class="mi">3600</span><span class="p">,</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">        </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-01-01T12:00:00Z"</span><span class="p">,</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">        </span><span class="nt">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-01-01T12:00:00Z"</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="p">}</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">        </span><span class="nt">"record"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">            </span><span class="nt">"zone_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">            </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"www"</span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A"</span><span class="p">,</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">            </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.100"</span><span class="p">,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">            </span><span class="nt">"ttl"</span><span class="p">:</span><span class="w"> </span><span class="mi">3600</span><span class="p">,</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">            </span><span class="nt">"priority"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">            </span><span class="nt">"disabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">            </span><span class="nt">"auth"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">            </span><span class="nt">"ptr_created"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">    </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Record created successfully"</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="p">}</span>
 </code></pre></div>
+<p>Record responses nest under <code>data.record</code>, and list responses under the plural
+collection name (<code>data.records</code>, <code>data.zones</code>, <code>data.users</code>). Records carry no
+<code>created_at</code> or <code>updated_at</code>; those fields exist only on zones and groups.</p>
 <h3 id="error-response">Error Response<a class="headerlink" href="#error-response" title="Permanent link">¶</a></h3>
 <div class="language-json highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">        </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"VALIDATION_ERROR"</span><span class="p">,</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">        </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Invalid record type"</span><span class="p">,</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">        </span><span class="nt">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">            </span><span class="nt">"field"</span><span class="p">:</span><span class="w"> </span><span class="s2">"type"</span><span class="p">,</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">            </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"INVALID"</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="p">}</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Invalid record type"</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">}</span>
 </code></pre></div>
+<p>The message is a plain string at the top level. There is no nested <code>error</code>
+object and no machine-readable error code, so branch on the HTTP status rather
+than on a code in the body.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
 <h3 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">¶</a></h3>
 <ol>
@@ -7988,31 +7994,22 @@
 <h2 id="powerdns-metrics-api-v403">PowerDNS Metrics API <em>(v4.0.3+)</em><a class="headerlink" href="#powerdns-metrics-api-v403" title="Permanent link">¶</a></h2>
 <p>Poweradmin can integrate with PowerDNS metrics endpoints for monitoring and status information.</p>
 <h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h3>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="x">'pdns' =&gt; [</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="x">    'api_url' =&gt; 'http://localhost:8081/api/v1',</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="x">    'api_key' =&gt; 'your-powerdns-api-key',</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="x">    'server_id' =&gt; 'localhost',</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="x">    'metrics' =&gt; [</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="x">        'enabled' =&gt; true,</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="x">        'basic_auth' =&gt; [</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="x">            'username' =&gt; 'admin',</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="x">            'password' =&gt; 'your-password',</span>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="x">        ],</span>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="x">    ],</span>
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="x">],</span>
+<p>Everything lives in the <code>pdns_api</code> section. There is no separate <code>pdns</code> section and no <code>metrics.enabled</code> toggle - the status page is shown by <code>interface.show_pdns_status</code>.</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="x">'pdns_api' =&gt; [</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="x">    'url' =&gt; 'http://localhost:8081',</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="x">    'key' =&gt; 'your-powerdns-api-key',</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="x">    'server_name' =&gt; 'localhost',</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="x">    'timeout' =&gt; 10,</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="x">    'webserver_username' =&gt; '',</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="x">    'webserver_password' =&gt; '',</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="x">],</span>
 </code></pre></div>
 <h3 id="basic-authentication-for-metrics-v403">Basic Authentication for Metrics <em>(v4.0.3+)</em><a class="headerlink" href="#basic-authentication-for-metrics-v403" title="Permanent link">¶</a></h3>
-<p>Starting with v4.0.3, Poweradmin supports Basic Authentication for accessing PowerDNS metrics endpoints (issue #800). This is useful when your PowerDNS API is protected with Basic Auth in addition to API keys.</p>
-<p><strong>Example configuration:</strong></p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="x">'pdns' =&gt; [</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="x">    'metrics' =&gt; [</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="x">        'enabled' =&gt; true,</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="x">        'basic_auth' =&gt; [</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="x">            'username' =&gt; 'metrics_user',</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="x">            'password' =&gt; 'secure_password',</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="x">        ],</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="x">    ],</span>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="x">],</span>
+<p>Starting with v4.0.3, Poweradmin supports Basic Authentication for accessing PowerDNS metrics endpoints (issue #800). This is useful when your PowerDNS webserver is protected with Basic Auth in addition to API keys. Set the credentials with <code>webserver_username</code> (usually <code>#</code>) and <code>webserver_password</code>:</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="x">'pdns_api' =&gt; [</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="x">    'webserver_username' =&gt; '#',</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="x">    'webserver_password' =&gt; 'secure_password',</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="pagination-v401">Pagination <em>(v4.0.1+)</em><a class="headerlink" href="#pagination-v401" title="Permanent link">¶</a></h2>
 <h3 id="optional-pagination-parameters">Optional Pagination Parameters<a class="headerlink" href="#optional-pagination-parameters" title="Permanent link">¶</a></h3>
@@ -8022,20 +8019,28 @@
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>GET<span class="w"> </span>/api/v2/users
 </code></pre></div><p></p>
 <p><strong>With pagination:</strong>
-</p><div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>GET<span class="w"> </span>/api/v2/zones?page<span class="o">=</span><span class="m">1</span><span class="p">&amp;</span><span class="nv">limit</span><span class="o">=</span><span class="m">50</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>GET<span class="w"> </span>/api/v2/users?page<span class="o">=</span><span class="m">2</span><span class="p">&amp;</span><span class="nv">limit</span><span class="o">=</span><span class="m">25</span>
+</p><div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>GET<span class="w"> </span>/api/v2/zones?page<span class="o">=</span><span class="m">1</span><span class="p">&amp;</span><span class="nv">per_page</span><span class="o">=</span><span class="m">50</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>GET<span class="w"> </span>/api/v2/users?page<span class="o">=</span><span class="m">2</span><span class="p">&amp;</span><span class="nv">per_page</span><span class="o">=</span><span class="m">25</span>
 </code></pre></div><p></p>
+<blockquote>
+<p><strong>Warning:</strong> The parameter is <code>per_page</code>, not <code>limit</code>. Unrecognised query
+parameters are ignored rather than rejected, so <code>?limit=50</code> silently returns
+every row.</p>
+</blockquote>
+<p><code>page</code> is only read when <code>per_page</code> is given, and <code>per_page</code> is capped at 10000.</p>
 <h3 id="pagination-response">Pagination Response<a class="headerlink" href="#pagination-response" title="Permanent link">¶</a></h3>
 <div class="language-json highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="nt">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">        </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span>
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">        </span><span class="nt">"page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">        </span><span class="nt">"limit"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">        </span><span class="nt">"pages"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="p">}</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">        </span><span class="nt">"zones"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">]</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="nt">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">        </span><span class="nt">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">        </span><span class="nt">"per_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">        </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">        </span><span class="nt">"last_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="p">}</span>
 </code></pre></div>
 <h2 id="version-history">Version History<a class="headerlink" href="#version-history" title="Permanent link">¶</a></h2>
 <h3 id="v420">v4.2.0<a class="headerlink" href="#v420" title="Permanent link">¶</a></h3>
@@ -8043,13 +8048,13 @@
 <li><strong>Added:</strong> Zone template CRUD endpoints (API v2)</li>
 <li><strong>Added:</strong> Zone owners endpoints with batch assignment (API v2)</li>
 <li><strong>Added:</strong> Group management endpoints - members and zones (API v2)</li>
-<li><strong>Added:</strong> RRset endpoints (API v2)</li>
-<li><strong>Added:</strong> Bulk record creation endpoint (API v2)</li>
 </ul>
 <h3 id="v410">v4.1.0<a class="headerlink" href="#v410" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>Added:</strong> API v2 with consistent response wrapping</li>
 <li><strong>Added:</strong> Permission validation for API endpoints</li>
+<li><strong>Added:</strong> RRset endpoints (API v2)</li>
+<li><strong>Added:</strong> Bulk record creation endpoint (API v2)</li>
 </ul>
 <h3 id="v404">v4.0.4<a class="headerlink" href="#v404" title="Permanent link">¶</a></h3>
 <ul>

@@ -6846,7 +6846,7 @@
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="x">],</span>
 </code></pre></div>
 <h3 id="4-syslog-logging">4. Syslog Logging<a class="headerlink" href="#4-syslog-logging" title="Permanent link">¶</a></h3>
-<p>Logs authentication and security events to the system's syslog.</p>
+<p>Sends every audit event to the system's syslog - not just authentication, but also zone and record changes, user and group management, and API events.</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">'logging' =&gt; [</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    'syslog_enabled' =&gt; true,</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">    'syslog_identity' =&gt; 'poweradmin',    // Program identifier in syslog</span>
@@ -6905,10 +6905,14 @@ ready-to-use filter.</p>
 - For PHP error logs: Configure logrotate for your PHP error log files
 - For database logs: Implement periodic pruning of old log entries</p>
 <h3 id="database-log-tables">Database Log Tables<a class="headerlink" href="#database-log-tables" title="Permanent link">¶</a></h3>
-<p>When <code>database_enabled</code> is true, logs are stored in:
-- <code>log_users</code> table: Authentication and user management events
-- <code>log_zones</code> table: DNS zone and record changes
-- <code>log_groups</code> table: Group management and membership changes</p>
+<p>When <code>database_enabled</code> is true, logs are stored in:</p>
+<ul>
+<li><code>log_users</code> table: Authentication and user management events</li>
+<li><code>log_zones</code> table: DNS zone and record changes</li>
+<li><code>log_groups</code> table: Group management and membership changes</li>
+<li><code>log_api</code> table: Public API requests and permission violations (added in 4.3.0; per-request logging also needs <code>api_request_logging</code>)</li>
+<li><code>log_changesets</code> and <code>log_record_changes</code> tables: Structured before/after snapshots of record changes, grouped per submitted change (added in 4.5.0)</li>
+</ul>
 
 
 

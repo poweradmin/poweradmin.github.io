@@ -6691,9 +6691,14 @@ escalate to <strong>IP-level bans</strong> at the firewall.</p>
 </li>
 </ol>
 <h2 id="event-types">Event Types<a class="headerlink" href="#event-types" title="Permanent link">¶</a></h2>
-<p>Every Poweradmin authentication event uses the same field order:</p>
+<p>Most Poweradmin authentication events use the same field order:</p>
 <div class="language-text highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>client_ip:&lt;ip&gt; user:&lt;username&gt; operation:&lt;op&gt; auth_method:&lt;sql|ldap|oidc|saml&gt; [reason:&lt;code&gt;] [mfa_type:&lt;app|email&gt;]
 </code></pre></div>
+<p>Two shapes differ, though the filters below still match them:</p>
+<ul>
+<li>MFA events carry no <code>auth_method:</code> field - they are <code>client_ip:&lt;ip&gt; user:&lt;username&gt; operation:&lt;op&gt; mfa_type:&lt;app|email&gt;</code>.</li>
+<li>OIDC and SAML <code>login_error</code> events carry no <code>user:</code> field and report the cause as <code>error:&lt;message&gt;</code> rather than <code>reason:&lt;code&gt;</code>.</li>
+</ul>
 <p>The <code>operation:</code> token is what fail2ban filters on.</p>
 <table>
 <thead>
@@ -6708,7 +6713,7 @@ escalate to <strong>IP-level bans</strong> at the firewall.</p>
 <tr>
 <td><code>login_success</code></td>
 <td>NOTICE</td>
-<td>Successful credential check (or SAML/OIDC handshake completed)</td>
+<td>Successful credential check. A completed SAML/OIDC handshake emits <code>saml_login_success</code> / <code>oidc_login_success</code> instead</td>
 <td>No</td>
 </tr>
 <tr>
@@ -6725,7 +6730,7 @@ escalate to <strong>IP-level bans</strong> at the firewall.</p>
 </tr>
 <tr>
 <td><code>login_error</code></td>
-<td>WARNING</td>
+<td>WARNING (ERROR on the LDAP path)</td>
 <td>Infrastructure failure: LDAP server unreachable, OIDC <code>?error=</code> callback, SAML assertion validation exception</td>
 <td><strong>No</strong> - the user was never credential-checked</td>
 </tr>
@@ -6826,8 +6831,8 @@ basis (e.g. 5 attempts), and run fail2ban with a higher threshold over a
 longer window (e.g. 20 attempts in an hour) so it only catches sustained
 distributed scans.</p>
 <h2 id="admin-ui">Admin UI<a class="headerlink" href="#admin-ui" title="Permanent link">¶</a></h2>
-<p>The same events are searchable in <strong>Audit Log</strong> under these filter
-entries:</p>
+<p>The same events are searchable in <strong>User logs</strong> (<code>/users/logs</code>) under
+these filter entries:</p>
 <ul>
 <li><code>login_failed</code>, <code>login_locked</code>, <code>login_error</code></li>
 <li><code>mfa_failed</code>, <code>mfa_verify</code></li>

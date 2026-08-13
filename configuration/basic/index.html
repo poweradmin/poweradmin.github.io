@@ -6735,6 +6735,9 @@
 <li>Environment variables (<code>PA_*</code>) - Docker/container settings</li>
 <li>Docker secrets (<code>PA_*__FILE</code>) - Sensitive values from files</li>
 </ol>
+<blockquote>
+<p><strong>Note:</strong> A secret and its plain environment variable are mutually exclusive, not layered. If both <code>PA_FOO</code> and <code>PA_FOO__FILE</code> are set, the container logs an error and exits rather than preferring one over the other.</p>
+</blockquote>
 <h2 id="configuration-sections">Configuration Sections<a class="headerlink" href="#configuration-sections" title="Permanent link">¶</a></h2>
 <p>The configuration is organized into logical sections:</p>
 <table>
@@ -6790,12 +6793,8 @@
 <td>SAML authentication</td>
 </tr>
 <tr>
-<td><code>whois</code></td>
-<td>WHOIS lookup settings</td>
-</tr>
-<tr>
-<td><code>rdap</code></td>
-<td>RDAP lookup settings</td>
+<td><code>modules</code></td>
+<td>Optional modules: CSV export, zone import/export, WHOIS (<code>modules.whois</code>), RDAP (<code>modules.rdap</code>), and others</td>
 </tr>
 <tr>
 <td><code>api</code></td>
@@ -6868,7 +6867,7 @@
 </tr>
 <tr>
 <td><code>database.pdns_db_name</code></td>
-<td>powerdns</td>
+<td><em>(empty)</em></td>
 <td>Separate PowerDNS database, MySQL/MariaDB only (v3.8.0+)</td>
 </tr>
 </tbody>
@@ -6934,7 +6933,7 @@
 <tr>
 <td><code>interface.theme</code></td>
 <td>default</td>
-<td>Theme name (default, custom, etc.)</td>
+<td>Theme name (<code>default</code>, <code>modern</code>, or your own directory under <code>theme_base_path</code>)</td>
 </tr>
 <tr>
 <td><code>interface.style</code></td>
@@ -6942,12 +6941,12 @@
 <td>UI style: <code>light</code> or <code>dark</code></td>
 </tr>
 <tr>
-<td><code>interface.rowamount</code></td>
+<td><code>interface.rows_per_page</code></td>
 <td>10</td>
-<td>Records per page</td>
+<td>Rows per page in lists</td>
 </tr>
 <tr>
-<td><code>interface.expire</code></td>
+<td><code>interface.session_timeout</code></td>
 <td>1800</td>
 <td>Session timeout (seconds)</td>
 </tr>
@@ -6957,34 +6956,24 @@
 <td>Application title</td>
 </tr>
 <tr>
-<td><code>interface.zone_type_default</code></td>
-<td>MASTER</td>
-<td>Default zone type</td>
-</tr>
-<tr>
-<td><code>interface.zonelist_serial</code></td>
+<td><code>interface.display_serial_in_zone_list</code></td>
 <td>false</td>
 <td>Show serial in zone list</td>
 </tr>
 <tr>
-<td><code>interface.zonelist_template</code></td>
+<td><code>interface.display_template_in_zone_list</code></td>
 <td>false</td>
 <td>Show template in zone list</td>
 </tr>
 <tr>
-<td><code>interface.zone_comments</code></td>
+<td><code>interface.show_zone_comments</code></td>
 <td>true</td>
 <td>Enable zone comments</td>
 </tr>
 <tr>
-<td><code>interface.record_comments</code></td>
+<td><code>interface.show_record_comments</code></td>
 <td>false</td>
 <td>Enable record comments</td>
-</tr>
-<tr>
-<td><code>interface.index</code></td>
-<td>cards</td>
-<td>Display mode (cards/list)</td>
 </tr>
 <tr>
 <td><code>interface.add_reverse_record</code></td>
@@ -6997,17 +6986,17 @@
 <td>Show A/AAAA checkbox in reverse view</td>
 </tr>
 <tr>
-<td><code>interface.edit_show_id</code></td>
-<td>true</td>
+<td><code>interface.show_record_id</code></td>
+<td>false</td>
 <td>Show record ID in edit form</td>
 </tr>
 <tr>
-<td><code>interface.edit_add_record_top</code></td>
-<td>false</td>
+<td><code>interface.position_record_form_top</code></td>
+<td>true</td>
 <td>Add record form at top</td>
 </tr>
 <tr>
-<td><code>interface.edit_save_changes_top</code></td>
+<td><code>interface.position_save_button_top</code></td>
 <td>false</td>
 <td>Save button at top</td>
 </tr>
@@ -7028,7 +7017,7 @@
 </tr>
 </tbody>
 </table>
-<p>* Default languages: cs_CZ, de_DE, en_EN, es_ES, et_EE, fi_FI, fr_FR, hr_HR, hu_HU, id_ID, it_IT, ja_JP, ko_KR, lt_LT, lv_LV, nb_NO, nl_NL, pl_PL, pt_PT, ro_RO, ru_RU, sk_SK, sr_RS, sv_SE, tr_TR, uk_UA, vi_VN, zh_CN (et_EE, fi_FI, hr_HR, hu_HU, lv_LV, ro_RO, sk_SK, sr_RS added in v4.4.0)</p>
+<p>* Default languages: ar_SA, bg_BG, bs_BA, cs_CZ, da_DK, de_DE, el_GR, en_EN, es_ES, et_EE, fa_IR, fi_FI, fr_FR, ga_IE, he_IL, hi_IN, hr_HR, hu_HU, id_ID, it_IT, ja_JP, ko_KR, lt_LT, lv_LV, ms_MY, nb_NO, nl_NL, pl_PL, pt_BR, pt_PT, ro_RO, ru_RU, sk_SK, sl_SI, sq_AL, sr_RS, sv_SE, th_TH, tr_TR, uk_UA, vi_VN, zh_CN, zh_TW (et_EE, fi_FI, hr_HR, hu_HU, lv_LV, ro_RO, sk_SK, sr_RS added in v4.4.0)</p>
 <blockquote>
 <p><strong>Tip:</strong> If you experience slow loading or timeout errors on the reverse zones page, set <code>show_forward_zone_associations</code> to <code>false</code>. This disables the lookup of associated forward zones which can be slow with many PTR records.</p>
 </blockquote>
@@ -7074,9 +7063,29 @@
 <td>Default TTL (seconds)</td>
 </tr>
 <tr>
-<td><code>dns.soa</code></td>
-<td>28800 7200 604800 86400</td>
-<td>SOA: refresh retry expire minimum</td>
+<td><code>dns.soa_refresh</code></td>
+<td>28800</td>
+<td>SOA refresh (seconds)</td>
+</tr>
+<tr>
+<td><code>dns.soa_retry</code></td>
+<td>7200</td>
+<td>SOA retry (seconds)</td>
+</tr>
+<tr>
+<td><code>dns.soa_expire</code></td>
+<td>604800</td>
+<td>SOA expire (seconds)</td>
+</tr>
+<tr>
+<td><code>dns.soa_minimum</code></td>
+<td>86400</td>
+<td>SOA minimum (seconds)</td>
+</tr>
+<tr>
+<td><code>dns.zone_type_default</code></td>
+<td>MASTER</td>
+<td>Default zone type: <code>MASTER</code> or <code>NATIVE</code></td>
 </tr>
 <tr>
 <td><code>dns.strict_tld_check</code></td>

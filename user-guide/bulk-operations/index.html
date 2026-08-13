@@ -6750,14 +6750,16 @@
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>@,MX,mail.example.com.,10
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>_acme,TXT,"verification=12345"
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>@,TXT,"v=spf1 mx a ip4:192.168.0.0/24 ~all"
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>_sip._tcp,SRV,sip.example.com.,0,5060,3600
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>_sip._tcp,SRV,"0 5060 sip.example.com.",0,3600
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>_sip._tcp,SRV,sip.example.com.,0,5060,3600
 </code></pre></div>
+<p>SRV has its own parser and does not follow the generic column order above. The first SRV line is the normal form (<code>name,SRV,"weight port target",priority,ttl</code>, matching CSV export); the second is the legacy form (<code>name,SRV,target,weight,port,ttl</code>), which the in-app help also labels legacy.</p>
 <h3 id="tips">Tips<a class="headerlink" href="#tips" title="Permanent link">¶</a></h3>
 <ul>
 <li>Quote any value that contains a comma or spaces.</li>
 <li>For CNAME, MX, SRV: end the target with a trailing dot.</li>
-<li>Validation runs before any record is written - if one line fails, the page reports the offending row and aborts the batch.</li>
-<li>Records exported from a zone via <strong>CSV export</strong> can be re-imported with this form unchanged.</li>
+<li>There is no validation pre-pass and no rollback. Lines are processed one at a time, valid ones are written immediately, and only the failing lines are listed back on the form with a warning.</li>
+<li>Records exported from a zone via <strong>CSV export</strong> can be re-imported with this form, but delete the header row first - <code>Name,Type,Content,...</code> is parsed as a record and rejected with "Invalid record type". The data rows import as they are.</li>
 </ul>
 <hr>
 <h2 id="batch-ptr-records">Batch PTR Records<a class="headerlink" href="#batch-ptr-records" title="Permanent link">¶</a></h2>

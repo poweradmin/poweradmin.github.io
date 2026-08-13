@@ -2731,17 +2731,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#docker-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Docker Configuration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#avatar-priority" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6633,17 +6622,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#docker-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Docker Configuration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#avatar-priority" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6780,11 +6758,11 @@
 
 
 <h1 id="avatar-system">Avatar System<a class="headerlink" href="#avatar-system" title="Permanent link">¶</a></h1>
-<p>Poweradmin v4.0.0+ supports user avatars from OAuth providers and Gravatar.</p>
+<p>Poweradmin v4.1.0+ supports user avatars from OAuth providers and Gravatar.</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¶</a></h2>
 <p>The avatar system displays user profile pictures in the interface. Avatars can be sourced from:</p>
 <ul>
-<li><strong>OAuth providers</strong>: Profile pictures from OIDC/SAML identity providers</li>
+<li><strong>OIDC providers</strong>: Profile pictures from OpenID Connect identity providers. SAML logins do not supply an avatar URL</li>
 <li><strong>Gravatar</strong>: Global avatar service based on email address</li>
 </ul>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h2>
@@ -6817,11 +6795,6 @@
 <td><code>40</code></td>
 <td>Avatar size in pixels</td>
 </tr>
-<tr>
-<td><code>interface.avatar_cache_ttl</code></td>
-<td><code>3600</code></td>
-<td>Cache TTL in seconds</td>
-</tr>
 </tbody>
 </table>
 <h2 id="modern-configuration">Modern Configuration<a class="headerlink" href="#modern-configuration" title="Permanent link">¶</a></h2>
@@ -6831,38 +6804,32 @@
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="x">        'avatar_gravatar_enabled' =&gt; true,</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="x">        'avatar_priority' =&gt; 'oauth',  // 'oauth' or 'gravatar'</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="x">        'avatar_size' =&gt; 40,</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="x">        'avatar_cache_ttl' =&gt; 3600,    // 1 hour</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="x">    ],</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="x">];</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="x">    ],</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="x">];</span>
 </code></pre></div>
-<h2 id="docker-configuration">Docker Configuration<a class="headerlink" href="#docker-configuration" title="Permanent link">¶</a></h2>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">PA_AVATAR_OAUTH_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">PA_AVATAR_GRAVATAR_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">PA_AVATAR_PRIORITY</span><span class="p">:</span><span class="w"> </span><span class="s">"oauth"</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">PA_AVATAR_SIZE</span><span class="p">:</span><span class="w"> </span><span class="s">"40"</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">PA_AVATAR_CACHE_TTL</span><span class="p">:</span><span class="w"> </span><span class="s">"3600"</span>
-</code></pre></div>
+<blockquote>
+<p><strong>Note:</strong> There are no <code>PA_AVATAR_*</code> environment variables. The Docker entrypoint writes no avatar keys, so configure avatars in <code>config/settings.php</code> (bind-mount the file into the container if needed).</p>
+</blockquote>
 <h2 id="avatar-priority">Avatar Priority<a class="headerlink" href="#avatar-priority" title="Permanent link">¶</a></h2>
 <p>The <code>avatar_priority</code> setting determines which source is checked first:</p>
 <ul>
 <li><strong>oauth</strong>: Check OAuth provider first, fall back to Gravatar</li>
-<li><strong>gravatar</strong>: Check Gravatar first, fall back to OAuth</li>
+<li><strong>gravatar</strong>: Check Gravatar first</li>
 </ul>
-<p>If the primary source has no avatar, the secondary source is used.</p>
+<p>The fallback only applies with <code>oauth</code>: if the login supplied no avatar URL, Gravatar is used instead. With <code>gravatar</code>, any user who has an email address gets a Gravatar URL (Gravatar serves a generated default image for unknown addresses), so the OAuth picture is never reached.</p>
 <h2 id="oauth-avatars">OAuth Avatars<a class="headerlink" href="#oauth-avatars" title="Permanent link">¶</a></h2>
 <p>OAuth avatars are retrieved from identity providers during login:</p>
 <ul>
 <li>Azure AD, Google, Keycloak, etc. provide profile pictures</li>
 <li>The <code>picture</code> claim is mapped automatically</li>
-<li>Avatars are cached locally to reduce provider requests</li>
+<li>The URL is kept in the session and the image is loaded by the browser straight from the provider</li>
 </ul>
 <h3 id="oidc-configuration">OIDC Configuration<a class="headerlink" href="#oidc-configuration" title="Permanent link">¶</a></h3>
 <p>Ensure user mapping includes the avatar claim:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="x">'user_mapping' =&gt; [</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="x">    'avatar' =&gt; 'picture',</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="x">    // ... other mappings</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="x">'user_mapping' =&gt; [</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="x">    'avatar' =&gt; 'picture',</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="x">    // ... other mappings</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="gravatar-integration">Gravatar Integration<a class="headerlink" href="#gravatar-integration" title="Permanent link">¶</a></h2>
 <p>Gravatar avatars are based on the user's email address:</p>
@@ -6882,27 +6849,22 @@
 <li><code>retro</code> - 8-bit style</li>
 </ul>
 <h2 id="caching">Caching<a class="headerlink" href="#caching" title="Permanent link">¶</a></h2>
-<p>Avatars are cached to improve performance:</p>
-<ul>
-<li><strong>Cache TTL</strong>: Default 1 hour (3600 seconds)</li>
-<li><strong>Cache key</strong>: Based on user ID and source</li>
-<li><strong>Cache invalidation</strong>: Automatic on logout</li>
-</ul>
-<p>Adjust <code>avatar_cache_ttl</code> based on your needs:
-- Lower values: More frequent updates, more requests
-- Higher values: Better performance, stale avatars</p>
+<p>Poweradmin does not cache avatar images server-side. It only builds the avatar URL (the provider's picture URL, or a Gravatar URL derived from the email) and hands it to the browser, which caches it under normal HTTP rules.</p>
+<blockquote>
+<p><strong>Note:</strong> <code>interface.avatar_cache_ttl</code> exists in <code>settings.defaults.php</code> but is not read anywhere in the application. Setting it has no effect.</p>
+</blockquote>
 <h2 id="disabling-avatars">Disabling Avatars<a class="headerlink" href="#disabling-avatars" title="Permanent link">¶</a></h2>
 <p>To disable avatars completely:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">'interface' =&gt; [</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    'avatar_oauth_enabled' =&gt; false,</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">    'avatar_gravatar_enabled' =&gt; false,</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="x">'interface' =&gt; [</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="x">    'avatar_oauth_enabled' =&gt; false,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="x">    'avatar_gravatar_enabled' =&gt; false,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="privacy-considerations">Privacy Considerations<a class="headerlink" href="#privacy-considerations" title="Permanent link">¶</a></h2>
 <ol>
 <li><strong>Gravatar</strong>: Sends hashed email to external service</li>
 <li><strong>OAuth</strong>: Avatar URLs may be stored in session</li>
-<li><strong>Caching</strong>: Avatars may be cached on server</li>
+<li><strong>Browser requests</strong>: Images are fetched by the user's browser directly from Gravatar or the identity provider</li>
 </ol>
 <p>For privacy-conscious deployments, consider disabling Gravatar and relying only on OAuth avatars (which users explicitly provide to their identity provider).</p>
 <h2 id="related-documentation">Related Documentation<a class="headerlink" href="#related-documentation" title="Permanent link">¶</a></h2>

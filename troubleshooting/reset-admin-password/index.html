@@ -6636,13 +6636,16 @@
 <p>Copy the resulting hash (it begins with <code>$2y$</code>, <code>$argon2i$</code>, or <code>$argon2id$</code>).</p>
 <h3 id="legacy-versions-poweradmin-3x-or-42-and-older">Legacy versions (Poweradmin 3.x, or 4.2 and older)<a class="headerlink" href="#legacy-versions-poweradmin-3x-or-42-and-older" title="Permanent link">¶</a></h3>
 <p>The 3.x LTS branch and pre-4.3 releases still accept <code>md5</code> and <code>md5salt</code> hashes. Use these only if <code>security.password_encryption</code> is set to one of those values; otherwise stick with the bcrypt/argon2 commands above.</p>
-<p><strong>md5</strong> (the default on Poweradmin 2.x and on 3.x installs that were never reconfigured):</p>
+<p><strong>md5</strong> (the default on Poweradmin 2.x; 3.x has defaulted to bcrypt since 3.0.0):</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>php<span class="w"> </span>-r<span class="w"> </span><span class="s1">'echo md5("NewPassword123") . "\n";'</span>
 </code></pre></div>
 <p><strong>md5salt</strong> (<code>security.password_encryption = 'md5salt'</code>):</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>php<span class="w"> </span>-r<span class="w"> </span><span class="s1">'$salt = bin2hex(random_bytes(3)); echo md5($salt . "NewPassword123") . ":" . $salt . "\n";'</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>php<span class="w"> </span>-r<span class="w"> </span><span class="s1">'$a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; $salt = ""; for ($i = 0; $i &lt; 5; $i++) { $salt .= $a[random_int(0, 61)]; } echo md5($salt . "NewPassword123") . ":" . $salt . "\n";'</span>
 </code></pre></div>
-<p>The stored format is <code>md5(salt + password) + ":" + salt</code>. Any printable salt works; the verifier splits on the <code>:</code>.</p>
+<p>The stored format is <code>md5(salt + password) + ":" + salt</code>, and the salt format is strict: <strong>exactly 5 characters</strong>, each drawn from <code>a-z</code>, <code>A-Z</code>, <code>0-9</code> or <code>@#$%^*()_-!</code>.</p>
+<blockquote>
+<p><strong>Warning:</strong> Poweradmin identifies the algorithm by regex-matching the whole stored value against <code>^[a-f0-9]{32}:[a-zA-Z0-9@#$%^*()_\-!]{5}$</code> - it does not split on the <code>:</code>. A salt of any other length or character set makes the login fail with "Unable to determine hash algorithm", which leaves the account unusable.</p>
+</blockquote>
 <h2 id="2-update-the-user-record">2. Update the User Record<a class="headerlink" href="#2-update-the-user-record" title="Permanent link">¶</a></h2>
 <p>Open your database client and run the appropriate statement. The <code>users</code> table is the same on MySQL/MariaDB, PostgreSQL, and SQLite.</p>
 <div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">users</span>
@@ -6673,8 +6676,8 @@
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
 <ul>
 <li><strong>"Invalid username or password" after the update.</strong> Confirm you updated the row for the right account (<code>SELECT id, username, active, use_ldap FROM users WHERE username = 'admin';</code>) and that the hash was copied without trailing whitespace or line breaks.</li>
-<li><strong>PHP <code>password_hash</code> not available.</strong> Make sure you are running PHP 8.2 or newer, which is required by Poweradmin 4.x.</li>
-<li><strong>Hash starts with <code>$1$</code> or is 32 hex characters.</strong> That is a legacy md5/md5salt hash from an older Poweradmin version. Replace it with a bcrypt/argon2 hash using the steps above; the legacy formats are no longer accepted.</li>
+<li><strong>PHP <code>password_hash</code> not available.</strong> Make sure you are running a supported PHP version: 4.0.x and 4.1.x require PHP 8.1 or newer, and 4.2.0 onwards requires PHP 8.2 or newer.</li>
+<li><strong>Hash starts with <code>$1$</code> or is 32 hex characters.</strong> That is a legacy md5/md5salt hash from an older Poweradmin version. Current releases still verify those hashes at login and re-hash them to the configured algorithm afterwards, so the account is not locked out - only hash generation was removed in 4.3.0. You can still replace it with a bcrypt/argon2 hash using the steps above.</li>
 </ul>
 
 

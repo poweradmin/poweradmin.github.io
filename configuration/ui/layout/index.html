@@ -2407,22 +2407,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#creating-custom-templates" class="md-nav__link">
+  <a href="#creating-the-snippet-files" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Creating Custom Templates
+        Creating the Snippet Files
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Creating Custom Templates">
+    <nav class="md-nav" aria-label="Creating the Snippet Files">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#custom-header-templatescustomheaderhtml" class="md-nav__link">
+  <a href="#custom-header-templatesdefaultcustomheaderhtml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Custom Header (templates/custom/header.html)
+        Custom Header (templates/default/custom/header.html)
       
     </span>
   </a>
@@ -2430,10 +2430,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#custom-footer-templatescustomfooterhtml" class="md-nav__link">
+  <a href="#custom-footer-templatesdefaultcustomfooterhtml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Custom Footer (templates/custom/footer.html)
+        Custom Footer (templates/default/custom/footer.html)
       
     </span>
   </a>
@@ -2597,17 +2597,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#display-mode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Display Mode
-      
-    </span>
-  </a>
   
 </li>
       
@@ -6792,22 +6781,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#creating-custom-templates" class="md-nav__link">
+  <a href="#creating-the-snippet-files" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Creating Custom Templates
+        Creating the Snippet Files
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Creating Custom Templates">
+    <nav class="md-nav" aria-label="Creating the Snippet Files">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#custom-header-templatescustomheaderhtml" class="md-nav__link">
+  <a href="#custom-header-templatesdefaultcustomheaderhtml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Custom Header (templates/custom/header.html)
+        Custom Header (templates/default/custom/header.html)
       
     </span>
   </a>
@@ -6815,10 +6804,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#custom-footer-templatescustomfooterhtml" class="md-nav__link">
+  <a href="#custom-footer-templatesdefaultcustomfooterhtml" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Custom Footer (templates/custom/footer.html)
+        Custom Footer (templates/default/custom/footer.html)
       
     </span>
   </a>
@@ -6986,17 +6975,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#display-mode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Display Mode
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#page-width" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7118,12 +7096,13 @@
 <h1 id="layout-customization">Layout Customization<a class="headerlink" href="#layout-customization" title="Permanent link">¶</a></h1>
 <p>Poweradmin allows you to customize various layout aspects to better fit your workflow. These settings are configured in the <code>settings.php</code> file under the <code>interface</code> section.</p>
 <h2 id="customizing-header-and-footer">Customizing Header and Footer<a class="headerlink" href="#customizing-header-and-footer" title="Permanent link">¶</a></h2>
-<p>Poweradmin supports custom header and footer templates through the theme system. These templates replace the visible logo/title area at the top of the page and the footer line at the bottom. They do not inject content into the page <code>&lt;head&gt;</code> element (see <a href="#injecting-content-into-head">Injecting content into <code>&lt;head&gt;</code></a> below if you need that for analytics or custom meta tags).</p>
+<p>Poweradmin looks for two optional snippet files inside the active theme: <code>custom/header.html</code> and <code>custom/footer.html</code>. When a file exists, its content replaces the visible logo/title area at the top of the page or the footer line at the bottom. They do not inject content into the page <code>&lt;head&gt;</code> element (see <a href="#injecting-content-into-head">Injecting content into <code>&lt;head&gt;</code></a> below if you need that for analytics or custom meta tags).</p>
 <h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h3>
-<p>First, configure your theme settings in <code>settings.php</code>:</p>
+<p>No setting switches the snippets on and no theme change is needed - the files are picked up from whichever theme you already run, so the path is <code>templates/&lt;active theme&gt;/custom/</code>. On a stock install that is <code>templates/default/custom/</code>.</p>
+<p>The theme-related settings themselves:</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="x">return [</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="x">    'interface' =&gt; [</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="x">        'theme' =&gt; 'custom',  // Set to 'custom' to use your custom templates</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="x">        'theme' =&gt; 'default',  // Theme whose custom/ directory is used ('default' or 'modern')</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="x">        'style' =&gt; 'light',   // Options: 'light', 'dark'</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="x">        'theme_base_path' =&gt; 'templates', // Base path for theme templates</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="x">        'title' =&gt; 'DNS Server 1', // Custom title to distinguish multiple server instances</span>
@@ -7131,23 +7110,23 @@
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="x">];</span>
 </code></pre></div>
 <p><strong>Tip</strong>: If you manage multiple DNS servers, customize the <code>title</code> setting to easily distinguish between them. For example, use server names like "Production DNS", "ns1.example.com", or "DNS Server - East Coast" to quickly identify which server you're managing.</p>
-<h3 id="creating-custom-templates">Creating Custom Templates<a class="headerlink" href="#creating-custom-templates" title="Permanent link">¶</a></h3>
+<h3 id="creating-the-snippet-files">Creating the Snippet Files<a class="headerlink" href="#creating-the-snippet-files" title="Permanent link">¶</a></h3>
 <ol>
-<li>Create a directory structure for your custom theme (see below)</li>
-<li>Create the following files (see sections below)</li>
+<li>Create a <code>custom</code> directory inside your active theme</li>
+<li>Add either or both files (see sections below)</li>
 </ol>
 <div class="language-text highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>templates/
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>└── custom/
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    ├── header.html
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    ├── footer.html
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    └── other template files...
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>└── default/
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    └── custom/
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        ├── header.html
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        └── footer.html
 </code></pre></div>
-<h4 id="custom-header-templatescustomheaderhtml">Custom Header (templates/custom/header.html)<a class="headerlink" href="#custom-header-templatescustomheaderhtml" title="Permanent link">¶</a></h4>
+<h4 id="custom-header-templatesdefaultcustomheaderhtml">Custom Header (templates/default/custom/header.html)<a class="headerlink" href="#custom-header-templatesdefaultcustomheaderhtml" title="Permanent link">¶</a></h4>
 <div class="language-html highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cm">&lt;!-- Your custom header content goes here --&gt;</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">"assets/your-logo.png"</span> <span class="na">height</span><span class="o">=</span><span class="s">"32"</span><span class="p">&gt;</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"fs-4"</span><span class="p">&gt;</span>Your Custom Title<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
 </code></pre></div>
-<h4 id="custom-footer-templatescustomfooterhtml">Custom Footer (templates/custom/footer.html)<a class="headerlink" href="#custom-footer-templatescustomfooterhtml" title="Permanent link">¶</a></h4>
+<h4 id="custom-footer-templatesdefaultcustomfooterhtml">Custom Footer (templates/default/custom/footer.html)<a class="headerlink" href="#custom-footer-templatesdefaultcustomfooterhtml" title="Permanent link">¶</a></h4>
 <div class="language-html highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cm">&lt;!-- Your custom footer content goes here --&gt;</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>© 2025 Your Organization - Powered by <span class="p">&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>Poweradmin<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
 </code></pre></div>
@@ -7162,13 +7141,13 @@
 <ul>
 <li><code>{{ iface_title }}</code> - Application title from configuration settings (appears in browser tab and header)</li>
 <li><code>{{ iface_style }}</code> - Current theme style (light or dark)</li>
-<li><code>{{ file_version }}</code> - File version timestamp for cache busting</li>
+<li><code>{{ file_version }}</code> - Opaque cache-busting token for asset URLs. Not a timestamp: it is a truncated HMAC over the Poweradmin version and a content digest of the bundled assets, so it stays stable until an asset or the version changes</li>
 </ul>
 <h4 id="footer-template-variables">Footer Template Variables<a class="headerlink" href="#footer-template-variables" title="Permanent link">¶</a></h4>
 <ul>
 <li><code>{{ version }}</code> - Poweradmin version</li>
 <li><code>{{ iface_style }}</code> - Current theme style</li>
-<li><code>{{ file_version }}</code> - File version timestamp for cache busting</li>
+<li><code>{{ file_version }}</code> - Opaque cache-busting token for asset URLs. Not a timestamp: it is a truncated HMAC over the Poweradmin version and a content digest of the bundled assets, so it stays stable until an asset or the version changes</li>
 </ul>
 <h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">¶</a></h3>
 <h4 id="corporate-branding-header">Corporate Branding Header<a class="headerlink" href="#corporate-branding-header" title="Permanent link">¶</a></h4>
@@ -7209,7 +7188,7 @@
 <h3 id="form-element-positioning">Form Element Positioning<a class="headerlink" href="#form-element-positioning" title="Permanent link">¶</a></h3>
 <p>Control the positioning of key UI elements:</p>
 <ul>
-<li><strong>position_record_form_top</strong>: Place the "Add record" form at the top of the page. Default: <code>false</code></li>
+<li><strong>position_record_form_top</strong>: Place the "Add record" form at the top of the page. Default: <code>true</code></li>
 <li><strong>position_save_button_top</strong>: Place the "Save changes" button at the top of the page. Default: <code>false</code></li>
 </ul>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="x">return [</span>
@@ -7222,7 +7201,7 @@
 <h3 id="content-display-options">Content Display Options<a class="headerlink" href="#content-display-options" title="Permanent link">¶</a></h3>
 <p>Configure which information is displayed in the user interface:</p>
 <ul>
-<li><strong>show_record_id</strong>: Show record ID column in edit mode. Default: <code>true</code></li>
+<li><strong>show_record_id</strong>: Show record ID column in edit mode. Default: <code>false</code></li>
 <li><strong>show_zone_comments</strong>: Show zone comments. Default: <code>true</code></li>
 <li><strong>show_record_comments</strong>: Show record comments. Default: <code>false</code></li>
 <li><strong>display_serial_in_zone_list</strong>: Show serial number in zone list. Default: <code>false</code></li>
@@ -7242,17 +7221,6 @@
 <a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="x">    ],</span>
 <a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="x">];</span>
 </code></pre></div>
-<h2 id="display-mode">Display Mode<a class="headerlink" href="#display-mode" title="Permanent link">¶</a></h2>
-<p>Configure how the main index page displays information:</p>
-<ul>
-<li><strong>index_display</strong>: Choose between card view or list view. Options: <code>cards</code>, <code>list</code>. Default: <code>cards</code></li>
-</ul>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="x">return [</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="x">    'interface' =&gt; [</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="x">        'index_display' =&gt; 'list',</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="x">    ],</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="x">];</span>
-</code></pre></div>
 <h2 id="page-width">Page Width<a class="headerlink" href="#page-width" title="Permanent link">¶</a></h2>
 <p>By default pages are rendered in a fixed-width container, which leaves unused margins on wide monitors. Enabling
 the full-width layout lets the content span the entire browser window, which gives zone lists and other wide tables
@@ -7260,11 +7228,11 @@ more room for long zone names.</p>
 <ul>
 <li><strong>wide_layout</strong>: Use the full browser width instead of a fixed-width page (v4.5.0+). Default: <code>false</code></li>
 </ul>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="x">return [</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="x">    'interface' =&gt; [</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="x">        'wide_layout' =&gt; true,</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="x">    ],</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="x">];</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="x">return [</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="x">    'interface' =&gt; [</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="x">        'wide_layout' =&gt; true,</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="x">    ],</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="x">];</span>
 </code></pre></div>
 <p>This is a site-wide default. Each user can override it under <strong>Preferences -&gt; Display Settings -&gt; Full browser
 width</strong>, so individual users can opt in or out regardless of the configured value.</p>
@@ -7273,11 +7241,11 @@ width</strong>, so individual users can opt in or out regardless of the configur
 <ul>
 <li><strong>rows_per_page</strong>: Number of items displayed per page. Default: <code>10</code></li>
 </ul>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="x">return [</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="x">    'interface' =&gt; [</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="x">        'rows_per_page' =&gt; 20,</span>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="x">    ],</span>
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="x">];</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="x">return [</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="x">    'interface' =&gt; [</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="x">        'rows_per_page' =&gt; 20,</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="x">    ],</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="x">];</span>
 </code></pre></div>
 <h2 id="zone-editing-features">Zone Editing Features<a class="headerlink" href="#zone-editing-features" title="Permanent link">¶</a></h2>
 <p>Enable or disable special editing features:</p>
@@ -7285,12 +7253,12 @@ width</strong>, so individual users can opt in or out regardless of the configur
 <li><strong>add_reverse_record</strong>: Add the checkbox option to create PTR records from A/AAAA record view. Default: <code>true</code></li>
 <li><strong>add_domain_record</strong>: Add the checkbox option to create A/AAAA records from PTR record view. Default: <code>true</code></li>
 </ul>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="x">return [</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="x">    'interface' =&gt; [</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="x">        'add_reverse_record' =&gt; true,</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="x">        'add_domain_record' =&gt; true,</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="x">    ],</span>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="x">];</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="x">return [</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="x">    'interface' =&gt; [</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="x">        'add_reverse_record' =&gt; true,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="x">        'add_domain_record' =&gt; true,</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="x">    ],</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="x">];</span>
 </code></pre></div>
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">¶</a></h2>
 <ul>
@@ -7304,18 +7272,18 @@ width</strong>, so individual users can opt in or out regardless of the configur
 <ol>
 <li>
 <p>Copy your active theme's header to a custom theme directory, e.g.:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>templates/custom
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>cp<span class="w"> </span>templates/default/header.html<span class="w"> </span>templates/custom/header.html
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>templates/custom
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>cp<span class="w"> </span>templates/default/header.html<span class="w"> </span>templates/custom/header.html
 </code></pre></div>
 </li>
 <li>
-<p>Set <code>theme: 'custom'</code> in <code>settings.php</code> (see the configuration block earlier on this page).</p>
+<p>Set <code>'theme' =&gt; 'custom'</code> in the <code>interface</code> section of <code>settings.php</code>. Unlike the <code>custom/header.html</code> snippet described earlier, this path forks the whole header template, so the theme really does have to change.</p>
 </li>
 <li>
 <p>Open <code>templates/custom/header.html</code> and paste your snippet immediately before <code>&lt;/head&gt;</code>. For example, a Matomo <code>&lt;noscript&gt;</code> tracker:</p>
-<div class="language-html highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">"text/javascript"</span> <span class="na">src</span><span class="o">=</span><span class="s">"{{ base_url_prefix }}/assets/userSettings.js?time={{ file_version }}"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="p">&lt;</span><span class="nt">noscript</span><span class="p">&gt;&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">"https://analytics.example.com/matomo.php?idsite=23"</span> <span class="na">style</span><span class="o">=</span><span class="s">"border:0;"</span> <span class="na">alt</span><span class="o">=</span><span class="s">""</span> <span class="p">/&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;&lt;/</span><span class="nt">noscript</span><span class="p">&gt;</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<div class="language-html highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">"text/javascript"</span> <span class="na">src</span><span class="o">=</span><span class="s">"{{ base_url_prefix }}/assets/userSettings.js?time={{ file_version }}"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="p">&lt;</span><span class="nt">noscript</span><span class="p">&gt;&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">"https://analytics.example.com/matomo.php?idsite=23"</span> <span class="na">style</span><span class="o">=</span><span class="s">"border:0;"</span> <span class="na">alt</span><span class="o">=</span><span class="s">""</span> <span class="p">/&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;&lt;/</span><span class="nt">noscript</span><span class="p">&gt;</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
 </code></pre></div>
 <p>The full JavaScript tracker from Matomo/GA/Plausible goes in the same place.</p>
 </li>
@@ -7325,12 +7293,12 @@ width</strong>, so individual users can opt in or out regardless of the configur
 </ol>
 <h3 id="option-2-reverse-proxy-injection-upgrade-safe">Option 2: Reverse-proxy injection (upgrade-safe)<a class="headerlink" href="#option-2-reverse-proxy-injection-upgrade-safe" title="Permanent link">¶</a></h3>
 <p>If Poweradmin sits behind Nginx or Apache, inject the snippet at the proxy layer so application updates never touch it. Example for Nginx with <code>ngx_http_sub_module</code>:</p>
-<div class="language-nginx highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://poweradmin_upstream</span><span class="p">;</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="kn">sub_filter</span><span class="w"> </span><span class="s">'&lt;/head&gt;'</span><span class="w"> </span><span class="s">'&lt;script</span><span class="w"> </span><span class="s">src="https://analytics.example.com/matomo.js"</span><span class="w"> </span><span class="s">async&gt;&lt;/script&gt;&lt;/head&gt;'</span><span class="p">;</span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="kn">sub_filter_once</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="kn">sub_filter_types</span><span class="w"> </span><span class="s">text/html</span><span class="p">;</span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="p">}</span>
+<div class="language-nginx highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://poweradmin_upstream</span><span class="p">;</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="kn">sub_filter</span><span class="w"> </span><span class="s">'&lt;/head&gt;'</span><span class="w"> </span><span class="s">'&lt;script</span><span class="w"> </span><span class="s">src="https://analytics.example.com/matomo.js"</span><span class="w"> </span><span class="s">async&gt;&lt;/script&gt;&lt;/head&gt;'</span><span class="p">;</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="kn">sub_filter_once</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="kn">sub_filter_types</span><span class="w"> </span><span class="s">text/html</span><span class="p">;</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="p">}</span>
 </code></pre></div>
 <p>This is the recommended path for production deployments because it survives Poweradmin upgrades with no patching.</p>
 <h3 id="why-no-configuration-setting">Why no configuration setting?<a class="headerlink" href="#why-no-configuration-setting" title="Permanent link">¶</a></h3>

@@ -2070,21 +2070,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#modern-configuration-example" class="md-nav__link">
+  <a href="#configuration-example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Modern Configuration Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#legacy-configuration-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Legacy Configuration Example
+        Configuration Example
       
     </span>
   </a>
@@ -6699,21 +6688,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#modern-configuration-example" class="md-nav__link">
+  <a href="#configuration-example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Modern Configuration Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#legacy-configuration-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Legacy Configuration Example
+        Configuration Example
       
     </span>
   </a>
@@ -6930,12 +6908,11 @@
 <li>Network connectivity between Poweradmin and PowerDNS API endpoint</li>
 </ul>
 <h2 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">¶</a></h2>
-<p>PowerDNS API settings can be configured in the <code>config/settings.php</code> file under the <code>pdns_api</code> section or through individual variables in the legacy configuration format.</p>
+<p>PowerDNS API settings are configured in the <code>config/settings.php</code> file under the <code>pdns_api</code> section.</p>
 <table>
 <thead>
 <tr>
-<th>Legacy variable</th>
-<th>Modern equivalent</th>
+<th>Setting</th>
 <th>Default value</th>
 <th>Description</th>
 <th>Added in version</th>
@@ -6943,42 +6920,36 @@
 </thead>
 <tbody>
 <tr>
-<td>$pdns_api_url</td>
 <td>pdns_api.url</td>
-<td>no default</td>
+<td>''</td>
 <td>The endpoint for establishing a connection to the PowerDNS API</td>
 <td>3.7.0</td>
 </tr>
 <tr>
-<td>$pdns_api_key</td>
 <td>pdns_api.key</td>
-<td>no default</td>
+<td>''</td>
 <td>The authentication key required for establishing a connection with the PowerDNS API</td>
 <td>3.7.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>pdns_api.display_name</td>
 <td>PowerDNS</td>
 <td>PowerDNS name to identify server in the interface</td>
 <td>4.0.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>pdns_api.server_name</td>
 <td>localhost</td>
 <td>PowerDNS server name used in API calls</td>
 <td>4.0.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>pdns_api.timeout</td>
 <td>10</td>
 <td>PowerDNS API request timeout in seconds. GET requests are retried once on transient failures; writes are not retried.</td>
 <td>4.4.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.backend</td>
 <td>sql</td>
 <td>Backend mode: <code>sql</code> (database) or <code>api</code> (API only)</td>
@@ -6986,7 +6957,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="modern-configuration-example">Modern Configuration Example<a class="headerlink" href="#modern-configuration-example" title="Permanent link">¶</a></h2>
+<h2 id="configuration-example">Configuration Example<a class="headerlink" href="#configuration-example" title="Permanent link">¶</a></h2>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="x">return [</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="x">    'pdns_api' =&gt; [</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="x">        'display_name' =&gt; 'Production PowerDNS',</span>
@@ -6996,31 +6967,25 @@
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="x">    ],</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="x">];</span>
 </code></pre></div>
-<h2 id="legacy-configuration-example">Legacy Configuration Example<a class="headerlink" href="#legacy-configuration-example" title="Permanent link">¶</a></h2>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="cp">&lt;?php</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">// PowerDNS API settings</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nv">$pdns_api_url</span> <span class="o">=</span> <span class="s1">'http://localhost:8081'</span><span class="p">;</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nv">$pdns_api_key</span> <span class="o">=</span> <span class="s1">'YOUR_API_KEY'</span><span class="p">;</span>
-</code></pre></div>
 <h2 id="powerdns-server-setup">PowerDNS Server Setup<a class="headerlink" href="#powerdns-server-setup" title="Permanent link">¶</a></h2>
 <p>To enable the API in your PowerDNS configuration, add the following to your PowerDNS configuration file:</p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a># Enable API and webserver
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>api=yes
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>api-key=YOUR_API_KEY
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>webserver=yes
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>webserver-port=8081
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>webserver-address=127.0.0.1  # Restrict to localhost for security
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a># Enable API and webserver
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>api=yes
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>api-key=YOUR_API_KEY
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>webserver=yes
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>webserver-port=8081
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>webserver-address=127.0.0.1  # Restrict to localhost for security
 </code></pre></div>
 <p>For production environments, it's recommended to secure the API with HTTPS:</p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>webserver-port=8081
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>webserver-address=0.0.0.0
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>webserver-allow-from=192.168.0.0/24,127.0.0.1
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>webserver-password=YOUR_PASSWORD
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>webserver-loglevel=none
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>webserver-port=8081
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>webserver-address=0.0.0.0
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>webserver-allow-from=192.168.0.0/24,127.0.0.1
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>webserver-password=YOUR_PASSWORD
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>webserver-loglevel=none
 </code></pre></div>
 <h2 id="testing-connection">Testing Connection<a class="headerlink" href="#testing-connection" title="Permanent link">¶</a></h2>
 <p>You can verify the API connection by running:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: YOUR_API_KEY"</span><span class="w"> </span>http://localhost:8081/api/v1/servers/localhost
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: YOUR_API_KEY"</span><span class="w"> </span>http://localhost:8081/api/v1/servers/localhost
 </code></pre></div>
 <p>If the connection is successful, you should receive a JSON response with server information.</p>
 <h2 id="functionality-enabled-by-api">Functionality Enabled by API<a class="headerlink" href="#functionality-enabled-by-api" title="Permanent link">¶</a></h2>
@@ -7046,34 +7011,34 @@ RRset can be fetched instead of a whole zone. See
 <a href="../../getting-started/requirements/#api-backend-mode">Requirements</a>.</p>
 <h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h3>
 <p>Set <code>dns.backend</code> to <code>api</code> in your <code>config/settings.php</code>:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="x">return [</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="x">    'dns' =&gt; [</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="x">        'backend' =&gt; 'api',</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="x">        'hostmaster' =&gt; 'hostmaster.example.com',</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="x">        'ns1' =&gt; 'ns1.example.com',</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="x">        'ns2' =&gt; 'ns2.example.com',</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="x">    ],</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="x">    'pdns_api' =&gt; [</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="x">        'url' =&gt; 'http://powerdns-server:8081',</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="x">        'key' =&gt; 'YOUR_API_KEY',</span>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="x">        'server_name' =&gt; 'localhost',</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="x">    ],</span>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="x">    // Poweradmin's own database (still required)</span>
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="x">    'db_host' =&gt; 'localhost',</span>
-<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="x">    'db_port' =&gt; 3306,</span>
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="x">    'db_user' =&gt; 'poweradmin',</span>
-<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="x">    'db_pass' =&gt; 'password',</span>
-<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="x">    'db_name' =&gt; 'poweradmin',</span>
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="x">    'db_type' =&gt; 'mysql',</span>
-<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="x">    // PowerDNS database settings are NOT needed in API mode</span>
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="x">];</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="x">return [</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="x">    'dns' =&gt; [</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="x">        'backend' =&gt; 'api',</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="x">        'hostmaster' =&gt; 'hostmaster.example.com',</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="x">        'ns1' =&gt; 'ns1.example.com',</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="x">        'ns2' =&gt; 'ns2.example.com',</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="x">    ],</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="x">    'pdns_api' =&gt; [</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="x">        'url' =&gt; 'http://powerdns-server:8081',</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="x">        'key' =&gt; 'YOUR_API_KEY',</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="x">        'server_name' =&gt; 'localhost',</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="x">    ],</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="x">    // Poweradmin's own database (still required)</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="x">    'db_host' =&gt; 'localhost',</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="x">    'db_port' =&gt; 3306,</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="x">    'db_user' =&gt; 'poweradmin',</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="x">    'db_pass' =&gt; 'password',</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="x">    'db_name' =&gt; 'poweradmin',</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="x">    'db_type' =&gt; 'mysql',</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="x">    // PowerDNS database settings are NOT needed in API mode</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="x">];</span>
 </code></pre></div>
 <p><strong>Required:</strong> when <code>dns.backend</code> is <code>api</code>, both <code>pdns_api.url</code> and <code>pdns_api.key</code> must be set. Otherwise Poweradmin fails on the first DNS operation with:</p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>dns.backend is set to "api" but pdns_api.url and/or pdns_api.key are not configured.
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Set both values or change dns.backend to "sql".
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>dns.backend is set to "api" but pdns_api.url and/or pdns_api.key are not configured.
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Set both values or change dns.backend to "sql".
 </code></pre></div>
 <p>There is no SQL fallback, so writes can't bypass the API path by accident.</p>
 <h3 id="new-installation-with-api-backend">New Installation with API Backend<a class="headerlink" href="#new-installation-with-api-backend" title="Permanent link">¶</a></h3>
@@ -7118,7 +7083,7 @@ RRset can be fetched instead of a whole zone. See
 </ul>
 <h4 id="manual-sync-v440">Manual Sync (v4.4.0+)<a class="headerlink" href="#manual-sync-v440" title="Permanent link">¶</a></h4>
 <p>If you've just created zones in PowerDNS through <code>pdnsutil</code> or another tool and don't want to wait for the next scheduled sync, the Forward Zones page now has a <strong>Sync from PowerDNS</strong> button. Clicking it triggers an immediate sync against the PowerDNS API.</p>
-<p>The action requires a CSRF-protected POST, so it's safe to expose to non-admin zone owners. The button respects the same throttle as the automatic sync internally - if a sync ran very recently, the manual press becomes a no-op rather than a double-reconciliation.</p>
+<p>The button is only shown to ueberusers, and the server re-checks that permission when the CSRF-protected POST arrives. Unlike the automatic sync, the manual press is not throttled: it always runs a full reconciliation.</p>
 <h4 id="what-happens-when-the-api-is-down">What Happens When the API is Down<a class="headerlink" href="#what-happens-when-the-api-is-down" title="Permanent link">¶</a></h4>
 <p>If PowerDNS becomes unreachable, sync stops but the dashboard does not throw a stack trace at users. Instead:</p>
 <ul>
@@ -7128,10 +7093,10 @@ RRset can be fetched instead of a whole zone. See
 </ul>
 <h3 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">¶</a></h3>
 <p>For Docker deployments, set the backend via environment variable:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">PA_DNS_BACKEND</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">PA_PDNS_API_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://powerdns:8081</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">PA_PDNS_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">your-api-key</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">PA_DNS_BACKEND</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">PA_PDNS_API_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://powerdns:8081</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">PA_PDNS_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">your-api-key</span>
 </code></pre></div>
 <h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">¶</a></h2>
 <ul>

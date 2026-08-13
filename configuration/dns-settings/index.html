@@ -2025,21 +2025,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#modern-configuration-example" class="md-nav__link">
+  <a href="#configuration-example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Modern Configuration Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#legacy-configuration-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Legacy Configuration Example
+        Configuration Example
       
     </span>
   </a>
@@ -6611,21 +6600,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#modern-configuration-example" class="md-nav__link">
+  <a href="#configuration-example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Modern Configuration Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#legacy-configuration-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Legacy Configuration Example
+        Configuration Example
       
     </span>
   </a>
@@ -6658,13 +6636,12 @@
 
 
 <h1 id="dns-settings">DNS Settings<a class="headerlink" href="#dns-settings" title="Permanent link">¶</a></h1>
-<p>DNS settings in Poweradmin can be configured through the <code>config/settings.php</code> file under the <code>dns</code> section or through individual variables in the legacy configuration format.</p>
+<p>DNS settings in Poweradmin are configured through the <code>config/settings.php</code> file under the <code>dns</code> section.</p>
 <h2 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">¶</a></h2>
 <table>
 <thead>
 <tr>
-<th>Legacy variable</th>
-<th>Modern equivalent</th>
+<th>Setting</th>
 <th>Default value</th>
 <th>Description</th>
 <th>Added in version</th>
@@ -6672,226 +6649,189 @@
 </thead>
 <tbody>
 <tr>
-<td>$dns_hostmaster</td>
 <td>dns.hostmaster</td>
-<td>no default</td>
+<td>hostmaster.example.com</td>
 <td>The default email address to use for the SOA record (e.g., 'hostmaster.example.net').</td>
 <td></td>
 </tr>
 <tr>
-<td>$dns_ns1</td>
 <td>dns.ns1</td>
-<td>no default</td>
+<td>ns1.example.com</td>
 <td>The default primary nameserver.</td>
 <td></td>
 </tr>
 <tr>
-<td>$dns_ns2</td>
 <td>dns.ns2</td>
-<td>no default</td>
+<td>ns2.example.com</td>
 <td>The default secondary nameserver.</td>
 <td></td>
 </tr>
 <tr>
-<td>$dns_ns3</td>
 <td>dns.ns3</td>
-<td>no default</td>
+<td>''</td>
 <td>The third nameserver.</td>
 <td></td>
 </tr>
 <tr>
-<td>$dns_ns4</td>
 <td>dns.ns4</td>
-<td>no default</td>
+<td>''</td>
 <td>The fourth nameserver.</td>
 <td></td>
 </tr>
 <tr>
-<td>$dns_ttl</td>
 <td>dns.ttl</td>
 <td>86400</td>
 <td>The default TTL for records (in seconds).</td>
 <td></td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.ttl_reverse</td>
 <td>null</td>
 <td>Default TTL for PTR records in reverse zones. When <code>null</code>, falls back to <code>dns.ttl</code>. When configured, the value pre-fills the TTL field on the reverse-zone add-record form, applies to batch PTR creation, and is used for PTRs auto-created alongside a forward record (the matched forward record's TTL is overridden). The same default is applied server-side by the record APIs, RRSets, bulk records, and the DNS wizard when the request omits a <code>ttl</code> field.</td>
 <td>4.4.0 (UI), 4.5.0 (APIs + wizard)</td>
 </tr>
 <tr>
-<td>$dns_soa</td>
-<td>(see below)</td>
-<td>28800 7200 604800 86400</td>
-<td>SOA settings for refresh, retry, expire and minimum</td>
-<td>2.2.3</td>
-</tr>
-<tr>
-<td>-</td>
 <td>dns.soa_refresh</td>
 <td>28800</td>
 <td>SOA refresh time</td>
 <td>2.2.3</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.soa_retry</td>
 <td>7200</td>
 <td>SOA retry time</td>
 <td>2.2.3</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.soa_expire</td>
 <td>604800</td>
 <td>SOA expire time</td>
 <td>2.2.3</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.soa_minimum</td>
 <td>86400</td>
 <td>SOA minimum TTL</td>
 <td>2.2.3</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.soa_edit</td>
 <td>''</td>
 <td><code>SOA-EDIT</code> metadata applied to newly created zones (e.g. <code>INCEPTION-INCREMENT</code>). Controls the serial PowerDNS serves for DNSSEC-signed zones. Empty = not set.</td>
 <td>4.5.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.soa_edit_api</td>
 <td>''</td>
 <td><code>SOA-EDIT-API</code> metadata applied to newly created zones (e.g. <code>EPOCH</code>). Controls how PowerDNS updates the serial on API edits; pre-selects the add-zone serial policy selector. <code>OFF</code> disables the policy explicitly, empty = server default.</td>
 <td>4.5.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.soa_edit_api_options</td>
 <td>null</td>
 <td><code>SOA-EDIT-API</code> values offered in the add-zone selector and the zone metadata editor (also applies to <code>SOA-EDIT-DNSUPDATE</code>). Null = all values, a list (e.g. <code>['DEFAULT', 'EPOCH', 'OFF']</code>) restricts the choice, an empty list hides the selector and the metadata kinds.</td>
 <td>4.5.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.soa_edit_options</td>
 <td>null</td>
 <td><code>SOA-EDIT</code> values offered in the zone metadata editor. Null = all values, a list restricts the choice, an empty list hides the kind.</td>
 <td>4.5.0</td>
 </tr>
 <tr>
-<td>$dns_strict_tld_check</td>
 <td>dns.strict_tld_check</td>
 <td>false</td>
 <td>If enabled (true), allow official TLDs only.</td>
 <td></td>
 </tr>
 <tr>
-<td>$dns_top_level_tld_check</td>
 <td>dns.top_level_tld_check</td>
 <td>false</td>
 <td>Don't allow creation of top-level TLDs when true.</td>
 <td>2.1.7</td>
 </tr>
 <tr>
-<td>$dns_third_level_check</td>
 <td>dns.third_level_check</td>
 <td>false</td>
 <td>Don't allow creation of third-level domains when true.</td>
 <td>2.1.7</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.parent_zone_ownership_check</td>
 <td>true</td>
 <td>Block creating a zone that overlaps an existing zone owned by another user, in either direction (a subdomain of, or a parent of, the other zone). Covers forward and reverse zones. Ueberusers are exempt.</td>
 <td>4.5.0</td>
 </tr>
 <tr>
-<td>$dns_txt_auto_quote</td>
 <td>dns.txt_auto_quote</td>
 <td>false</td>
 <td>Automatically quote TXT records when true.</td>
 <td>3.9.2</td>
 </tr>
 <tr>
-<td>$iface_zone_type_default</td>
 <td>dns.zone_type_default</td>
 <td>MASTER</td>
 <td>Default zone type when creating new zones.</td>
 <td>2.1.9</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.default_zone_template</td>
 <td>null</td>
 <td>Default zone template pre-selected on the add-zone form. Accepts a template id (int) or name (string). The DB-backed default (set in the template list UI) wins when both are present.</td>
 <td>4.4.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.zone_ownership_mode</td>
 <td>both</td>
 <td>Controls how zone ownership can be assigned on creation and ownership pages. Options: <code>both</code>, <code>users_only</code>, <code>groups_only</code>.</td>
 <td>4.4.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.sync_zone_owner_to_account</td>
 <td>false</td>
 <td>Mirror the zone owner's username into the PowerDNS <code>account</code> field on zone creation and ownership changes. With multiple owners, the oldest owner is used; a zone left without a direct owner gets an empty account. When enabled, this overwrites account values set through the API or external tools whenever ownership changes.</td>
 <td>4.4.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.prevent_duplicate_ptr</td>
 <td>true</td>
 <td>Prevent creation of multiple PTR records for same IP in batch operations.</td>
 <td>4.0.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.domain_record_types</td>
 <td>null</td>
 <td>Custom record types for domain zones (null uses defaults).</td>
 <td>4.0.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.reverse_record_types</td>
 <td>null</td>
 <td>Custom record types for reverse zones (null uses defaults).</td>
 <td>4.0.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.top_record_types</td>
 <td>null</td>
 <td>Pin selected record types to the top of record type selectors, in the given order. Null = alphabetical only.</td>
 <td>4.4.0</td>
 </tr>
 <tr>
-<td>-</td>
 <td>dns.custom_tlds</td>
 <td>[]</td>
 <td>Custom TLDs to allow in zone names (when <code>strict_tld_check</code> is on) and in CNAME targets (e.g., <code>['dn42', 'home']</code>).</td>
-<td>3.x</td>
+<td>4.1.0</td>
 </tr>
 </tbody>
 </table>
 <h2 id="soa-record-settings">SOA Record Settings<a class="headerlink" href="#soa-record-settings" title="Permanent link">¶</a></h2>
-<p>In the modern configuration format, the SOA settings are configured as individual parameters:</p>
+<p>The SOA settings are configured as individual parameters:</p>
 <ul>
 <li><strong>refresh</strong>: The time interval before the zone should be refreshed. Default: <code>28800</code> (8 hours)</li>
 <li><strong>retry</strong>: The time interval that should elapse before a failed refresh should be retried. Default: <code>7200</code> (2 hours)</li>
 <li><strong>expire</strong>: The upper limit on the time interval that can elapse before the zone is no longer authoritative. Default: <code>604800</code> (1 week)</li>
 <li><strong>minimum</strong>: The negative result TTL. Default: <code>86400</code> (24 hours)</li>
 </ul>
-<p>In the legacy format, these are combined in the <code>$dns_soa</code> variable as a space-separated string.</p>
 <h2 id="record-type-configuration">Record Type Configuration<a class="headerlink" href="#record-type-configuration" title="Permanent link">¶</a></h2>
 <p>You can customize which record types are available in the zone editing interface:</p>
 <ul>
@@ -6977,7 +6917,7 @@
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="x">    'parent_zone_ownership_check' =&gt; false,</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="x">],</span>
 </code></pre></div>
-<h2 id="modern-configuration-example">Modern Configuration Example<a class="headerlink" href="#modern-configuration-example" title="Permanent link">¶</a></h2>
+<h2 id="configuration-example">Configuration Example<a class="headerlink" href="#configuration-example" title="Permanent link">¶</a></h2>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">return [</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    'dns' =&gt; [</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">        'hostmaster' =&gt; 'hostmaster.example.com',</span>
@@ -7006,22 +6946,6 @@
 <a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="x">        'custom_tlds' =&gt; [], // Custom TLDs for CNAME validation</span>
 <a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="x">    ],</span>
 <a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="x">];</span>
-</code></pre></div>
-<h2 id="legacy-configuration-example">Legacy Configuration Example<a class="headerlink" href="#legacy-configuration-example" title="Permanent link">¶</a></h2>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="cp">&lt;?php</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1">// DNS settings</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nv">$dns_hostmaster</span> <span class="o">=</span> <span class="s1">'hostmaster.example.com'</span><span class="p">;</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nv">$dns_ns1</span> <span class="o">=</span> <span class="s1">'ns1.example.com'</span><span class="p">;</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nv">$dns_ns2</span> <span class="o">=</span> <span class="s1">'ns2.example.com'</span><span class="p">;</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nv">$dns_ns3</span> <span class="o">=</span> <span class="s1">'ns3.example.com'</span><span class="p">;</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nv">$dns_ns4</span> <span class="o">=</span> <span class="s1">'ns4.example.com'</span><span class="p">;</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="nv">$dns_ttl</span> <span class="o">=</span> <span class="mi">86400</span><span class="p">;</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nv">$dns_soa</span> <span class="o">=</span> <span class="s1">'28800 7200 604800 86400'</span><span class="p">;</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="nv">$dns_strict_tld_check</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="nv">$dns_top_level_tld_check</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="nv">$dns_third_level_check</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="nv">$dns_txt_auto_quote</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="nv">$iface_zone_type_default</span> <span class="o">=</span> <span class="s1">'MASTER'</span><span class="p">;</span>
 </code></pre></div>
 
 

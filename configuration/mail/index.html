@@ -6894,7 +6894,7 @@
 <li><strong>from</strong>: Default "from" email address. Default: <code>poweradmin@example.com</code></li>
 <li><strong>from_name</strong>: Default "from" name. Default: empty</li>
 <li><strong>return_path</strong>: Default "Return-Path" address for bounce handling. Default: <code>poweradmin@example.com</code></li>
-<li><strong>transport</strong>: Transport method. Options: 'smtp', 'sendmail', 'php'. Default: <code>php</code></li>
+<li><strong>transport</strong>: Transport method. Options: 'smtp', 'sendmail', 'php', 'logger' (writes messages to the log instead of sending, see <a href="#email-debug-logging">Email Debug Logging</a>). Default: <code>php</code></li>
 </ul>
 <h3 id="smtp-settings">SMTP Settings<a class="headerlink" href="#smtp-settings" title="Permanent link">¶</a></h3>
 <p>SMTP settings live as flat keys under <code>mail</code> (they are not nested in an <code>smtp</code> subarray):</p>
@@ -6908,8 +6908,11 @@
 </ul>
 <h3 id="sendmail-settings">Sendmail Settings<a class="headerlink" href="#sendmail-settings" title="Permanent link">¶</a></h3>
 <ul>
-<li><strong>sendmail_path</strong>: Path to sendmail binary. Default: <code>/usr/sbin/sendmail -bs</code></li>
+<li><strong>sendmail_path</strong>: Path to sendmail binary, including arguments. Default: <code>/usr/sbin/sendmail -t -i</code></li>
 </ul>
+<blockquote>
+<p><strong>Warning:</strong> Keep the <code>-t</code> flag (it makes sendmail read recipients from the message headers). <code>-bs</code> puts sendmail into SMTP mode, where a piped message is silently dropped and no mail is delivered.</p>
+</blockquote>
 <h2 id="example-configuration">Example Configuration<a class="headerlink" href="#example-configuration" title="Permanent link">¶</a></h2>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="x">return [</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="x">    'mail' =&gt; [</span>

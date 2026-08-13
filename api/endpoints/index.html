@@ -6882,17 +6882,17 @@ instance for exploration.</p>
 <tr>
 <td><code>POST</code></td>
 <td><code>/zones/{id}/records/bulk</code></td>
-<td>Bulk create records (v4.2.0+)</td>
+<td>Bulk create records</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
 <td><code>/zones/{id}/rrsets</code></td>
-<td>List RRsets (v4.2.0+)</td>
+<td>List RRsets</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
 <td><code>/zones/{id}/rrsets/{name}/{type}</code></td>
-<td>Get a specific RRset (v4.2.0+)</td>
+<td>Get a specific RRset</td>
 </tr>
 </tbody>
 </table>
@@ -7179,14 +7179,20 @@ similar but the response envelope is less consistent and several v2 features
 See <a href="../../configuration/api/#api-v1-endpoints-legacy-removed-in-450">API Configuration</a> for
 the v1 endpoint list, and migrate to v2 before upgrading to 4.5.0.</p>
 <h2 id="pagination">Pagination<a class="headerlink" href="#pagination" title="Permanent link">¶</a></h2>
-<p>List endpoints for zones and users accept <code>page</code> and <code>limit</code> query
+<p>List endpoints for zones and users accept <code>page</code> and <code>per_page</code> query
 parameters:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>GET<span class="w"> </span>/api/v2/zones?page<span class="o">=</span><span class="m">1</span><span class="p">&amp;</span><span class="nv">limit</span><span class="o">=</span><span class="m">50</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>GET<span class="w"> </span>/api/v2/zones?page<span class="o">=</span><span class="m">1</span><span class="p">&amp;</span><span class="nv">per_page</span><span class="o">=</span><span class="m">50</span>
 </code></pre></div>
-<p>Omitting both returns all results (added in v4.0.1). Paginated responses
-include a <code>pagination</code> block:</p>
+<p>Omitting <code>per_page</code> returns all results. <code>page</code> is only read when <code>per_page</code> is
+given, and <code>per_page</code> is capped at 10000.</p>
+<blockquote>
+<p><strong>Warning:</strong> The parameter is <code>per_page</code>, not <code>limit</code>. An unrecognised
+parameter is ignored rather than rejected, so <code>?limit=50</code> silently returns
+every row.</p>
+</blockquote>
+<p>Paginated responses include a <code>pagination</code> block alongside <code>data</code>:</p>
 <div class="language-json highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="nt">"page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"limit"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="nt">"pages"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"per_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="nt">"last_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">}</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="p">}</span>
 </code></pre></div>
 <h2 id="related-documentation">Related documentation<a class="headerlink" href="#related-documentation" title="Permanent link">¶</a></h2>

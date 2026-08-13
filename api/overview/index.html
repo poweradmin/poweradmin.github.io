@@ -6652,18 +6652,17 @@ request, where v1 requests were exempt.</p>
 <p>On error:</p>
 <div class="language-json highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">"error"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"VALIDATION_ERROR"</span><span class="p">,</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Invalid record type"</span><span class="p">,</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"field"</span><span class="p">:</span><span class="w"> </span><span class="s2">"type"</span><span class="p">,</span><span class="w"> </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"INVALID"</span><span class="w"> </span><span class="p">}</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="p">}</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">}</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Invalid record type"</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">}</span>
 </code></pre></div>
+<p>The error message is a plain string at the top level. There is no nested <code>error</code> object and no
+machine-readable error code, so branch on the HTTP status rather than on a code in the body.</p>
 <p>Paginated list endpoints add a <code>pagination</code> block alongside <code>data</code>.</p>
 <h2 id="what-the-api-can-do">What the API can do<a class="headerlink" href="#what-the-api-can-do" title="Permanent link">¶</a></h2>
 <ul>
 <li><strong>Zones</strong>: list, create, update, delete; manage owners (v4.2.0+); list RRsets</li>
-<li><strong>Records</strong>: list per zone, create, update, delete, bulk create (v4.2.0+)</li>
+<li><strong>Records</strong>: list per zone, create, update, delete, bulk create</li>
 <li><strong>Users</strong>: full CRUD, list groups</li>
 <li><strong>Groups</strong>: full CRUD, manage members and zone assignments (v4.2.0+)</li>
 <li><strong>Permission templates</strong>: full CRUD</li>
@@ -6682,13 +6681,46 @@ explorer live at <code>/api/docs</code> on any instance with <code>api.docs_enab
 <p>If an endpoint you need is missing, please open an issue on the
 <a href="https://github.com/poweradmin/poweradmin/issues">GitHub repository</a>.</p>
 <h2 id="companion-projects">Companion projects<a class="headerlink" href="#companion-projects" title="Permanent link">¶</a></h2>
-<p>Two officially maintained projects already drive the Poweradmin API for you:</p>
-<ul>
-<li><a href="https://github.com/poweradmin/terraform-provider-poweradmin">terraform-provider-poweradmin</a> -
-  manage zones, records, users, and templates from Terraform.</li>
-<li><a href="https://github.com/poweradmin/external-dns-poweradmin-webhook">external-dns-poweradmin-webhook</a> -
-  use Poweradmin as a backend for Kubernetes ExternalDNS.</li>
-</ul>
+<p>Four officially maintained integrations drive the Poweradmin API for you, so check these before
+writing your own client:</p>
+<table>
+<thead>
+<tr>
+<th>Project</th>
+<th>Use it for</th>
+<th>Distributed as</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/poweradmin/terraform-provider-poweradmin">terraform-provider-poweradmin</a></td>
+<td>Managing zones, records, RRsets, users, groups and group zone assignments, permissions and zone templates as Terraform or OpenTofu resources</td>
+<td>Terraform Registry</td>
+</tr>
+<tr>
+<td><a href="https://github.com/poweradmin/external-dns-poweradmin-webhook">external-dns-poweradmin-webhook</a></td>
+<td>Using Poweradmin as a backend for Kubernetes ExternalDNS, so records follow your Ingresses and Services</td>
+<td>Container image</td>
+</tr>
+<tr>
+<td><a href="https://github.com/poweradmin/cert-manager-webhook-poweradmin">cert-manager-webhook-poweradmin</a></td>
+<td>DNS-01 ACME challenges in Kubernetes, for automated Let's Encrypt issuance through cert-manager</td>
+<td>Helm chart, Artifact Hub</td>
+</tr>
+<tr>
+<td><a href="https://github.com/poweradmin/certbot-dns-poweradmin">certbot-dns-poweradmin</a></td>
+<td>DNS-01 ACME challenges from Certbot outside Kubernetes</td>
+<td>PyPI</td>
+</tr>
+</tbody>
+</table>
+<p>Each project publishes a compatibility table mapping its own releases to the Poweradmin versions it
+supports. Check it before upgrading either side.</p>
+<blockquote>
+<p><strong>Note:</strong> These integrations target the released 4.x line. Older versions of some of them can
+still be configured against API v1, which is removed in 4.5.0, so move to a v2-capable release
+before upgrading Poweradmin.</p>
+</blockquote>
 <h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="../authentication/">Authentication</a> - API keys, Basic Auth, request headers</li>

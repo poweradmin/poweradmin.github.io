@@ -6682,7 +6682,7 @@ maintain a dedicated admin interface without needing to install PowerDNS on the 
 <li>A server running PowerDNS (referred to as "DNS server")</li>
 <li>MySQL/MariaDB, PostgreSQL, or SQLite database access from the admin server to the PowerDNS database</li>
 <li>Network connectivity between both servers</li>
-<li>PHP 7.4+ with required extensions on the admin server</li>
+<li>PHP 8.2 or newer with the required extensions on the admin server</li>
 <li>Web server software (Apache, Nginx, etc.) on the admin server</li>
 </ul>
 <h2 id="architecture-overview">Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permanent link">¶</a></h2>
@@ -6780,8 +6780,10 @@ maintain a dedicated admin interface without needing to install PowerDNS on the 
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="x">    'debug' =&gt; false,  // Set to true for troubleshooting</span>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="x">],</span>
 </code></pre></div>
-<p>Note: The PowerDNS API method is strongly recommended over the legacy pdnsutil method. When configured with the API
-settings above, Poweradmin will automatically use the API for DNSSEC operations.</p>
+<blockquote>
+<p><strong>Note:</strong> DNSSEC operations go through the PowerDNS API. There is no command-line fallback, so if
+<code>pdns_api.url</code> and <code>pdns_api.key</code> are not set, enabling <code>dnssec</code> has no effect.</p>
+</blockquote>
 <h2 id="step-5-network-security-considerations">Step 5: Network Security Considerations<a class="headerlink" href="#step-5-network-security-considerations" title="Permanent link">¶</a></h2>
 <p>Since you're running Poweradmin on a separate server:</p>
 <ol>

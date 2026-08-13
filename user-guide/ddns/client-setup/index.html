@@ -6882,7 +6882,7 @@
 <li><code>myip</code> or <code>ip</code> - IPv4 address(es), comma-separated</li>
 <li><code>myip6</code> or <code>ip6</code> - IPv6 address(es), comma-separated</li>
 <li><code>dualstack_update</code> - Set to 1 to update both IPv4 and IPv6</li>
-<li><code>verbose</code> - Set to 1 to receive human-readable response messages</li>
+<li><code>verbose</code> - Include this query parameter to receive human-readable response messages. Only its presence is checked, so <code>verbose=0</code> enables verbose output too</li>
 </ul>
 <h3 id="response-codes">Response Codes<a class="headerlink" href="#response-codes" title="Permanent link">¶</a></h3>
 <p>Without <code>verbose=1</code> the endpoint returns one of these short codes followed by a newline:</p>
@@ -6896,15 +6896,19 @@
 <tbody>
 <tr>
 <td><code>good &lt;ip&gt;</code></td>
-<td>Update accepted. The applied IPv4 (or IPv6) address follows. Poweradmin returns <code>good</code> for both new updates and no-op updates against unchanged records (dyndns2's optional <code>nochg</code> code is not emitted separately).</td>
+<td>Update accepted and a record was written. The applied IPv4 (or IPv6) address follows.</td>
+</tr>
+<tr>
+<td><code>nochg &lt;ip&gt;</code></td>
+<td>The record already held the supplied address, so nothing changed.</td>
 </tr>
 <tr>
 <td><code>nohost</code></td>
-<td>Hostname does not exist in any zone you own.</td>
+<td>Hostname is not contained in any zone you own. This is also what you get when you authenticate successfully but own no zone matching the hostname.</td>
 </tr>
 <tr>
 <td><code>!yours</code></td>
-<td>You authenticated, but you do not own a zone containing this hostname.</td>
+<td>The owning zone was found, but there are no matching A/AAAA records to update, or the zone is read-only (Secondary or Consumer).</td>
 </tr>
 <tr>
 <td><code>notfqdn</code></td>
@@ -6912,11 +6916,7 @@
 </tr>
 <tr>
 <td><code>badauth</code></td>
-<td>Missing credentials.</td>
-</tr>
-<tr>
-<td><code>badauth2</code></td>
-<td>Credentials supplied but did not validate.</td>
+<td>Authentication failed. Covers missing credentials, invalid credentials, an account without the DDNS permissions, and a temporarily locked-out login.</td>
 </tr>
 <tr>
 <td><code>badagent</code></td>
@@ -6928,6 +6928,9 @@
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p><strong>Note:</strong> These codes changed in 4.4.0 and 4.5.0. Poweradmin 4.3.x and earlier returned <code>good</code> for no-op updates and split authentication failures into <code>badauth</code> (no username supplied) and <code>badauth2</code> (credentials rejected). From 4.4.0 onwards unchanged updates return <code>nochg</code> and every authentication failure returns <code>badauth</code>; <code>badauth2</code> no longer exists. The trailing address on <code>good</code> / <code>nochg</code> was added in 4.5.0.</p>
+</blockquote>
 <p>When debugging, always append <code>&amp;verbose=1</code> so you get the readable equivalent instead of a two-letter code.</p>
 <h3 id="special-values">Special Values<a class="headerlink" href="#special-values" title="Permanent link">¶</a></h3>
 <p>You can use <code>whatismyip</code> for the IP parameters to automatically detect your address:</p>
@@ -6944,13 +6947,13 @@
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Update both IPv4 and IPv6 with cleanup</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>curl<span class="w"> </span><span class="s2">"https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1,192.0.2.2&amp;myip6=2001:db8::1,2001:db8::2&amp;dualstack_update=1"</span>
 </code></pre></div>
-<p>If any of these return a short error code like <code>!yours</code> or <code>badauth2</code>, re-run the same URL with <code>&amp;verbose=1</code> appended to get a readable message.</p>
+<p>If any of these return a short error code like <code>!yours</code> or <code>badauth</code>, re-run the same URL with <code>&amp;verbose=1</code> appended to get a readable message.</p>
 <p>When using multiple IPs:</p>
 <ul>
 <li>Omitted record types are preserved</li>
 <li>Use <code>dualstack_update=1</code> to clean up both A and AAAA records</li>
 <li>Records not included in the update are automatically removed</li>
-<li>Changes are atomic and maintain zone consistency</li>
+<li>Records are inserted and deleted one statement at a time - the update is not wrapped in a database transaction</li>
 </ul>
 <h2 id="using-the-shell-script">Using the Shell Script<a class="headerlink" href="#using-the-shell-script" title="Permanent link">¶</a></h2>
 <ol>

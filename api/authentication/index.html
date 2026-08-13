@@ -6765,8 +6765,12 @@ Basic Auth with a Poweradmin username and password:</p>
 <ul>
 <li>The password travels with every request - HTTPS is mandatory</li>
 <li>Revoking access means changing the user's password (which affects the UI too)</li>
-<li>MFA-enabled accounts are not supported over Basic Auth</li>
+<li>Basic Auth does not prompt for a second factor. An account with MFA enabled
+  authenticates over Basic Auth with its username and password alone, so
+  enabling <code>api.basic_auth_enabled</code> gives every account a path that skips MFA.</li>
 </ul>
+<p>Account lockout still applies: repeated failures over Basic Auth count towards
+the same <code>security.account_lockout</code> thresholds as the browser login.</p>
 <p>For anything beyond exploration, prefer API keys.</p>
 <h2 id="required-request-headers">Required request headers<a class="headerlink" href="#required-request-headers" title="Permanent link">¶</a></h2>
 <table>
@@ -6790,8 +6794,8 @@ Basic Auth with a Poweradmin username and password:</p>
 </tr>
 <tr>
 <td><code>Content-Type: application/json</code></td>
-<td>All <code>POST</code>, <code>PUT</code> requests</td>
-<td>Required for body parsing</td>
+<td><code>POST</code>, <code>PUT</code> requests</td>
+<td>Recommended. The body is parsed as JSON when it looks like JSON even without it, and form-encoded data is accepted as a fallback</td>
 </tr>
 <tr>
 <td><code>Accept: application/json</code></td>

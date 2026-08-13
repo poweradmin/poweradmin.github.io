@@ -6793,7 +6793,12 @@
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="x">]</span>
 </code></pre></div>
 <h3 id="default-behavior">Default Behavior<a class="headerlink" href="#default-behavior" title="Permanent link">¶</a></h3>
-<p>By default, both settings are set to <code>null</code>, which means Poweradmin will display all supported record types for the respective zone type.</p>
+<p>By default, both settings are set to <code>null</code>, which means Poweradmin uses its built-in default sets - not every type it knows about:</p>
+<ul>
+<li><strong>Forward zones</strong>: the common types (A, AAAA, CNAME, MX, NS, SOA, SRV, TXT) plus a larger set of less common but valid types (CAA, DNAME, HTTPS, NAPTR, SSHFP, SVCB, TLSA, URI and others). DNSSEC types (DNSKEY, DS, CDS, CDNSKEY, RRSIG, NSEC, NSEC3, NSEC3PARAM, ZONEMD) are merged in only when <code>dnssec.enabled</code> is true.</li>
+<li><strong>Reverse zones</strong>: only six types - CNAME, LOC, NS, PTR, SOA, TXT.</li>
+</ul>
+<p>Types the connected PowerDNS does not support are filtered out.</p>
 <h2 id="customizing-domain-forward-zone-record-types">Customizing Domain (Forward) Zone Record Types<a class="headerlink" href="#customizing-domain-forward-zone-record-types" title="Permanent link">¶</a></h2>
 <p>To customize which record types are available when editing forward zones:</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="x">'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT', 'SRV', 'CAA'],</span>
@@ -6820,7 +6825,10 @@
 <li>The setting applies to every record type selector in the UI (Add Record, Edit Record, Bulk Add, etc.).</li>
 </ul>
 <h2 id="supported-record-types">Supported Record Types<a class="headerlink" href="#supported-record-types" title="Permanent link">¶</a></h2>
-<p>Poweradmin supports the following DNS record types that can be included in your customized lists:</p>
+<p>Poweradmin knows roughly 60 record types, matching the PowerDNS
+<a href="https://doc.powerdns.com/authoritative/appendices/types.html">supported types</a>. Any of them can be named in
+<code>domain_record_types</code> or <code>reverse_record_types</code>. The table below is a selection of the most commonly used ones,
+not the full list:</p>
 <table>
 <thead>
 <tr>
@@ -6904,6 +6912,11 @@
 <td>TLSA</td>
 <td>TLS Authentication association</td>
 <td>Domain zones</td>
+</tr>
+<tr>
+<td>LOC</td>
+<td>Geographical location of the host</td>
+<td>Both (part of the default reverse-zone set)</td>
 </tr>
 </tbody>
 </table>

@@ -7129,16 +7129,16 @@
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="x">    // ...</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="x">    'groups_attribute' =&gt; 'memberOf',</span>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="x">    'permission_template_mapping' =&gt; [</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="x">        'dns-admins' =&gt; 'Administrator',</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="x">        'cn=dns-admins,ou=groups,dc=example,dc=com' =&gt; 'Administrator',</span>
 <a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="x">        'cn=dns-operators,ou=groups,dc=example,dc=com' =&gt; 'Viewer',</span>
 <a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="x">    ],</span>
 <a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="x">    'group_mapping' =&gt; [</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="x">        'dns-admins' =&gt; 'Administrators',</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="x">        'dns-operators' =&gt; ['Zone Managers', 'Editors'],  // 1:n mapping</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="x">        'cn=dns-admins,ou=groups,dc=example,dc=com' =&gt; 'Administrators',</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="x">        'cn=dns-operators,ou=groups,dc=example,dc=com' =&gt; ['Zone Managers', 'Editors'],  // 1:n mapping</span>
 <a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="x">    ],</span>
 <a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="x">],</span>
 </code></pre></div>
-<p>Mapping keys match a group value exactly (full DN) or the first RDN value of a DN, so <code>dns-admins</code> matches <code>cn=dns-admins,ou=groups,dc=example,dc=com</code>. Semantics mirror the <a href="../oidc/">OIDC</a> settings:</p>
+<p>Mapping keys must match a group value exactly. When <code>groups_attribute</code> returns DNs (as <code>memberOf</code> does), the key has to be the full DN: <code>dns-admins</code> does <strong>not</strong> match <code>cn=dns-admins,ou=groups,dc=example,dc=com</code>. Matching on the first RDN alone would discard the OU and DC that distinguish two identically named groups, so it is deliberately not supported. Semantics mirror the <a href="../oidc/">OIDC</a> settings:</p>
 <ul>
 <li><code>permission_template_mapping</code> assigns <strong>one</strong> permission template per user; the first matching entry wins.</li>
 <li><code>group_mapping</code> assigns <strong>multiple</strong> Poweradmin groups; memberships are re-evaluated (added and removed) on every login.</li>
@@ -7159,13 +7159,14 @@
 <a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="x">    // only PA_users members may log in</span>
 <a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="x">    'search_filter' =&gt; '(memberOf=cn=PA_users,ou=groups,dc=company,dc=com)',</span>
 <a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="x">    'auto_provision' =&gt; true,</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="x">    'permission_template_mapping' =&gt; [</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="x">        'PA_users' =&gt; 'Administrator',</span>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="x">    ],</span>
-<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="x">    'group_mapping' =&gt; [</span>
-<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="x">        'PA_users' =&gt; 'DNS Admins',</span>
-<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="x">    ],</span>
-<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="x">],</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="x">    // mapping keys are the full DN as returned by memberOf, not the group name</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="x">    'permission_template_mapping' =&gt; [</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="x">        'cn=PA_users,ou=groups,dc=company,dc=com' =&gt; 'Administrator',</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="x">    ],</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="x">    'group_mapping' =&gt; [</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="x">        'cn=PA_users,ou=groups,dc=company,dc=com' =&gt; 'DNS Admins',</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="x">    ],</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="x">],</span>
 </code></pre></div>
 <p>Group members are created in Poweradmin on their first login with the mapped permission template and group memberships; nobody outside <code>PA_users</code> can authenticate. On Active Directory, nested groups can be matched in the login filter with the matching-rule-in-chain syntax: <code>(memberOf:1.2.840.113556.1.4.1941:=cn=PA_users,ou=groups,dc=company,dc=com)</code> (the mapping arrays still only see direct <code>memberOf</code> values).</p>
 <blockquote>
