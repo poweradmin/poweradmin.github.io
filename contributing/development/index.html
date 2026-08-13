@@ -6446,10 +6446,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#installation-for-development" class="md-nav__link">
+  <a href="#option-1-devcontainer-recommended" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installation for Development
+        Option 1: Devcontainer (recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2-manual-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 2: Manual setup
       
     </span>
   </a>
@@ -6477,7 +6488,7 @@
   <a href="#core-components" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Core Components
+        Core components
       
     </span>
   </a>
@@ -6556,10 +6567,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#database-migrations" class="md-nav__link">
+  <a href="#database-schema-changes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Database Migrations
+        Database Schema Changes
       
     </span>
   </a>
@@ -6582,7 +6593,7 @@
   <a href="#contribution-guidelines" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Contribution Guidelines
+        Contribution guidelines
       
     </span>
   </a>
@@ -6593,7 +6604,7 @@
   <a href="#attribution-policy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Attribution Policy
+        Attribution policy
       
     </span>
   </a>
@@ -6777,10 +6788,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#installation-for-development" class="md-nav__link">
+  <a href="#option-1-devcontainer-recommended" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Installation for Development
+        Option 1: Devcontainer (recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2-manual-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 2: Manual setup
       
     </span>
   </a>
@@ -6808,7 +6830,7 @@
   <a href="#core-components" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Core Components
+        Core components
       
     </span>
   </a>
@@ -6887,10 +6909,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#database-migrations" class="md-nav__link">
+  <a href="#database-schema-changes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Database Migrations
+        Database Schema Changes
       
     </span>
   </a>
@@ -6913,7 +6935,7 @@
   <a href="#contribution-guidelines" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Contribution Guidelines
+        Contribution guidelines
       
     </span>
   </a>
@@ -6924,7 +6946,7 @@
   <a href="#attribution-policy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Attribution Policy
+        Attribution policy
       
     </span>
   </a>
@@ -6984,113 +7006,133 @@
 
 
 <h1 id="poweradmin-development-guide">Poweradmin Development Guide<a class="headerlink" href="#poweradmin-development-guide" title="Permanent link">¶</a></h1>
+<blockquote>
+<p><strong>Note:</strong> The repository's own <a href="https://github.com/poweradmin/poweradmin/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a>
+is the canonical source for branch targeting, commit conventions and the pull request process.
+This page covers the development environment and project layout.</p>
+</blockquote>
 <h2 id="development-environment-setup">Development Environment Setup<a class="headerlink" href="#development-environment-setup" title="Permanent link">¶</a></h2>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h3>
 <ul>
-<li>PHP 8.1 or higher</li>
-<li>MySQL, PostgreSQL, or SQLite</li>
+<li>PHP 8.2 or higher</li>
+<li>MySQL/MariaDB, PostgreSQL, or SQLite</li>
 <li>Composer</li>
-<li>Node.js and NPM (for frontend assets)</li>
-<li>PowerDNS server (for testing)</li>
+<li>A PowerDNS server for testing</li>
+<li>Node.js and npm, only if you intend to run the Playwright end-to-end tests</li>
 </ul>
-<h3 id="installation-for-development">Installation for Development<a class="headerlink" href="#installation-for-development" title="Permanent link">¶</a></h3>
+<h3 id="option-1-devcontainer-recommended">Option 1: Devcontainer (recommended)<a class="headerlink" href="#option-1-devcontainer-recommended" title="Permanent link">¶</a></h3>
+<p>The repository ships a devcontainer providing MariaDB, PostgreSQL, SQLite and Adminer, with
+instances of Poweradmin already configured against each. Open the repository in VS Code with the
+Dev Containers extension and reopen in the container.</p>
+<p>Load the test users with:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>.devcontainer/scripts/import-test-data.sh
+</code></pre></div>
+<h3 id="option-2-manual-setup">Option 2: Manual setup<a class="headerlink" href="#option-2-manual-setup" title="Permanent link">¶</a></h3>
 <p><strong>1. Clone the repository:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git clone https://github.com/poweradmin/poweradmin.git
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cd poweradmin
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/poweradmin/poweradmin.git
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>poweradmin
 </code></pre></div>
 <p><strong>2. Install dependencies:</strong></p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>composer install
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>npm install
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>composer<span class="w"> </span>install
 </code></pre></div>
 <p><strong>3. Configure the application:</strong></p>
-<ul>
-<li>Copy <code>config/settings.defaults.php</code> to a new file in the same directory</li>
-<li>Modify the settings according to your environment</li>
-</ul>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cp<span class="w"> </span>config/settings.defaults.php<span class="w"> </span>config/settings.php
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># Edit config/settings.php with your database and PowerDNS settings</span>
+</code></pre></div>
+<p>Never edit <code>config/settings.defaults.php</code> itself. It is the reference for every available setting
+and is overwritten on upgrade.</p>
 <h2 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">¶</a></h2>
-<h3 id="core-components">Core Components<a class="headerlink" href="#core-components" title="Permanent link">¶</a></h3>
+<h3 id="core-components">Core components<a class="headerlink" href="#core-components" title="Permanent link">¶</a></h3>
 <ul>
-<li><strong>lib/</strong>: Core library code</li>
-<li><strong>Application/</strong>: Controllers, services, and application logic</li>
-<li><strong>Domain/</strong>: Domain models and business logic</li>
-<li><strong>Infrastructure/</strong>: Database, API clients, and external services</li>
+<li><strong>lib/</strong>: core library code, following Domain-Driven Design<ul>
+<li><strong>Domain/</strong>: business logic, entities and value objects</li>
+<li><strong>Application/</strong>: controllers and services</li>
+<li><strong>Infrastructure/</strong>: database access, the PowerDNS API client, LDAP and other external services</li>
 </ul>
+</li>
+</ul>
+<p>Entry points are <code>index.php</code>, <code>dynamic_update.php</code> and <code>install/index.php</code>.</p>
 <h3 id="frontend">Frontend<a class="headerlink" href="#frontend" title="Permanent link">¶</a></h3>
 <ul>
-<li><strong>assets/</strong>: JavaScript and CSS files</li>
-<li><strong>style/</strong>: CSS files (ignite.css, spark.css)</li>
-<li><strong>templates/</strong>: HTML templates</li>
+<li><strong>assets/</strong>: JavaScript and images</li>
+<li><strong>templates/</strong>: Twig templates, with a <code>default</code> and a <code>modern</code> theme</li>
 </ul>
+<p>The two themes must stay in sync except for the files listed in
+<code>templates/theme-specific-templates.txt</code>. <code>composer lint:themes</code> enforces this.</p>
 <h3 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">¶</a></h3>
 <ul>
-<li><strong>tests/</strong>: Test files</li>
-<li><strong>unit/</strong>: Unit tests</li>
-<li><strong>integration/</strong>: Integration tests</li>
-<li>
-<p><strong>plans/</strong>: Test plans</p>
-</li>
-<li>
-<p><strong>cypress/</strong>: End-to-end tests</p>
-</li>
+<li><strong>tests/</strong>: PHPUnit suites (<code>unit</code>, <code>integration</code>, <code>functional</code>, <code>api</code>, <code>sql</code>, <code>docker</code>)</li>
+<li><strong>playwright/</strong>: end-to-end browser tests</li>
 </ul>
+<p>See the <a href="../testing/">Testing Guide</a>.</p>
 <h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">¶</a></h2>
-<p>Some documentation can be generated from the source code using phpDocumentor.</p>
-<p>To generate the documentation, run the following command:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>phive<span class="w"> </span>install<span class="w"> </span>phpDocumentor
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>composer<span class="w"> </span>run<span class="w"> </span>docs
+<p>API reference documentation can be generated from the source with phpDocumentor. The Composer
+script downloads the phar on first use, so no separate installation is needed:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>composer<span class="w"> </span>docs
 </code></pre></div>
-<p>The documentation will be generated in the <code>docs</code> directory.</p>
+<p>The OpenAPI specification for the public API is generated separately:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>composer<span class="w"> </span>docs:api
+</code></pre></div>
 <h2 id="testing_1">Testing<a class="headerlink" href="#testing_1" title="Permanent link">¶</a></h2>
-<p>Poweradmin has comprehensive testing support including unit tests, integration tests, and end-to-end tests. For detailed information on testing methodologies, frameworks, and running tests, please see the <a href="../testing/">Testing Guide</a>.</p>
+<p>Poweradmin has unit, integration, functional, API and end-to-end tests. See the
+<a href="../testing/">Testing Guide</a> for the layout and the commands.</p>
 <h2 id="continuous-integration">Continuous Integration<a class="headerlink" href="#continuous-integration" title="Permanent link">¶</a></h2>
 <ul>
-<li>The project uses GitHub Actions for CI/CD</li>
-<li>Ensure all tests pass before submitting pull requests</li>
+<li>The project uses GitHub Actions for CI</li>
+<li>Ensure the tests and the static analysis gate pass before submitting pull requests</li>
 </ul>
 <h2 id="coding-standards">Coding Standards<a class="headerlink" href="#coding-standards" title="Permanent link">¶</a></h2>
-<p>Poweradmin follows PSR-12 with project-specific modifications. For detailed information on coding standards, tools for code quality, and how to enforce them, see the <a href="../coding-standards/">Coding Standards Guide</a>.</p>
-<h2 id="database-migrations">Database Migrations<a class="headerlink" href="#database-migrations" title="Permanent link">¶</a></h2>
-<ul>
-<li>Database migrations are managed with Phinx</li>
-<li>See <code>db/migrations/</code> for existing migrations</li>
-<li>Create new migrations with:</li>
-</ul>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>./vendor/bin/phinx create MyNewMigration
-</code></pre></div>
+<p>Poweradmin follows PSR-12 with project-specific modifications. See the
+<a href="../coding-standards/">Coding Standards Guide</a>.</p>
+<h2 id="database-schema-changes">Database Schema Changes<a class="headerlink" href="#database-schema-changes" title="Permanent link">¶</a></h2>
+<p>Schema changes ship as SQL scripts in <code>sql/</code>, named for the release that introduces them, for
+example <code>poweradmin-mysql-update-to-4.5.0.sql</code>. A change needs one script per supported database:
+MySQL, PostgreSQL and SQLite.</p>
+<p>Write them so they can be applied more than once, using <code>INSERT IGNORE</code> or
+<code>ON CONFLICT DO NOTHING</code> and name-based lookups rather than hardcoded IDs.</p>
+<blockquote>
+<p><strong>Warning:</strong> Poweradmin must never alter PowerDNS-owned tables such as <code>domains</code> and <code>records</code>.
+Anything Poweradmin needs to persist belongs in its own tables.</p>
+</blockquote>
 <h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">¶</a></h2>
 <ol>
 <li>Fork the repository</li>
 <li>Create a feature branch</li>
 <li>Make your changes</li>
-<li>Run tests and ensure coding standards</li>
-<li>Submit a pull request</li>
+<li>Run the tests and the quality checks</li>
+<li>Submit a pull request against the branch named in
+   <a href="https://github.com/poweradmin/poweradmin/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a></li>
 </ol>
-<h3 id="contribution-guidelines">Contribution Guidelines<a class="headerlink" href="#contribution-guidelines" title="Permanent link">¶</a></h3>
+<h3 id="contribution-guidelines">Contribution guidelines<a class="headerlink" href="#contribution-guidelines" title="Permanent link">¶</a></h3>
 <ol>
-<li><strong>Code Quality</strong>: Ensure your code follows the project's style and standards</li>
-<li><strong>Testing</strong>: Test your changes thoroughly before submitting</li>
-<li><strong>Documentation</strong>: Include appropriate documentation for new features</li>
+<li><strong>Code Quality</strong>: follow the project's style and standards</li>
+<li><strong>Testing</strong>: add tests for new functionality and make sure the existing ones pass</li>
+<li><strong>Documentation</strong>: user-visible changes deserve a pull request against the
+   <a href="https://github.com/poweradmin/poweradmin-docs">poweradmin-docs</a> repository</li>
 </ol>
-<h3 id="attribution-policy">Attribution Policy<a class="headerlink" href="#attribution-policy" title="Permanent link">¶</a></h3>
+<h3 id="attribution-policy">Attribution policy<a class="headerlink" href="#attribution-policy" title="Permanent link">¶</a></h3>
 <p>All meaningful contributions are credited in release notes. Please note:</p>
 <ul>
 <li>Sometimes similar ideas come from multiple contributors; implementation quality determines which is merged</li>
 <li>Contributions may be partially accepted or rewritten to maintain project consistency</li>
 <li>Even if your exact code isn't used, your ideas will still be credited if they influence the final implementation</li>
 </ul>
-<p>If you notice your contribution hasn't been acknowledged in the release notes, please reach out - we want to ensure everyone receives proper recognition.</p>
+<p>If you notice your contribution hasn't been acknowledged in the release notes, please reach out. We
+want to ensure everyone receives proper recognition.</p>
 <h2 id="internationalization">Internationalization<a class="headerlink" href="#internationalization" title="Permanent link">¶</a></h2>
 <ul>
-<li>Translation files are in the <code>locale/</code> directory</li>
-<li>New strings should be wrapped in <code>_()</code> for translation</li>
-<li>See the <a href="../translations/">Translations Guide</a> for details on contributing translations</li>
+<li>Translation files live in <code>locale/</code></li>
+<li>New user-visible strings must be wrapped in <code>_()</code> so they can be translated</li>
+<li>See the <a href="../translations/">Translations Guide</a></li>
 </ul>
 <h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">¶</a></h2>
 <ul>
 <li>Always validate user input</li>
-<li>Use prepared statements for database queries</li>
-<li>Follow secure coding practices</li>
-<li>Use CSRF tokens for forms</li>
+<li>Use prepared statements for database queries, binding <code>PDO::PARAM_INT</code> for LIMIT, OFFSET and ID values</li>
+<li>Access request data through the <code>Request</code> class rather than <code>$_GET</code>, <code>$_POST</code> or <code>$_REQUEST</code></li>
+<li>Read session state through <code>UserContextService</code> rather than <code>$_SESSION</code> directly</li>
+<li>Every POST route is CSRF validated; forms render the token with the <code>csrf_field()</code> macro</li>
+<li>Zone ownership is both direct and group-based, so permission checks must cover both</li>
 </ul>
 
 
