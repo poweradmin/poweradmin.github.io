@@ -6879,8 +6879,8 @@
 <li><code>username</code> - Your Poweradmin username (if not using HTTP Basic Auth)</li>
 <li><code>password</code> - Your Poweradmin password (if not using HTTP Basic Auth)</li>
 <li><code>hostname</code> - The FQDN to update</li>
-<li><code>myip</code> or <code>ip</code> - IPv4 address(es), comma-separated</li>
-<li><code>myip6</code> or <code>ip6</code> - IPv6 address(es), comma-separated</li>
+<li><code>myip</code> or <code>ip</code> - IP address(es), comma-separated. Either address family is accepted, and each address in the list is routed to an A or AAAA record according to its own family, so a single list may mix IPv4 and IPv6</li>
+<li><code>myip6</code> or <code>ip6</code> - IPv6 address(es), comma-separated. When supplied, this is authoritative for the IPv6 side and any IPv6 address in <code>myip</code> is ignored rather than merged into it</li>
 <li><code>dualstack_update</code> - Set to 1 to update both IPv4 and IPv6</li>
 <li><code>verbose</code> - Include this query parameter to receive human-readable response messages. Only its presence is checked, so <code>verbose=0</code> enables verbose output too</li>
 </ul>
@@ -6946,6 +6946,9 @@
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Update both IPv4 and IPv6 with cleanup</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>curl<span class="w"> </span><span class="s2">"https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1,192.0.2.2&amp;myip6=2001:db8::1,2001:db8::2&amp;dualstack_update=1"</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># Update both families from a single myip list</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>curl<span class="w"> </span><span class="s2">"https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=192.0.2.1,2001:db8::1"</span>
 </code></pre></div>
 <p>If any of these return a short error code like <code>!yours</code> or <code>badauth</code>, re-run the same URL with <code>&amp;verbose=1</code> appended to get a readable message.</p>
 <p>When using multiple IPs:</p>
@@ -6953,6 +6956,7 @@
 <li>Omitted record types are preserved</li>
 <li>Use <code>dualstack_update=1</code> to clean up both A and AAAA records</li>
 <li>Records not included in the update are automatically removed</li>
+<li>A <code>myip</code> or <code>myip6</code> that is supplied but contains no valid address is rejected with <code>dnserr</code>, and no records are changed. Omitting a parameter and supplying an unparseable one are not the same thing - the first preserves that record type, the second is treated as a malformed request</li>
 <li>Records are inserted and deleted one statement at a time - the update is not wrapped in a database transaction</li>
 </ul>
 <h2 id="using-the-shell-script">Using the Shell Script<a class="headerlink" href="#using-the-shell-script" title="Permanent link">¶</a></h2>
@@ -6990,6 +6994,7 @@
 <a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>home.example.com
 </code></pre></div>
 <p>Run <code>ddclient -daemon=0 -debug -verbose -noquiet</code> to watch the exchange. The server returns either <code>good\n</code> (no IP suffix on older builds) or the dyndns2-compliant <code>good &lt;ip&gt;\n</code> depending on Poweradmin version. Both forms are accepted by <code>ddclient</code>.</p>
+<p><code>ddclient</code> 3.11 and later, configured for dual-stack, sends both addresses in a single <code>myip</code> list rather than using <code>myip6</code>. Poweradmin routes each address to the matching record type from 4.4.1 and 4.5.0 onwards. Earlier versions moved the whole list to the IPv6 side and dropped the IPv4 address, which combined with <code>dualstack_update=1</code> removed the host's existing A records - if you run an earlier version, keep the families in separate <code>myip</code> and <code>myip6</code> parameters.</p>
 <h3 id="other-clients">Other clients<a class="headerlink" href="#other-clients" title="Permanent link">¶</a></h3>
 <p><code>inadyn</code>, OPNsense's built-in DDNS client, and most router firmwares can target the same endpoint. Configure the service URL as <code>https://dns.example.com/nic/update?hostname=%h&amp;myip=%i</code> (or the equivalent template for your client) and set the protocol to <code>dyndns2</code> or "custom".</p>
 <h2 id="client-script-installation">Client Script Installation<a class="headerlink" href="#client-script-installation" title="Permanent link">¶</a></h2>
