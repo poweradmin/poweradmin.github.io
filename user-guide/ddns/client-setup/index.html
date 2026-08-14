@@ -6956,7 +6956,8 @@
 <li>Omitted record types are preserved</li>
 <li>Use <code>dualstack_update=1</code> to clean up both A and AAAA records</li>
 <li>Records not included in the update are automatically removed</li>
-<li>A <code>myip</code> or <code>myip6</code> that is supplied but contains no valid address is rejected with <code>dnserr</code>, and no records are changed. Omitting a parameter and supplying an unparseable one are not the same thing - the first preserves that record type, the second is treated as a malformed request</li>
+<li>An unparseable address anywhere in <code>myip</code> or <code>myip6</code> is rejected with <code>dnserr</code>, and no records are changed. Since the list is the complete record set, silently skipping a bad entry would delete the record it was meant to keep, so the whole request is refused instead</li>
+<li>Omitting a parameter and supplying an invalid one are not the same thing - the first preserves that record type, the second is a malformed request</li>
 <li>Records are inserted and deleted one statement at a time - the update is not wrapped in a database transaction</li>
 </ul>
 <h2 id="using-the-shell-script">Using the Shell Script<a class="headerlink" href="#using-the-shell-script" title="Permanent link">¶</a></h2>
