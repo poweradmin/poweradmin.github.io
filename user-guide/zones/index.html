@@ -3150,6 +3150,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#catalog-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Catalog zones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#read-only-zones" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6714,6 +6725,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#catalog-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Catalog zones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#read-only-zones" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6980,7 +7002,7 @@
 <p>Zones are the core objects in Poweradmin. Each zone corresponds to a DNS domain (or reverse network) managed by PowerDNS. This guide covers creating, editing, and managing zones.</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/zone-list.png" data-desc-position="bottom"><img alt="Zone List" src="../../screenshots/zone-list.png"></a></p>
 <h2 id="zone-types">Zone Types<a class="headerlink" href="#zone-types" title="Permanent link">¶</a></h2>
-<p>PowerDNS supports three zone types. Choose the type based on your DNS architecture:</p>
+<p>Choose the type based on your DNS architecture:</p>
 <ul>
 <li><strong>Master</strong> - the authoritative source for the zone. Changes are made here and replicated to slave servers. Use this when Poweradmin is your primary DNS management interface.</li>
 <li><strong>Slave</strong> - a read-only copy that receives updates from a master server. Use this when another DNS server holds the primary data and you want PowerDNS to serve as a secondary.</li>
@@ -6988,6 +7010,15 @@
 </ul>
 <blockquote>
 <p><strong>Tip:</strong> If you are running a single PowerDNS server, <strong>Native</strong> is the simplest option since no zone transfers are needed.</p>
+</blockquote>
+<h3 id="catalog-zones">Catalog zones<a class="headerlink" href="#catalog-zones" title="Permanent link">¶</a></h3>
+<p>PowerDNS 4.7 and later add two more kinds, used to distribute a list of zones between servers rather than to hold ordinary records. Poweradmin offers them on the add-zone form only when the connected server reports 4.7 or newer.</p>
+<ul>
+<li><strong>Producer</strong> - the catalog itself, on a primary. PowerDNS generates its contents from the member zones, so you do not add records to it by hand.</li>
+<li><strong>Consumer</strong> - the receiving end, on a secondary. It works like a Slave zone and needs the IP address of the primary it transfers the catalog from, so the add-zone form asks for one when you select it. Because its contents arrive by transfer, no template or DNSSEC option applies.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Assigning member zones to a catalog is not yet supported. You can create a Producer zone, but Poweradmin cannot put anything in it.</p>
 </blockquote>
 <h3 id="read-only-zones">Read-only zones<a class="headerlink" href="#read-only-zones" title="Permanent link">¶</a></h3>
 <p><strong>Secondary</strong> (Slave) and <strong>Consumer</strong> (catalog) zones hold records that PowerDNS replicates from a primary, so Poweradmin treats their records as read-only. In the zone list these zones show a muted <strong>Read-only</strong> badge next to their type.</p>
