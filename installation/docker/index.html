@@ -1449,6 +1449,100 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#session-and-password-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session and password hashing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#account-lockout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Account lockout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-factor-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-factor authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#username-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Username recovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recaptcha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reCAPTCHA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proxies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -7044,6 +7138,100 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#session-and-password-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Session and password hashing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#account-lockout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Account lockout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-factor-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-factor authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#username-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Username recovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recaptcha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        reCAPTCHA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proxies
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -7647,6 +7835,7 @@ immediately.</p>
 </tbody>
 </table>
 <h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">¶</a></h3>
+<h4 id="session-and-password-hashing">Session and password hashing<a class="headerlink" href="#session-and-password-hashing" title="Permanent link">¶</a></h4>
 <table>
 <thead>
 <tr>
@@ -7659,12 +7848,17 @@ immediately.</p>
 <tr>
 <td><code>PA_SESSION_KEY</code></td>
 <td>(auto)</td>
-<td>Session encryption key</td>
+<td>Session encryption key. Set this explicitly in production so sessions survive a container restart</td>
 </tr>
 <tr>
 <td><code>PA_PASSWORD_ENCRYPTION</code></td>
 <td>bcrypt</td>
-<td>Password hashing: <code>bcrypt</code>, <code>argon2i</code>, <code>argon2id</code></td>
+<td>Password hashing: <code>bcrypt</code>, <code>argon2i</code>, <code>argon2id</code>. The legacy <code>md5</code> and <code>md5salt</code> options were removed in 4.3.0</td>
+</tr>
+<tr>
+<td><code>PA_PASSWORD_COST</code></td>
+<td>12</td>
+<td>Cost factor for bcrypt hashing</td>
 </tr>
 <tr>
 <td><code>PA_LOGIN_TOKEN_VALIDATION</code></td>
@@ -7676,26 +7870,61 @@ immediately.</p>
 <td>true</td>
 <td>Enable CSRF token validation for all forms</td>
 </tr>
+</tbody>
+</table>
+<h4 id="password-policy">Password policy<a class="headerlink" href="#password-policy" title="Permanent link">¶</a></h4>
+<table>
+<thead>
 <tr>
-<td><code>PA_MFA_ENABLED</code></td>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA_PASSWORD_RULES_ENABLED</code></td>
+<td>true</td>
+<td>Enable password policy enforcement</td>
+</tr>
+<tr>
+<td><code>PA_PASSWORD_MIN_LENGTH</code></td>
+<td>6</td>
+<td>Minimum password length</td>
+</tr>
+<tr>
+<td><code>PA_PASSWORD_REQUIRE_UPPERCASE</code></td>
+<td>true</td>
+<td>Require at least one uppercase letter</td>
+</tr>
+<tr>
+<td><code>PA_PASSWORD_REQUIRE_LOWERCASE</code></td>
+<td>true</td>
+<td>Require at least one lowercase letter</td>
+</tr>
+<tr>
+<td><code>PA_PASSWORD_REQUIRE_NUMBERS</code></td>
+<td>true</td>
+<td>Require at least one number</td>
+</tr>
+<tr>
+<td><code>PA_PASSWORD_REQUIRE_SPECIAL</code></td>
 <td>false</td>
-<td>Enable multi-factor authentication</td>
+<td>Require at least one special character</td>
 </tr>
+</tbody>
+</table>
+<p>See <a href="../../configuration/password-policies/">Password Policies</a> for the full policy, including the allowed special-character set, which has no environment variable and must be set in <code>settings.php</code>.</p>
+<h4 id="account-lockout">Account lockout<a class="headerlink" href="#account-lockout" title="Permanent link">¶</a></h4>
+<table>
+<thead>
 <tr>
-<td><code>PA_MFA_ENFORCED</code></td>
-<td>false</td>
-<td>Enforce MFA for users with enforce permission</td>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
 </tr>
-<tr>
-<td><code>PA_RECAPTCHA_ENABLED</code></td>
-<td>false</td>
-<td>Enable reCAPTCHA on login</td>
-</tr>
-<tr>
-<td><code>PA_RECAPTCHA_VERSION</code></td>
-<td>v3</td>
-<td>reCAPTCHA version: <code>v2</code> or <code>v3</code></td>
-</tr>
+</thead>
+<tbody>
 <tr>
 <td><code>PA_LOCKOUT_ENABLED</code></td>
 <td>false</td>
@@ -7712,15 +7941,192 @@ immediately.</p>
 <td>Lockout duration in minutes</td>
 </tr>
 <tr>
+<td><code>PA_LOCKOUT_TRACK_IP</code></td>
+<td>true</td>
+<td>Lock accounts based on IP address</td>
+</tr>
+<tr>
+<td><code>PA_LOCKOUT_CLEAR_ON_SUCCESS</code></td>
+<td>true</td>
+<td>Clear failed attempts after a successful login</td>
+</tr>
+</tbody>
+</table>
+<p>The IP whitelist and blacklist have no environment variables; set them in <code>settings.php</code>. See <a href="../../configuration/security-policies/">Security Policies</a>.</p>
+<h4 id="multi-factor-authentication">Multi-factor authentication<a class="headerlink" href="#multi-factor-authentication" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA_MFA_ENABLED</code></td>
+<td>false</td>
+<td>Enable multi-factor authentication</td>
+</tr>
+<tr>
+<td><code>PA_MFA_ENFORCED</code></td>
+<td>false</td>
+<td>Enforce MFA for users holding <code>user_enforce_mfa</code></td>
+</tr>
+<tr>
+<td><code>PA_MFA_APP_ENABLED</code></td>
+<td>true</td>
+<td>Offer the authenticator app method</td>
+</tr>
+<tr>
+<td><code>PA_MFA_EMAIL_ENABLED</code></td>
+<td>true</td>
+<td>Offer the email verification method</td>
+</tr>
+<tr>
+<td><code>PA_MFA_RECOVERY_CODES</code></td>
+<td>8</td>
+<td>Number of recovery codes generated</td>
+</tr>
+<tr>
+<td><code>PA_MFA_RECOVERY_CODE_LENGTH</code></td>
+<td>10</td>
+<td>Length of each recovery code</td>
+</tr>
+<tr>
+<td><code>PA_MFA_SKIP_FOR_EXTERNAL_AUTH</code></td>
+<td>false</td>
+<td>Skip enforcement for LDAP, OIDC and SAML logins, trusting the identity provider (v4.5.0+)</td>
+</tr>
+<tr>
+<td><code>PA_MFA_MAX_VERIFY_ATTEMPTS</code></td>
+<td>5</td>
+<td>Failed second-factor guesses before the code is refused (v4.5.0+)</td>
+</tr>
+<tr>
+<td><code>PA_MFA_VERIFY_LOCKOUT_DURATION</code></td>
+<td>15</td>
+<td>Minutes to refuse further attempts once the limit is hit (v4.5.0+)</td>
+</tr>
+</tbody>
+</table>
+<p>Email-based MFA needs a working mail configuration; see <a href="../../configuration/mail/">Mail</a>.</p>
+<h4 id="password-reset">Password reset<a class="headerlink" href="#password-reset" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
 <td><code>PA_PASSWORD_RESET_ENABLED</code></td>
 <td>false</td>
 <td>Enable password reset functionality</td>
 </tr>
 <tr>
+<td><code>PA_PASSWORD_RESET_TOKEN_LIFETIME</code></td>
+<td>3600</td>
+<td>Token validity in seconds</td>
+</tr>
+<tr>
+<td><code>PA_PASSWORD_RESET_RATE_LIMIT_ATTEMPTS</code></td>
+<td>5</td>
+<td>Maximum reset attempts per time window</td>
+</tr>
+<tr>
+<td><code>PA_PASSWORD_RESET_RATE_LIMIT_WINDOW</code></td>
+<td>3600</td>
+<td>Rate limit window in seconds</td>
+</tr>
+<tr>
+<td><code>PA_PASSWORD_RESET_MIN_TIME_BETWEEN</code></td>
+<td>60</td>
+<td>Minimum seconds between requests</td>
+</tr>
+</tbody>
+</table>
+<h4 id="username-recovery">Username recovery<a class="headerlink" href="#username-recovery" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
 <td><code>PA_USERNAME_RECOVERY_ENABLED</code></td>
 <td>false</td>
 <td>Enable username recovery functionality</td>
 </tr>
+<tr>
+<td><code>PA_USERNAME_RECOVERY_RATE_LIMIT_ATTEMPTS</code></td>
+<td>5</td>
+<td>Maximum recovery attempts per time window</td>
+</tr>
+<tr>
+<td><code>PA_USERNAME_RECOVERY_RATE_LIMIT_WINDOW</code></td>
+<td>3600</td>
+<td>Rate limit window in seconds</td>
+</tr>
+<tr>
+<td><code>PA_USERNAME_RECOVERY_MIN_TIME_BETWEEN</code></td>
+<td>60</td>
+<td>Minimum seconds between requests</td>
+</tr>
+</tbody>
+</table>
+<h4 id="recaptcha">reCAPTCHA<a class="headerlink" href="#recaptcha" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA_RECAPTCHA_ENABLED</code></td>
+<td>false</td>
+<td>Enable reCAPTCHA on login</td>
+</tr>
+<tr>
+<td><code>PA_RECAPTCHA_SITE_KEY</code></td>
+<td><em>(empty)</em></td>
+<td>Site key (public)</td>
+</tr>
+<tr>
+<td><code>PA_RECAPTCHA_SECRET_KEY</code></td>
+<td><em>(empty)</em></td>
+<td>Secret key (private)</td>
+</tr>
+<tr>
+<td><code>PA_RECAPTCHA_VERSION</code></td>
+<td>v3</td>
+<td>reCAPTCHA version: <code>v2</code> or <code>v3</code></td>
+</tr>
+<tr>
+<td><code>PA_RECAPTCHA_V3_THRESHOLD</code></td>
+<td>0.5</td>
+<td>Score threshold for v3, from 0.0 to 1.0</td>
+</tr>
+</tbody>
+</table>
+<h4 id="proxies">Proxies<a class="headerlink" href="#proxies" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td><code>TRUSTED_PROXIES</code></td>
 <td>-</td>
@@ -7728,6 +8134,7 @@ immediately.</p>
 </tr>
 </tbody>
 </table>
+<p>Account lockout (with <code>PA_LOCKOUT_TRACK_IP</code>) and the reset and recovery rate limits all throttle by client IP as well as by account. Behind a proxy they need <code>TRUSTED_PROXIES</code> set, or every request appears to come from the proxy's address.</p>
 <h3 id="interface">Interface<a class="headerlink" href="#interface" title="Permanent link">¶</a></h3>
 <table>
 <thead>
