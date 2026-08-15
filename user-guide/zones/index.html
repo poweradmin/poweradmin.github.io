@@ -3158,6 +3158,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Catalog zones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#managing-catalog-members" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managing catalog members
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -6733,6 +6750,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Catalog zones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#managing-catalog-members" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managing catalog members
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -7017,9 +7051,25 @@
 <li><strong>Producer</strong> - the catalog itself, on a primary. PowerDNS generates its contents from the member zones, so you do not add records to it by hand.</li>
 <li><strong>Consumer</strong> - the receiving end, on a secondary. It works like a Slave zone and needs the IP address of the primary it transfers the catalog from, so the add-zone form asks for one when you select it. Because its contents arrive by transfer, no template or DNSSEC option applies.</li>
 </ul>
-<blockquote>
-<p><strong>Note:</strong> Assigning member zones to a catalog is not yet supported. You can create a Producer zone, but Poweradmin cannot put anything in it.</p>
-</blockquote>
+<h4 id="managing-catalog-members">Managing catalog members<a class="headerlink" href="#managing-catalog-members" title="Permanent link">¶</a></h4>
+<p>Poweradmin can assign zones to a catalog from either end.</p>
+<p>From the <strong>producer</strong> side, open the Producer zone and use the <strong>Catalog Members</strong> button on the zone
+editor. The page lists the zones the catalog currently publishes and lets you add or remove one at a
+time.</p>
+<p>From the <strong>member</strong> side, open the zone and use the <strong>Catalog</strong> selector in the zone details block.
+It offers every producer zone you are allowed to manage, plus <code>none</code> to take the zone out of its
+catalog. If the zone is already in a catalog whose producer this installation does not hold, the
+selector shows that catalog name marked <code>not managed here</code> and leaves it untouched unless you pick
+something else.</p>
+<p>Two limits come from PowerDNS itself:</p>
+<ul>
+<li>Only <strong>Primary</strong> (Master) and <strong>Producer</strong> zones can be members. PowerDNS serves a catalog from
+  those kinds only, so other kinds would accept the setting and then never be published. Poweradmin
+  hides the selector for them.</li>
+<li>A zone belongs to at most one catalog, so adding it to a second one moves it.</li>
+</ul>
+<p>Membership is governed by the same <strong>zone meta edit</strong> permission that covers zone type, primary IP
+and template, and every change is written to the audit log.</p>
 <h3 id="read-only-zones">Read-only zones<a class="headerlink" href="#read-only-zones" title="Permanent link">¶</a></h3>
 <p><strong>Secondary</strong> (Slave) and <strong>Consumer</strong> (catalog) zones hold records that PowerDNS replicates from a primary, so Poweradmin treats their records as read-only. In the zone list these zones show a muted <strong>Read-only</strong> badge next to their type.</p>
 <p>For a read-only zone, Poweradmin blocks every record-changing action across the UI, API, and automation:</p>

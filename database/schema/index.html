@@ -1919,6 +1919,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#api_key_zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        api_key_zones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#user_mfa" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2112,6 +2123,17 @@
     <span class="md-ellipsis">
       
         log_groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log_changesets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        log_changesets
       
     </span>
   </a>
@@ -7346,6 +7368,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#api_key_zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        api_key_zones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#user_mfa" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7539,6 +7572,17 @@
     <span class="md-ellipsis">
       
         log_groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log_changesets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        log_changesets
       
     </span>
   </a>
@@ -8506,6 +8550,44 @@
 <td>timestamp</td>
 <td>Expiration timestamp</td>
 </tr>
+<tr>
+<td><code>is_readonly</code></td>
+<td>tinyint</td>
+<td>Restricts the key to read-only operations</td>
+</tr>
+<tr>
+<td><code>allowed_operations</code></td>
+<td>varchar(255)</td>
+<td>Comma-separated operations the key may perform (null means no restriction)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="api_key_zones"><code>api_key_zones</code><a class="headerlink" href="#api_key_zones" title="Permanent link">¶</a></h3>
+<p>Restricts an API key to a set of zones. A key with no rows here is unrestricted and can reach every zone its creator may access.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>api_key_id</code></td>
+<td>int</td>
+<td>Foreign key to <code>api_keys.id</code> (cascades on delete)</td>
+</tr>
+<tr>
+<td><code>zone_id</code></td>
+<td>int</td>
+<td>Zone the key is allowed to reach</td>
+</tr>
 </tbody>
 </table>
 <h3 id="user_mfa"><code>user_mfa</code><a class="headerlink" href="#user_mfa" title="Permanent link">¶</a></h3>
@@ -9033,6 +9115,54 @@
 </tr>
 </tbody>
 </table>
+<h3 id="log_changesets"><code>log_changesets</code><a class="headerlink" href="#log_changesets" title="Permanent link">¶</a></h3>
+<p>Groups the record changes made in a single edit, so the change log can present them as one entry with a shared comment.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>zone_id</code></td>
+<td>int</td>
+<td>Related zone (nullable)</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>int</td>
+<td>Acting user (nullable)</td>
+</tr>
+<tr>
+<td><code>username</code></td>
+<td>varchar(64)</td>
+<td>Acting username (denormalized so the log survives user deletion)</td>
+</tr>
+<tr>
+<td><code>comment</code></td>
+<td>text</td>
+<td>Optional reason supplied with the change</td>
+</tr>
+<tr>
+<td><code>client_ip</code></td>
+<td>varchar(64)</td>
+<td>Source IP</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>Event timestamp</td>
+</tr>
+</tbody>
+</table>
 <h3 id="log_record_changes"><code>log_record_changes</code><a class="headerlink" href="#log_record_changes" title="Permanent link">¶</a></h3>
 <p>Structured before/after snapshots for record mutations. Powers the diff-style change-log UI and email digests. Complements <code>log_zones</code> (which is a free-text activity feed) with machine-readable detail.</p>
 <table>
@@ -9053,6 +9183,11 @@
 <td><code>zone_id</code></td>
 <td>int</td>
 <td>Related zone (nullable)</td>
+</tr>
+<tr>
+<td><code>changeset_id</code></td>
+<td>int</td>
+<td>Related <code>log_changesets.id</code> (nullable)</td>
 </tr>
 <tr>
 <td><code>record_id</code></td>
@@ -9383,7 +9518,7 @@
 <li><strong>User permissions</strong>: <code>users.perm_templ</code> → <code>perm_templ.id</code>; <code>user_groups.perm_templ</code> → <code>perm_templ.id</code></li>
 <li><strong>Permission templates</strong>: <code>perm_templ_items.templ_id</code> → <code>perm_templ.id</code>; <code>perm_templ_items.perm_id</code> → <code>perm_items.id</code></li>
 <li><strong>Zone templates</strong>: <code>zone_templ_records.zone_templ_id</code> → <code>zone_templ.id</code>; <code>records_zone_templ.zone_templ_id</code> → <code>zone_templ.id</code> (SQL mode); <code>records_zone_templ_api.zone_templ_id</code> → <code>zone_templ.id</code> (API mode)</li>
-<li><strong>API keys</strong>: <code>api_keys.created_by</code> → <code>users.id</code></li>
+<li><strong>API keys</strong>: <code>api_keys.created_by</code> → <code>users.id</code>; <code>api_key_zones.api_key_id</code> → <code>api_keys.id</code></li>
 <li><strong>MFA</strong>: <code>user_mfa.user_id</code> → <code>users.id</code></li>
 <li><strong>User preferences</strong>: <code>user_preferences.user_id</code> → <code>users.id</code></li>
 <li><strong>OIDC / SAML links</strong>: <code>oidc_user_links.user_id</code> → <code>users.id</code>; <code>saml_user_links.user_id</code> → <code>users.id</code></li>
@@ -9400,7 +9535,7 @@
 <tbody>
 <tr>
 <td>4.5.0 <em>(develop)</em></td>
-<td>Added <code>log_record_changes</code> (structured before/after record snapshots), <code>records_zone_templ_api</code> (template tracking in API mode), <code>record_type_defaults</code> (per-type default TTLs), and <code>app_settings</code> (admin-managed runtime key/value store). <code>zones.zone_templ_id</code> now defaults to <code>0</code>.</td>
+<td>Added <code>log_changesets</code> and <code>log_record_changes</code> (grouped, structured before/after record snapshots), <code>records_zone_templ_api</code> (template tracking in API mode), <code>record_type_defaults</code> (per-type default TTLs), <code>app_settings</code> (admin-managed runtime key/value store), and <code>api_key_zones</code> (per-zone API key scoping); added <code>is_readonly</code> and <code>allowed_operations</code> to <code>api_keys</code>. <code>zones.zone_templ_id</code> now defaults to <code>0</code>.</td>
 </tr>
 <tr>
 <td>4.4.0 <em>(master)</em></td>

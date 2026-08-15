@@ -7225,7 +7225,7 @@
 <p>Version 4.5.0 centers on serial handling and delegation. SOA-EDIT and SOA-EDIT-API serial policies can be managed from the UI, zone lists can show the signed serial PowerDNS actually serves, and zone templates understand serial placeholders. Access control gets finer-grained: dedicated permissions for viewing logs, zone metadata, and zone ownership, a DNSSEC key-management permission separate from zone editing, delegation NS editing below the apex, and granular API keys (read-only, operation-restricted, zone-scoped).</p>
 <p>Also new: a structured record change log with before/after snapshots, per-record-type default TTLs, trusted proxy support, LDAP user-info sync and auto-provisioning, OIDC <code>form_post</code> response mode, and per-request API logging.</p>
 <h2 id="database-schema-update">Database Schema Update<a class="headerlink" href="#database-schema-update" title="Permanent link">¶</a></h2>
-<p>The 4.5.0 migration is larger than usual. It adds four tables:</p>
+<p>The 4.5.0 migration is larger than usual. It adds six tables:</p>
 <table>
 <thead>
 <tr>
@@ -7235,8 +7235,16 @@
 </thead>
 <tbody>
 <tr>
+<td><code>log_changesets</code></td>
+<td>Groups the record changes made in one edit, with the user, client IP and an optional comment</td>
+</tr>
+<tr>
 <td><code>log_record_changes</code></td>
 <td>Structured before/after snapshots of record and zone changes, backing the diff-style change log</td>
+</tr>
+<tr>
+<td><code>app_settings</code></td>
+<td>Key/value store for the settings an administrator can change from the UI</td>
 </tr>
 <tr>
 <td><code>record_type_defaults</code></td>
