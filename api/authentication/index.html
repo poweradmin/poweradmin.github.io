@@ -6735,6 +6735,13 @@ CI job, or a single application.</p>
 </tr>
 </tbody>
 </table>
+<p>Read-only and allowed-operations are checked on every API v2 request. Zone access
+applies to the endpoints that address a zone - zones, records, RRsets, DNSSEC,
+metadata, owners, and a group's zone assignments. Endpoints for users, groups,
+permissions, permission templates and zone templates are not zone-scoped
+resources, so a zone restriction does not narrow them; restrict those with the
+operations list instead. Listing endpoints that can filter, such as a group's
+zones, return only the zones in scope rather than refusing the whole request.</p>
 <p>Operations map onto HTTP methods: <code>POST</code> is create, <code>PUT</code> and <code>PATCH</code> are update,
 <code>DELETE</code> is delete, and everything else is view. Endpoints that do more than one
 thing in a single request, such as a dynamic DNS upsert or a bulk record change,

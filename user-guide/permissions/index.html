@@ -3313,6 +3313,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#user_enforce_mfa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_enforce_mfa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#user_is_ueberuser" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3356,6 +3367,73 @@
     <span class="md-ellipsis">
       
         templ_perm_edit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zone-template-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone Template Permissions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Zone Template Permissions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#zone_templ_add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        zone_templ_add
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zone_templ_edit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        zone_templ_edit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Permissions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Permissions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api_manage_keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        api_manage_keys
       
     </span>
   </a>
@@ -7194,6 +7272,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#user_enforce_mfa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_enforce_mfa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#user_is_ueberuser" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7237,6 +7326,73 @@
     <span class="md-ellipsis">
       
         templ_perm_edit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zone-template-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone Template Permissions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Zone Template Permissions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#zone_templ_add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        zone_templ_add
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zone_templ_edit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        zone_templ_edit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Permissions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Permissions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api_manage_keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        api_manage_keys
       
     </span>
   </a>
@@ -7549,6 +7705,12 @@ Two limits apply to holders who are not themselves administrators:</p>
 </ul>
 <p>Both limits apply equally to the REST API user endpoints, so automation is held to the
 same rule as the web interface. Assigning any ordinary template is unaffected.</p>
+<h3 id="user_enforce_mfa">user_enforce_mfa<a class="headerlink" href="#user_enforce_mfa" title="Permanent link">¶</a></h3>
+<ul>
+<li>Requires the holder to complete multi-factor authentication at login</li>
+<li>Applies when the permission comes from the user's own template or from a group they belong to</li>
+<li>Only takes effect when <code>security.mfa.enabled</code> is on; <code>security.mfa.skip_for_external_auth</code> can exempt logins that came through an external identity provider</li>
+</ul>
 <h3 id="user_is_ueberuser">user_is_ueberuser<a class="headerlink" href="#user_is_ueberuser" title="Permanent link">¶</a></h3>
 <ul>
 <li>Grants superuser status with full access to all functions</li>
@@ -7576,6 +7738,28 @@ who is not already an administrator cannot put <code>user_is_ueberuser</code> in
 and cannot edit a template that already carries it. The latter also prevents stripping
 permissions off the Administrator template. Administrators are unaffected.</p>
 </blockquote>
+<h2 id="zone-template-permissions">Zone Template Permissions<a class="headerlink" href="#zone-template-permissions" title="Permanent link">¶</a></h2>
+<p>These cover zone templates (reusable sets of DNS records), not the permission
+templates above.</p>
+<h3 id="zone_templ_add">zone_templ_add<a class="headerlink" href="#zone_templ_add" title="Permanent link">¶</a></h3>
+<ul>
+<li>Allows the user to create new zone templates</li>
+<li>Also required to save an existing zone's records as a new template</li>
+<li>Together with <code>zone_templ_edit</code>, gates access to the zone template list</li>
+</ul>
+<h3 id="zone_templ_edit">zone_templ_edit<a class="headerlink" href="#zone_templ_edit" title="Permanent link">¶</a></h3>
+<ul>
+<li>Allows the user to edit and delete existing zone templates</li>
+<li>Covers adding, editing and deleting the records inside a template, and pushing template changes out to the zones that use it</li>
+</ul>
+<h2 id="api-permissions">API Permissions<a class="headerlink" href="#api-permissions" title="Permanent link">¶</a></h2>
+<h3 id="api_manage_keys">api_manage_keys<a class="headerlink" href="#api_manage_keys" title="Permanent link">¶</a></h3>
+<ul>
+<li>Allows the user to create, view, edit and revoke their own REST API keys</li>
+<li>Gates the API Keys page and the equivalent service operations</li>
+<li>Administrators hold this implicitly</li>
+<li>The API itself must be enabled with <code>api.enabled</code>; see <a href="../../configuration/api/">API Configuration</a></li>
+</ul>
 <h2 id="supermaster-permissions">Supermaster Permissions<a class="headerlink" href="#supermaster-permissions" title="Permanent link">¶</a></h2>
 <h3 id="supermaster_view">supermaster_view<a class="headerlink" href="#supermaster_view" title="Permanent link">¶</a></h3>
 <ul>
