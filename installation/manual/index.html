@@ -7098,13 +7098,13 @@
 <h3 id="apache-configuration">Apache Configuration<a class="headerlink" href="#apache-configuration" title="Permanent link">¶</a></h3>
 <p>Apache requires <code>mod_rewrite</code> to be enabled for Poweradmin to function correctly. Starting with v4.1.0, all pages use clean URLs (e.g., <code>/login</code>, <code>/zones</code>) which depend on URL rewriting.</p>
 <ol>
-<li>Enable the required Apache modules:</li>
-</ol>
+<li>
+<p>Enable the required Apache modules:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>a2enmod<span class="w"> </span>rewrite<span class="w"> </span>headers
 </code></pre></div>
-<ol>
-<li>Configure your VirtualHost. If you are using PHP-FPM instead of <code>mod_php</code>, also include the <code>SetHandler</code> block shown below to forward <code>.php</code> requests to the FPM socket:</li>
-</ol>
+</li>
+<li>
+<p>Configure your VirtualHost. If you are using PHP-FPM instead of <code>mod_php</code>, also include the <code>SetHandler</code> block shown below to forward <code>.php</code> requests to the FPM socket:</p>
 <div class="language-apache highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">&lt;VirtualHost</span><span class="w"> </span><span class="s">*:80</span><span class="nt">&gt;</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="nb">ServerName</span><span class="w"> </span>your-domain.com
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nb">DocumentRoot</span><span class="w"> </span><span class="sx">/path/to/poweradmin</span>
@@ -7127,6 +7127,8 @@
 <a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="w">    </span><span class="nb">RewriteRule</span><span class="w"> </span>^/nic/update(.*)$<span class="w"> </span><span class="sx">/dynamic_update.php</span><span class="w"> </span>[L]
 <a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="nt">&lt;/VirtualHost&gt;</span>
 </code></pre></div>
+</li>
+</ol>
 <blockquote>
 <p><strong>Warning:</strong> If you see 404 errors when accessing Poweradmin (e.g., on <code>/login</code>), check that: (1) <code>mod_rewrite</code> is enabled: <code>a2enmod rewrite &amp;&amp; systemctl restart apache2</code>, (2) <code>AllowOverride All</code> is set in your VirtualHost or Apache configuration, (3) The <code>.htaccess</code> file is present in the Poweradmin root directory.</p>
 </blockquote>

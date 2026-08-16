@@ -6682,15 +6682,15 @@
 <h3 id="log-management">Log Management<a class="headerlink" href="#log-management" title="Permanent link">¶</a></h3>
 <p>To prevent logs from consuming excessive disk space:</p>
 <ol>
-<li><strong>Database Logs</strong>: Implement a log rotation strategy for Poweradmin's database logs:</li>
-</ol>
+<li>
+<p><strong>Database Logs</strong>: Implement a log rotation strategy for Poweradmin's database logs:</p>
 <div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">-- Example log cleanup (retain only the last 90 days)</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">log_users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">created_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">DATE_SUB</span><span class="p">(</span><span class="n">NOW</span><span class="p">(),</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">90</span><span class="w"> </span><span class="k">DAY</span><span class="p">);</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">log_zones</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">created_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">DATE_SUB</span><span class="p">(</span><span class="n">NOW</span><span class="p">(),</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">90</span><span class="w"> </span><span class="k">DAY</span><span class="p">);</span>
 </code></pre></div>
-<ol>
-<li><strong>System Logs</strong>: Configure log rotation for your web server and PHP logs:</li>
-</ol>
+</li>
+<li>
+<p><strong>System Logs</strong>: Configure log rotation for your web server and PHP logs:</p>
 <div class="language-text highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a># Example logrotate configuration (/etc/logrotate.d/poweradmin)
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>/var/log/apache2/poweradmin-*.log {
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    rotate 14
@@ -6702,6 +6702,8 @@
 <a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    create 640 www-data adm
 <a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>}
 </code></pre></div>
+</li>
+</ol>
 <h3 id="backup-procedures">Backup Procedures<a class="headerlink" href="#backup-procedures" title="Permanent link">¶</a></h3>
 <h4 id="database-backup">Database Backup<a class="headerlink" href="#database-backup" title="Permanent link">¶</a></h4>
 <p>Regular database backups are essential:</p>

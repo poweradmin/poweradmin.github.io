@@ -8220,6 +8220,21 @@ empty, that file is used and the variables below are ignored. See
 <td>Restrict WHOIS to administrators</td>
 </tr>
 <tr>
+<td><code>PA_MODULE_WHOIS_DEFAULT_SERVER</code></td>
+<td><em>(empty)</em></td>
+<td>Default WHOIS server</td>
+</tr>
+<tr>
+<td><code>PA_MODULE_WHOIS_CUSTOM_SERVERS</code></td>
+<td><em>(empty)</em></td>
+<td>Custom TLD-to-server mapping, e.g. <code>za=whois.registry.net.za</code></td>
+</tr>
+<tr>
+<td><code>PA_MODULE_WHOIS_SOCKET_TIMEOUT</code></td>
+<td>10</td>
+<td>WHOIS socket timeout in seconds</td>
+</tr>
+<tr>
 <td><code>PA_MODULE_RDAP_ENABLED</code></td>
 <td>false</td>
 <td>Enable RDAP lookup module</td>
@@ -8230,9 +8245,34 @@ empty, that file is used and the variables below are ignored. See
 <td>Restrict RDAP to administrators</td>
 </tr>
 <tr>
+<td><code>PA_MODULE_RDAP_DEFAULT_SERVER</code></td>
+<td><em>(empty)</em></td>
+<td>Default RDAP server</td>
+</tr>
+<tr>
+<td><code>PA_MODULE_RDAP_CUSTOM_SERVERS</code></td>
+<td><em>(empty)</em></td>
+<td>Custom TLD-to-server mapping, e.g. <code>za=https://rdap.example.com/</code></td>
+</tr>
+<tr>
+<td><code>PA_MODULE_RDAP_REQUEST_TIMEOUT</code></td>
+<td>10</td>
+<td>RDAP request timeout in seconds</td>
+</tr>
+<tr>
+<td><code>PA_MODULE_EMAIL_PREVIEWS_ENABLED</code></td>
+<td>false</td>
+<td>Enable the email template previews module</td>
+</tr>
+<tr>
 <td><code>PA_MODULE_EMAIL_PREVIEWS_RESTRICT_TO_ADMIN</code></td>
 <td>true</td>
 <td>Restrict email previews to administrators</td>
+</tr>
+<tr>
+<td><code>PA_MODULE_DNS_WIZARDS_ENABLED</code></td>
+<td>false</td>
+<td>Enable the DNS record wizards module</td>
 </tr>
 <tr>
 <td><code>PA_MODULE_DNS_WIZARDS_TYPES</code></td>
@@ -8241,6 +8281,9 @@ empty, that file is used and the variables below are ignored. See
 </tr>
 </tbody>
 </table>
+<p>This table covers every module variable the container accepts. Two module settings have no
+environment variable and must be set in <code>settings.php</code>: <code>modules.secondary_zone_import.enabled</code>
+and the <code>modules.dns_wizards.caa_providers</code> list.</p>
 <p>For detailed module configuration, see the <a href="../../configuration/zone-import-export/">Configuration</a> section.</p>
 <h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">¶</a></h3>
 <table>
@@ -8256,6 +8299,36 @@ empty, that file is used and the variables below are ignored. See
 <td><code>PA_LDAP_ENABLED</code></td>
 <td>false</td>
 <td>Enable LDAP authentication</td>
+</tr>
+<tr>
+<td><code>PA_LDAP_URI</code></td>
+<td><em>(empty)</em></td>
+<td>LDAP server URI, e.g. <code>ldaps://ldap.example.com:636</code></td>
+</tr>
+<tr>
+<td><code>PA_LDAP_BASE_DN</code></td>
+<td><em>(empty)</em></td>
+<td>Base DN where users are stored</td>
+</tr>
+<tr>
+<td><code>PA_LDAP_BIND_DN</code></td>
+<td><em>(empty)</em></td>
+<td>Bind DN used to search the directory</td>
+</tr>
+<tr>
+<td><code>PA_LDAP_BIND_PASSWORD</code></td>
+<td><em>(empty)</em></td>
+<td>Password for the bind DN</td>
+</tr>
+<tr>
+<td><code>PA_LDAP_SEARCH_FILTER</code></td>
+<td><em>(empty)</em></td>
+<td>Additional LDAP search filter</td>
+</tr>
+<tr>
+<td><code>PA_LDAP_PROTOCOL_VERSION</code></td>
+<td>3</td>
+<td>LDAP protocol version</td>
 </tr>
 <tr>
 <td><code>PA_LDAP_USER_ATTRIBUTE</code></td>
@@ -8294,6 +8367,11 @@ empty, that file is used and the variables below are ignored. See
 </tr>
 </tbody>
 </table>
+<p>The LDAP rows above are enough for a working LDAP setup. OIDC and SAML are not - each provider
+needs its own block of variables (<code>PA_OIDC_AZURE_*</code>, <code>PA_SAML_OKTA_*</code> and so on), and there are
+137 authentication variables in total across LDAP, OIDC and SAML. They are listed in
+<a href="https://github.com/poweradmin/poweradmin/blob/master/DOCKER.md">DOCKER.md</a>; the settings behind
+them are explained in <a href="../../configuration/oidc/">OIDC</a> and <a href="../../configuration/saml/">SAML</a>.</p>
 <h3 id="custom-ca-certificate">Custom CA Certificate<a class="headerlink" href="#custom-ca-certificate" title="Permanent link">¶</a></h3>
 <table>
 <thead>

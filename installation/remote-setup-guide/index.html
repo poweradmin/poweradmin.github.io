@@ -6721,8 +6721,8 @@ maintain a dedicated admin interface without needing to install PowerDNS on the 
 <li>Poweradmin is installed on the admin server</li>
 <li>PowerDNS runs on the DNS server</li>
 <li>Poweradmin connects to the PowerDNS database remotely</li>
-<li>For DNSSEC operations, Poweradmin uses the PowerDNS API</li>
-</ol>
+<li>
+<p>For DNSSEC operations, Poweradmin uses the PowerDNS API</p>
 <div class="language-text highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌────────────────┐        ┌────────────────┐
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                │        │                │
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  Admin Server  │        │   DNS Server   │
@@ -6737,25 +6737,29 @@ maintain a dedicated admin interface without needing to install PowerDNS on the 
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        └───►│ PowerDNS DB  │◄────┘
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>             └──────────────┘
 </code></pre></div>
+</li>
+</ol>
 <h2 id="step-1-install-poweradmin-on-the-admin-server">Step 1: Install Poweradmin on the Admin Server<a class="headerlink" href="#step-1-install-poweradmin-on-the-admin-server" title="Permanent link">¶</a></h2>
 <ol>
-<li>Clone or download Poweradmin:</li>
-</ol>
+<li>
+<p>Clone or download Poweradmin:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/poweradmin/poweradmin.git
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>poweradmin
 </code></pre></div>
-<ol>
-<li>Install dependencies:</li>
-</ol>
+</li>
+<li>
+<p>Install dependencies:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>composer<span class="w"> </span>install<span class="w"> </span>--no-dev
 </code></pre></div>
-<ol>
-<li>Configure your web server to serve Poweradmin (directory configuration examples for Apache/Nginx not shown here).</li>
+</li>
+<li>
+<p>Configure your web server to serve Poweradmin (directory configuration examples for Apache/Nginx not shown here).</p>
+</li>
 </ol>
 <h2 id="step-2-configure-database-connection">Step 2: Configure Database Connection<a class="headerlink" href="#step-2-configure-database-connection" title="Permanent link">¶</a></h2>
 <ol>
-<li>Create a database user on your PowerDNS database server with appropriate permissions:</li>
-</ol>
+<li>
+<p>Create a database user on your PowerDNS database server with appropriate permissions:</p>
 <div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">-- For MySQL/MariaDB (execute on DNS server's database)</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">CREATE</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">USER</span><span class="w"> </span><span class="s1">'poweradmin'</span><span class="o">@</span><span class="s1">'admin_server_ip'</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">'secure_password'</span><span class="p">;</span>
@@ -6769,8 +6773,10 @@ maintain a dedicated admin interface without needing to install PowerDNS on the 
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">FLUSH</span>
 <a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="k">PRIVILEGES</span><span class="p">;</span>
 </code></pre></div>
-<ol>
-<li>Configure Poweradmin to connect to the remote database:<ul>
+</li>
+<li>
+<p>Configure Poweradmin to connect to the remote database:</p>
+<ul>
 <li>Copy <code>config/settings.defaults.php</code> to <code>config/settings.php</code></li>
 <li>Edit the database connection settings:</li>
 </ul>
@@ -6796,13 +6802,15 @@ maintain a dedicated admin interface without needing to install PowerDNS on the 
 <a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>webserver-allow-from=admin_server_ip/32
 </code></pre></div>
 <ol>
-<li>Configure Poweradmin to use the API by editing your <code>settings.php</code>:</li>
-</ol>
+<li>
+<p>Configure Poweradmin to use the API by editing your <code>settings.php</code>:</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="x">'pdns_api' =&gt; [</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="x">    'url' =&gt; 'http://dns_server_ip:8081',  // PowerDNS API URL</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="x">    'key' =&gt; 'your_secure_api_key',        // PowerDNS API key</span>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="x">],</span>
 </code></pre></div>
+</li>
+</ol>
 <h2 id="step-4-configure-dnssec-optional">Step 4: Configure DNSSEC (Optional)<a class="headerlink" href="#step-4-configure-dnssec-optional" title="Permanent link">¶</a></h2>
 <p>If you're using DNSSEC, enable it in your settings:</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="x">'dnssec' =&gt; [</span>
@@ -6841,20 +6849,20 @@ maintain a dedicated admin interface without needing to install PowerDNS on the 
 <li>Consider using SSH tunneling or VPN for additional security</li>
 <li>Example with UFW (Ubuntu):</li>
 </ul>
-</li>
-</ul>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># On PowerDNS server</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span>from<span class="w"> </span>admin_server_ip<span class="w"> </span>to<span class="w"> </span>any<span class="w"> </span>port<span class="w"> </span><span class="m">8081</span><span class="w"> </span>proto<span class="w"> </span>tcp
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span>from<span class="w"> </span>admin_server_ip<span class="w"> </span>to<span class="w"> </span>any<span class="w"> </span>port<span class="w"> </span><span class="m">3306</span><span class="w"> </span>proto<span class="w"> </span>tcp
 </code></pre></div>
-<ol>
-<li>TLS/SSL:<ul>
+</li>
+<li>
+<p>TLS/SSL:</p>
+<ul>
 <li>Consider using SSL/TLS for database connections</li>
 <li>Use HTTPS for Poweradmin's web interface</li>
 <li>Consider using HTTPS for the PowerDNS API</li>
 </ul>
 </li>
-</ol>
+</ul>
 <h2 id="step-6-test-the-connection">Step 6: Test the Connection<a class="headerlink" href="#step-6-test-the-connection" title="Permanent link">¶</a></h2>
 <ol>
 <li>Complete the Poweradmin installation wizard if running for the first time</li>
