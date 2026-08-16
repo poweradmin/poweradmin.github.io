@@ -1546,17 +1546,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interface
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#powerdns-api" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1601,10 +1590,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#miscellaneous" class="md-nav__link">
+  <a href="#interface-and-miscellaneous" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Miscellaneous
+        Interface and miscellaneous
       
     </span>
   </a>
@@ -7235,17 +7224,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interface
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#powerdns-api" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7290,10 +7268,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#miscellaneous" class="md-nav__link">
+  <a href="#interface-and-miscellaneous" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Miscellaneous
+        Interface and miscellaneous
       
     </span>
   </a>
@@ -7750,6 +7728,20 @@ immediately.</p>
 </code></pre></div>
 <p><strong>Note</strong>: The admin user is only created if it doesn't already exist.</p>
 <h2 id="key-environment-variables">Key Environment Variables<a class="headerlink" href="#key-environment-variables" title="Permanent link">¶</a></h2>
+<p>This page covers the variables you need to stand a deployment up and secure it. It
+is deliberately a subset: the container accepts roughly 330 variables, and the
+complete reference, versioned alongside the code, is
+<a href="https://github.com/poweradmin/poweradmin/blob/master/DOCKER.md">DOCKER.md</a> in the
+source repository. Check there for anything not listed below, especially the
+interface, mail, DNS validation and per-provider OIDC and SAML settings.</p>
+<p>Every variable here can also be supplied from a file by appending <code>__FILE</code> to its
+name; see <a href="../docker-secrets/">Docker Secrets</a>.</p>
+<blockquote>
+<p><strong>Note:</strong> These variables only take effect when the container generates its own
+configuration. If <code>config/settings.php</code> (or <code>PA_CONFIG_PATH</code>) exists and is not
+empty, that file is used and the variables below are ignored. See
+<a href="../docker-secrets/#configuration-priority">Configuration Priority</a>.</p>
+</blockquote>
 <h3 id="database">Database<a class="headerlink" href="#database" title="Permanent link">¶</a></h3>
 <table>
 <thead>
@@ -8135,38 +8127,6 @@ immediately.</p>
 </tbody>
 </table>
 <p>Account lockout (with <code>PA_LOCKOUT_TRACK_IP</code>) and the reset and recovery rate limits all throttle by client IP as well as by account. Behind a proxy they need <code>TRUSTED_PROXIES</code> set, or every request appears to come from the proxy's address.</p>
-<h3 id="interface">Interface<a class="headerlink" href="#interface" title="Permanent link">¶</a></h3>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>PA_APP_TITLE</code></td>
-<td>Poweradmin</td>
-<td>Application title</td>
-</tr>
-<tr>
-<td><code>PA_DEFAULT_LANGUAGE</code></td>
-<td>en_EN</td>
-<td>Default language</td>
-</tr>
-<tr>
-<td><code>PA_SESSION_TIMEOUT</code></td>
-<td>1800</td>
-<td>Session timeout (seconds)</td>
-</tr>
-<tr>
-<td><code>PA_STYLE</code></td>
-<td>light</td>
-<td>UI style: light or dark</td>
-</tr>
-</tbody>
-</table>
 <h3 id="powerdns-api">PowerDNS API<a class="headerlink" href="#powerdns-api" title="Permanent link">¶</a></h3>
 <table>
 <thead>
@@ -8327,7 +8287,7 @@ immediately.</p>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span>-v<span class="w"> </span>/path/to/my-ca.crt:/certs/my-ca.crt:ro<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span>poweradmin/poweradmin
 </code></pre></div>
-<h3 id="miscellaneous">Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permanent link">¶</a></h3>
+<h3 id="interface-and-miscellaneous">Interface and miscellaneous<a class="headerlink" href="#interface-and-miscellaneous" title="Permanent link">¶</a></h3>
 <table>
 <thead>
 <tr>
@@ -8337,6 +8297,31 @@ immediately.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><code>PA_CONFIG_PATH</code></td>
+<td>/app/config/settings.php</td>
+<td>Path to the configuration file. When this file exists and is not empty it replaces the generated one, and the other <code>PA_*</code> variables are ignored</td>
+</tr>
+<tr>
+<td><code>PA_APP_TITLE</code></td>
+<td>Poweradmin</td>
+<td>Application title</td>
+</tr>
+<tr>
+<td><code>PA_DEFAULT_LANGUAGE</code></td>
+<td>en_EN</td>
+<td>Default language</td>
+</tr>
+<tr>
+<td><code>PA_STYLE</code></td>
+<td>light</td>
+<td>UI style: light or dark</td>
+</tr>
+<tr>
+<td><code>PA_SESSION_TIMEOUT</code></td>
+<td>1800</td>
+<td>Session timeout in seconds</td>
+</tr>
 <tr>
 <td><code>PA_TIMEZONE</code></td>
 <td>UTC</td>
@@ -8354,6 +8339,9 @@ immediately.</p>
 </tr>
 </tbody>
 </table>
+<p>The interface has many more settings than the four above; see
+<a href="../../configuration/ui/overview/">UI Overview</a> for what is available and
+<code>DOCKER.md</code> for their variables.</p>
 <h3 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">¶</a></h3>
 <table>
 <thead>
@@ -8396,7 +8384,9 @@ immediately.</p>
 </tr>
 </tbody>
 </table>
-<p>For complete environment variable reference, see the <a href="https://github.com/poweradmin/poweradmin/blob/master/DOCKER.md">DOCKER.md</a> in the source repository.</p>
+<p>Anything not listed on this page is in
+<a href="https://github.com/poweradmin/poweradmin/blob/master/DOCKER.md">DOCKER.md</a>, which
+tracks the code and is tagged with each release.</p>
 <h2 id="volumes">Volumes<a class="headerlink" href="#volumes" title="Permanent link">¶</a></h2>
 <table>
 <thead>
