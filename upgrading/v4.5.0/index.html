@@ -7439,6 +7439,10 @@
 <td><code>oidc_user_links</code> / <code>saml_user_links</code> binary collation</td>
 <td>Byte-exact subject matching (already shipped in 4.2.5/4.3.4; included for upgrades from 4.4.0)</td>
 </tr>
+<tr>
+<td><code>zone_templ_records.type</code> widened to varchar(10)</td>
+<td>Record types longer than six characters (<code>NSEC3PARAM</code>, <code>OPENPGPKEY</code>, <code>IPSECKEY</code>, <code>CDNSKEY</code>, <code>RESINFO</code>) can now be stored in zone templates</td>
+</tr>
 </tbody>
 </table>
 <p>The migration also registers eleven new permissions (see below) and auto-grants the four metadata/ownership view permissions to templates that already hold the matching <code>zone_content_view_*</code> permission, so nothing users could see before the upgrade disappears.</p>
@@ -7687,6 +7691,9 @@ the same rule.</p>
 <li>The Records column in zone lists is no longer sortable in API backend mode. Record counts are now resolved only for the zones on the current page, so ordering by them would sort just that page rather than the whole list. The column header is plain text instead of a sort link, and a stale <code>count_records</code> sort carried over in a session falls back to sorting by name. SQL backend mode is unaffected and still sorts by record count.</li>
 <li>The MFA failure counter is tracked per authentication stage; repeated wrong MFA codes can lock an account even after a correct password.</li>
 <li>Two authentication paths that were previously exempt now count towards account lockout: the dynamic DNS endpoint, and HTTP Basic Auth on the public API. This only matters if you have turned lockout on - <code>security.account_lockout.enable_lockout</code> ships disabled - but if you have, an automated client retrying with stale credentials can now lock the account it belongs to. Check any DDNS client or service account whose credentials may be out of date before upgrading. See <a href="../../configuration/security-policies/">Security Policies</a>.</li>
+<li><code>DELETE /api/v2/groups/{id}</code> now returns 409 when the group still owns zones, unless the request carries <code>confirm=true</code>. Deleting such a group leaves those zones without an owner, so the confirmation is required. Groups that only have members are unaffected and delete as before. API clients that destroy zone-owning groups need the extra parameter.</li>
+<li><code>interface.rows_per_page</code> now accepts any value from 5 to 500 rather than silently falling back to 10 for anything outside 10/20/50/100. If you had set a value like 25 it was previously ignored, and will now take effect.</li>
+<li>PHP's session garbage collection is raised to match <code>interface.session_timeout</code>. Sessions previously expired after PHP's 1440-second default rather than the configured 1800, which returned users to the login page without an explanation.</li>
 <li>All other new features are additive or opt-in: new tables start empty, new settings default to prior behavior, and new permissions (except the auto-granted view split) are not assigned to any template.</li>
 </ul>
 <h2 id="rollback">Rollback<a class="headerlink" href="#rollback" title="Permanent link">¶</a></h2>
