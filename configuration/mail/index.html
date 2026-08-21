@@ -7135,7 +7135,7 @@ plain-text body.</p>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="x">    'transport' =&gt; 'logger',</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="x">],</span>
 </code></pre></div>
-<p>For server-side errors during real SMTP delivery, raise the global log level under <code>logging.level</code> (see <a href="../logging/">Logging</a>) and check your web server error log or PHP error log for output from <code>MailService</code>.</p>
+<p>For server-side errors during real SMTP delivery, set <code>logging.type</code> to <code>native</code> and raise <code>logging.level</code> (see <a href="../logging/">Logging</a>), then check your web server error log or PHP error log for output from <code>MailService</code>. <code>logging.type</code> defaults to <code>null</code>, which discards diagnostic output no matter what the level is set to.</p>
 <h3 id="tlsstarttls-issues-fixed-in-v410">TLS/STARTTLS Issues <em>(Fixed in v4.1.0)</em><a class="headerlink" href="#tlsstarttls-issues-fixed-in-v410" title="Permanent link">¶</a></h3>
 <p><strong>Problem:</strong> Email sending fails with TLS/STARTTLS errors in versions prior to v4.1.0.</p>
 <p><strong>Solution:</strong> Upgrade to v4.1.0 or later, which includes proper TLS/STARTTLS connection handling.</p>
@@ -7177,7 +7177,7 @@ plain-text body.</p>
 <li>
 <p><strong>Check firewall rules:</strong> Ensure outbound SMTP ports are open</p>
 </li>
-<li><strong>Review server logs:</strong> Raise <code>logging.level</code> to <code>debug</code> (see <a href="../logging/">Logging</a>) for detailed <code>MailService</code> output</li>
+<li><strong>Review server logs:</strong> Set <code>logging.type</code> to <code>native</code> and raise <code>logging.level</code> to <code>debug</code> (see <a href="../logging/">Logging</a>) for detailed <code>MailService</code> output</li>
 <li><strong>Try alternative ports:</strong> Test port 465 (SSL) or 25 if 587 fails</li>
 </ol>
 <h3 id="email-not-being-delivered">Email Not Being Delivered<a class="headerlink" href="#email-not-being-delivered" title="Permanent link">¶</a></h3>
@@ -7190,7 +7190,7 @@ plain-text body.</p>
 </ol>
 <p><strong>Debugging steps:</strong></p>
 <ol>
-<li>Raise <code>logging.level</code> to <code>debug</code> and check the application log (see <a href="../logging/">Logging</a>)</li>
+<li>Set <code>logging.type</code> to <code>native</code>, raise <code>logging.level</code> to <code>debug</code>, and check the application log (see <a href="../logging/">Logging</a>)</li>
 <li>Check mail server logs</li>
 <li>Verify email appears in sent items (if using external SMTP)</li>
 <li>Test with a simple mail client using same credentials</li>
