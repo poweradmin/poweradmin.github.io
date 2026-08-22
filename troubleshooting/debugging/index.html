@@ -6950,24 +6950,30 @@
 <h2 id="common-configuration-issues">Common Configuration Issues<a class="headerlink" href="#common-configuration-issues" title="Permanent link">¶</a></h2>
 <h3 id="password-character-issues">Password Character Issues<a class="headerlink" href="#password-character-issues" title="Permanent link">¶</a></h3>
 <p>If you experience PHP syntax errors when generating configuration files during installation, check your passwords for problematic characters:</p>
-<p><strong>Symptoms:</strong>
-- Installation fails with PHP parse errors
-- Configuration file cannot be parsed
-- "Access denied for user" errors after successful installation test</p>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li>Installation fails with PHP parse errors</li>
+<li>Configuration file cannot be parsed</li>
+<li>"Access denied for user" errors after successful installation test</li>
+</ul>
 <p><strong>Solution:</strong>
-Avoid these characters in database, LDAP, and SMTP passwords:
-- Single quotes (<code>'</code>)
-- Double quotes (<code>"</code>)
-- Backslashes (<code>\</code>)
-- Line breaks</p>
-<p><strong>Example Error:</strong>
-</p><div class="language-text highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Parse error: syntax error, unexpected 'password' in config/settings.php on line 42
-</code></pre></div><p></p>
-<p><strong>Debugging Steps:</strong>
-1. Check your password for the problematic characters listed above
-2. Use <code>var_dump(ConfigurationManager::getInstance()-&gt;getAll())</code> to inspect parsed configuration values
-3. Look for missing quotes or escape characters in the output
-4. Change the password to use only alphanumeric characters and basic symbols</p>
+Avoid these characters in database, LDAP, and SMTP passwords:</p>
+<ul>
+<li>Single quotes (<code>'</code>)</li>
+<li>Double quotes (<code>"</code>)</li>
+<li>Backslashes (<code>\</code>)</li>
+<li>Line breaks</li>
+</ul>
+<p><strong>Example Error:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Parse error: syntax error, unexpected 'password' in config/settings.php on line 42
+</code></pre></div>
+<p><strong>Debugging Steps:</strong></p>
+<ol>
+<li>Check your password for the problematic characters listed above</li>
+<li>Use <code>var_dump(ConfigurationManager::getInstance()-&gt;getAll())</code> to inspect parsed configuration values</li>
+<li>Look for missing quotes or escape characters in the output</li>
+<li>Change the password to use only alphanumeric characters and basic symbols</li>
+</ol>
 <p>This issue occurs because the configuration file generator does not properly escape special PHP characters in password values during installation.</p>
 
 

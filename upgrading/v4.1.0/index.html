@@ -8419,15 +8419,15 @@
 <li>Username recovery request tracking table</li>
 </ul>
 <p><strong>Apply the 4.1.0 migration:</strong></p>
-<p><strong>For MySQL/MariaDB:</strong>
-</p><div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-mysql-update-to-4.1.0.sql
-</code></pre></div><p></p>
-<p><strong>For PostgreSQL:</strong>
-</p><div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>sql/poweradmin-pgsql-update-to-4.1.0.sql
-</code></pre></div><p></p>
-<p><strong>For SQLite:</strong>
-</p><div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-sqlite-update-to-4.1.0.sql
-</code></pre></div><p></p>
+<p><strong>For MySQL/MariaDB:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-mysql-update-to-4.1.0.sql
+</code></pre></div>
+<p><strong>For PostgreSQL:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>sql/poweradmin-pgsql-update-to-4.1.0.sql
+</code></pre></div>
+<p><strong>For SQLite:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-sqlite-update-to-4.1.0.sql
+</code></pre></div>
 <p><strong>Note:</strong> If you're upgrading from v4.0.0-4.0.3, you may also need to apply the v4.0.2 migration if not already applied. Check if the <code>password_reset_tokens</code> table has a default value for the <code>used</code> field:</p>
 <div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">-- MySQL/MariaDB</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">SHOW</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">password_reset_tokens</span><span class="p">;</span>
@@ -8671,38 +8671,38 @@
 <p>If you see a 404 error when accessing Poweradmin after upgrading to v4.1.0:</p>
 <ol>
 <li>
-<p><strong>Apache</strong>: Verify <code>mod_rewrite</code> is enabled:
-    </p><div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>apache2ctl<span class="w"> </span>-M<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>rewrite
+<p><strong>Apache</strong>: Verify <code>mod_rewrite</code> is enabled:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>apache2ctl<span class="w"> </span>-M<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>rewrite
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1"># If not listed, enable it:</span>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>a2enmod<span class="w"> </span>rewrite
 <a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
-</code></pre></div><p></p>
+</code></pre></div>
 </li>
 <li>
-<p><strong>Apache</strong>: Verify <code>AllowOverride All</code> is set in your VirtualHost:
-    </p><div class="language-apache highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">&lt;Directory</span><span class="w"> </span><span class="s">/path/to/poweradmin</span><span class="nt">&gt;</span>
+<p><strong>Apache</strong>: Verify <code>AllowOverride All</code> is set in your VirtualHost:</p>
+<div class="language-apache highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">&lt;Directory</span><span class="w"> </span><span class="s">/path/to/poweradmin</span><span class="nt">&gt;</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="nb">AllowOverride</span><span class="w"> </span><span class="k">All</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nt">&lt;/Directory&gt;</span>
-</code></pre></div><p></p>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Apache</strong>: Verify the <code>.htaccess</code> file is present in the Poweradmin root directory and is the version from v4.1.0 (not v4.0.x)</p>
 </li>
 <li>
-<p><strong>Nginx</strong>: Verify your configuration includes the <code>try_files</code> directive:
-    </p><div class="language-nginx highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<p><strong>Nginx</strong>: Verify your configuration includes the <code>try_files</code> directive:</p>
+<div class="language-nginx highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nv">$uri/</span><span class="w"> </span><span class="s">/index.php</span><span class="nv">$is_args$args</span><span class="p">;</span>
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="p">}</span>
-</code></pre></div><p></p>
+</code></pre></div>
 </li>
 <li>
-<p><strong>All servers</strong>: Check error logs for more details:
-    </p><div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Apache</span>
+<p><strong>All servers</strong>: Check error logs for more details:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Apache</span>
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/apache2/error.log
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
 <a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># Nginx</span>
 <a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/nginx/error.log
-</code></pre></div><p></p>
+</code></pre></div>
 </li>
 </ol>
 <h3 id="permission-issues-after-upgrade">Permission Issues After Upgrade<a class="headerlink" href="#permission-issues-after-upgrade" title="Permanent link">¶</a></h3>
