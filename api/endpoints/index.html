@@ -3764,6 +3764,8 @@
       
         
       
+        
+      
     
     
     
@@ -3825,6 +3827,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../operations/health-checks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Health Checks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../maintenance/consistency-check/" class="md-nav__link">
         
   
@@ -3872,10 +3902,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4">
         
           
-          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
             
   
   
@@ -3893,8 +3923,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -3994,10 +4024,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5">
         
           
-          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
             
   
   
@@ -4015,8 +4045,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -6680,6 +6710,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#health-endpoints-v450" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health endpoints (v4.5.0+)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#api-v1-endpoints" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7093,6 +7134,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#health-endpoints-v450" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health endpoints (v4.5.0+)
+      
+    </span>
+  </a>
   
 </li>
       
@@ -7640,6 +7692,33 @@ not have to assume the request took full effect:</p>
 </tr>
 </tbody>
 </table>
+<h2 id="health-endpoints-v450">Health endpoints (v4.5.0+)<a class="headerlink" href="#health-endpoints-v450" title="Permanent link">¶</a></h2>
+<p>These sit outside the versioned API and outside the API key model. They take no
+credentials, are <strong>disabled by default</strong>, and return <code>404</code> while disabled. Paths are
+absolute, not relative to <code>/api/v2</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/api/health</code></td>
+<td>Readiness: database and PowerDNS API reachability. <code>200</code> healthy, <code>503</code> otherwise</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/ping</code></td>
+<td>Liveness: returns <code>ok</code> and checks nothing else</td>
+</tr>
+</tbody>
+</table>
+<p>They are not part of the OpenAPI specification, and they answer regardless of whether
+<code>api.enabled</code> is set. See <a href="../../operations/health-checks/">Health Checks</a>.</p>
 <h2 id="api-v1-endpoints">API v1 endpoints<a class="headerlink" href="#api-v1-endpoints" title="Permanent link">¶</a></h2>
 <p><strong>Removed in 4.5.0.</strong> On 4.5.0 and later, every <code>/api/v1</code> path answers
 <code>410 Gone</code> and points at <code>/api/v2</code>.</p>
