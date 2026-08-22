@@ -4560,6 +4560,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#health-and-ping-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health and Ping Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#headless-mode-api-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Headless Mode (API-Only)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7368,6 +7390,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#health-and-ping-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health and Ping Endpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#headless-mode-api-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Headless Mode (API-Only)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7553,7 +7597,7 @@
 </blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¶</a></h2>
 <p>Version 4.5.0 centers on serial handling and delegation. SOA-EDIT and SOA-EDIT-API serial policies can be managed from the UI, zone lists can show the signed serial PowerDNS actually serves, and zone templates understand serial placeholders. Access control gets finer-grained: dedicated permissions for viewing logs, zone metadata, and zone ownership, a DNSSEC key-management permission separate from zone editing, delegation NS editing below the apex, and granular API keys (read-only, operation-restricted, zone-scoped).</p>
-<p>Also new: a structured record change log with before/after snapshots, per-record-type default TTLs, trusted proxy support, LDAP user-info sync and auto-provisioning, OIDC <code>form_post</code> response mode, and per-request API logging.</p>
+<p>Also new: a structured record change log with before/after snapshots, per-record-type default TTLs, trusted proxy support, LDAP user-info sync and auto-provisioning, OIDC <code>form_post</code> response mode, per-request API logging, health and ping endpoints for external monitoring, and a headless mode that serves the API without the web interface.</p>
 <h2 id="database-schema-update">Database Schema Update<a class="headerlink" href="#database-schema-update" title="Permanent link">¶</a></h2>
 <p>The 4.5.0 migration is larger than usual. It adds six tables:</p>
 <table>
@@ -7734,7 +7778,7 @@
 <li><code>security.mfa.skip_for_external_auth</code> - skip Poweradmin's MFA enforcement for LDAP/OIDC/SAML logins when the IdP already enforces it.</li>
 </ul>
 <h3 id="api-request-logging">API Request Logging<a class="headerlink" href="#api-request-logging" title="Permanent link">¶</a></h3>
-<p>With <code>misc.api_request_logging</code> enabled, every public API request is logged to the API log; permission violations (401/403) are logged regardless of the setting. <code>misc.api_log_retention_days</code> prunes old rows (0 keeps everything).</p>
+<p>With <code>logging.api_request_logging</code> enabled, every public API request is logged to the API log; permission violations (401/403) are logged regardless of the setting. <code>logging.api_log_retention_days</code> prunes old rows (0 keeps everything).</p>
 <h3 id="zone-list-and-ui">Zone List and UI<a class="headerlink" href="#zone-list-and-ui" title="Permanent link">¶</a></h3>
 <ul>
 <li>Owner, group, and record-count columns in zone lists can be toggled (<code>interface.display_owner_in_zone_list</code>, <code>display_group_in_zone_list</code>, <code>show_zone_record_count</code>).</li>
@@ -7745,6 +7789,44 @@
 <li><code>dns.parent_zone_ownership_check</code> (default on) blocks creating a zone that overlaps an existing zone owned by another user.</li>
 <li>Each user can switch the interface to the full browser width under Account &gt; Preferences &gt; Display Settings; <code>interface.wide_layout</code> sets the site-wide default.</li>
 </ul>
+<h3 id="health-and-ping-endpoints">Health and Ping Endpoints<a class="headerlink" href="#health-and-ping-endpoints" title="Permanent link">¶</a></h3>
+<p>Two unauthenticated endpoints for external monitoring, both disabled by default and
+answering 404 while off:</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="x">return [</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="x">    'health' =&gt; [</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="x">        'enabled' =&gt; true,       // GET /api/health</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="x">        'ping_enabled' =&gt; true,  // GET /ping</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="x">    ],</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="x">];</span>
+</code></pre></div>
+<p><code>/ping</code> is a liveness check. It touches nothing else, so it still answers while the
+database is down. <code>/api/health</code> is a readiness check: it reports whether the database and
+the PowerDNS API can be reached, and returns 503 when either is down. Neither response
+carries a version, hostname or error text.</p>
+<p>Failure detail goes through the normal logger, so it honors <code>logging.type</code>. That ships as
+<code>null</code>, meaning a failing check writes nothing until you set a real log type. Tune the
+probe timeouts with <code>health.db_timeout</code> and <code>health.pdns_timeout</code> (2 seconds each).</p>
+<p>Expose these deliberately. See <a href="../../operations/health-checks/">Health Checks</a> for how to
+restrict access at the web server.</p>
+<h3 id="headless-mode-api-only">Headless Mode (API-Only)<a class="headerlink" href="#headless-mode-api-only" title="Permanent link">¶</a></h3>
+<p>Installations driven entirely by scripts, Terraform or ExternalDNS can turn the web
+interface off and serve only the API:</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="x">return [</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="x">    'interface' =&gt; [</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="x">        'web_enabled' =&gt; false,</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="x">    ],</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="x">];</span>
+</code></pre></div>
+<p><code>/api/v2/*</code>, <code>/api/docs</code>, <code>/api/health</code> and <code>/ping</code> stay routable, along with <code>/api/v1/*</code>
+so retired v1 clients keep receiving their 410. Everything else answers a JSON 404,
+including the login page, the OIDC and SAML callbacks and the internal endpoints the
+interface uses for its own JavaScript. No session is started at all.</p>
+<p>API keys are still issued in the web interface, so this is a post-installation setting.
+Install with the interface enabled, create your admin and issue a key, then turn it off.
+Setting it back to <code>true</code> and restarting gets the interface back whenever you need to
+rotate a key.</p>
+<p><code>install/</code> and <code>dynamic_update.php</code> are files rather than routes, so this setting does not
+affect them. Delete the installer after installing, as usual.</p>
 <h2 id="breaking-changes">Breaking Changes<a class="headerlink" href="#breaking-changes" title="Permanent link">¶</a></h2>
 <h3 id="api-v1-is-removed">API v1 is removed<a class="headerlink" href="#api-v1-is-removed" title="Permanent link">¶</a></h3>
 <p>Public API v1 was deprecated in 4.3.0 and is gone in 4.5.0. Every <code>/api/v1</code> path now answers <code>410 Gone</code> for every HTTP verb, with a <code>Link: &lt;/api/v2/&gt;; rel="successor-version"</code> header and a JSON error body. <strong>Migrate your integrations to <code>/api/v2</code> before upgrading</strong>, or they will stop working the moment the new files are in place.</p>
@@ -7761,11 +7843,11 @@
 <h3 id="interfaceapplication_url-is-now-required-for-oidc-and-saml"><code>interface.application_url</code> is now required for OIDC and SAML<a class="headerlink" href="#interfaceapplication_url-is-now-required-for-oidc-and-saml" title="Permanent link">¶</a></h3>
 <p>Poweradmin no longer derives a host from the request when building URLs that leave the application. Under the official Docker image (FrankenPHP/Caddy) and under Apache's default <code>UseCanonicalName Off</code>, the web server takes <code>SERVER_NAME</code> from the client's <code>Host</code> header, so the previous fallback let a forged header steer the OAuth <code>redirect_uri</code> and the SAML <code>entityID</code>/ACS to another host.</p>
 <p><strong>If OIDC or SAML is enabled and <code>interface.application_url</code> is empty, single sign-on stops working until you set it.</strong> Set it to the full public URL of the install before upgrading:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="x">return [</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="x">    'interface' =&gt; [</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="x">        'application_url' =&gt; 'https://dns.example.com/poweradmin',</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="x">    ],</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="x">];</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="x">return [</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="x">    'interface' =&gt; [</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="x">        'application_url' =&gt; 'https://dns.example.com/poweradmin',</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="x">    ],</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="x">];</span>
 </code></pre></div>
 <p>The value must match the redirect URI already registered with your identity provider. For deployments that were working before the upgrade this is the host users already reach Poweradmin on, so no provider-side change is needed.</p>
 <p>What changes per feature when <code>application_url</code> is empty:</p>
@@ -7812,7 +7894,7 @@
 <h3 id="session-keys-written-by-the-web-installer-should-be-rotated">Session keys written by the web installer should be rotated<a class="headerlink" href="#session-keys-written-by-the-web-installer-should-be-rotated" title="Permanent link">¶</a></h3>
 <p>The installer used to build <code>security.session_key</code> with <code>mt_rand()</code>, which is seeded from a 32-bit value, so the key carried far less entropy than its 46 characters suggest. 4.5.0 generates it with <code>random_int()</code> instead, but that only applies to keys created from now on. An existing key in <code>config/settings.php</code> is left exactly as it is, so upgrading on its own does not fix this.</p>
 <p>If your key came from the web installer, replace it:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>openssl<span class="w"> </span>rand<span class="w"> </span>-hex<span class="w"> </span><span class="m">32</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>openssl<span class="w"> </span>rand<span class="w"> </span>-hex<span class="w"> </span><span class="m">32</span>
 </code></pre></div>
 <p>Everyone is logged out when you change it, since sessions encrypted under the old key can no longer be read. Nothing else is affected. Installations set up through Docker already used <code>openssl rand</code> and need no action.</p>
 <p>The header warning that flags a default key now also fires when the key is missing or shorter than 32 characters. It cannot tell a weak generator from a strong one, so a full-length installer key will not be flagged - rotate it if you are unsure where yours came from. See <a href="../../configuration/security-policies/#rotating-the-session-key">Security Policies</a>.</p>
