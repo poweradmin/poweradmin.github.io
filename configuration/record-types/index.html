@@ -2296,6 +2296,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#alias-and-lua-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALIAS and LUA records
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -6783,6 +6794,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#alias-and-lua-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALIAS and LUA records
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -6948,7 +6970,51 @@
 <li><strong>Forward zones</strong>: the common types (A, AAAA, CNAME, MX, NS, SOA, SRV, TXT) plus a larger set of less common but valid types (CAA, DNAME, HTTPS, NAPTR, SSHFP, SVCB, TLSA, URI and others). DNSSEC types (DNSKEY, DS, CDS, CDNSKEY, RRSIG, NSEC, NSEC3, NSEC3PARAM, ZONEMD) are merged in only when <code>dnssec.enabled</code> is true.</li>
 <li><strong>Reverse zones</strong>: only six types - CNAME, LOC, NS, PTR, SOA, TXT.</li>
 </ul>
-<p>Types the connected PowerDNS does not support are filtered out.</p>
+<p>Types the connected PowerDNS does not support are filtered out. Only the types whose support
+actually changed across recent releases are gated; everything else is assumed supported:</p>
+<table>
+<thead>
+<tr>
+<th>Record type</th>
+<th>Requires PowerDNS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SVCB</code>, <code>HTTPS</code>, <code>APL</code></td>
+<td>4.4.0</td>
+</tr>
+<tr>
+<td><code>CSYNC</code>, <code>NID</code>, <code>L32</code>, <code>L64</code>, <code>LP</code></td>
+<td>4.5.0</td>
+</tr>
+<tr>
+<td><code>ZONEMD</code></td>
+<td>4.8.0</td>
+</tr>
+<tr>
+<td><code>RESINFO</code>, <code>WALLET</code>, <code>HHIT</code>, <code>BRID</code></td>
+<td>5.1.0</td>
+</tr>
+</tbody>
+</table>
+<p>So if <code>SVCB</code> is missing from the dropdown on a 4.3 server, that is the gate rather than a
+configuration problem. See the
+<a href="https://doc.powerdns.com/authoritative/appendices/types.html">PowerDNS supported record types</a>.</p>
+<h3 id="alias-and-lua-records">ALIAS and LUA records<a class="headerlink" href="#alias-and-lua-records" title="Permanent link">¶</a></h3>
+<p>Two types have requirements on the PowerDNS side beyond simply being enabled here:</p>
+<ul>
+<li><strong><code>ALIAS</code></strong> resolves a target name at query time and returns its A/AAAA records, which lets you
+  put a CNAME-like record at a zone apex. PowerDNS needs a resolver configured (<code>resolver=</code> in
+  <code>pdns.conf</code>) or it cannot expand the target. See
+  <a href="https://doc.powerdns.com/authoritative/guides/alias.html">the ALIAS guide</a>.</li>
+<li><strong><code>LUA</code></strong> records execute a Lua expression on the DNS server at query time. PowerDNS ignores them
+  unless the zone carries the <code>ENABLE-LUA-RECORDS</code> metadata, which is neither readable nor writable
+  over the API - set it with <code>pdnsutil</code> or in the database. Because they run code on the server,
+  Poweradmin also restricts them: users limited to <code>zone_content_edit_own_as_client</code> cannot create
+  or edit them, and seeding one into a zone template needs full edit rights. See
+  <a href="https://doc.powerdns.com/authoritative/lua-records/index.html">LUA records</a>.</li>
+</ul>
 <h2 id="customizing-domain-forward-zone-record-types">Customizing Domain (Forward) Zone Record Types<a class="headerlink" href="#customizing-domain-forward-zone-record-types" title="Permanent link">¶</a></h2>
 <p>To customize which record types are available when editing forward zones:</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="x">'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT', 'SRV', 'CAA'],</span>

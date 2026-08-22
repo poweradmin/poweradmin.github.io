@@ -6742,6 +6742,10 @@
 came from - the feature usually called split-horizon DNS. Poweradmin exposes two pages for
 it: <strong>Views</strong>, which assigns zone variants to a view, and <strong>Networks</strong>, which maps client
 networks to views.</p>
+<blockquote>
+<p><strong>Note:</strong> PowerDNS documents <a href="https://doc.powerdns.com/authoritative/views.html">Views</a> as an
+<strong>experimental</strong> feature. Expect the behaviour and configuration to change between releases.</p>
+</blockquote>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/views-list.png" data-desc-position="bottom"><img alt="Views" src="../../screenshots/views-list.png"></a></p>
 <h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">¶</a></h2>
 <p>Views have more prerequisites than most features, and three of them are on the PowerDNS side
@@ -6759,12 +6763,16 @@ rather than in Poweradmin:</p>
 <td>Older servers make the page report "Views require PowerDNS 5.0 or newer" instead of rendering</td>
 </tr>
 <tr>
-<td><strong>The LMDB backend</strong></td>
+<td><strong>The <a href="https://doc.powerdns.com/authoritative/backends/lmdb.html">LMDB backend</a></strong></td>
 <td>Views are an LMDB-only feature. The generic SQL backends (<code>gmysql</code>, <code>gpgsql</code>, <code>gsqlite3</code>) do not implement them</td>
 </tr>
 <tr>
 <td><strong><code>views=yes</code> in <code>pdns.conf</code></strong></td>
 <td>The setting is off by default, even on LMDB</td>
+</tr>
+<tr>
+<td><strong>The zone cache enabled</strong></td>
+<td><code>zone-cache-refresh-interval</code> must be non-zero. It defaults to <code>300</code>, so this only bites if you have explicitly set it to <code>0</code></td>
 </tr>
 <tr>
 <td>Poweradmin's API backend</td>
@@ -6820,15 +6828,17 @@ a form to add another.</p>
 </code></pre></div>
 <ul>
 <li><strong>View names accept letters, digits, dots, underscores and hyphens.</strong> Anything else is
-  rejected.</li>
+  rejected. PowerDNS itself also permits spaces, so a view created with a space through
+  <code>pdnsutil</code> cannot be managed from Poweradmin.</li>
 </ul>
 <p>To assign a zone, enter the view name (<code>trusted</code>) and the full variant zone name
 (<code>example.com..trusted</code>). Removing an assignment takes the zone back out of the view; it does
 not delete the zone.</p>
 <h2 id="networks">Networks<a class="headerlink" href="#networks" title="Permanent link">¶</a></h2>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/networks-list.png" data-desc-position="bottom"><img alt="Network views" src="../../screenshots/networks-list.png"></a></p>
-<p>The Networks page is at <code>/networks</code>. Each network maps to exactly one view, and every
-resolver in that network sees only the zone variants belonging to it.</p>
+<p>The Networks page is at <code>/networks</code>. Each network maps to exactly one view. A resolver in that
+network sees the zone variants assigned to the view; zones with no variant in it are still
+served normally, as their variantless contents.</p>
 <p>PowerDNS evaluates networks <strong>longest-prefix first</strong>. A more specific subnet wins over a
 broader one, so <code>10.0.1.0/24</code> mapped to <code>office</code> overrides <code>10.0.0.0/8</code> mapped to <code>internal</code>
 for a client at <code>10.0.1.5</code>.</p>

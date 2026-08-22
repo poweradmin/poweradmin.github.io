@@ -7196,7 +7196,7 @@
 <p><strong>Tip:</strong> If you are running a single PowerDNS server, <strong>Native</strong> is the simplest option since no zone transfers are needed.</p>
 </blockquote>
 <h3 id="catalog-zones">Catalog zones<a class="headerlink" href="#catalog-zones" title="Permanent link">¶</a></h3>
-<p>PowerDNS 4.7 and later add two more kinds, used to distribute a list of zones between servers rather than to hold ordinary records. Poweradmin offers them on the add-zone form only when the connected server reports 4.7 or newer.</p>
+<p>PowerDNS 4.7 and later add two more kinds, used to distribute a list of zones between servers rather than to hold ordinary records. See <a href="https://doc.powerdns.com/authoritative/catalog.html">Catalog Zones</a> for the RFC 9432 semantics PowerDNS implements. Poweradmin offers them on the add-zone form only when the connected server reports 4.7 or newer.</p>
 <ul>
 <li><strong>Producer</strong> - the catalog itself, on a primary. PowerDNS generates its contents from the member zones, so you do not add records to it by hand.</li>
 <li><strong>Consumer</strong> - the receiving end, on a secondary. It works like a Slave zone and needs the IP address of the primary it transfers the catalog from, so the add-zone form asks for one when you select it. Because its contents arrive by transfer, no template or DNSSEC option applies.</li>
@@ -7284,8 +7284,9 @@ and template, and every change is written to the audit log.</p>
 <p>You can sort records by clicking column headers. This helps when working with large zones to quickly find specific records.</p>
 <h2 id="zone-metadata">Zone Metadata<a class="headerlink" href="#zone-metadata" title="Permanent link">¶</a></h2>
 <p>Starting in v4.3.0, the <strong>Metadata</strong> button on the zone editor opens an editor for the zone's
-PowerDNS domain metadata - the per-zone settings that control transfers, notifies, serial
-policy and DNSSEC behaviour. Each row is a metadata <em>kind</em> and one value.</p>
+<a href="https://doc.powerdns.com/authoritative/domainmetadata.html">PowerDNS domain metadata</a> - the
+per-zone settings that control transfers, notifies, serial policy and DNSSEC behaviour. Each row
+is a metadata <em>kind</em> and one value; the PowerDNS page above defines what each kind does.</p>
 <p>Kinds with a fixed set of valid values (<code>SOA-EDIT</code>, <code>SOA-EDIT-API</code>, <code>SOA-EDIT-DNSUPDATE</code>,
 <code>API-RECTIFY</code>, <code>NSEC3NARROW</code>) offer a dropdown instead of a free-text field. Kinds your
 PowerDNS version does not support yet are listed but disabled, with the required version
@@ -7293,6 +7294,13 @@ shown. Kinds not in the built-in list can be added through the <strong>Custom</s
 <p>Some kinds accept several values - <code>ALLOW-AXFR-FROM</code>, <code>ALLOW-DNSUPDATE-FROM</code>, <code>ALSO-NOTIFY</code>,
 <code>TSIG-ALLOW-AXFR</code>, <code>TSIG-ALLOW-DNSUPDATE</code>, <code>GSS-ALLOW-AXFR-PRINCIPAL</code> and <code>PUBLISH-CDS</code>. Add
 one row per value. Every other kind holds a single value.</p>
+<p>Two kinds are gated on the connected server's version, because PowerDNS added them recently:</p>
+<ul>
+<li><strong><code>SIGNALING-ZONE</code></strong> (PowerDNS 5.0+) - set to <code>1</code> on a signed zone using NSEC3 narrow mode to
+  make PowerDNS synthesize CDS/CDNSKEY records for the other zones it serves, per
+  <a href="https://doc.powerdns.com/authoritative/domainmetadata.html#signaling-zone">RFC 9615</a>.</li>
+<li><strong><code>CATALOG-HASH</code></strong> and the catalog kinds appear on 4.7+ as described above.</li>
+</ul>
 <h3 id="restrictions-with-the-powerdns-api-backend">Restrictions with the PowerDNS API backend<a class="headerlink" href="#restrictions-with-the-powerdns-api-backend" title="Permanent link">¶</a></h3>
 <p>When Poweradmin talks to PowerDNS over its HTTP API rather than directly to the database,
 PowerDNS itself limits what can be written, and the editor marks the affected rows
@@ -7310,8 +7318,12 @@ PowerDNS itself limits what can be written, and the editor marks the affected ro
 <td>Writable, but stored as zone properties rather than metadata entries</td>
 </tr>
 <tr>
-<td><code>PRESIGNED</code>, <code>LUA-AXFR-SCRIPT</code>, <code>ENABLE-LUA-RECORDS</code></td>
-<td>Read-only - PowerDNS offers no API route for them. Use <code>pdnsutil</code> or the database</td>
+<td><code>PRESIGNED</code>, <code>LUA-AXFR-SCRIPT</code></td>
+<td>Read-only - PowerDNS exposes no API route to write them. Use <code>pdnsutil</code> or the database</td>
+</tr>
+<tr>
+<td><code>ENABLE-LUA-RECORDS</code></td>
+<td>Neither readable nor writable over the API metadata endpoint. Use <code>pdnsutil</code> or the database</td>
 </tr>
 <tr>
 <td><code>AXFR-MASTER-TSIG</code></td>

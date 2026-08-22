@@ -2161,6 +2161,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#presigned-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Presigned Zones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-rectify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automatic Rectify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#verification" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6799,6 +6821,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#presigned-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Presigned Zones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-rectify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automatic Rectify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#verification" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6913,6 +6957,8 @@ active state, alongside actions to add, activate, export or delete a key, show t
 DNSKEY records, and unsign the zone.</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/dnssec-overview.png" data-desc-position="bottom"><img alt="DNSSEC keys for a zone" src="../../screenshots/dnssec-overview.png"></a></p>
 <h2 id="basic-concepts">Basic Concepts<a class="headerlink" href="#basic-concepts" title="Permanent link">¶</a></h2>
+<p>These are PowerDNS's own terms; see the
+<a href="https://doc.powerdns.com/authoritative/dnssec/intro.html">DNSSEC introduction</a> for the full primer.</p>
 <ul>
 <li><strong>Zone Signing Keys (ZSK)</strong>: Used to sign the actual DNS records</li>
 <li><strong>Key Signing Keys (KSK)</strong>: Used to sign the ZSK and establish trust</li>
@@ -6982,11 +7028,57 @@ DNSKEY records, and unsign the zone.</p>
 <p><strong>Warning:</strong> Leaving <code>pdns_api.url</code> or <code>pdns_api.key</code> empty does not fall back to a command-line tool. Poweradmin loads a no-op DNSSEC provider instead, and every DNSSEC action silently does nothing.</p>
 </blockquote>
 <h2 id="powerdns-configuration">PowerDNS Configuration<a class="headerlink" href="#powerdns-configuration" title="Permanent link">¶</a></h2>
-<p>Make sure to enable DNSSEC in your PowerDNS configuration:</p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>dnssec=yes
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>api=yes
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>api-key=your_api_key
+<p>DNSSEC processing is enabled per backend, not by a global switch - there is no <code>dnssec</code> setting in
+<code>pdns.conf</code>. Use the setting that matches your backend:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a># MySQL/MariaDB backend
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>gmysql-dnssec=yes
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a># PostgreSQL backend: gpgsql-dnssec=yes
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a># SQLite backend:     gsqlite3-dnssec=yes
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>api=yes
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>api-key=your_api_key
 </code></pre></div>
+<p>See <a href="https://doc.powerdns.com/authoritative/backends/generic-mysql.html#setting-gmysql-dnssec">gmysql-dnssec</a>,
+<a href="https://doc.powerdns.com/authoritative/backends/generic-postgresql.html#setting-gpgsql-dnssec">gpgsql-dnssec</a>
+and <a href="https://doc.powerdns.com/authoritative/backends/generic-sqlite3.html#setting-gsqlite3-dnssec">gsqlite3-dnssec</a>.
+Your schema must include the DNSSEC tables (<code>domainmetadata</code>, <code>cryptokeys</code>, <code>tsigkeys</code>); see
+<a href="https://doc.powerdns.com/authoritative/http-api/index.html#enabling-the-api">Enabling the API</a>
+for the <code>api</code> and <code>api-key</code> settings.</p>
+<h2 id="presigned-zones">Presigned Zones<a class="headerlink" href="#presigned-zones" title="Permanent link">¶</a></h2>
+<p>A zone whose <code>PRESIGNED</code> metadata is set is signed somewhere else - typically at a primary that
+transfers it in already signed - and PowerDNS serves the existing signatures rather than producing
+its own. Poweradmin detects this and refuses key operations on such a zone instead of failing
+halfway:</p>
+<ul>
+<li>Signing and unsigning are blocked, with "This zone is presigned; DNSSEC keys are managed at the
+  primary server."</li>
+<li>Adding, editing, deleting, importing, exporting and activating keys are blocked the same way.</li>
+<li>The DNSSEC page still renders, so you can read the existing DS and DNSKEY records.</li>
+</ul>
+<p>Manage the keys at the server that signs the zone. See
+<a href="https://doc.powerdns.com/authoritative/domainmetadata.html#metadata-presigned">PRESIGNED</a> and
+<a href="https://doc.powerdns.com/authoritative/dnssec/modes-of-operation.html">Pre-signed records</a>.</p>
+<blockquote>
+<p><strong>Note:</strong> <code>PRESIGNED</code> is one of the metadata kinds PowerDNS exposes read-only over the API, so
+Poweradmin can see it but cannot set or clear it. Use <code>pdnsutil</code> or the database for that.</p>
+</blockquote>
+<h2 id="automatic-rectify">Automatic Rectify<a class="headerlink" href="#automatic-rectify" title="Permanent link">¶</a></h2>
+<p>Signed zones must be rectified after their contents change, or the NSEC/NSEC3 chain and the
+<code>ordername</code> values go stale and resolvers start getting bogus denial-of-existence answers.
+Poweradmin calls PowerDNS's rectify endpoint for you after record writes - adding, editing and
+deleting single records, batch and bulk record operations, PTR creation, and zone creation from a
+template. You do not need to run <code>pdnsutil rectify-zone</code> by hand for changes made through
+Poweradmin.</p>
+<p>Two things to know:</p>
+<ul>
+<li>Rectify goes through the PowerDNS API, so it only happens when <code>pdns_api.url</code> and <code>pdns_api.key</code>
+  are set. Without them Poweradmin loads a no-op DNSSEC provider and rectify silently does nothing,
+  along with every other DNSSEC action.</li>
+<li>Changes made outside Poweradmin - direct SQL, another tool - are not rectified by Poweradmin.
+  Set the <a href="https://doc.powerdns.com/authoritative/domainmetadata.html#metadata-api-rectify"><code>API-RECTIFY</code></a>
+  metadata on the zone so PowerDNS rectifies after its own API edits, or rectify manually.</li>
+</ul>
 <h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">¶</a></h2>
 <p>Check DNSSEC status using:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>dig<span class="w"> </span>+dnssec<span class="w"> </span>example.com<span class="w"> </span>SOA
@@ -7018,6 +7110,7 @@ DNSKEY records, and unsign the zone.</p>
 <p>For more details on DNSSEC and PowerDNS:</p>
 <ul>
 <li><a href="https://doc.powerdns.com/authoritative/dnssec/index.html">PowerDNS DNSSEC Documentation</a></li>
+<li><a href="https://doc.powerdns.com/authoritative/http-api/cryptokey.html">PowerDNS Cryptokey API</a> - the endpoints behind the key import/export above</li>
 <li><a href="https://doc.powerdns.com/authoritative/http-api/index.html">PowerDNS API Documentation</a></li>
 </ul>
 

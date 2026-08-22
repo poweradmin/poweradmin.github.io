@@ -7224,7 +7224,8 @@ RRset can be fetched instead of a whole zone. See
 <p>All existing zone ownership, group assignments, and permissions are preserved. The migration is reversible by changing <code>dns.backend</code> back to <code>sql</code>.</p>
 <p><strong>What changes at runtime:</strong></p>
 <ul>
-<li>All zone and record writes go through the PowerDNS API, so NOTIFY, cache flush, and DNSSEC signing are triggered automatically. In SQL mode these required manual <code>pdns_control notify</code> or <code>pdns_control cache-flush</code> calls.</li>
+<li>All zone and record writes go through the PowerDNS API, so cache flush and DNSSEC rectify/signing are triggered automatically. In SQL mode these required manual <code>pdns_control cache-flush</code> calls.</li>
+<li>NOTIFY is <em>not</em> sent as a side effect of an API write. PowerDNS only sends one from the explicit <code>PUT /zones/{id}/notify</code> endpoint, which Poweradmin does not call, or from the primary's periodic serial-check loop - which needs <code>primary=yes</code> (formerly <code>master=yes</code>) in <code>pdns.conf</code> and behaves the same way in SQL mode.</li>
 <li>The Poweradmin app no longer needs credentials for the PowerDNS database. You can remove <code>pdns_db_*</code> settings and revoke the corresponding database grants.</li>
 </ul>
 <h3 id="zone-sync-service">Zone Sync Service<a class="headerlink" href="#zone-sync-service" title="Permanent link">¶</a></h3>

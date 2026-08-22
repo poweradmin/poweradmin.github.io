@@ -7746,11 +7746,12 @@
 </ul>
 <h3 id="zone_content_edit_own_as_client">zone_content_edit_own_as_client<a class="headerlink" href="#zone_content_edit_own_as_client" title="Permanent link">¶</a></h3>
 <ul>
-<li>Allows the user to edit record content in zones they own, except SOA and NS records</li>
+<li>Allows the user to edit record content in zones they own, except SOA, NS and LUA records</li>
 <li>Limited permission for users who should only modify certain record types</li>
 <li>Provides restricted zone management capabilities</li>
-<li>Common use case: tenant or end-customer self-service, where users can manage their own A/AAAA/CNAME/MX/TXT records but must not touch the zone's authority (SOA) or delegation (NS) records</li>
-<li>Enforced uniformly in the web UI and across the record APIs (since 4.2.3); creating, editing, or deleting an SOA or NS record returns HTTP 403 for users limited to this permission</li>
+<li>Common use case: tenant or end-customer self-service, where users can manage their own A/AAAA/CNAME/MX/TXT records but must not touch the zone's authority (SOA), its delegation (NS), or <a href="https://doc.powerdns.com/authoritative/lua-records/index.html">LUA records</a>, which execute code on the DNS server</li>
+<li>Enforced uniformly in the web UI and across the record APIs (since 4.2.3); creating, editing, or deleting an SOA, NS or LUA record returns HTTP 403 for users limited to this permission</li>
+<li>LUA is held to a stricter standard inside zone templates: seeding one requires full <code>all</code> or <code>own</code> edit rights, because template records are written straight to the backend and land in every zone created from that template</li>
 <li>To additionally allow managing delegation NS records for subdomains, grant <code>zone_content_edit_ns_subzone</code></li>
 </ul>
 <h3 id="zone_content_edit_ns_subzone">zone_content_edit_ns_subzone<a class="headerlink" href="#zone_content_edit_ns_subzone" title="Permanent link">¶</a></h3>
