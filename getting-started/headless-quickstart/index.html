@@ -903,6 +903,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#turning-the-web-interface-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Turning the web interface off
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Turning the web interface off">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-stays-reachable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What stays reachable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-the-api-key-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Issue the API key first
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-is-not-covered-by-the-api-yet" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6975,6 +7014,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#turning-the-web-interface-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Turning the web interface off
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Turning the web interface off">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-stays-reachable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What stays reachable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-the-api-key-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Issue the API key first
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-is-not-covered-by-the-api-yet" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7057,8 +7135,10 @@ without it. No admin account is seeded: <code>PA_CREATE_ADMIN=1</code> creates o
 MySQL or PostgreSQL with the <code>DB_*</code> variables described in
 <a href="../../installation/docker/">Docker Installation</a>.</p>
 <h2 id="2-create-an-api-key">2. Create an API key<a class="headerlink" href="#2-create-an-api-key" title="Permanent link">¶</a></h2>
-<p>API keys are issued through the web UI. This is a one-time step; once the key
-exists, you can do everything else from scripts.</p>
+<p>API keys are issued through the web interface. This is a one-time step; once the
+key exists, you can do everything else from scripts - including turning the
+interface off, see <a href="#turning-the-web-interface-off">Turning the web interface
+off</a>.</p>
 <ol>
 <li>Open <a href="http://localhost:8080">http://localhost:8080</a> and log in.</li>
 <li>Go to <strong>Settings -&gt; API Keys</strong> (<code>/settings/api-keys</code>).</li>
@@ -7120,8 +7200,63 @@ from the browser.</p>
   or the
   <a href="https://github.com/poweradmin/external-dns-poweradmin-webhook">external-dns-poweradmin-webhook</a></li>
 </ul>
-<p>The web UI remains available for operators who prefer it; nothing about
-enabling the API turns it off.</p>
+<p>The web interface remains available for operators who prefer it. If you would
+rather it were not reachable at all, see <a href="#turning-the-web-interface-off">Turning the web interface
+off</a> below.</p>
+<h2 id="turning-the-web-interface-off">Turning the web interface off<a class="headerlink" href="#turning-the-web-interface-off" title="Permanent link">¶</a></h2>
+<p>Added in 4.5.0. Setting <code>interface.web_enabled</code> to <code>false</code> runs Poweradmin
+API-only: the router registers just the API routes and everything else answers
+a JSON 404.</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="x">// config/settings.php</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="x">'interface' =&gt; [</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="x">    'web_enabled' =&gt; false,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="x">],</span>
+</code></pre></div>
+<p>With Docker, set <code>PA_WEB_ENABLED=false</code> instead and restart the container.</p>
+<h3 id="what-stays-reachable">What stays reachable<a class="headerlink" href="#what-stays-reachable" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/api/v2/*</code></td>
+<td>The public API, subject to <code>api.enabled</code></td>
+</tr>
+<tr>
+<td><code>/api/docs</code>, <code>/api/docs/json</code></td>
+<td>Subject to <code>api.docs_enabled</code></td>
+</tr>
+<tr>
+<td><code>/api/health</code>, <code>/ping</code></td>
+<td>Subject to <code>health.enabled</code> / <code>health.ping_enabled</code></td>
+</tr>
+<tr>
+<td><code>/api/v1/*</code></td>
+<td>Still answers 410 Gone, so retired clients get a clear error</td>
+</tr>
+</tbody>
+</table>
+<p>Everything else - the login page, OIDC and SAML callbacks, the settings area,
+and the session-based <code>/api/internal/*</code> endpoints used by the interface's own
+JavaScript - returns 404. Poweradmin also skips starting a session entirely in
+this mode, since the API carries its identity on the API key.</p>
+<p>Two paths are files rather than routes, so this setting does not affect them:
+<code>install/</code> (delete the directory after installing, as usual) and
+<code>dynamic_update.php</code>.</p>
+<h3 id="issue-the-api-key-first">Issue the API key first<a class="headerlink" href="#issue-the-api-key-first" title="Permanent link">¶</a></h3>
+<p>API keys are created in the web interface, so this is a post-installation
+setting rather than an installation one. The order is:</p>
+<ol>
+<li>Install normally, with the interface enabled.</li>
+<li>Create your admin user and issue an API key at <strong>Settings -&gt; API Keys</strong>.</li>
+<li>Set <code>web_enabled</code> to <code>false</code> and restart.</li>
+</ol>
+<p>Nothing is locked away: to rotate a key or change a setting the interface owns,
+set <code>web_enabled</code> back to <code>true</code>, restart, do the work, and turn it off again.</p>
 <h2 id="what-is-not-covered-by-the-api-yet">What is <em>not</em> covered by the API yet<a class="headerlink" href="#what-is-not-covered-by-the-api-yet" title="Permanent link">¶</a></h2>
 <p>The REST API focuses on zones, records, users, groups, permission templates,
 and zone templates. A few operator workflows still live only in the web UI:</p>
