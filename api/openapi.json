@@ -5150,6 +5150,282 @@
                         "apiKeyHeader": []
                     }
                 ]
+            },
+            "post": {
+                "tags": [
+                    "rrsets"
+                ],
+                "summary": "Replace or create an RRSet",
+                "description": "Alias of PUT on this path.",
+                "operationId": "v2CreateZoneRRSet",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Zone ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "RRSet data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Record name (use @ for zone apex)",
+                                        "type": "string",
+                                        "example": "www"
+                                    },
+                                    "type": {
+                                        "description": "Record type",
+                                        "type": "string",
+                                        "example": "A"
+                                    },
+                                    "ttl": {
+                                        "description": "Time to live in seconds",
+                                        "type": "integer",
+                                        "example": 3600
+                                    },
+                                    "records": {
+                                        "description": "Array of record data",
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "content": {
+                                                    "description": "Record content/value",
+                                                    "type": "string",
+                                                    "example": "192.168.1.1"
+                                                },
+                                                "priority": {
+                                                    "description": "Priority (for MX, SRV records, etc.). Default: 0",
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "disabled": {
+                                                    "description": "Disabled flag (default: false)",
+                                                    "type": "boolean",
+                                                    "example": false
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "RRSet replaced successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "RRSet replaced successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "www"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "A"
+                                                },
+                                                "ttl": {
+                                                    "type": "integer",
+                                                    "example": 3600
+                                                },
+                                                "records": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "content": {
+                                                                "type": "string",
+                                                                "example": "192.168.1.1"
+                                                            },
+                                                            "priority": {
+                                                                "type": "integer",
+                                                                "example": 0
+                                                            },
+                                                            "disabled": {
+                                                                "type": "boolean",
+                                                                "example": false
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "rrsets"
+                ],
+                "summary": "Replace or create an RRSet",
+                "description": "Alias of PUT on this path.",
+                "operationId": "v2PatchZoneRRSet",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Zone ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "RRSet data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Record name (use @ for zone apex)",
+                                        "type": "string",
+                                        "example": "www"
+                                    },
+                                    "type": {
+                                        "description": "Record type",
+                                        "type": "string",
+                                        "example": "A"
+                                    },
+                                    "ttl": {
+                                        "description": "Time to live in seconds",
+                                        "type": "integer",
+                                        "example": 3600
+                                    },
+                                    "records": {
+                                        "description": "Array of record data",
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "content": {
+                                                    "description": "Record content/value",
+                                                    "type": "string",
+                                                    "example": "192.168.1.1"
+                                                },
+                                                "priority": {
+                                                    "description": "Priority (for MX, SRV records, etc.). Default: 0",
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "disabled": {
+                                                    "description": "Disabled flag (default: false)",
+                                                    "type": "boolean",
+                                                    "example": false
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "RRSet replaced successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "RRSet replaced successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "www"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "A"
+                                                },
+                                                "ttl": {
+                                                    "type": "integer",
+                                                    "example": 3600
+                                                },
+                                                "records": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "content": {
+                                                                "type": "string",
+                                                                "example": "192.168.1.1"
+                                                            },
+                                                            "priority": {
+                                                                "type": "integer",
+                                                                "example": 0
+                                                            },
+                                                            "disabled": {
+                                                                "type": "boolean",
+                                                                "example": false
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
             }
         },
         "/v2/zones/{id}/rrsets/{name}/{type}": {
