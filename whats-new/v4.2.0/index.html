@@ -7164,11 +7164,15 @@ zones.</p>
 </tr>
 <tr>
 <td>v4.2.4</td>
-<td>OIDC and SAML URLs pinned to <code>interface.application_url</code>; SOA, NS and apex records pinned to the top of the record list; CSV export quotes values that spreadsheets would treat as formulas</td>
+<td>OIDC and SAML URLs preferred from <code>interface.application_url</code> over the request host; SOA, NS and apex records pinned to the top of the record list; CSV export quotes values that spreadsheets would treat as formulas</td>
 </tr>
 <tr>
 <td>v4.2.5</td>
 <td>A per-zone Logs button on the zone editor; large forms handled correctly when they exceed PHP's <code>max_input_vars</code></td>
+</tr>
+<tr>
+<td>v4.2.6</td>
+<td><code>interface.application_url</code> now required for OIDC, SAML and password reset, with the <code>SERVER_NAME</code> fallback removed; the container refuses to start when SSO is enabled without a URL source; API user creation defaults to the least-privileged template instead of administrator; deactivating a user revokes their API keys; second-factor lockout after repeated wrong codes; zone template records validated against their record type; installer honours <code>X-Forwarded-For</code> only from listed proxies; five confirmation flows moved to POST with CSRF; CAA <code>;</code> label corrected; sendmail transport uses <code>-t -i</code></td>
 </tr>
 </tbody>
 </table>
@@ -7177,6 +7181,11 @@ zones.</p>
 your <code>edit.html</code> against the shipped version. The new hidden <code>_complete</code> and <code>form_complete</code>
 fields let the server detect a form truncated by PHP's <code>max_input_vars</code>; without them a
 truncated save is not reported and the missing rows are silently dropped.</p>
+<p><strong>Warning:</strong> v4.2.6 changed more templates. Five confirmation pages became POST forms with a
+CSRF token - <code>delete_perm_templ.html</code>, <code>delete_zone_templ.html</code>, <code>delete_zone_templ_record.html</code>,
+<code>delete_supermaster.html</code> and <code>dnssec_edit_key.html</code>. A fork still using the old
+<code>?confirm=1</code> link renders the confirmation page again instead of performing the action, with no
+error shown. <code>index.html</code> also gained a dashboard warning block. Re-sync forks of those files.</p>
 </blockquote>
 <h2 id="next">Next<a class="headerlink" href="#next" title="Permanent link">¶</a></h2>
 <ul>

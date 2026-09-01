@@ -7155,16 +7155,17 @@
 <p>There is nothing to configure. The delay tracks <code>password_cost</code>, so raising that value slows both cases together. Accounts provisioned through LDAP, OIDC or SAML store no local password hash and are padded in the same way, so they are not distinguishable either.</p>
 <p>Account lockout does not cover this on its own. It ships disabled, and an attempt against a name that matches no user is never recorded against it, so the limit would not apply even when enabled.</p>
 <h2 id="second-factor-attempt-limit">Second-Factor Attempt Limit<a class="headerlink" href="#second-factor-attempt-limit" title="Permanent link">¶</a></h2>
-<p>A six-digit second factor is small enough to guess, so MFA verification is rate limited on its own, independently of the account lockout above. This limit is always active when MFA is enabled: it does not require <code>enable_lockout</code>, which ships disabled (added in 4.5.0).</p>
+<p>A six-digit second factor is small enough to guess, so MFA verification is rate limited on its own, independently of the account lockout above. This limit is always active when MFA is enabled: it does not require <code>enable_lockout</code>, which ships disabled. The limit itself exists on every supported line; the two settings below are configurable from 4.5.0 onwards, and are fixed at 5 attempts and 15 minutes on the 4.2.x, 4.3.x and 4.4.x lines.</p>
 <ul>
-<li><strong>mfa.max_verify_attempts</strong>: Wrong MFA codes tolerated before verification is refused. Default: <code>5</code></li>
-<li><strong>mfa.verify_lockout_duration</strong>: Minutes to keep refusing attempts once the limit is reached. Default: <code>15</code></li>
+<li><strong>mfa.max_verify_attempts</strong>: Wrong MFA codes tolerated before verification is refused. Default: <code>5</code> (added in 4.5.0)</li>
+<li><strong>mfa.verify_lockout_duration</strong>: Minutes to keep refusing attempts once the limit is reached. Default: <code>15</code> (added in 4.5.0)</li>
 </ul>
 <p>Three behaviours differ from the password lockout, all deliberate:</p>
 <ul>
 <li>MFA failures are counted per account across every source address. <code>track_ip_address</code> does not apply, because an attacker rotating addresses would otherwise reset the counter on each request.</li>
 <li><code>whitelist_ip_addresses</code> does not exempt the second factor. The whitelist exists so a bot cannot lock staff out of password login; the second factor is the only barrier left once a password is known, so it is never waived. The blacklist still applies.</li>
 <li>Reaching the limit invalidates any pending emailed code, and no replacement is sent until the lockout expires.</li>
+<li>Recovery codes are refused during a lockout from 4.5.0 onwards. On the 4.2.x, 4.3.x and 4.4.x lines a recovery code is still accepted while locked, so it remains the way back into the account.</li>
 </ul>
 <p>MFA failures are tracked separately from password failures, so a wrong code never blocks a later password login, and a fresh password login does not reset the MFA counter. Setting either value to <code>0</code> is treated as <code>1</code> rather than as "unlimited"; to remove the limit entirely, disable MFA.</p>
 <h2 id="ip-address-management">IP Address Management<a class="headerlink" href="#ip-address-management" title="Permanent link">¶</a></h2>
@@ -7246,7 +7247,7 @@
 <li><strong>min_time_between_requests</strong>: Minimum seconds between requests. Default: <code>60</code> (1 minute)</li>
 </ul>
 <h3 id="interfaceapplication_url-is-required"><code>interface.application_url</code> is required<a class="headerlink" href="#interfaceapplication_url-is-required" title="Permanent link">¶</a></h3>
-<p>When password reset is enabled, <code>interface.application_url</code> must be set to the full public URL of the Poweradmin install, e.g. <code>https://dns.example.com/poweradmin</code>. The reset link in the email is built from this value only - request headers such as <code>Host</code> are never used. If <code>application_url</code> is empty, the password-reset endpoint accepts requests but does not send mail and logs an error: <code>Password reset email NOT sent: interface.application_url must be configured to build a trustworthy reset link</code>.</p>
+<p>When password reset is enabled, <code>interface.application_url</code> must be set to the full public URL of the Poweradmin install, e.g. <code>https://dns.example.com/poweradmin</code>. The reset link in the email is built from this value only - request headers such as <code>Host</code> are never used. If <code>application_url</code> is empty, the password-reset endpoint accepts requests but does not send mail and logs an error: <code>Password reset email NOT sent: interface.application_url must be configured to build a trustworthy reset link</code>. Because that failure is otherwise invisible to the user requesting the reset, from 4.2.6, 4.3.5, 4.4.1 and 4.5.0 superusers also see a warning on the dashboard whenever password reset is enabled and <code>application_url</code> is empty.</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">return [</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    'interface' =&gt; [</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">        'application_url' =&gt; 'https://dns.example.com/poweradmin',</span>

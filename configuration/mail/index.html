@@ -2336,6 +2336,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#configuration-options" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7002,6 +7013,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#configuration-options" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7241,6 +7263,19 @@
 <li>DNS zone changes notifications</li>
 <li>System alerts</li>
 </ul>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">¶</a></h2>
+<p>Any email that contains a link also needs <code>interface.application_url</code>. Links are built from that
+setting alone, because a request header cannot be trusted for a URL that is sent to someone else.
+From 4.2.6, 4.3.5, 4.4.1 and 4.5.0, with it unset:</p>
+<ul>
+<li><strong>Password reset mail is not sent at all.</strong> The request is accepted and the interface still
+  reports success, but nothing is delivered and only a line is written to the server log. From
+  the same releases, superusers see a warning on the dashboard when password reset is enabled
+  and <code>application_url</code> is empty.</li>
+<li><strong>Username recovery and zone access notifications are still sent, but without their link.</strong></li>
+</ul>
+<p>See <a href="../security-policies/">Security Policies</a> for the reset-specific detail and
+<a href="../username-recovery/">Username Recovery</a>.</p>
 <h2 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">¶</a></h2>
 <p>The mail settings are configured in the <code>config/settings.php</code> file under the <code>mail</code> section:</p>
 <ul>

@@ -8718,8 +8718,24 @@ and the <code>modules.dns_wizards.caa_providers</code> list.</p>
 <td>false</td>
 <td>Enable SAML authentication</td>
 </tr>
+<tr>
+<td><code>PA_APPLICATION_URL</code></td>
+<td><em>(empty)</em></td>
+<td>Public base URL. Required when OIDC or SAML is enabled, and for password reset and emailed links</td>
+</tr>
+<tr>
+<td><code>PA_BASE_URL</code></td>
+<td><em>(empty)</em></td>
+<td>Legacy base URL. Accepted as a URL source for SAML only</td>
+</tr>
 </tbody>
 </table>
+<p>From 4.2.6, 4.3.5, 4.4.1 and 4.5.0 the container refuses to start when OIDC or SAML is enabled
+without a URL source, because the redirect and SP URLs can no longer be derived from the request.
+OIDC accepts only <code>PA_APPLICATION_URL</code>; SAML also accepts <code>PA_BASE_URL</code>, or all three of
+<code>PA_SAML_SP_ENTITY_ID</code>, <code>PA_SAML_SP_ACS_URL</code> and <code>PA_SAML_SP_SLS_URL</code>. The check runs only when the
+entrypoint generates the configuration - if you mount your own <code>settings.php</code> (see above), these
+variables are ignored and the check is skipped.</p>
 <p>The LDAP rows above are enough for a working LDAP setup. OIDC and SAML are not - each provider
 needs its own block of variables (<code>PA_OIDC_AZURE_*</code>, <code>PA_SAML_OKTA_*</code> and so on), and there are
 137 authentication variables in total across LDAP, OIDC and SAML. They are listed in

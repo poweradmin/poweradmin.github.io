@@ -7039,6 +7039,10 @@ client is easier to configure that way.</p>
 <p>The key inherits the permissions of the user it belongs to. If that user can
 edit zone X in the web UI, the key can edit zone X over the API; if they
 cannot, the key cannot either.</p>
+<p>From 4.2.6, 4.3.5, 4.4.1 and 4.5.0 the owning account must also be active.
+Deactivating the user, or deleting the account, revokes every key they hold:
+the key is rejected with <code>401</code>, not <code>403</code>. A key whose owner can no longer be
+determined is rejected the same way.</p>
 <h3 id="restricting-what-a-key-can-do">Restricting what a key can do<a class="headerlink" href="#restricting-what-a-key-can-do" title="Permanent link">¶</a></h3>
 <p><em>Available since v4.5.0.</em></p>
 <p>By default a key can do everything its owner can. The add and edit forms let you
@@ -7094,6 +7098,8 @@ edit a key and apply restrictions.</p>
 <li><strong>Disable</strong> a key temporarily without deleting it</li>
 <li><strong>Delete</strong> a key permanently</li>
 </ul>
+<p>Deactivating the owning user revokes all of their keys at once, which is the
+coarsest option when an account rather than a single key is the concern.</p>
 <p>Rotate keys on a schedule that matches your security policy, and revoke
 immediately if a key may have leaked.</p>
 <h2 id="http-basic-authentication">HTTP Basic Authentication<a class="headerlink" href="#http-basic-authentication" title="Permanent link">¶</a></h2>

@@ -7474,7 +7474,9 @@ assignment returns <code>403</code>:</p>
 </ul>
 <p>Omitting <code>perm_templ</code> on create assigns the least-privileged non-superuser template,
 whoever the caller is; it no longer falls back to template id 1. If no such template
-exists, the request fails rather than granting administrator rights.</p>
+exists, the request fails rather than granting administrator rights. This applies from
+v4.2.6, v4.3.5, v4.4.1 and v4.5.0 - on earlier releases, omitting the field created an
+administrator, so check any client that relies on the old default.</p>
 <h4 id="permission-template-and-groups-on-reads-v450">Permission template and groups on reads (v4.5.0+)<a class="headerlink" href="#permission-template-and-groups-on-reads-v450" title="Permanent link">¶</a></h4>
 <p>User reads carry the assigned permission template by ID and by name, plus the
 groups the user belongs to:</p>
@@ -7692,6 +7694,10 @@ not have to assume the request took full effect:</p>
 </tr>
 </tbody>
 </table>
+<p>From v4.2.6, v4.3.5, v4.4.1 and v4.5.0, adding or updating a template record validates the
+content against the record type and returns <code>400</code> with the validator message when it fails.
+See <a href="../../user-guide/dns-templates/#record-validation">Record validation</a> for the rules,
+including where MX and SRV priority belongs.</p>
 <h2 id="health-endpoints-v450">Health endpoints (v4.5.0+)<a class="headerlink" href="#health-endpoints-v450" title="Permanent link">¶</a></h2>
 <p>These sit outside the versioned API and outside the API key model. They take no
 credentials, are <strong>disabled by default</strong>, and return <code>404</code> while disabled. Paths are

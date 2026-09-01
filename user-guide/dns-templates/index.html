@@ -3390,6 +3390,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#record-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Record validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#saving-an-existing-zone-as-a-template" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7039,6 +7050,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#record-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Record validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#saving-an-existing-zone-as-a-template" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7312,6 +7334,29 @@
 </ul>
 <p>The serial placeholders (<code>[SERIAL]</code>, <code>[UNIXTIME]</code>, <code>[COUNTER]</code>) control the initial SOA serial of a zone created from the template; later record changes increment the serial automatically. When Poweradmin runs against the PowerDNS API backend, the <code>SOA-EDIT-API</code> zone metadata governs how subsequent serials are generated - it can be chosen per zone on the add-zone form or on the zone metadata page (<code>EPOCH</code> pairs with <code>[UNIXTIME]</code>, <code>INCREASE</code> with <code>[COUNTER]</code>), with defaults from <code>dns.soa_edit_api</code>.</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/template-editor.png" data-desc-position="bottom"><img alt="Template Editor" src="../../screenshots/template-editor.png"></a></p>
+<h3 id="record-validation">Record validation<a class="headerlink" href="#record-validation" title="Permanent link">¶</a></h3>
+<p><em>Available since v4.2.6, v4.3.5, v4.4.1 and v4.5.0.</em></p>
+<p>Template records are checked against the validator for their record type when you add or edit
+them, on the web form and on the API v2 endpoints. Earlier releases stored template records
+without any type checking, so a template written before the upgrade may hold a record that the
+validator now rejects when you next save it. A failed check returns <code>400</code> over the API with the
+validator message.</p>
+<p>Two points to know before editing an older template:</p>
+<ul>
+<li><strong>MX and SRV priority belongs in the priority field, not in the content.</strong> Write <code>mail.[ZONE]</code>
+  with priority <code>10</code>, not <code>10 mail.[ZONE]</code>. This is the most common reason an existing template
+  record stops saving.</li>
+<li><strong>Placeholders are resolved against a sample zone before validation</strong>, so a record is judged on
+  whether it could be valid, not against this install's nameserver configuration.</li>
+</ul>
+<p>The check is deliberately lenient in three places, so the following are not bugs:</p>
+<ul>
+<li>A short SOA rdata is completed with default timers for the check.</li>
+<li>An unquoted TXT value is quoted for the check only, and stored exactly as you typed it.</li>
+<li>A record containing a placeholder Poweradmin does not recognise is stored without checking.</li>
+</ul>
+<p>Existing template records are only validated when saved. Applying a template to a zone, viewing
+it, and deleting a record are unaffected.</p>
 <h3 id="saving-an-existing-zone-as-a-template">Saving an existing zone as a template<a class="headerlink" href="#saving-an-existing-zone-as-a-template" title="Permanent link">¶</a></h3>
 <p><em>Available since v4.2.0.</em></p>
 <p>Rather than building a template record by record, you can turn a zone you already have into
