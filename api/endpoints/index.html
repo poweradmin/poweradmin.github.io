@@ -7281,6 +7281,11 @@ instance for exploration.</p>
 </tr>
 </tbody>
 </table>
+<p>From v4.2.6, v4.3.5, v4.4.1 and v4.5.0, changing a zone's <code>name</code>, <code>type</code> or <code>master</code> through
+<code>PUT /zones/{id}</code> requires the zone metadata permission (<code>zone_meta_edit_own</code> or
+<code>zone_meta_edit_others</code>), the same gate as the web edit form; record content permissions alone
+return <code>403</code>. A value that matches what is stored is not treated as a change, so clients that
+resend every field on update keep working.</p>
 <h4 id="setting-the-serial-policy-on-create-v450">Setting the serial policy on create (v4.5.0+)<a class="headerlink" href="#setting-the-serial-policy-on-create-v450" title="Permanent link">¶</a></h4>
 <p><code>POST /zones</code> accepts an optional <code>soa_edit_api</code> string that sets the zone's
 SOA-EDIT-API serial policy:</p>
@@ -7698,6 +7703,9 @@ not have to assume the request took full effect:</p>
 content against the record type and returns <code>400</code> with the validator message when it fails.
 See <a href="../../user-guide/dns-templates/#record-validation">Record validation</a> for the rules,
 including where MX and SRV priority belongs.</p>
+<p>From the same releases, <code>GET /zone-templates</code> and <code>GET /zone-templates/{id}/records</code> are also
+readable with <code>zone_master_add</code> or <code>zone_slave_add</code>, matching the add-zone form, which offers
+templates to anyone who may add a zone. Writing a template still needs the template permissions.</p>
 <h2 id="health-endpoints-v450">Health endpoints (v4.5.0+)<a class="headerlink" href="#health-endpoints-v450" title="Permanent link">¶</a></h2>
 <p>These sit outside the versioned API and outside the API key model. They take no
 credentials, are <strong>disabled by default</strong>, and return <code>404</code> while disabled. Paths are

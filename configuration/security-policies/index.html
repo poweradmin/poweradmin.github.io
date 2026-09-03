@@ -7165,7 +7165,7 @@
 <li>MFA failures are counted per account across every source address. <code>track_ip_address</code> does not apply, because an attacker rotating addresses would otherwise reset the counter on each request.</li>
 <li><code>whitelist_ip_addresses</code> does not exempt the second factor. The whitelist exists so a bot cannot lock staff out of password login; the second factor is the only barrier left once a password is known, so it is never waived. The blacklist still applies.</li>
 <li>Reaching the limit invalidates any pending emailed code, and no replacement is sent until the lockout expires.</li>
-<li>Recovery codes are refused during a lockout from 4.5.0 onwards. On the 4.2.x, 4.3.x and 4.4.x lines a recovery code is still accepted while locked, so it remains the way back into the account.</li>
+<li>Recovery codes are still accepted during a lockout on every line, so they remain the way back into the account. A wrong recovery code during the lockout is written to the audit log but does not count as a further attempt. A blacklisted source address is refused regardless.</li>
 </ul>
 <p>MFA failures are tracked separately from password failures, so a wrong code never blocks a later password login, and a fresh password login does not reset the MFA counter. Setting either value to <code>0</code> is treated as <code>1</code> rather than as "unlimited"; to remove the limit entirely, disable MFA.</p>
 <h2 id="ip-address-management">IP Address Management<a class="headerlink" href="#ip-address-management" title="Permanent link">¶</a></h2>
