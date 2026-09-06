@@ -6756,6 +6756,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#upgrading-a-docker-or-docker-compose-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading a Docker or Docker Compose Deployment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#important-considerations" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6941,6 +6952,50 @@
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>ln<span class="w"> </span>-s<span class="w"> </span>/etc/poweradmin/settings.php<span class="w"> </span>/var/www/poweradmin/config/settings.php
 </code></pre></div>
 <p>This allows quick rollback by simply changing the symlink back to the previous version.</p>
+<h2 id="upgrading-a-docker-or-docker-compose-deployment">Upgrading a Docker or Docker Compose Deployment<a class="headerlink" href="#upgrading-a-docker-or-docker-compose-deployment" title="Permanent link">¶</a></h2>
+<p>The official image does not migrate an existing database. On startup the entrypoint loads the Poweradmin schema only into an empty database; a database created by an older version is left as it is. Upgrading a container therefore means: back up, switch the image tag, restart, and run the release's migration script yourself. The image ships the <code>sql/</code> directory together with the <code>psql</code>, <code>mysql</code> and <code>sqlite3</code> clients, and the <code>DB_*</code> variables are already in the container's environment, so the script can be run from inside the new container.</p>
+<p>The examples below assume the Compose service names <code>poweradmin</code> and <code>postgres</code> (or <code>mysql</code>) and an upgrade from 4.3.x to 4.4.1. Adjust the names and the script version to your setup.</p>
+<ol>
+<li>
+<p><strong>Back up the database:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># PostgreSQL</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>postgres<span class="w"> </span>pg_dump<span class="w"> </span>-U<span class="w"> </span>poweradmin<span class="w"> </span>poweradmin<span class="w"> </span>&gt;<span class="w"> </span>poweradmin-before-4.4.sql
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># MySQL / MariaDB</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>mysql<span class="w"> </span>mysqldump<span class="w"> </span>-u<span class="w"> </span>poweradmin<span class="w"> </span>-p<span class="w"> </span>poweradmin<span class="w"> </span>&gt;<span class="w"> </span>poweradmin-before-4.4.sql
+</code></pre></div>
+</li>
+<li>
+<p><strong>Switch the image tag</strong> in your Compose file (for example <code>poweradmin/poweradmin:4.4.1</code>), then pull and recreate only the application container:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>pull<span class="w"> </span>poweradmin
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>poweradmin
+</code></pre></div>
+</li>
+<li>
+<p><strong>Run the migration script from inside the new container:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># PostgreSQL</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>poweradmin<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'PGPASSWORD="$DB_PASS" psql -h "$DB_HOST" ${DB_PORT:+-p "$DB_PORT"} -U "$DB_USER" -d "$DB_NAME" -v ON_ERROR_STOP=1 -f /app/sql/poweradmin-pgsql-update-to-4.4.0.sql'</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># MySQL / MariaDB</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>poweradmin<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'mysql -h "$DB_HOST" ${DB_PORT:+-P "$DB_PORT"} -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" &lt; /app/sql/poweradmin-mysql-update-to-4.4.0.sql'</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># SQLite (database file on the volume)</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>poweradmin<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'sqlite3 "${DB_FILE:-/db/pdns.db}" &lt; /app/sql/poweradmin-sqlite-update-to-4.4.0.sql'</span>
+</code></pre></div>
+<p>If the password is supplied through a Docker secret (<code>DB_PASS__FILE</code>), <code>$DB_PASS</code> is not set in the <code>exec</code> shell; use <code>$(cat "$DB_PASS__FILE")</code> in its place.</p>
+</li>
+<li>
+<p><strong>Check the application</strong> - log in and open the zone templates and add zone pages.</p>
+</li>
+</ol>
+<p>Notes:</p>
+<ul>
+<li>Run one script per version, in order, and never skip a version. Coming from 4.2.x, run the 4.3.0 script before the 4.4.0 one.</li>
+<li>Between the container restart and the migration, pages that read the new schema fail with "An error occurred while processing the request" (on 4.4.x: zone templates and add zone). The rest of the application keeps working, so the window is short but real; run the script right after the restart.</li>
+<li>Run each script once. The scripts are not idempotent: a second run stops with an error such as <code>column "is_default" of relation "zone_templ" already exists</code>, which is harmless but means the script was already applied.</li>
+<li>Patch releases (4.4.0 to 4.4.1) need no script unless their release notes say otherwise; switching the tag and restarting is enough.</li>
+<li>A volume-mounted <code>config/settings.php</code> is left untouched. Check the release notes for new settings or container variables you may want to set.</li>
+</ul>
 <h2 id="important-considerations">Important Considerations<a class="headerlink" href="#important-considerations" title="Permanent link">¶</a></h2>
 <ul>
 <li>Always read the release notes for the version you're upgrading to and any intermediate versions</li>
