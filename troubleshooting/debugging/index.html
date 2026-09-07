@@ -4252,6 +4252,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#powerdns-answers-refused-for-public-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerDNS Answers REFUSED for Public Names
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7018,6 +7029,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#powerdns-answers-refused-for-public-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerDNS Answers REFUSED for Public Names
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7155,6 +7177,17 @@ Avoid these characters in database, LDAP, and SMTP passwords:</p>
 <li>Change the password to use only alphanumeric characters and basic symbols</li>
 </ol>
 <p>This issue occurs because the configuration file generator does not properly escape special PHP characters in password values during installation.</p>
+<h3 id="powerdns-answers-refused-for-public-names">PowerDNS Answers REFUSED for Public Names<a class="headerlink" href="#powerdns-answers-refused-for-public-names" title="Permanent link">¶</a></h3>
+<p>Names inside your zones resolve, but <code>dig @your-server example.com</code> or any other
+public name returns <code>REFUSED</code>. This is how PowerDNS Authoritative Server works:
+it answers only for the zones it holds and never recurses. No Poweradmin setting
+changes that, and neither do secondary zones or supermasters; a secondary zone
+transfers one zone in, and a supermaster only auto-creates secondary zones when a
+listed primary sends a NOTIFY.</p>
+<p>If clients need both your zones and the public internet, run a resolver in front
+(PowerDNS Recursor, Unbound, BIND), point the clients at it, and forward only your
+own zones to the authoritative server. The old <code>recursor=</code> option in <code>pdns.conf</code>
+was removed in PowerDNS Authoritative 4.1.</p>
 
 
 
