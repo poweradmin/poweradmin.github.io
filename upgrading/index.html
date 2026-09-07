@@ -6875,6 +6875,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-update-scripts-have-already-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which update scripts have already run?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -7173,6 +7190,82 @@
 <li>Ensure file permissions are set correctly</li>
 <li>Review the specific upgrade instructions for the version you're upgrading to</li>
 </ol>
+<h3 id="which-update-scripts-have-already-run">Which update scripts have already run?<a class="headerlink" href="#which-update-scripts-have-already-run" title="Permanent link">¶</a></h3>
+<p>Poweradmin does not record the schema version in the database (the <code>migrations</code>
+table that some scripts create is never written to), so on an inherited or
+long-neglected installation you have to work it out from what each script adds.
+Check the markers below from the top; the first one that is missing tells you
+which script to run first. Then run every later script in order.</p>
+<table>
+<thead>
+<tr>
+<th>Script</th>
+<th>Marker that shows it has run</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.1.5</td>
+<td>column <code>zones.zone_templ_id</code></td>
+</tr>
+<tr>
+<td>2.1.7</td>
+<td>table <code>records_zone_templ</code>, column <code>users.use_ldap</code></td>
+</tr>
+<tr>
+<td>3.2.0</td>
+<td>tables <code>log_users</code>, <code>log_zones</code></td>
+</tr>
+<tr>
+<td>3.9.0</td>
+<td>none (widens a column type only; safe to re-run)</td>
+</tr>
+<tr>
+<td>4.0.0</td>
+<td>tables <code>user_mfa</code>, <code>api_keys</code>, <code>login_attempts</code>, column <code>zone_templ.created_by</code></td>
+</tr>
+<tr>
+<td>4.0.2</td>
+<td>none (changes a column type only; safe to re-run)</td>
+</tr>
+<tr>
+<td>4.1.0</td>
+<td>column <code>users.auth_method</code>, tables <code>oidc_user_links</code>, <code>saml_user_links</code></td>
+</tr>
+<tr>
+<td>4.2.0</td>
+<td>tables <code>user_groups</code>, <code>zones_groups</code>, column <code>perm_templ.template_type</code></td>
+</tr>
+<tr>
+<td>4.3.0</td>
+<td>columns <code>zones.zone_name</code>, <code>zones.zone_type</code>, <code>users.perm_templ_source</code>, table <code>log_api</code></td>
+</tr>
+<tr>
+<td>4.4.0</td>
+<td>column <code>zone_templ.is_default</code></td>
+</tr>
+<tr>
+<td>4.5.0</td>
+<td>columns <code>api_keys.is_readonly</code>, <code>login_attempts.attempt_type</code>, table <code>log_record_changes</code></td>
+</tr>
+</tbody>
+</table>
+<p>To check a column or table:</p>
+<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">-- MySQL/MariaDB</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">SHOW</span><span class="w"> </span><span class="n">COLUMNS</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">zones</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">'zone_name'</span><span class="p">;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">SHOW</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">'log_api'</span><span class="p">;</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1">-- PostgreSQL (psql)</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="err">\</span><span class="n">d</span><span class="w"> </span><span class="n">zones</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="err">\</span><span class="n">dt</span><span class="w"> </span><span class="n">log_api</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1">-- SQLite</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">PRAGMA</span><span class="w"> </span><span class="n">table_info</span><span class="p">(</span><span class="n">zones</span><span class="p">);</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="p">.</span><span class="n">tables</span><span class="w"> </span><span class="n">log_api</span>
+</code></pre></div>
+<p>Do not re-run a script whose marker is already present. Scripts up to 4.0.0
+have no <code>IF NOT EXISTS</code> guards and stop at the first duplicate column or table,
+which can leave the rest of that script unapplied. Take a dump before you start.</p>
 
 
 

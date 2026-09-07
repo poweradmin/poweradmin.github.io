@@ -2151,6 +2151,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#moving-poweradmin-tables-to-their-own-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moving Poweradmin Tables to Their Own Database
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#database-types" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6841,6 +6852,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#moving-poweradmin-tables-to-their-own-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moving Poweradmin Tables to Their Own Database
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#database-types" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6918,6 +6940,52 @@
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="x">    ],</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="x">];</span>
 </code></pre></div>
+<h2 id="moving-poweradmin-tables-to-their-own-database">Moving Poweradmin Tables to Their Own Database<a class="headerlink" href="#moving-poweradmin-tables-to-their-own-database" title="Permanent link">¶</a></h2>
+<p>Many older installations keep the Poweradmin tables in the PowerDNS database.
+On MySQL/MariaDB you can split them without re-importing anything, because
+<code>RENAME TABLE</code> moves a table between databases on the same server atomically
+and keeps its data.</p>
+<ol>
+<li>Bring the schema up to date first. Run any missing update scripts against the
+   shared database (see <a href="../../upgrading/#which-update-scripts-have-already-run">Which update scripts have already run?</a>).</li>
+<li>Take a dump of the shared database.</li>
+<li>
+<p>Create the new database and grant the Poweradmin user access to it:</p>
+<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">poweradmin</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="p">;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">poweradmin</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">'poweradmin'</span><span class="o">@</span><span class="s1">'%'</span><span class="p">;</span>
+</code></pre></div>
+</li>
+<li>
+<p>Generate the rename statements. Everything in the shared database that is not
+   one of PowerDNS's own tables belongs to Poweradmin:</p>
+<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">CONCAT</span><span class="p">(</span><span class="s1">'RENAME TABLE `powerdns`.`'</span><span class="p">,</span><span class="w"> </span><span class="k">table_name</span><span class="p">,</span><span class="w"> </span><span class="s1">'` TO `poweradmin`.`'</span><span class="p">,</span><span class="w"> </span><span class="k">table_name</span><span class="p">,</span><span class="w"> </span><span class="s1">'`;'</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">table_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'powerdns'</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'domains'</span><span class="p">,</span><span class="w"> </span><span class="s1">'records'</span><span class="p">,</span><span class="w"> </span><span class="s1">'supermasters'</span><span class="p">,</span><span class="w"> </span><span class="s1">'comments'</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">                         </span><span class="s1">'domainmetadata'</span><span class="p">,</span><span class="w"> </span><span class="s1">'cryptokeys'</span><span class="p">,</span><span class="w"> </span><span class="s1">'tsigkeys'</span><span class="p">);</span>
+</code></pre></div>
+<p>Review the output, then run it.</p>
+</li>
+<li>
+<p>Point Poweradmin at the new layout in <code>config/settings.php</code>:</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">'database' =&gt; [</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    'name' =&gt; 'poweradmin',</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">    'pdns_db_name' =&gt; 'powerdns',</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="x">    // ...</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="x">],</span>
+</code></pre></div>
+</li>
+<li>
+<p>Log in and open the zone list, users, and zone templates pages.</p>
+</li>
+</ol>
+<p>A name server that replicates the database can now replicate only <code>powerdns</code>.
+Future update scripts run against the <code>poweradmin</code> database. The 4.3.0 script
+reads the PowerDNS <code>domains</code> table; its header explains how to qualify that
+name when <code>pdns_db_name</code> is set.</p>
+<p>PostgreSQL and SQLite do not support <code>pdns_db_name</code>. To separate the databases
+there, switch to <a href="../powerdns-api/#migrating-from-sql-to-api-backend">API backend mode</a>,
+which needs only the Poweradmin tables.</p>
 <h2 id="database-types">Database Types<a class="headerlink" href="#database-types" title="Permanent link">¶</a></h2>
 <p>Poweradmin supports multiple database backends:</p>
 <ul>
@@ -6926,36 +6994,36 @@
 <li><strong>SQLite</strong>: Lightweight option for small deployments or testing</li>
 </ul>
 <p>Poweradmin uses PowerDNS's own database tables for zones and records. It directly queries the PowerDNS tables like domains and records, while maintaining its own tables for user permissions and metadata. The system will display all zones in the PowerDNS database, regardless of how they were created (through Poweradmin UI or via REST API).</p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>┌─────────────────────┐            ┌─────────────────────┐
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>│                     │            │                     │
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│    Poweradmin       │            │     PowerDNS        │
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│    Application      │            │     Server          │
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│                     │            │                     │
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>└──────────┬──────────┘            └──────────┬──────────┘
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>           │                                  │
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>           │                                  │
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>           │                                  │
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>           │      ┌────────────────────┐      │
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>           │      │                    │      │
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>           └─────►│ Database Server    │◄─────┘
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>                  │                    │
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>                  │ ┌──────────────┐   │
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>                  │ │ PowerDNS     │   │
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>                  │ │ Tables       │   │
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>                  │ │ - domains    │   │
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>                  │ │ - records    │   │
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>                  │ │ - ...        │   │
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>                  │ └──────────────┘   │
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>                  │                    │
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>                  │ ┌──────────────┐   │
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>                  │ │ Poweradmin   │   │
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>                  │ │ Tables       │   │
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>                  │ │ - users      │   │
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>                  │ │ - permissions│   │
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>                  │ │ - ...        │   │
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>                  │ └──────────────┘   │
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>                  │                    │
-<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>                  └────────────────────┘
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>┌─────────────────────┐            ┌─────────────────────┐
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>│                     │            │                     │
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>│    Poweradmin       │            │     PowerDNS        │
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>│    Application      │            │     Server          │
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>│                     │            │                     │
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>└──────────┬──────────┘            └──────────┬──────────┘
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>           │                                  │
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>           │                                  │
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>           │                                  │
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>           │      ┌────────────────────┐      │
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>           │      │                    │      │
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>           └─────►│ Database Server    │◄─────┘
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>                  │                    │
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>                  │ ┌──────────────┐   │
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>                  │ │ PowerDNS     │   │
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>                  │ │ Tables       │   │
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>                  │ │ - domains    │   │
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>                  │ │ - records    │   │
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>                  │ │ - ...        │   │
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>                  │ └──────────────┘   │
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>                  │                    │
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>                  │ ┌──────────────┐   │
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>                  │ │ Poweradmin   │   │
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>                  │ │ Tables       │   │
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>                  │ │ - users      │   │
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>                  │ │ - permissions│   │
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>                  │ │ - ...        │   │
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>                  │ └──────────────┘   │
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>                  │                    │
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>                  └────────────────────┘
 </code></pre></div>
 <h2 id="database-specific-setup-guides">Database-Specific Setup Guides<a class="headerlink" href="#database-specific-setup-guides" title="Permanent link">¶</a></h2>
 <p>For detailed setup instructions for each database type, including schema creation, permissions, and optimization tips, see:</p>
