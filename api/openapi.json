@@ -2399,7 +2399,7 @@
                                         "example": "johndoe"
                                     },
                                     "password": {
-                                        "description": "User password (will be hashed)",
+                                        "description": "User password (hashed with the configured algorithm, must satisfy the password policy). Ignored when use_ldap is true.",
                                         "type": "string",
                                         "example": "secure_password123"
                                     },
@@ -2429,7 +2429,7 @@
                                         "example": 1
                                     },
                                     "use_ldap": {
-                                        "description": "Whether the user should use LDAP authentication",
+                                        "description": "Whether the user should use LDAP authentication. Requires LDAP to be enabled; no local password is stored.",
                                         "type": "boolean",
                                         "example": false
                                     },
@@ -3031,6 +3031,9 @@
                     },
                     "404": {
                         "description": "Zone not found"
+                    },
+                    "422": {
+                        "description": "Value outside the kind vocabulary, missing companion kind, or custom kind without the X- prefix"
                     }
                 },
                 "security": [
@@ -3094,6 +3097,9 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "Invalid metadata kind"
+                    },
                     "401": {
                         "description": "Unauthorized"
                     },
@@ -3102,6 +3108,9 @@
                     },
                     "404": {
                         "description": "Zone not found"
+                    },
+                    "422": {
+                        "description": "Another kind still depends on this one"
                     }
                 },
                 "security": [
@@ -4433,7 +4442,7 @@
                                         "example": "192.168.1.1:5300,192.168.1.2:5300"
                                     },
                                     "template": {
-                                        "description": "Zone template ID to use (get IDs from GET /api/v2/zone-templates)",
+                                        "description": "Zone template ID to use (get IDs from GET /api/v2/zone-templates). Must be a global template, one owned by the caller, or the caller must be ueberuser.",
                                         "type": "integer",
                                         "example": 1
                                     },
@@ -6075,6 +6084,29 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Zone not found"
+                                        },
+                                        "data": {
+                                            "type": "null"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "An identical record (name, type and content) already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "A record with this hostname, type, and content already exists"
                                         },
                                         "data": {
                                             "type": "null"
