@@ -7289,13 +7289,13 @@ and is overwritten on upgrade.</p>
 </ul>
 <p>See the <a href="../testing/">Testing Guide</a>.</p>
 <h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">¶</a></h2>
-<p>API reference documentation can be generated from the source with phpDocumentor. The Composer
-script downloads the phar on first use, so no separate installation is needed:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>composer<span class="w"> </span>docs
+<p>The public API is described by <code>docs/api/openapi.json</code> in the docs repository, generated
+from the controller attributes. Regenerate it from a poweradmin checkout after changing
+the API (the docs repository's drift check fails when it is stale):</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>composer<span class="w"> </span>docs:api<span class="w"> </span>--<span class="w"> </span>--output<span class="w"> </span>../poweradmin-docs/docs/api/openapi.json
 </code></pre></div>
-<p>The OpenAPI specification for the public API is generated separately:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>composer<span class="w"> </span>docs:api
-</code></pre></div>
+<p>A running instance also serves the same specification live at <code>/api/docs/v2/json</code> when
+<code>api.docs_enabled</code> is on.</p>
 <h2 id="testing_1">Testing<a class="headerlink" href="#testing_1" title="Permanent link">¶</a></h2>
 <p>Poweradmin has unit, integration, functional, API and end-to-end tests. See the
 <a href="../testing/">Testing Guide</a> for the layout and the commands.</p>
