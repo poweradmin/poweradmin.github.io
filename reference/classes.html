@@ -16,6 +16,7 @@
         <meta name="MobileOptimized" content="width">
         <meta name="HandheldFriendly" content="true">
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/poweradmin.css">
     <style>
         @media (min-width: 992px) {
             .underlined .row > .col-md-6:first-child { width: 30%; }
@@ -385,6 +386,11 @@ own dependencies. Disabled by default.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Application/Controller/DnssecEditKeyController.html"><abbr title="Poweradmin\Application\Controller\DnssecEditKeyController">DnssecEditKeyController</abbr></a>    </div>
                 <div class="col-md-6"><p>Renders the DNSSEC key detail page that confirms activating or deactivating a key.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Controller/DnssecKeyController.html"><abbr title="Poweradmin\Application\Controller\DnssecKeyController">DnssecKeyController</abbr></a>    </div>
+                <div class="col-md-6"><p>Base for the pages that add, edit, toggle, delete, import and export DNSSEC keys: one shared gate.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1105,17 +1111,6 @@ an existing zone.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Domain/Model/RecordDisplay.html"><abbr title="Poweradmin\Domain\Model\RecordDisplay">RecordDisplay</abbr></a>    </div>
-                <div class="col-md-6"><p>Value object representing a DNS record prepared for display
-Encapsulates both the raw record data and display-specific transformations</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Domain/Model/RecordLog.html"><abbr title="Poweradmin\Domain\Model\RecordLog">RecordLog</abbr></a>    </div>
-                <div class="col-md-6"><p>Captures a record before and after an edit and writes the change to the zone audit log.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Model/RecordType.html"><abbr title="Poweradmin\Domain\Model\RecordType">RecordType</abbr></a>    </div>
                 <div class="col-md-6"><p>DNS record type names and the groups the UI and validators select from.</p></div>
             </div>
@@ -1123,11 +1118,6 @@ Encapsulates both the raw record data and display-specific transformations</p></
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Model/SessionEntity.html"><abbr title="Poweradmin\Domain\Model\SessionEntity">SessionEntity</abbr></a>    </div>
                 <div class="col-md-6"><p>A flash message (text plus Bootstrap alert type) kept in the session across a redirect.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Domain/Model/TopLevelDomain.html"><abbr title="Poweradmin\Domain\Model\TopLevelDomain">TopLevelDomain</abbr></a>    </div>
-                <div class="col-md-6"><p>Top-level domain validation against the bundled TLD list.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1822,6 +1812,11 @@ Implements the Single Responsibility Principle by focusing only on display trans
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Service/RecordLog.html"><abbr title="Poweradmin\Domain\Service\RecordLog">RecordLog</abbr></a>    </div>
+                <div class="col-md-6"><p>Captures a record before and after an edit and writes the change to the zone audit log.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/RecordMatchingService.html"><abbr title="Poweradmin\Domain\Service\RecordMatchingService">RecordMatchingService</abbr></a>    </div>
                 <div class="col-md-6"><p>Finds the A or AAAA records of a forward zone whose addresses fall inside a given IPv4 range or IPv6 /64.</p></div>
             </div>
@@ -2039,6 +2034,11 @@ notice, verify what PowerDNS reports afterwards, rectify, and audit.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Utility/RecordIdHelper.html"><abbr title="Poweradmin\Domain\Utility\RecordIdHelper">RecordIdHelper</abbr></a>    </div>
                 <div class="col-md-6"><p>Casts an all-digit record id to int while leaving the API backend's encoded string ids untouched.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Utility/TopLevelDomain.html"><abbr title="Poweradmin\Domain\Utility\TopLevelDomain">TopLevelDomain</abbr></a>    </div>
+                <div class="col-md-6"><p>Top-level domain validation against the bundled TLD list.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2400,11 +2400,6 @@ these variables on its own, so each call site needs to opt in explicitly.</p></d
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Infrastructure/Service/HttpPaginationParameters.html"><abbr title="Poweradmin\Infrastructure\Service\HttpPaginationParameters">HttpPaginationParameters</abbr></a>    </div>
-                <div class="col-md-6"><p>Reads the current page number from the start query parameter, clamped to at least 1.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Service/MessageService.html"><abbr title="Poweradmin\Infrastructure\Service\MessageService">MessageService</abbr></a>    </div>
                 <div class="col-md-6"><p>Queues per-page flash messages in the session and stores form data under a token for redirect round-trips.</p></div>
             </div>
@@ -2706,7 +2701,7 @@ pulling it over AXFR, and converting it to a primary once the data lands.</p></d
             </div>
             </div>
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ee8febe" rel="noreferrer" target="_blank">commit ee8febe,</a> built 2026-09-15 12:36 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/c9e2bd0" rel="noreferrer" target="_blank">commit c9e2bd0,</a> built 2026-09-15 13:13 UTC.</div></div>
     </div>
     </body>
 
