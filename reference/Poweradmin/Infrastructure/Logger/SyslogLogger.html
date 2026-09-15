@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Poweradmin\Infrastructure\Logger\NullLogHandler | Poweradmin class reference</title>
+    <title>Poweradmin\Infrastructure\Logger\SyslogLogger | Poweradmin class reference</title>
 
                 <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Poweradmin_Infrastructure_Logger_NullLogHandler" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+    <body id="class" data-name="class:Poweradmin_Infrastructure_Logger_SyslogLogger" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -83,18 +83,18 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">class</span></li>
-                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure.html">Infrastructure</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure/Logger.html">Logger</a></li><li class="backslash">\</li><li>NullLogHandler</li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure.html">Infrastructure</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure/Logger.html">Logger</a></li><li class="backslash">\</li><li>SyslogLogger</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>NullLogHandler    
+        <h1>SyslogLogger    
             </h1>
     </div>
 
     
     <p>        class
-    <strong>NullLogHandler</strong>        implements        <a href="../../../Poweradmin/Infrastructure/Logger/LogHandlerInterface.html"><abbr title="Poweradmin\Infrastructure\Logger\LogHandlerInterface">LogHandlerInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/NullLogHandler.php">View source</a>)
+    <strong>SyslogLogger</strong>        extends <abbr title="Psr\Log\AbstractLogger">AbstractLogger</abbr>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/SyslogLogger.php">View source</a>)
 </p>
 
         
@@ -103,9 +103,22 @@
         
 
             <div class="description">
-            <p><p>Log handler that discards every line; the default when logging.type is unset.</p></p>                    </div>
+            <p><p>PSR-3 logger that writes every message to syslog under the configured identity and facility.</p></p>                    </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                            private
+                                                                                PRIORITIES
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -113,10 +126,32 @@
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>(string $ident = &#039;poweradmin&#039;, int $facility = LOG_USER)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     void
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_handle">handle</a>(array $context = [])
+                    <a href="#method_log">log</a>($level, <a target="_blank" rel="noopener" href="https://www.php.net/Stringable">Stringable</a>|string $message, array $context = [])
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___destruct">__destruct</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -129,10 +164,10 @@
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_handle">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/NullLogHandler.php#L31">at line 31</a></div>
-        <code>                    void
-    <strong>handle</strong>(array $context = [])
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/SyslogLogger.php#L45">at line 45</a></div>
+        <code>                    
+    <strong>__construct</strong>(string $ident = &#039;poweradmin&#039;, int $facility = LOG_USER)
         </code>
     </h3>
     <div class="details">    
@@ -148,6 +183,56 @@
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$ident</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$facility</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_log">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/SyslogLogger.php#L50">at line 50</a></div>
+        <code>                    void
+    <strong>log</strong>($level, <a target="_blank" rel="noopener" href="https://www.php.net/Stringable">Stringable</a>|string $message, array $context = [])
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$level</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Stringable">Stringable</a>|string</td>
+                <td>$message</td>
+                <td></td>
+            </tr>
                     <tr>
                 <td>array</td>
                 <td>$context</td>
@@ -172,11 +257,36 @@
     </div>
 
             </div>
+                    <div class="method-item">
+                    <h3 id="method___destruct">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/SyslogLogger.php#L55">at line 55</a></div>
+        <code>                    
+    <strong>__destruct</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
             </div>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ccac92c" rel="noreferrer" target="_blank">commit ccac92c,</a> built 2026-09-15 13:18 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/8799550" rel="noreferrer" target="_blank">commit 8799550,</a> built 2026-09-15 14:03 UTC.</div></div>
     </div>
     </body>
 
