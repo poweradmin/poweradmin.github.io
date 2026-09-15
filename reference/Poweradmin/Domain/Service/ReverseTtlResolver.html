@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Poweradmin\Domain\Service\ReverseTtlResolver | Poweradmin class reference</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../../fonts/doctum-font.css">
+        <script src="../../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../../doctum.js"></script>
+        <script async defer src="../../../js/bootstrap.min.js"></script>
+        <script async defer src="../../../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:Poweradmin_Domain_Service_ReverseTtlResolver" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">Poweradmin class reference</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                    <li><a href="../../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Service.html">Service</a></li><li class="backslash">\</li><li>ReverseTtlResolver</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>ReverseTtlResolver    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>ReverseTtlResolver</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ReverseTtlResolver.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>Resolves the default TTL for new records.</p></p>            <p><p>Fallback chain (first non-null wins):</p>
+<ol>
+<li>record_type_defaults row for the submitted type (admin-managed via UI)</li>
+<li>dns.ttl_reverse (legacy config, only when the record is a PTR in a reverse zone)</li>
+<li>dns.ttl (universal fallback)</li>
+</ol></p>        </div>
+            
+        
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a> $config, <a href="../../../Poweradmin/Domain/Repository/RecordTypeDefaultRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordTypeDefaultRepositoryInterface">RecordTypeDefaultRepositoryInterface</abbr></a> $recordTypeDefaults)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getDefaultTtl">getDefaultTtl</a>(bool $isReverseZone)
+        
+                                            <p><p>Default TTL for a new record on the add/edit form when the record type
+is not yet known (only the zone is). Reverse-zone forms default to PTR,
+so we consult the same fallback chain as resolveTtlForType('PTR', true).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getForwardTtl">getForwardTtl</a>()
+        
+                                            <p><p>Plain dns.ttl with the 86400 fallback used by the historical batch-PTR
+flow when settings.defaults.php is bypassed.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_resolvePtrTtl">resolvePtrTtl</a>(int $forwardTtl)
+        
+                                            <p><p>TTL for a PTR that is auto-created alongside a forward record.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_resolveTtlForType">resolveTtlForType</a>(string $recordType, bool $isInReverseZone)
+        
+                                            <p><p>TTL for a record about to be persisted. Checks the admin-managed
+record_type_defaults table first, then the legacy PTR/reverse-zone
+config fallback, then dns.ttl. The zone-type gate prevents PTRs that
+legitimately live in forward zones (RFC 2317, custom dns.domain_record_types)
+from picking up the reverse-zone-only legacy default.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getConfiguredReverseTtl">getConfiguredReverseTtl</a>()
+        
+                                            <p><p>The configured dns.ttl_reverse value, or null when unset/empty.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getTypeDefaults">getTypeDefaults</a>()
+        
+                                            <p><p>Admin-configured per-type defaults keyed by uppercase record type.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ReverseTtlResolver.php#L39">at line 39</a></div>
+        <code>                    
+    <strong>__construct</strong>(<a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a> $config, <a href="../../../Poweradmin/Domain/Repository/RecordTypeDefaultRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordTypeDefaultRepositoryInterface">RecordTypeDefaultRepositoryInterface</abbr></a> $recordTypeDefaults)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a></td>
+                <td>$config</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Repository/RecordTypeDefaultRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordTypeDefaultRepositoryInterface">RecordTypeDefaultRepositoryInterface</abbr></a></td>
+                <td>$recordTypeDefaults</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getDefaultTtl">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ReverseTtlResolver.php#L50">at line 50</a></div>
+        <code>                    int
+    <strong>getDefaultTtl</strong>(bool $isReverseZone)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Default TTL for a new record on the add/edit form when the record type
+is not yet known (only the zone is). Reverse-zone forms default to PTR,
+so we consult the same fallback chain as resolveTtlForType('PTR', true).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>bool</td>
+                <td>$isReverseZone</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getForwardTtl">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ReverseTtlResolver.php#L69">at line 69</a></div>
+        <code>                    int
+    <strong>getForwardTtl</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Plain dns.ttl with the 86400 fallback used by the historical batch-PTR
+flow when settings.defaults.php is bypassed.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_resolvePtrTtl">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ReverseTtlResolver.php#L79">at line 79</a></div>
+        <code>                    int
+    <strong>resolvePtrTtl</strong>(int $forwardTtl)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>TTL for a PTR that is auto-created alongside a forward record.</p></p>                <p><p>Same fallback chain as resolveTtlForType('PTR', true), with the
+forward record's TTL serving as the historical last-resort default.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$forwardTtl</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_resolveTtlForType">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ReverseTtlResolver.php#L95">at line 95</a></div>
+        <code>                    int
+    <strong>resolveTtlForType</strong>(string $recordType, bool $isInReverseZone)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>TTL for a record about to be persisted. Checks the admin-managed
+record_type_defaults table first, then the legacy PTR/reverse-zone
+config fallback, then dns.ttl. The zone-type gate prevents PTRs that
+legitimately live in forward zones (RFC 2317, custom dns.domain_record_types)
+from picking up the reverse-zone-only legacy default.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$recordType</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$isInReverseZone</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getConfiguredReverseTtl">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ReverseTtlResolver.php#L112">at line 112</a></div>
+        <code>                    int|null
+    <strong>getConfiguredReverseTtl</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The configured dns.ttl_reverse value, or null when unset/empty.</p></p>                <p><p>Callers use null to signal &quot;preserve historical behavior&quot;.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getTypeDefaults">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ReverseTtlResolver.php#L127">at line 127</a></div>
+        <code>                    array
+    <strong>getTypeDefaults</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Admin-configured per-type defaults keyed by uppercase record type.</p></p>                <p><p>Templates pass this to JS so type-change swaps pick the right value.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>

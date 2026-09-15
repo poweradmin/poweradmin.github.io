@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Poweradmin\Domain\Service\DnsValidation\NSEC3RecordValidator | Poweradmin class reference</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../../../fonts/doctum-font.css">
+        <script src="../../../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../../../doctum.js"></script>
+        <script async defer src="../../../../js/bootstrap.min.js"></script>
+        <script async defer src="../../../../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:Poweradmin_Domain_Service_DnsValidation_NSEC3RecordValidator" data-root-path="../../../../" data-search-index-url="../../../../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../../../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../../index.html">Poweradmin class reference</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../../classes.html">Classes</a></li>
+                    <li><a href="../../../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../../traits.html">Traits</a></li>
+                    <li><a href="../../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../../Poweradmin/Domain/Service.html">Service</a></li><li class="backslash">\</li><li><a href="../../../../Poweradmin/Domain/Service/DnsValidation.html">DnsValidation</a></li><li class="backslash">\</li><li>NSEC3RecordValidator</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>NSEC3RecordValidator    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>NSEC3RecordValidator</strong>        implements        <a href="../../../../Poweradmin/Domain/Service/DnsValidation/DnsRecordValidatorInterface.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\DnsRecordValidatorInterface">DnsRecordValidatorInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/DnsValidation/NSEC3RecordValidator.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>NSEC3 record validator</p></p>            <p><p>Validates NSEC3 (Next SECure version 3) records according to:</p>
+<ul>
+<li>RFC 5155: DNS Security (DNSSEC) Hashed Authenticated Denial of Existence</li>
+<li>RFC 9276: Guidance for NSEC3 Parameter Settings (Best Current Practice)</li>
+<li>RFC 9077: NSEC and NSEC3: TTLs and Aggressive Use</li>
+</ul>
+<p>NSEC3 records provide authenticated denial of existence in DNSSEC with additional
+protection against zone enumeration. Each NSEC3 record contains:</p>
+<p>Format: [hash-algorithm] [flags] [iterations] [salt] [next-hashed-owner-name] [type-bit-maps]
+Example: 1 0 0 - B4Q3JBMLEL2C7EMPGKUDAMPIP4DI4C2L A NS SOA MX RRSIG DNSKEY NSEC3PARAM</p>
+<p>Field descriptions:</p>
+<ol>
+<li>Hash Algorithm: The algorithm used for hashing (1 = SHA-1, the only defined value)</li>
+<li>Flags: The Opt-Out flag (bit 0) indicates whether NSEC3 covers unsigned delegations</li>
+<li>Iterations: Number of additional hash iterations (RFC 9276 recommends 0)</li>
+<li>Salt: Random value to defend against pre-calculated attacks (RFC 9276 recommends &quot;-&quot;)</li>
+<li>Next Hashed Owner Name: Base32hex encoded next hashed owner name in hash order</li>
+<li>Type Bit Maps: Set of RR types present at the original owner name</li>
+</ol>
+<p>Security considerations:</p>
+<ul>
+<li>While more resistant than NSEC, NSEC3 records can still be susceptible to zone enumeration</li>
+<li>RFC 9276 recommends using 0 iterations as additional iterations provide minimal security benefit</li>
+<li>RFC 9276 recommends not using a salt (indicated by &quot;-&quot;) to simplify operation</li>
+<li>NSEC3 records should have the same TTL as the SOA minimum TTL field</li>
+<li>Validating resolvers may reject zones with high iteration values (&gt;100)</li>
+</ul>
+<p>Type code: 50</p></p>        </div>
+            
+        
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a> $config)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../../Poweradmin/Domain/Service/Validation/ValidationResult.html"><abbr title="Poweradmin\Domain\Service\Validation\ValidationResult">ValidationResult</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_validate">validate</a>(string $content, string $name, mixed $prio, int|string|null $ttl, int $defaultTTL, mixed ...$args)
+        
+                                            <p><p>Validate an NSEC3 record according to RFC 5155 and RFC 9276</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/DnsValidation/NSEC3RecordValidator.php#L69">at line 69</a></div>
+        <code>                    
+    <strong>__construct</strong>(<a href="../../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a> $config)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a></td>
+                <td>$config</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_validate">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/DnsValidation/NSEC3RecordValidator.php#L87">at line 87</a></div>
+        <code>                    <a href="../../../../Poweradmin/Domain/Service/Validation/ValidationResult.html"><abbr title="Poweradmin\Domain\Service\Validation\ValidationResult">ValidationResult</abbr></a>
+    <strong>validate</strong>(string $content, string $name, mixed $prio, int|string|null $ttl, int $defaultTTL, mixed ...$args)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Validate an NSEC3 record according to RFC 5155 and RFC 9276</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$content</td>
+                <td><p>The content part of the record</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td><p>The name part of the record</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$prio</td>
+                <td><p>The priority value (if applicable)</p></td>
+            </tr>
+                    <tr>
+                <td>int|string|null</td>
+                <td>$ttl</td>
+                <td><p>The TTL value</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$defaultTTL</td>
+                <td><p>The default TTL to use if not specified</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>...$args</td>
+                <td><p>Additional validator-specific parameters</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../Poweradmin/Domain/Service/Validation/ValidationResult.html"><abbr title="Poweradmin\Domain\Service\Validation\ValidationResult">ValidationResult</abbr></a></td>
+            <td><p>ValidationResult containing validated data or error messages</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>
