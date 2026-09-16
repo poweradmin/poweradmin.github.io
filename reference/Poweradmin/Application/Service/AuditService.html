@@ -118,7 +118,7 @@ names in one place.</p></p>                    </div>
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Infrastructure/Logger/LegacyLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\LegacyLogger">LegacyLogger</abbr></a>|null $logger = null, <a href="../../../Poweradmin/Infrastructure/Utility/IpAddressRetriever.html"><abbr title="Poweradmin\Infrastructure\Utility\IpAddressRetriever">IpAddressRetriever</abbr></a>|null $ipRetriever = null, <a href="../../../Poweradmin/Domain/Service/UserContextService.html"><abbr title="Poweradmin\Domain\Service\UserContextService">UserContextService</abbr></a>|null $userContext = null)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Infrastructure/Logger/AuditLogWriter.html"><abbr title="Poweradmin\Infrastructure\Logger\AuditLogWriter">AuditLogWriter</abbr></a>|null $logger = null, <a href="../../../Poweradmin/Infrastructure/Utility/IpAddressRetriever.html"><abbr title="Poweradmin\Infrastructure\Utility\IpAddressRetriever">IpAddressRetriever</abbr></a>|null $ipRetriever = null, <a href="../../../Poweradmin/Domain/Service/UserContextService.html"><abbr title="Poweradmin\Domain\Service\UserContextService">UserContextService</abbr></a>|null $userContext = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -250,6 +250,50 @@ names in one place.</p></p>                    </div>
                     void
                 </div>
                 <div class="col-md-8">
+                    <a href="#method_logLoginSuccess">logLoginSuccess</a>(<abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr> $authMethod)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_logLoginFailed">logLoginFailed</a>(<abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr> $authMethod, <abbr title="Poweradmin\Domain\Enum\LoginFailureReason">LoginFailureReason</abbr>|null $reason = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_logLoginLocked">logLoginLocked</a>(<abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr> $authMethod)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_logLoginError">logLoginError</a>(<abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr> $authMethod, <abbr title="Poweradmin\Domain\Enum\LoginFailureReason">LoginFailureReason</abbr> $reason)
+        
+                                            <p><p>A backend failure (LDAP connect, bind or search). Logged as login_error, not
+login_failed, so an outage does not feed fail2ban brute-force counters.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
                     <a href="#method_logMfaEnable">logMfaEnable</a>(string $mfaType)
         
                                             <p class="no-description">No description</p>
@@ -305,7 +349,7 @@ names in one place.</p></p>                    </div>
                     void
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_logSsoLoginError">logSsoLoginError</a>(string $authMethod, string $error)
+                    <a href="#method_logSsoLoginError">logSsoLoginError</a>(<abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr> $authMethod, string $error)
         
                                             <p><p>An identity-provider handshake error. Logged as login_error, not
 login_failed, so it does not feed fail2ban brute-force counters.</p></p>                </div>
@@ -316,7 +360,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
                     void
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_logSsoLoginSuccess">logSsoLoginSuccess</a>(string $authMethod)
+                    <a href="#method_logSsoLoginSuccess">logSsoLoginSuccess</a>(<abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr> $authMethod)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -386,6 +430,28 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
         
                                             <p class="no-description">No description</p>
                                     </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_logApiRequest">logApiRequest</a>(string $operation, string $method, string $path, int $status, string $keyId, string $user)
+        
+                                            <p><p>One public API response. The operation-first layout and the '-' placeholders are the
+row format earlier releases stored, kept so external log scrapers keep matching.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_logDynamicDnsUpdate">logDynamicDnsUpdate</a>(string $username, string $hostname, int $zoneId, string $ip)
+        
+                                            <p><p>Written twice: logNotice() carries no zone id and only reaches the user log, so the
+line is repeated against the zone to show in that zone's history.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -1042,9 +1108,9 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L41">at line 41</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L43">at line 43</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Infrastructure/Logger/LegacyLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\LegacyLogger">LegacyLogger</abbr></a>|null $logger = null, <a href="../../../Poweradmin/Infrastructure/Utility/IpAddressRetriever.html"><abbr title="Poweradmin\Infrastructure\Utility\IpAddressRetriever">IpAddressRetriever</abbr></a>|null $ipRetriever = null, <a href="../../../Poweradmin/Domain/Service/UserContextService.html"><abbr title="Poweradmin\Domain\Service\UserContextService">UserContextService</abbr></a>|null $userContext = null)
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Infrastructure/Logger/AuditLogWriter.html"><abbr title="Poweradmin\Infrastructure\Logger\AuditLogWriter">AuditLogWriter</abbr></a>|null $logger = null, <a href="../../../Poweradmin/Infrastructure/Utility/IpAddressRetriever.html"><abbr title="Poweradmin\Infrastructure\Utility\IpAddressRetriever">IpAddressRetriever</abbr></a>|null $ipRetriever = null, <a href="../../../Poweradmin/Domain/Service/UserContextService.html"><abbr title="Poweradmin\Domain\Service\UserContextService">UserContextService</abbr></a>|null $userContext = null)
         </code>
     </h3>
     <div class="details">    
@@ -1066,7 +1132,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Infrastructure/Logger/LegacyLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\LegacyLogger">LegacyLogger</abbr></a>|null</td>
+                <td><a href="../../../Poweradmin/Infrastructure/Logger/AuditLogWriter.html"><abbr title="Poweradmin\Infrastructure\Logger\AuditLogWriter">AuditLogWriter</abbr></a>|null</td>
                 <td>$logger</td>
                 <td></td>
             </tr>
@@ -1092,7 +1158,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logPermTemplateChange">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L112">at line 112</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L114">at line 114</a></div>
         <code>                    void
     <strong>logPermTemplateChange</strong>(string $targetUser, int $oldTemplateId, int $newTemplateId)
         </code>
@@ -1146,7 +1212,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logSessionExpired">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L121">at line 121</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L123">at line 123</a></div>
         <code>                    void
     <strong>logSessionExpired</strong>()
         </code>
@@ -1180,7 +1246,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logAccessDenied">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L126">at line 126</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L128">at line 128</a></div>
         <code>                    void
     <strong>logAccessDenied</strong>(string $permission, string $requestUri)
         </code>
@@ -1229,7 +1295,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logUserAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L133">at line 133</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L135">at line 135</a></div>
         <code>                    void
     <strong>logUserAdd</strong>(string $username, string $email)
         </code>
@@ -1278,7 +1344,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logUserEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L138">at line 138</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L140">at line 140</a></div>
         <code>                    void
     <strong>logUserEdit</strong>(string $targetUser, int $permTemplateId, string $authType)
         </code>
@@ -1332,7 +1398,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logUserDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L147">at line 147</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L149">at line 149</a></div>
         <code>                    void
     <strong>logUserDelete</strong>(string $targetUser)
         </code>
@@ -1376,7 +1442,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logPasswordChange">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L152">at line 152</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L154">at line 154</a></div>
         <code>                    void
     <strong>logPasswordChange</strong>()
         </code>
@@ -1410,7 +1476,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logLogout">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L157">at line 157</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L159">at line 159</a></div>
         <code>                    void
     <strong>logLogout</strong>()
         </code>
@@ -1444,7 +1510,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logPasswordResetRequest">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L162">at line 162</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L164">at line 164</a></div>
         <code>                    void
     <strong>logPasswordResetRequest</strong>(string $email)
         </code>
@@ -1488,7 +1554,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logPasswordReset">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L167">at line 167</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L169">at line 169</a></div>
         <code>                    void
     <strong>logPasswordReset</strong>(int $userId)
         </code>
@@ -1532,7 +1598,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logUsernameRecovery">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L172">at line 172</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L174">at line 174</a></div>
         <code>                    void
     <strong>logUsernameRecovery</strong>(string $email)
         </code>
@@ -1575,8 +1641,194 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_logLoginSuccess">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L193">at line 193</a></div>
+        <code>                    void
+    <strong>logLoginSuccess</strong>(<abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr> $authMethod)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr></td>
+                <td>$authMethod</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_logLoginFailed">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L198">at line 198</a></div>
+        <code>                    void
+    <strong>logLoginFailed</strong>(<abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr> $authMethod, <abbr title="Poweradmin\Domain\Enum\LoginFailureReason">LoginFailureReason</abbr>|null $reason = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr></td>
+                <td>$authMethod</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Poweradmin\Domain\Enum\LoginFailureReason">LoginFailureReason</abbr>|null</td>
+                <td>$reason</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_logLoginLocked">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L211">at line 211</a></div>
+        <code>                    void
+    <strong>logLoginLocked</strong>(<abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr> $authMethod)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr></td>
+                <td>$authMethod</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_logLoginError">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L220">at line 220</a></div>
+        <code>                    void
+    <strong>logLoginError</strong>(<abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr> $authMethod, <abbr title="Poweradmin\Domain\Enum\LoginFailureReason">LoginFailureReason</abbr> $reason)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>A backend failure (LDAP connect, bind or search). Logged as login_error, not
+login_failed, so an outage does not feed fail2ban brute-force counters.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr></td>
+                <td>$authMethod</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Poweradmin\Domain\Enum\LoginFailureReason">LoginFailureReason</abbr></td>
+                <td>$reason</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_logMfaEnable">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L179">at line 179</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L225">at line 225</a></div>
         <code>                    void
     <strong>logMfaEnable</strong>(string $mfaType)
         </code>
@@ -1620,7 +1872,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logMfaDisable">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L184">at line 184</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L230">at line 230</a></div>
         <code>                    void
     <strong>logMfaDisable</strong>()
         </code>
@@ -1654,7 +1906,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logMfaRecoveryCodesRegenerate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L189">at line 189</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L235">at line 235</a></div>
         <code>                    void
     <strong>logMfaRecoveryCodesRegenerate</strong>()
         </code>
@@ -1688,7 +1940,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logMfaVerify">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L194">at line 194</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L240">at line 240</a></div>
         <code>                    void
     <strong>logMfaVerify</strong>(string $mfaType)
         </code>
@@ -1732,7 +1984,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logMfaFailed">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L199">at line 199</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L245">at line 245</a></div>
         <code>                    void
     <strong>logMfaFailed</strong>(string $mfaType)
         </code>
@@ -1776,9 +2028,9 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_logSsoLoginError">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L208">at line 208</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L254">at line 254</a></div>
         <code>                    void
-    <strong>logSsoLoginError</strong>(string $authMethod, string $error)
+    <strong>logSsoLoginError</strong>(<abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr> $authMethod, string $error)
         </code>
     </h3>
     <div class="details">    
@@ -1795,7 +2047,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
+                <td><abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr></td>
                 <td>$authMethod</td>
                 <td></td>
             </tr>
@@ -1825,9 +2077,9 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logSsoLoginSuccess">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L213">at line 213</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L259">at line 259</a></div>
         <code>                    void
-    <strong>logSsoLoginSuccess</strong>(string $authMethod)
+    <strong>logSsoLoginSuccess</strong>(<abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr> $authMethod)
         </code>
     </h3>
     <div class="details">    
@@ -1844,7 +2096,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
+                <td><abbr title="Poweradmin\Domain\Enum\AuthMethod">AuthMethod</abbr></td>
                 <td>$authMethod</td>
                 <td></td>
             </tr>
@@ -1869,7 +2121,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logSamlLogout">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L221">at line 221</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L267">at line 267</a></div>
         <code>                    void
     <strong>logSamlLogout</strong>(string|null $username)
         </code>
@@ -1913,7 +2165,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiKeyCreate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L228">at line 228</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L274">at line 274</a></div>
         <code>                    void
     <strong>logApiKeyCreate</strong>(int $keyId, string $keyName)
         </code>
@@ -1962,7 +2214,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiKeyEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L233">at line 233</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L279">at line 279</a></div>
         <code>                    void
     <strong>logApiKeyEdit</strong>(int $keyId, string $keyName)
         </code>
@@ -2011,7 +2263,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiKeyDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L238">at line 238</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L284">at line 284</a></div>
         <code>                    void
     <strong>logApiKeyDelete</strong>(int $keyId, string $keyName)
         </code>
@@ -2060,7 +2312,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiKeyRegenerate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L243">at line 243</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L289">at line 289</a></div>
         <code>                    void
     <strong>logApiKeyRegenerate</strong>(int $keyId, string $keyName)
         </code>
@@ -2109,7 +2361,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiKeyToggle">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L248">at line 248</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L294">at line 294</a></div>
         <code>                    void
     <strong>logApiKeyToggle</strong>(int $keyId, string $keyName, bool $disabled)
         </code>
@@ -2162,8 +2414,136 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_logApiRequest">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L313">at line 313</a></div>
+        <code>                    void
+    <strong>logApiRequest</strong>(string $operation, string $method, string $path, int $status, string $keyId, string $user)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>One public API response. The operation-first layout and the '-' placeholders are the
+row format earlier releases stored, kept so external log scrapers keep matching.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$operation</td>
+                <td><p>api_request, or api_violation for a 401/403</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$method</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$path</td>
+                <td><p>Already capped by the caller so the row fits log_api.event</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$status</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$keyId</td>
+                <td><p>The API key id, or '-' for HTTP Basic auth</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$user</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_logDynamicDnsUpdate">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L336">at line 336</a></div>
+        <code>                    void
+    <strong>logDynamicDnsUpdate</strong>(string $username, string $hostname, int $zoneId, string $ip)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Written twice: logNotice() carries no zone id and only reaches the user log, so the
+line is repeated against the zone to show in that zone's history.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td><p>The dyndns2 or API principal, which has no session</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$hostname</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$ip</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_logPermTemplateAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L261">at line 261</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L350">at line 350</a></div>
         <code>                    void
     <strong>logPermTemplateAdd</strong>(string $name)
         </code>
@@ -2207,7 +2587,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logPermTemplateEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L266">at line 266</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L355">at line 355</a></div>
         <code>                    void
     <strong>logPermTemplateEdit</strong>(int $templateId, string $name)
         </code>
@@ -2256,7 +2636,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logPermTemplateDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L271">at line 271</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L360">at line 360</a></div>
         <code>                    void
     <strong>logPermTemplateDelete</strong>(int $templateId, string $name)
         </code>
@@ -2305,7 +2685,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L278">at line 278</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L367">at line 367</a></div>
         <code>                    void
     <strong>logZoneAdd</strong>(int $zoneId, string $zoneName, string $zoneType, string|null $template = null, string|null $master = null)
         </code>
@@ -2369,7 +2749,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L288">at line 288</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L377">at line 377</a></div>
         <code>                    void
     <strong>logZoneDelete</strong>(int $zoneId, string $zoneName, string $zoneType)
         </code>
@@ -2423,7 +2803,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneImport">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L296">at line 296</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L385">at line 385</a></div>
         <code>                    void
     <strong>logZoneImport</strong>(int $zoneId, string $zoneName, bool $intoExistingZone)
         </code>
@@ -2476,7 +2856,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logSecondaryZoneImport">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L302">at line 302</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L391">at line 391</a></div>
         <code>                    void
     <strong>logSecondaryZoneImport</strong>(int $zoneId, string $zoneName, string $master)
         </code>
@@ -2530,7 +2910,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiZoneAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L307">at line 307</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L396">at line 396</a></div>
         <code>                    void
     <strong>logApiZoneAdd</strong>(int $zoneId, string $zoneName, string $zoneType)
         </code>
@@ -2584,7 +2964,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiZoneDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L312">at line 312</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L401">at line 401</a></div>
         <code>                    void
     <strong>logApiZoneDelete</strong>(int $zoneId, string $zoneName)
         </code>
@@ -2633,7 +3013,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logRecordAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L319">at line 319</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L408">at line 408</a></div>
         <code>                    void
     <strong>logRecordAdd</strong>(int $zoneId, string $type, string $name, string $content, int|string $ttl, int|string $prio)
         </code>
@@ -2702,7 +3082,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logRecordEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L334">at line 334</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L423">at line 423</a></div>
         <code>                    void
     <strong>logRecordEdit</strong>(int|null $zoneId, array $before, array $after)
         </code>
@@ -2756,7 +3136,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logRecordDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L350">at line 350</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L439">at line 439</a></div>
         <code>                    void
     <strong>logRecordDelete</strong>(int $zoneId, string $type, string $name, string $content, int|string $ttl, int|string|null $prio)
         </code>
@@ -2825,7 +3205,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logBatchPtrRecordAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L361">at line 361</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L450">at line 450</a></div>
         <code>                    void
     <strong>logBatchPtrRecordAdd</strong>(int $zoneId, string $name, string $content, int|string $ttl, int|string $prio)
         </code>
@@ -2889,7 +3269,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logRecordTypeDefaultSave">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L372">at line 372</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L461">at line 461</a></div>
         <code>                    void
     <strong>logRecordTypeDefaultSave</strong>(string $type, int $ttl)
         </code>
@@ -2938,7 +3318,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logRecordTypeDefaultDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L377">at line 377</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L466">at line 466</a></div>
         <code>                    void
     <strong>logRecordTypeDefaultDelete</strong>(string $type)
         </code>
@@ -2982,7 +3362,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiRecordAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L382">at line 382</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L471">at line 471</a></div>
         <code>                    void
     <strong>logApiRecordAdd</strong>(int $zoneId, string $name, string $type, string $content)
         </code>
@@ -3041,7 +3421,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiRecordEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L387">at line 387</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L476">at line 476</a></div>
         <code>                    void
     <strong>logApiRecordEdit</strong>(int $zoneId, string $name, string $type, string $content)
         </code>
@@ -3100,7 +3480,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiRecordDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L392">at line 392</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L481">at line 481</a></div>
         <code>                    void
     <strong>logApiRecordDelete</strong>(int $zoneId, string $name, string $type, string $content)
         </code>
@@ -3159,7 +3539,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiRrsetReplace">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L397">at line 397</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L486">at line 486</a></div>
         <code>                    void
     <strong>logApiRrsetReplace</strong>(int $zoneId, string $name, string $type, int $records)
         </code>
@@ -3218,7 +3598,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiRrsetDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L402">at line 402</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L491">at line 491</a></div>
         <code>                    void
     <strong>logApiRrsetDelete</strong>(int $zoneId, string $name, string $type, int $records)
         </code>
@@ -3277,7 +3657,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiBulkRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L407">at line 407</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L496">at line 496</a></div>
         <code>                    void
     <strong>logApiBulkRecords</strong>(int $zoneId, int $operations)
         </code>
@@ -3326,7 +3706,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneCatalogAssign">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L417">at line 417</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L506">at line 506</a></div>
         <code>                    void
     <strong>logZoneCatalogAssign</strong>(int $zoneId, string $zoneName, string $catalog)
         </code>
@@ -3379,7 +3759,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneCatalogClear">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L422">at line 422</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L511">at line 511</a></div>
         <code>                    void
     <strong>logZoneCatalogClear</strong>(int $zoneId, string $zoneName, string $catalog)
         </code>
@@ -3433,7 +3813,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneOwnerAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L427">at line 427</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L516">at line 516</a></div>
         <code>                    void
     <strong>logZoneOwnerAdd</strong>(int $zoneId, string $zoneName, int $ownerId)
         </code>
@@ -3487,7 +3867,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneOwnerRemove">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L432">at line 432</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L521">at line 521</a></div>
         <code>                    void
     <strong>logZoneOwnerRemove</strong>(int $zoneId, string $zoneName, int $ownerId)
         </code>
@@ -3541,7 +3921,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneGroupAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L437">at line 437</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L526">at line 526</a></div>
         <code>                    void
     <strong>logZoneGroupAdd</strong>(int $zoneId, string $zoneName, int $groupId)
         </code>
@@ -3595,7 +3975,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneGroupRemove">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L442">at line 442</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L531">at line 531</a></div>
         <code>                    void
     <strong>logZoneGroupRemove</strong>(int $zoneId, string $zoneName, int $groupId)
         </code>
@@ -3649,7 +4029,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logDnssecAddKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L449">at line 449</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L538">at line 538</a></div>
         <code>                    void
     <strong>logDnssecAddKey</strong>(int $zoneId, string $zoneName, string $keyType, string $bits, string $algorithm)
         </code>
@@ -3713,7 +4093,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logDnssecDeleteKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L459">at line 459</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L548">at line 548</a></div>
         <code>                    void
     <strong>logDnssecDeleteKey</strong>(int $zoneId, string $zoneName, int $keyId)
         </code>
@@ -3767,7 +4147,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logDnssecToggleKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L464">at line 464</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L553">at line 553</a></div>
         <code>                    void
     <strong>logDnssecToggleKey</strong>(int $zoneId, string $zoneName, int $keyId, string $action)
         </code>
@@ -3826,7 +4206,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneMetadataEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L472">at line 472</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L561">at line 561</a></div>
         <code>                    void
     <strong>logZoneMetadataEdit</strong>(int $zoneId, string $zoneName, array $kinds)
         </code>
@@ -3880,7 +4260,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logDnssecSignZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L477">at line 477</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L566">at line 566</a></div>
         <code>                    void
     <strong>logDnssecSignZone</strong>(int $zoneId, string $zoneName)
         </code>
@@ -3929,7 +4309,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logDnssecUnsignZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L482">at line 482</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L571">at line 571</a></div>
         <code>                    void
     <strong>logDnssecUnsignZone</strong>(int $zoneId, string $zoneName)
         </code>
@@ -3978,7 +4358,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logGroupCreate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L489">at line 489</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L578">at line 578</a></div>
         <code>                    void
     <strong>logGroupCreate</strong>(int $groupId, string $groupName, string $templateName, int $templateId)
         </code>
@@ -4037,7 +4417,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logGroupEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L502">at line 502</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L591">at line 591</a></div>
         <code>                    void
     <strong>logGroupEdit</strong>(int $groupId, string $groupName, array $changes)
         </code>
@@ -4091,7 +4471,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logGroupDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L514">at line 514</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L603">at line 603</a></div>
         <code>                    void
     <strong>logGroupDelete</strong>(int $groupId, string $groupName, int $membersAffected, int $zonesAffected)
         </code>
@@ -4149,7 +4529,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logGroupMembersAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L525">at line 525</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L614">at line 614</a></div>
         <code>                    void
     <strong>logGroupMembersAdd</strong>(int $groupId, string $groupName, array $usernames)
         </code>
@@ -4203,7 +4583,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logGroupMembersRemove">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L531">at line 531</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L620">at line 620</a></div>
         <code>                    void
     <strong>logGroupMembersRemove</strong>(int $groupId, string $groupName, array $usernames)
         </code>
@@ -4257,7 +4637,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiGroupMemberAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L536">at line 536</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L625">at line 625</a></div>
         <code>                    void
     <strong>logApiGroupMemberAdd</strong>(int $groupId, string $groupName, string $username)
         </code>
@@ -4311,7 +4691,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logGroupZonesAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L542">at line 542</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L631">at line 631</a></div>
         <code>                    void
     <strong>logGroupZonesAdd</strong>(int $groupId, string $groupName, array $zoneNames)
         </code>
@@ -4365,7 +4745,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logGroupZonesRemove">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L548">at line 548</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L637">at line 637</a></div>
         <code>                    void
     <strong>logGroupZonesRemove</strong>(int $groupId, string $groupName, array $zoneNames)
         </code>
@@ -4419,7 +4799,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logGroupMemberRemove">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L553">at line 553</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L642">at line 642</a></div>
         <code>                    void
     <strong>logGroupMemberRemove</strong>(int $groupId, int $userId)
         </code>
@@ -4468,7 +4848,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneTemplateAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L571">at line 571</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L660">at line 660</a></div>
         <code>                    void
     <strong>logZoneTemplateAdd</strong>(string $templateName)
         </code>
@@ -4512,7 +4892,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneTemplateEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L576">at line 576</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L665">at line 665</a></div>
         <code>                    void
     <strong>logZoneTemplateEdit</strong>(int $templateId, string $templateName)
         </code>
@@ -4561,7 +4941,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneTemplateDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L584">at line 584</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L673">at line 673</a></div>
         <code>                    void
     <strong>logZoneTemplateDelete</strong>(int $templateId)
         </code>
@@ -4605,7 +4985,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneTemplateUnlink">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L589">at line 589</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L678">at line 678</a></div>
         <code>                    void
     <strong>logZoneTemplateUnlink</strong>(int $zoneId)
         </code>
@@ -4649,7 +5029,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneTemplateRecordAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L596">at line 596</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L685">at line 685</a></div>
         <code>                    void
     <strong>logZoneTemplateRecordAdd</strong>(int $templateId, string $recordName, string $recordType)
         </code>
@@ -4703,7 +5083,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneTemplateRecordEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L605">at line 605</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L694">at line 694</a></div>
         <code>                    void
     <strong>logZoneTemplateRecordEdit</strong>(int $templateId, int $recordId, string $recordName, string $recordType)
         </code>
@@ -4762,7 +5142,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneTemplateRecordDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L615">at line 615</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L704">at line 704</a></div>
         <code>                    void
     <strong>logZoneTemplateRecordDelete</strong>(int $templateId, int $recordId)
         </code>
@@ -4811,7 +5191,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiZoneTemplateAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L620">at line 620</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L709">at line 709</a></div>
         <code>                    void
     <strong>logApiZoneTemplateAdd</strong>(int $templateId, string $templateName)
         </code>
@@ -4860,7 +5240,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiZoneTemplateEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L628">at line 628</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L717">at line 717</a></div>
         <code>                    void
     <strong>logApiZoneTemplateEdit</strong>(int $templateId, string $templateName)
         </code>
@@ -4909,7 +5289,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiZoneTemplateDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L636">at line 636</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L725">at line 725</a></div>
         <code>                    void
     <strong>logApiZoneTemplateDelete</strong>(int $templateId)
         </code>
@@ -4953,7 +5333,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiZoneTemplateRecordAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L641">at line 641</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L730">at line 730</a></div>
         <code>                    void
     <strong>logApiZoneTemplateRecordAdd</strong>(int $templateId, int $recordId, string $recordName, string $recordType)
         </code>
@@ -5012,7 +5392,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiZoneTemplateRecordEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L651">at line 651</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L740">at line 740</a></div>
         <code>                    void
     <strong>logApiZoneTemplateRecordEdit</strong>(int $templateId, int $recordId, string $recordName, string $recordType)
         </code>
@@ -5071,7 +5451,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiZoneTemplateRecordDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L661">at line 661</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L750">at line 750</a></div>
         <code>                    void
     <strong>logApiZoneTemplateRecordDelete</strong>(int $templateId, int $recordId)
         </code>
@@ -5120,7 +5500,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneCommentEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L668">at line 668</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L757">at line 757</a></div>
         <code>                    void
     <strong>logZoneCommentEdit</strong>(int $zoneId, string $zoneName)
         </code>
@@ -5169,7 +5549,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logSupermasterAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L675">at line 675</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L764">at line 764</a></div>
         <code>                    void
     <strong>logSupermasterAdd</strong>(string $masterIp, string $nsName)
         </code>
@@ -5218,7 +5598,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logSupermasterEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L680">at line 680</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L769">at line 769</a></div>
         <code>                    void
     <strong>logSupermasterEdit</strong>(string $oldMasterIp, string $oldNsName, string $newMasterIp, string $newNsName)
         </code>
@@ -5277,7 +5657,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logSupermasterDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L690">at line 690</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/AuditService.php#L779">at line 779</a></div>
         <code>                    void
     <strong>logSupermasterDelete</strong>(string $masterIp, string $nsName)
         </code>
@@ -5328,7 +5708,7 @@ login_failed, so it does not feed fail2ban brute-force counters.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/962545a" rel="noreferrer" target="_blank">commit 962545a,</a> built 2026-09-15 15:07 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/baccf5b" rel="noreferrer" target="_blank">commit baccf5b,</a> built 2026-09-16 05:18 UTC.</div></div>
     </div>
     </body>
 

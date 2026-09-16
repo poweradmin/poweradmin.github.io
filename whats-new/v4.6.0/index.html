@@ -7149,6 +7149,31 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td>With the API backend, reverse zones are listed under their canonical id</td>
 <td><a href="../../configuration/powerdns-api/">PowerDNS API</a></td>
 </tr>
+<tr>
+<td>Zone record counts on signed zones</td>
+<td>The zone list and the internal zone endpoint report the true record count on DNSSEC-signed zones, and empty non-terminal rows are not counted anywhere. The internal endpoint also returns <code>master</code>, <code>account</code>, <code>owner</code> and <code>record_count</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Turning off LDAP needs a password</td>
+<td><code>PUT /api/v2/users/{id}</code> with <code>use_ldap=false</code> must carry a <code>password</code>, since the LDAP placeholder cannot be kept as a login password</td>
+<td><a href="../../api/overview/">API Overview</a></td>
+</tr>
+<tr>
+<td>CNAME checks ignore case</td>
+<td>CNAME uniqueness and NS/MX target checks compare names case-insensitively on every database, and the internal validation endpoint validates through the configured backend in API mode</td>
+<td></td>
+</tr>
+<tr>
+<td>Basic auth challenge on 401</td>
+<td>With <code>api.basic_auth_enabled</code> on, an unauthenticated API request answers with <code>WWW-Authenticate: Basic realm="..."</code> using <code>api.basic_auth_realm</code></td>
+<td><a href="../../configuration/api/">API Configuration</a></td>
+</tr>
+<tr>
+<td><code>dnssec.debug</code> removed</td>
+<td>The setting and <code>PA_DNSSEC_DEBUG</code> had no effect since the pdnsutil provider was dropped</td>
+<td><a href="../../configuration/dnssec/">DNSSEC</a></td>
+</tr>
 </tbody>
 </table>
 <h2 id="next">Next<a class="headerlink" href="#next" title="Permanent link">¶</a></h2>

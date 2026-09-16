@@ -798,7 +798,7 @@ they cannot be read, so the page still renders.</p></div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Application/Service/DynamicDnsRequestFactory.html"><abbr title="Poweradmin\Application\Service\DynamicDnsRequestFactory">DynamicDnsRequestFactory</abbr></a>    </div>
-                <div class="col-md-6"><p>Builds a DynamicDnsRequest from the HTTP request the dyndns2 endpoint received.</p></div>
+                <div class="col-md-6"><p>Builds the dyndns2 request value object and the update service that handles it.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -824,11 +824,6 @@ they cannot be read, so the page still renders.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Application/Service/LocaleResolver.html"><abbr title="Poweradmin\Application\Service\LocaleResolver">LocaleResolver</abbr></a>    </div>
                 <div class="col-md-6"><p>Resolves the interface language for the current request.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/LoggingService.html"><abbr title="Poweradmin\Application\Service\LoggingService">LoggingService</abbr></a>    </div>
-                <div class="col-md-6"><p>Base class that tags debug, info, warning and error log calls with the subclass name.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -979,11 +974,6 @@ read record listing, so the warning does not also cost the operator their edits.
                 <div class="col-md-6">
                     <a href="Poweradmin/Application/Service/UserAuthenticationService.html"><abbr title="Poweradmin\Application\Service\UserAuthenticationService">UserAuthenticationService</abbr></a>    </div>
                 <div class="col-md-6"><p>Hashes and verifies user passwords across bcrypt, argon2 and the legacy md5 formats.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/UserEventLogger.html"><abbr title="Poweradmin\Application\Service\UserEventLogger">UserEventLogger</abbr></a>    </div>
-                <div class="col-md-6"><p>Writes login success, failure and lockout entries to the application log with the client IP.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1148,7 +1138,7 @@ an existing zone.</p></div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Model/Zone.html"><abbr title="Poweradmin\Domain\Model\Zone">Zone</abbr></a>    </div>
-                <div class="col-md-6"><p>A zone as seen by DNSSEC: its name, whether it is secured, and its list of CryptoKeys.</p></div>
+                <div class="col-md-6"><p>A zone as seen by DNSSEC: its name and whether it is secured.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1170,12 +1160,6 @@ an existing zone.</p></div>
                                             <em><a href="Poweradmin/Domain/Repository/ApiKeyRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ApiKeyRepositoryInterface">ApiKeyRepositoryInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Persistence for API keys.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                                            <em><a href="Poweradmin/Domain/Repository/AppSettingRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\AppSettingRepositoryInterface">AppSettingRepositoryInterface</abbr></a></em>
-                        </div>
-                <div class="col-md-6"><p>Persistence for admin-managed settings that override config/settings.php.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1245,9 +1229,27 @@ an existing zone.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/ZoneOwnershipRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneOwnershipRepositoryInterface">ZoneOwnershipRepositoryInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Zone ownership reads and writes; one of the three roles ZoneRepositoryInterface combines.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/ZoneReadRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneReadRepositoryInterface">ZoneReadRepositoryInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Zone lookups, lists and counts; one of the three roles ZoneRepositoryInterface combines.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                                             <em><a href="Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Zone reads and ownership writes; implemented for SQL and for the API backend mode.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/ZoneWriteRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneWriteRepositoryInterface">ZoneWriteRepositoryInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Zone row, comment and metadata writes (plus the metadata read the editor pairs with them); one of the three roles ZoneRepositoryInterface combines.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1262,13 +1264,14 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Domain/Service/AppSettingsService.html"><abbr title="Poweradmin\Domain\Service\AppSettingsService">AppSettingsService</abbr></a>    </div>
-                <div class="col-md-6"><p>Layered reader for admin-managed settings.</p></div>
+                    <a href="Poweradmin/Domain/Service/AuthenticationService.html"><abbr title="Poweradmin\Domain\Service\AuthenticationService">AuthenticationService</abbr></a>    </div>
+                <div class="col-md-6"><p>Starts or ends a session with a flash message, then redirects to login; API requests get a 401 JSON instead.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Domain/Service/AuthenticationService.html"><abbr title="Poweradmin\Domain\Service\AuthenticationService">AuthenticationService</abbr></a>    </div>
-                <div class="col-md-6"><p>Starts or ends a session with a flash message, then redirects to login; API requests get a 401 JSON instead.</p></div>
+                                            <em><a href="Poweradmin/Domain/Service/BackendCapabilitiesInterface.html"><abbr title="Poweradmin\Domain\Service\BackendCapabilitiesInterface">BackendCapabilitiesInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Capability probe telling callers which kind of DNS backend they hold.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1279,6 +1282,12 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/BulkRecordParser.html"><abbr title="Poweradmin\Domain\Service\BulkRecordParser">BulkRecordParser</abbr></a>    </div>
                 <div class="col-md-6"><p>Parses one CSV line of the bulk record form (name,type,content,prio,ttl[,disabled][,comment]) into a record.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Service/CatalogBackendInterface.html"><abbr title="Poweradmin\Domain\Service\CatalogBackendInterface">CatalogBackendInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Catalog zone membership reads and writes against the DNS backend.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1823,8 +1832,20 @@ Implements the Single Responsibility Principle by focusing only on display trans
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Service/RecordReadBackendInterface.html"><abbr title="Poweradmin\Domain\Service\RecordReadBackendInterface">RecordReadBackendInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Record lookups by id, name or zone read from the DNS backend.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/RecordTypeService.html"><abbr title="Poweradmin\Domain\Service\RecordTypeService">RecordTypeService</abbr></a>    </div>
                 <div class="col-md-6"><p>Record-type lists for the forward and reverse zone editors, filtered by config, DNSSEC and server support.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Service/RecordWriteBackendInterface.html"><abbr title="Poweradmin\Domain\Service\RecordWriteBackendInterface">RecordWriteBackendInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Record add, edit and delete writes against the DNS backend.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1838,13 +1859,31 @@ Implements the Single Responsibility Principle by focusing only on display trans
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Service/SearchBackendInterface.html"><abbr title="Poweradmin\Domain\Service\SearchBackendInterface">SearchBackendInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Wildcard search over zones and records in the DNS backend.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/SelfEditFieldGuard.html"><abbr title="Poweradmin\Domain\Service\SelfEditFieldGuard">SelfEditFieldGuard</abbr></a>    </div>
                 <div class="col-md-6"><p>Gates auth-critical fields on user self-edit API paths (#1327).</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Service/SerialBackendInterface.html"><abbr title="Poweradmin\Domain\Service\SerialBackendInterface">SerialBackendInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>SOA serial handling: whether PowerDNS bumps the serial itself and the zone serial policy metadata.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/SessionKeys.html"><abbr title="Poweradmin\Domain\Service\SessionKeys">SessionKeys</abbr></a>    </div>
                 <div class="col-md-6"><p>Central catalogue of $_SESSION keys.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Service/SupermasterBackendInterface.html"><abbr title="Poweradmin\Domain\Service\SupermasterBackendInterface">SupermasterBackendInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Supermaster (autoprimary) reads and writes against the DNS backend.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1970,6 +2009,12 @@ a code so the web forms can word it themselves; the message is the API text.</p>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Service/ZoneReadBackendInterface.html"><abbr title="Poweradmin\Domain\Service\ZoneReadBackendInterface">ZoneReadBackendInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Zone lookups, listings, record counts and SOA health read from the DNS backend.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/ZoneSaveResult.html"><abbr title="Poweradmin\Domain\Service\ZoneSaveResult">ZoneSaveResult</abbr></a>    </div>
                 <div class="col-md-6"><p>How a zone editor save ended, with what the page needs to report it and,
 for a refused stale form, the rows to put back in front of the operator.</p></div>
@@ -2005,6 +2050,12 @@ notice, verify what PowerDNS reports afterwards, rectify, and audit.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/ZoneValidationService.html"><abbr title="Poweradmin\Domain\Service\ZoneValidationService">ZoneValidationService</abbr></a>    </div>
                 <div class="col-md-6"><p>Checks a zone is fit for DNSSEC signing and formats the reasons when it is not.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Service/ZoneWriteBackendInterface.html"><abbr title="Poweradmin\Domain\Service\ZoneWriteBackendInterface">ZoneWriteBackendInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Zone create, delete, kind, primary, account and AXFR-retrieve writes against the DNS backend.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2110,11 +2161,6 @@ notice, verify what PowerDNS reports afterwards, rectify, and audit.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Infrastructure/Configuration/FakeConfiguration.html"><abbr title="Poweradmin\Infrastructure\Configuration\FakeConfiguration">FakeConfiguration</abbr></a>    </div>
-                <div class="col-md-6"><p>In-memory ConfigurationInterface backed by a plain array, for tests and code paths without a settings file.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Configuration/ThemePathResolver.html"><abbr title="Poweradmin\Infrastructure\Configuration\ThemePathResolver">ThemePathResolver</abbr></a>    </div>
                 <div class="col-md-6"><p>Resolves the configured theme base path for on-disk checks.</p></div>
             </div>
@@ -2152,6 +2198,17 @@ status badges in the zone list without an extra round-trip.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Logger/AuditLogWriter.html"><abbr title="Poweradmin\Infrastructure\Logger\AuditLogWriter">AuditLogWriter</abbr></a>    </div>
+                <div class="col-md-6"><p>Sink for audit lines: hands each one to the syslog logger and, when database
+logging is on, to the log_users, log_zones, log_groups or log_api table.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Logger/ClassContextLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\ClassContextLogger">ClassContextLogger</abbr></a>    </div>
+                <div class="col-md-6"><p>PSR-3 decorator that tags every log call with the owning class's short name in the <code>classname</code> context key.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Logger/DbApiLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbApiLogger">DbApiLogger</abbr></a>    </div>
                 <div class="col-md-6"><p>Writes API events to the log_api table and queries, filters and prunes them for the API log page.</p></div>
             </div>
@@ -2169,16 +2226,6 @@ status badges in the zone list without an extra round-trip.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Logger/DbZoneLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbZoneLogger">DbZoneLogger</abbr></a>    </div>
                 <div class="col-md-6"><p>Writes zone events to the log_zones table and queries them by domain or filter, with SQL and API-backend joins.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Infrastructure/Logger/LdapUserEventLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\LdapUserEventLogger">LdapUserEventLogger</abbr></a>    </div>
-                <div class="col-md-6"><p>Records LDAP login outcomes (success, failure reason, lockout) with the client IP through LegacyLogger.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Infrastructure/Logger/LegacyLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\LegacyLogger">LegacyLogger</abbr></a>    </div>
-                <div class="col-md-6"><p>Writes an event to syslog and/or the log_users, log_zones, log_groups and log_api tables per the logging settings.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2247,11 +2294,6 @@ these variables on its own, so each call site needs to opt in explicitly.</p></d
                 <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Repository/DbApiKeyRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbApiKeyRepository">DbApiKeyRepository</abbr></a>    </div>
                 <div class="col-md-6"><p>SQL persistence for API keys in the api_keys table and their zone scopes in api_key_zones.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Infrastructure/Repository/DbAppSettingRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbAppSettingRepository">DbAppSettingRepository</abbr></a>    </div>
-                <div class="col-md-6"><p>SQL persistence for key/value application settings in the app_settings table.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2376,7 +2418,7 @@ these variables on its own, so each call site needs to opt in explicitly.</p></d
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Service/MessageService.html"><abbr title="Poweradmin\Infrastructure\Service\MessageService">MessageService</abbr></a>    </div>
-                <div class="col-md-6"><p>Queues per-page flash messages in the session and stores form data under a token for redirect round-trips.</p></div>
+                <div class="col-md-6"><p>Queues per-page flash messages in the session and renders the bare-HTML fatal error page.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2666,17 +2708,12 @@ pulling it over AXFR, and converting it to a primary once the data lands.</p></d
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Pages.html"><abbr title="Poweradmin\Pages">Pages</abbr></a>    </div>
-                <div class="col-md-6"><p>Static list of every page identifier the application routes, used by the entry-point tests.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
                     <a href="Poweradmin/Version.html"><abbr title="Poweradmin\Version">Version</abbr></a>    </div>
                 <div class="col-md-6"><p>Holds the Poweradmin release version constant.</p></div>
             </div>
             </div>
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/962545a" rel="noreferrer" target="_blank">commit 962545a,</a> built 2026-09-15 15:07 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/baccf5b" rel="noreferrer" target="_blank">commit baccf5b,</a> built 2026-09-16 05:18 UTC.</div></div>
     </div>
     </body>
 

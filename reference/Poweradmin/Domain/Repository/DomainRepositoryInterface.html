@@ -118,7 +118,8 @@
                 <div class="col-md-8">
                     <a href="#method_zoneIdExists">zoneIdExists</a>(int $zid)
         
-                                            <p><p>Check if Zone ID exists</p></p>                </div>
+                                            <p><p>Check if Zone ID exists. Answered from the local database only (the
+domains table, or the zones table in API backend mode); PowerDNS is not asked.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -143,22 +144,13 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    int|null
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getZoneIdFromName">getZoneIdFromName</a>(string $zname)
-        
-                                            <p><p>Get zone id from name</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
                     string
                 </div>
                 <div class="col-md-8">
                     <a href="#method_getDomainType">getDomainType</a>(int $id)
         
-                                            <p><p>Get Domain Type for Domain ID</p></p>                </div>
+                                            <p><p>Get the kind of a domain. In API backend mode a zones row without a cached kind
+costs one round trip to PowerDNS.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -166,9 +158,9 @@
                     string|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getDomainSlaveMaster">getDomainSlaveMaster</a>(int $id)
+                    <a href="#method_getDomainMaster">getDomainMaster</a>(int $id)
         
-                                            <p><p>Get Slave Domain's Master</p></p>                </div>
+                                            <p><p>Get the master (primary) server stored for a domain, whatever its kind.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -239,7 +231,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_zoneIdExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L39">at line 39</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L40">at line 40</a></div>
         <code>                    bool
     <strong>zoneIdExists</strong>(int $zid)
         </code>
@@ -250,7 +242,8 @@
             
 
         <div class="method-description">
-                            <p><p>Check if Zone ID exists</p></p>                        
+                            <p><p>Check if Zone ID exists. Answered from the local database only (the
+domains table, or the zones table in API backend mode); PowerDNS is not asked.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -269,7 +262,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td><p>Whether a domains row with this id exists</p></td>
+            <td><p>Whether a local row with this id exists</p></td>
         </tr>
     </table>
 
@@ -282,7 +275,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getDomainNameById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L48">at line 48</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L49">at line 49</a></div>
         <code>                    string|null
     <strong>getDomainNameById</strong>(int $id)
         </code>
@@ -325,7 +318,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getDomainIdByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L57">at line 57</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L58">at line 58</a></div>
         <code>                    int|null
     <strong>getDomainIdByName</strong>(string $name)
         </code>
@@ -367,51 +360,8 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getZoneIdFromName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L65">at line 65</a></div>
-        <code>                    int|null
-    <strong>getZoneIdFromName</strong>(string $zname)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Get zone id from name</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$zname</td>
-                <td><p>Zone name</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>int|null</td>
-            <td><p>Zone ID or null if not found</p></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_getDomainType">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L74">at line 74</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L68">at line 68</a></div>
         <code>                    string
     <strong>getDomainType</strong>(int $id)
         </code>
@@ -422,7 +372,8 @@
             
 
         <div class="method-description">
-                            <p><p>Get Domain Type for Domain ID</p></p>                        
+                            <p><p>Get the kind of a domain. In API backend mode a zones row without a cached kind
+costs one round trip to PowerDNS.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -441,7 +392,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>string</td>
-            <td><p>Domain Type [NATIVE,MASTER,SLAVE]</p></td>
+            <td><p>One of the ZoneKind values (NATIVE, MASTER, SLAVE, PRODUCER, CONSUMER); NATIVE when unknown</p></td>
         </tr>
     </table>
 
@@ -453,10 +404,10 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getDomainSlaveMaster">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L83">at line 83</a></div>
+                    <h3 id="method_getDomainMaster">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L79">at line 79</a></div>
         <code>                    string|null
-    <strong>getDomainSlaveMaster</strong>(int $id)
+    <strong>getDomainMaster</strong>(int $id)
         </code>
     </h3>
     <div class="details">    
@@ -465,7 +416,8 @@
             
 
         <div class="method-description">
-                            <p><p>Get Slave Domain's Master</p></p>                        
+                            <p><p>Get the master (primary) server stored for a domain, whatever its kind.</p></p>                <p><p>SLAVE and CONSUMER zones both replicate from one; callers that need SLAVE only check the type.
+In API backend mode a zones row without a cached kind costs one round trip to PowerDNS.</p></p>        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -484,7 +436,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>string|null</td>
-            <td><p>Master server or null if not found</p></td>
+            <td><p>Master server or null if none is stored</p></td>
         </tr>
     </table>
 
@@ -497,7 +449,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_domainExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L91">at line 91</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L87">at line 87</a></div>
         <code>                    bool
     <strong>domainExists</strong>(string $domain)
         </code>
@@ -540,7 +492,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L106">at line 106</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L102">at line 102</a></div>
         <code>                    array
     <strong>getZones</strong>(string $perm, int $userid = 0, string $letterstart = &#039;all&#039;, int $rowstart = 0, int $rowamount = Constants::DEFAULT_MAX_ROWS, string $sortby = &#039;name&#039;, string $sortDirection = &#039;ASC&#039;, bool $excludeReverse = false, bool|null $showSerial = null, bool|null $showTemplate = null, bool $includeHealth = true, bool $includeRecordCount = true)
         </code>
@@ -638,7 +590,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneInfoFromId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L127">at line 127</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L123">at line 123</a></div>
         <code>                    array
     <strong>getZoneInfoFromId</strong>(int $zid)
         </code>
@@ -681,7 +633,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneInfoFromIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L135">at line 135</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L131">at line 131</a></div>
         <code>                    array
     <strong>getZoneInfoFromIds</strong>(array $zones)
         </code>
@@ -724,7 +676,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_listZoneNames">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L142">at line 142</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L138">at line 138</a></div>
         <code>                    array
     <strong>listZoneNames</strong>()
         </code>
@@ -757,7 +709,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getBestMatchingZoneIdFromName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L151">at line 151</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/DomainRepositoryInterface.php#L147">at line 147</a></div>
         <code>                    int
     <strong>getBestMatchingZoneIdFromName</strong>(string $domain)
         </code>
@@ -802,7 +754,7 @@
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/962545a" rel="noreferrer" target="_blank">commit 962545a,</a> built 2026-09-15 15:07 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/baccf5b" rel="noreferrer" target="_blank">commit baccf5b,</a> built 2026-09-16 05:18 UTC.</div></div>
     </div>
     </body>
 

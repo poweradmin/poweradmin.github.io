@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Poweradmin\Infrastructure\Repository\DbAppSettingRepository | Poweradmin class reference</title>
+    <title>Poweradmin\Domain\Repository\ZoneOwnershipRepositoryInterface | Poweradmin class reference</title>
 
                 <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Poweradmin_Infrastructure_Repository_DbAppSettingRepository" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+    <body id="class" data-name="class:Poweradmin_Domain_Repository_ZoneOwnershipRepositoryInterface" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -82,19 +82,19 @@
 
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
-                <li><span class="label label-default">class</span></li>
-                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure.html">Infrastructure</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure/Repository.html">Repository</a></li><li class="backslash">\</li><li>DbAppSettingRepository</li>
+                <li><span class="label label-default">interface</span></li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Repository.html">Repository</a></li><li class="backslash">\</li><li>ZoneOwnershipRepositoryInterface</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>DbAppSettingRepository    
+        <h1>ZoneOwnershipRepositoryInterface    
             </h1>
     </div>
 
     
-    <p>        class
-    <strong>DbAppSettingRepository</strong>        implements        <a href="../../../Poweradmin/Domain/Repository/AppSettingRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\AppSettingRepositoryInterface">AppSettingRepositoryInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbAppSettingRepository.php">View source</a>)
+    <p>        interface
+    <strong>ZoneOwnershipRepositoryInterface</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneOwnershipRepositoryInterface.php">View source</a>)
 </p>
 
         
@@ -103,7 +103,7 @@
         
 
             <div class="description">
-            <p><p>SQL persistence for key/value application settings in the app_settings table.</p></p>                    </div>
+            <p><p>Zone ownership reads and writes; one of the three roles ZoneRepositoryInterface combines.</p></p>                    </div>
             
         
     
@@ -113,24 +113,12 @@
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
+                    <a href="#method_getZoneOwners">getZoneOwners</a>(int $zoneId)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array|null
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_find">find</a>(string $key)
-        
-                                            <p><p>Return the stored value + type for the given key, or null when no
-row exists.</p></p>                </div>
+                                            <p><p>Get users who own a zone</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -138,9 +126,9 @@ row exists.</p></p>                </div>
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_findAll">findAll</a>()
+                    <a href="#method_getOwnerIdsByZoneIds">getOwnerIdsByZoneIds</a>(array $zoneIds)
         
-                                            <p><p>Return every stored setting keyed by setting_key.</p></p>                </div>
+                                            <p><p>Direct owners of several zones in one query, for list pages.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -148,31 +136,10 @@ row exists.</p></p>                </div>
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_findByPrefix">findByPrefix</a>(string $prefix)
+                    <a href="#method_getOwnedZoneIds">getOwnedZoneIds</a>(int $userId)
         
-                                            <p><p>Return every stored setting whose key starts with the given prefix
-(e.g. &quot;interface.&quot;) keyed by setting_key.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_save">save</a>(string $key, string $value, string $type = &#039;string&#039;)
-        
-                                            <p><p>Insert or update the setting. The repository does not validate the
-type/value relationship - that is the service layer's job.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_delete">delete</a>(string $key)
-        
-                                            <p><p>Remove the setting, falling back to ConfigurationManager / caller default.</p></p>                </div>
+                                            <p><p>Ids of every zone the user owns directly or through a group, in the id
+space the zone logs and zones_groups use.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -180,11 +147,29 @@ type/value relationship - that is the service layer's job.</p></p>              
                     bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_isReady">isReady</a>()
+                    <a href="#method_addOwnerToZone">addOwnerToZone</a>(int $zoneId, int $userId)
         
-                                            <p><p>Whether the backing table is available. False on installations where
-the migration hasn't been applied yet, letting consumers degrade to
-the legacy ConfigurationManager-only path.</p></p>                </div>
+                                            <p><p>Add owner to zone</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_removeOwnerFromZone">removeOwnerFromZone</a>(int $zoneId, int $userId)
+        
+                                            <p><p>Remove owner from zone</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isUserZoneOwner">isUserZoneOwner</a>(int $zoneId, int $userId)
+        
+                                            <p><p>Check if user is already an owner of the zone</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -194,89 +179,10 @@ the legacy ConfigurationManager-only path.</p></p>                </div>
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbAppSettingRepository.php#L34">at line 34</a></div>
-        <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
-                <td>$db</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_find">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbAppSettingRepository.php#L38">at line 38</a></div>
-        <code>                    array|null
-    <strong>find</strong>(string $key)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Return the stored value + type for the given key, or null when no
-row exists.</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$key</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>array|null</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_findAll">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbAppSettingRepository.php#L58">at line 58</a></div>
+                    <h3 id="method_getZoneOwners">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneOwnershipRepositoryInterface.php#L36">at line 36</a></div>
         <code>                    array
-    <strong>findAll</strong>()
+    <strong>getZoneOwners</strong>(int $zoneId)
         </code>
     </h3>
     <div class="details">    
@@ -285,16 +191,26 @@ row exists.</p></p>
             
 
         <div class="method-description">
-                            <p><p>Return every stored setting keyed by setting_key.</p></p>                        
+                            <p><p>Get users who own a zone</p></p>                        
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td><p>The zone ID</p></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
             <td>array</td>
-            <td></td>
+            <td><p>Array of user information</p></td>
         </tr>
     </table>
 
@@ -306,10 +222,10 @@ row exists.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_findByPrefix">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbAppSettingRepository.php#L80">at line 80</a></div>
+                    <h3 id="method_getOwnerIdsByZoneIds">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneOwnershipRepositoryInterface.php#L44">at line 44</a></div>
         <code>                    array
-    <strong>findByPrefix</strong>(string $prefix)
+    <strong>getOwnerIdsByZoneIds</strong>(array $zoneIds)
         </code>
     </h3>
     <div class="details">    
@@ -318,16 +234,59 @@ row exists.</p></p>
             
 
         <div class="method-description">
-                            <p><p>Return every stored setting whose key starts with the given prefix
-(e.g. &quot;interface.&quot;) keyed by setting_key.</p></p>                        
+                            <p><p>Direct owners of several zones in one query, for list pages.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
-                <td>$prefix</td>
+                <td>array</td>
+                <td>$zoneIds</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Zone id =&gt; owner user ids; zones without a row are absent</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getOwnedZoneIds">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneOwnershipRepositoryInterface.php#L52">at line 52</a></div>
+        <code>                    array
+    <strong>getOwnedZoneIds</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Ids of every zone the user owns directly or through a group, in the id
+space the zone logs and zones_groups use.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
                 <td></td>
             </tr>
             </table>
@@ -350,107 +309,10 @@ row exists.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_save">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbAppSettingRepository.php#L109">at line 109</a></div>
-        <code>                    void
-    <strong>save</strong>(string $key, string $value, string $type = &#039;string&#039;)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Insert or update the setting. The repository does not validate the
-type/value relationship - that is the service layer's job.</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$key</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>string</td>
-                <td>$value</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>string</td>
-                <td>$type</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_delete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbAppSettingRepository.php#L144">at line 144</a></div>
-        <code>                    void
-    <strong>delete</strong>(string $key)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Remove the setting, falling back to ConfigurationManager / caller default.</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$key</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_isReady">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbAppSettingRepository.php#L159">at line 159</a></div>
+                    <h3 id="method_addOwnerToZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneOwnershipRepositoryInterface.php#L61">at line 61</a></div>
         <code>                    bool
-    <strong>isReady</strong>()
+    <strong>addOwnerToZone</strong>(int $zoneId, int $userId)
         </code>
     </h3>
     <div class="details">    
@@ -459,18 +321,127 @@ type/value relationship - that is the service layer's job.</p></p>
             
 
         <div class="method-description">
-                            <p><p>Whether the backing table is available. False on installations where
-the migration hasn't been applied yet, letting consumers degrade to
-the legacy ConfigurationManager-only path.</p></p>                        
+                            <p><p>Add owner to zone</p></p>                        
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td><p>The zone ID</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>The user ID</p></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td></td>
+            <td><p>True if added successfully</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_removeOwnerFromZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneOwnershipRepositoryInterface.php#L70">at line 70</a></div>
+        <code>                    bool
+    <strong>removeOwnerFromZone</strong>(int $zoneId, int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Remove owner from zone</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td><p>The zone ID</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>The user ID</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if removed successfully</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isUserZoneOwner">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneOwnershipRepositoryInterface.php#L79">at line 79</a></div>
+        <code>                    bool
+    <strong>isUserZoneOwner</strong>(int $zoneId, int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if user is already an owner of the zone</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td><p>The zone ID</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>The user ID</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if user is already an owner</p></td>
         </tr>
     </table>
 
@@ -485,7 +456,7 @@ the legacy ConfigurationManager-only path.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/962545a" rel="noreferrer" target="_blank">commit 962545a,</a> built 2026-09-15 15:07 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/baccf5b" rel="noreferrer" target="_blank">commit baccf5b,</a> built 2026-09-16 05:18 UTC.</div></div>
     </div>
     </body>
 

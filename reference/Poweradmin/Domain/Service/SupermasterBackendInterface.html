@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Poweradmin\Infrastructure\Configuration\FakeConfiguration | Poweradmin class reference</title>
+    <title>Poweradmin\Domain\Service\SupermasterBackendInterface | Poweradmin class reference</title>
 
                 <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Poweradmin_Infrastructure_Configuration_FakeConfiguration" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+    <body id="class" data-name="class:Poweradmin_Domain_Service_SupermasterBackendInterface" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -82,19 +82,19 @@
 
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
-                <li><span class="label label-default">class</span></li>
-                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure.html">Infrastructure</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure/Configuration.html">Configuration</a></li><li class="backslash">\</li><li>FakeConfiguration</li>
+                <li><span class="label label-default">interface</span></li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Service.html">Service</a></li><li class="backslash">\</li><li>SupermasterBackendInterface</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>FakeConfiguration    
+        <h1>SupermasterBackendInterface    
             </h1>
     </div>
 
     
-    <p>        class
-    <strong>FakeConfiguration</strong>        implements        <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Configuration/FakeConfiguration.php">View source</a>)
+    <p>        interface
+    <strong>SupermasterBackendInterface</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/SupermasterBackendInterface.php">View source</a>)
 </p>
 
         
@@ -103,57 +103,32 @@
         
 
             <div class="description">
-            <p><p>In-memory ConfigurationInterface backed by a plain array, for tests and code paths without a settings file.</p></p>                    </div>
+            <p><p>Supermaster (autoprimary) reads and writes against the DNS backend.</p></p>                    </div>
             
         
     
-            <h2>Properties</h2>
-
-            <table class="table table-condensed">
-                    <tr>
-                <td class="type" id="property_config">
-                                        protected                                        array
-                                                                                
-                                    </td>
-                <td>$config</td>
-                <td class="last"></td>
-                <td></td>
-            </tr>
-            </table>
-
     
             <h2>Methods</h2>
 
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(array $config = [])
+                    <a href="#method_addSupermaster">addSupermaster</a>(string $masterIp, string $nsName, string $account)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>Add a supermaster (autoprimary).</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    mixed
+                    bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_get">get</a>(string $group, string $key, mixed $default = null)
+                    <a href="#method_deleteSupermaster">deleteSupermaster</a>(string $masterIp, string $nsName)
         
-                                            <p><p>Gets a configuration value.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getGroup">getGroup</a>(string $group)
-        
-                                            <p><p>Gets an entire configuration group.</p></p>                </div>
+                                            <p><p>Delete a supermaster (autoprimary).</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -161,9 +136,19 @@
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getAll">getAll</a>()
+                    <a href="#method_getSupermasters">getSupermasters</a>()
         
-                                            <p><p>Gets all configuration settings.</p></p>                </div>
+                                            <p><p>Get all supermasters.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_updateSupermaster">updateSupermaster</a>(string $oldMasterIp, string $oldNsName, string $newMasterIp, string $newNsName, string $account)
+        
+                                            <p><p>Update a supermaster.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -173,10 +158,10 @@
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Configuration/FakeConfiguration.php#L32">at line 32</a></div>
-        <code>                    
-    <strong>__construct</strong>(array $config = [])
+                    <h3 id="method_addSupermaster">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/SupermasterBackendInterface.php#L38">at line 38</a></div>
+        <code>                    bool
+    <strong>addSupermaster</strong>(string $masterIp, string $nsName, string $account)
         </code>
     </h3>
     <div class="details">    
@@ -185,42 +170,7 @@
             
 
         <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>array</td>
-                <td>$config</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_get">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Configuration/FakeConfiguration.php#L45">at line 45</a></div>
-        <code>                    mixed
-    <strong>get</strong>(string $group, string $key, mixed $default = null)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Gets a configuration value.</p></p>                        
+                            <p><p>Add a supermaster (autoprimary).</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -228,18 +178,18 @@
                     <table class="table table-condensed">
                     <tr>
                 <td>string</td>
-                <td>$group</td>
-                <td><p>Configuration group</p></td>
+                <td>$masterIp</td>
+                <td><p>Supermaster IP address</p></td>
             </tr>
                     <tr>
                 <td>string</td>
-                <td>$key</td>
-                <td><p>Configuration key</p></td>
+                <td>$nsName</td>
+                <td><p>Nameserver hostname</p></td>
             </tr>
                     <tr>
-                <td>mixed</td>
-                <td>$default</td>
-                <td><p>Default value if not found</p></td>
+                <td>string</td>
+                <td>$account</td>
+                <td><p>Account name</p></td>
             </tr>
             </table>
 
@@ -248,8 +198,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>mixed</td>
-            <td><p>Configuration value or default if not found</p></td>
+            <td>bool</td>
+            <td></td>
         </tr>
     </table>
 
@@ -261,10 +211,10 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getGroup">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Configuration/FakeConfiguration.php#L56">at line 56</a></div>
-        <code>                    array
-    <strong>getGroup</strong>(string $group)
+                    <h3 id="method_deleteSupermaster">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/SupermasterBackendInterface.php#L47">at line 47</a></div>
+        <code>                    bool
+    <strong>deleteSupermaster</strong>(string $masterIp, string $nsName)
         </code>
     </h3>
     <div class="details">    
@@ -273,7 +223,7 @@
             
 
         <div class="method-description">
-                            <p><p>Gets an entire configuration group.</p></p>                        
+                            <p><p>Delete a supermaster (autoprimary).</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -281,8 +231,13 @@
                     <table class="table table-condensed">
                     <tr>
                 <td>string</td>
-                <td>$group</td>
-                <td><p>Configuration group</p></td>
+                <td>$masterIp</td>
+                <td><p>Supermaster IP address</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$nsName</td>
+                <td><p>Nameserver hostname</p></td>
             </tr>
             </table>
 
@@ -291,8 +246,8 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
-            <td><p>Configuration group values</p></td>
+            <td>bool</td>
+            <td></td>
         </tr>
     </table>
 
@@ -304,10 +259,10 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getAll">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Configuration/FakeConfiguration.php#L66">at line 66</a></div>
+                    <h3 id="method_getSupermasters">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/SupermasterBackendInterface.php#L54">at line 54</a></div>
         <code>                    array
-    <strong>getAll</strong>()
+    <strong>getSupermasters</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -316,7 +271,7 @@
             
 
         <div class="method-description">
-                            <p><p>Gets all configuration settings.</p></p>                        
+                            <p><p>Get all supermasters.</p></p>                        
         </div>
         <div class="tags">
             
@@ -325,7 +280,70 @@
                     <table class="table table-condensed">
         <tr>
             <td>array</td>
-            <td><p>All settings</p></td>
+            <td><p>Array of supermaster records</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_updateSupermaster">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/SupermasterBackendInterface.php#L66">at line 66</a></div>
+        <code>                    bool
+    <strong>updateSupermaster</strong>(string $oldMasterIp, string $oldNsName, string $newMasterIp, string $newNsName, string $account)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Update a supermaster.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$oldMasterIp</td>
+                <td><p>Original IP</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$oldNsName</td>
+                <td><p>Original nameserver</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$newMasterIp</td>
+                <td><p>New IP</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$newNsName</td>
+                <td><p>New nameserver</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$account</td>
+                <td><p>Account name</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
         </tr>
     </table>
 
@@ -340,7 +358,7 @@
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/962545a" rel="noreferrer" target="_blank">commit 962545a,</a> built 2026-09-15 15:07 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/baccf5b" rel="noreferrer" target="_blank">commit baccf5b,</a> built 2026-09-16 05:18 UTC.</div></div>
     </div>
     </body>
 

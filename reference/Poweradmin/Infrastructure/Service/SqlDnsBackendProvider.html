@@ -239,7 +239,7 @@ it is not a member.</p></p>                </div>
                     int|string|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_addRecordGetId">addRecordGetId</a>(int $domainId, string $name, string $type, string $content, int $ttl, int $prio)
+                    <a href="#method_addRecordGetId">addRecordGetId</a>(int $domainId, string $name, string $type, string $content, int $ttl, int $prio, array|null $comment = null)
         
                                             <p><p>Add a DNS record and return its ID.</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -249,7 +249,7 @@ it is not a member.</p></p>                </div>
                     int|string|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_createRecordAtomic">createRecordAtomic</a>(int $domainId, string $name, string $type, string $content, int $ttl, int $prio, int $disabled = 0)
+                    <a href="#method_createRecordAtomic">createRecordAtomic</a>(int $domainId, string $name, string $type, string $content, int $ttl, int $prio, int $disabled = 0, array|null $comment = null)
         
                                             <p><p>Create a DNS record atomically with optional disabled flag.</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -272,16 +272,6 @@ it is not a member.</p></p>                </div>
                     <a href="#method_deleteRecord">deleteRecord</a>(int|string $recordId)
         
                                             <p><p>Delete a DNS record by ID.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_deleteRecordsByDomainId">deleteRecordsByDomainId</a>(int $domainId)
-        
-                                            <p><p>Delete all records for a given domain.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -341,7 +331,7 @@ it is not a member.</p></p>                </div>
                 <div class="col-md-8">
                     <a href="#method_getZoneMasterById">getZoneMasterById</a>(int $domainId)
         
-                                            <p><p>Get zone master by domain ID.</p></p>                </div>
+                                            <p><p>Get zone master by domain ID, for any zone kind.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -429,6 +419,28 @@ unnecessary lookups; implementations must return is_missing_soa=false for SLAVE.
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findRecordsByName">findRecordsByName</a>(string $name, string|null $type = null)
+        
+                                            <p><p>Find the records at one name across every zone, optionally filtered by type.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findRecordsByContent">findRecordsByContent</a>(string $content, string|null $type = null)
+        
+                                            <p><p>Find the records whose content equals the given value across every zone,
+optionally filtered by type. Same 100-candidate cap on the API backend as
+findRecordsByName().</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     string
                 </div>
                 <div class="col-md-8">
@@ -459,12 +471,32 @@ unnecessary lookups; implementations must return is_missing_soa=false for SLAVE.
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array|null
+                    array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getZoneByName">getZoneByName</a>(string $zoneName)
+                    <a href="#method_getZonesByIds">getZonesByIds</a>(array $domainIds)
         
-                                            <p><p>Get a single zone by name with its type, master, and DNSSEC status.</p></p>                </div>
+                                            <p><p>Get id, name and type for the given zone ids, sorted by name.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_countZones">countZones</a>()
+        
+                                            <p><p>Count all zones in the DNS backend.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_countRecords">countRecords</a>()
+        
+                                            <p><p>Count all record rows in the DNS backend, ENTs included.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -485,16 +517,6 @@ unnecessary lookups; implementations must return is_missing_soa=false for SLAVE.
                     <a href="#method_searchDnsData">searchDnsData</a>(string $query, string $objectType = &#039;all&#039;, int $max = 100)
         
                                             <p><p>Search for zones and records matching a query.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_updateSOASerial">updateSOASerial</a>(int $domainId)
-        
-                                            <p><p>Update the SOA serial for a zone.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -545,6 +567,26 @@ unnecessary lookups; implementations must return is_missing_soa=false for SLAVE.
                     <a href="#method_isApiBackend">isApiBackend</a>()
         
                                             <p><p>Check if this is the API backend.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_supportsLocalWriteTransaction">supportsLocalWriteTransaction</a>()
+        
+                                            <p><p>Whether backend writes can be wrapped in a transaction on the Poweradmin database.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_recordIdsAreNumeric">recordIdsAreNumeric</a>()
+        
+                                            <p><p>Whether record ids are the integer records.id values.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -1161,7 +1203,7 @@ it is not a member.</p></p>
                     <h3 id="method_addRecordGetId">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L274">at line 274</a></div>
         <code>                    int|string|null
-    <strong>addRecordGetId</strong>(int $domainId, string $name, string $type, string $content, int $ttl, int $prio)
+    <strong>addRecordGetId</strong>(int $domainId, string $name, string $type, string $content, int $ttl, int $prio, array|null $comment = null)
         </code>
     </h3>
     <div class="details">    
@@ -1206,6 +1248,12 @@ it is not a member.</p></p>
                 <td>$prio</td>
                 <td>Priority</td>
             </tr>
+                    <tr>
+                <td>array|null</td>
+                <td>$comment</td>
+                <td><p>RRset comment ['content' =&gt; string, 'account' =&gt; string]; null leaves
+comments untouched. SQL mode ignores it.</p></td>
+            </tr>
             </table>
 
             
@@ -1229,7 +1277,7 @@ it is not a member.</p></p>
                     <h3 id="method_createRecordAtomic">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L291">at line 291</a></div>
         <code>                    int|string|null
-    <strong>createRecordAtomic</strong>(int $domainId, string $name, string $type, string $content, int $ttl, int $prio, int $disabled = 0)
+    <strong>createRecordAtomic</strong>(int $domainId, string $name, string $type, string $content, int $ttl, int $prio, int $disabled = 0, array|null $comment = null)
         </code>
     </h3>
     <div class="details">    
@@ -1239,7 +1287,7 @@ it is not a member.</p></p>
 
         <div class="method-description">
                             <p><p>Create a DNS record atomically with optional disabled flag.</p></p>                <p><p>In SQL mode, wraps the INSERT in a transaction with deadlock retry.
-In API mode, delegates to addRecordGetId + optional editRecord.</p></p>        
+In API mode, one RRset REPLACE carries the record and the disabled flag.</p></p>        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -1279,6 +1327,11 @@ In API mode, delegates to addRecordGetId + optional editRecord.</p></p>
                 <td>int</td>
                 <td>$disabled</td>
                 <td><p>Disabled flag (0 = enabled, 1 = disabled)</p></td>
+            </tr>
+                    <tr>
+                <td>array|null</td>
+                <td>$comment</td>
+                <td><p>RRset comment as for addRecordGetId()</p></td>
             </tr>
             </table>
 
@@ -1422,51 +1475,8 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_deleteRecordsByDomainId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L368">at line 368</a></div>
-        <code>                    bool
-    <strong>deleteRecordsByDomainId</strong>(int $domainId)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Delete all records for a given domain.</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>int</td>
-                <td>$domainId</td>
-                <td><p>Domain ID</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>bool</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_zoneExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L382">at line 382</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L372">at line 372</a></div>
         <code>                    bool
     <strong>zoneExists</strong>(string $zoneName)
         </code>
@@ -1509,7 +1519,7 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L390">at line 390</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L380">at line 380</a></div>
         <code>                    array|null
     <strong>getZoneById</strong>(int $domainId)
         </code>
@@ -1552,7 +1562,7 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneNameById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L420">at line 420</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L410">at line 410</a></div>
         <code>                    string|null
     <strong>getZoneNameById</strong>(int $domainId)
         </code>
@@ -1595,7 +1605,7 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneIdByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L430">at line 430</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L420">at line 420</a></div>
         <code>                    int|null
     <strong>getZoneIdByName</strong>(string $zoneName)
         </code>
@@ -1638,7 +1648,7 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneTypeById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L442">at line 442</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L432">at line 432</a></div>
         <code>                    string
     <strong>getZoneTypeById</strong>(int $domainId)
         </code>
@@ -1668,7 +1678,7 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
                     <table class="table table-condensed">
         <tr>
             <td>string</td>
-            <td><p>Zone type (NATIVE, MASTER, SLAVE)</p></td>
+            <td><p>One of the ZoneKind values (NATIVE, MASTER, SLAVE, PRODUCER, CONSUMER); NATIVE when unknown</p></td>
         </tr>
     </table>
 
@@ -1681,7 +1691,7 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneMasterById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L452">at line 452</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L442">at line 442</a></div>
         <code>                    string|null
     <strong>getZoneMasterById</strong>(int $domainId)
         </code>
@@ -1692,7 +1702,7 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
             
 
         <div class="method-description">
-                            <p><p>Get zone master by domain ID.</p></p>                        
+                            <p><p>Get zone master by domain ID, for any zone kind.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -1711,7 +1721,7 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
                     <table class="table table-condensed">
         <tr>
             <td>string|null</td>
-            <td><p>Master IP or null</p></td>
+            <td><p>Master IP or null if none is stored</p></td>
         </tr>
     </table>
 
@@ -1724,7 +1734,7 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L466">at line 466</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L456">at line 456</a></div>
         <code>                    array|null
     <strong>getRecordById</strong>(int|string $recordId)
         </code>
@@ -1767,7 +1777,7 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneIdFromRecordId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L491">at line 491</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L481">at line 481</a></div>
         <code>                    int
     <strong>getZoneIdFromRecordId</strong>(int|string $recordId)
         </code>
@@ -1810,7 +1820,7 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneStats">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L500">at line 500</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L490">at line 490</a></div>
         <code>                    array
     <strong>getZoneStats</strong>(bool $withDnssec = true)
         </code>
@@ -1855,7 +1865,7 @@ Record counts are not included - the PowerDNS zone list carries none.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_countZoneRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L505">at line 505</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L495">at line 495</a></div>
         <code>                    int
     <strong>countZoneRecords</strong>(int $domainId)
         </code>
@@ -1898,7 +1908,7 @@ Record counts are not included - the PowerDNS zone list carries none.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneSoaHealth">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L516">at line 516</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L506">at line 506</a></div>
         <code>                    array|null
     <strong>getZoneSoaHealth</strong>(string $zoneName, string $kind)
         </code>
@@ -1950,7 +1960,7 @@ previously-cached state instead of overwriting it with an inferred default.</p><
             </div>
                     <div class="method-item">
                     <h3 id="method_recordExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L550">at line 550</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L540">at line 540</a></div>
         <code>                    bool
     <strong>recordExists</strong>(int $domainId, string $name, string $type, string $content)
         </code>
@@ -2008,7 +2018,7 @@ previously-cached state instead of overwriting it with an inferred default.</p><
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsByZoneId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L561">at line 561</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L551">at line 551</a></div>
         <code>                    array
     <strong>getRecordsByZoneId</strong>(int $domainId, string|null $type = null)
         </code>
@@ -2056,7 +2066,7 @@ previously-cached state instead of overwriting it with an inferred default.</p><
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L580">at line 580</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L570">at line 570</a></div>
         <code>                    array
     <strong>getRecordsByName</strong>(int $domainId, string $name, string|null $type = null)
         </code>
@@ -2108,8 +2118,107 @@ previously-cached state instead of overwriting it with an inferred default.</p><
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_findRecordsByName">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L592">at line 592</a></div>
+        <code>                    array
+    <strong>findRecordsByName</strong>(string $name, string|null $type = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Find the records at one name across every zone, optionally filtered by type.</p></p>                <p><p>Names match case-insensitively. The API backend answers through the PowerDNS
+search endpoint, which caps the candidate set at 100 matches before filtering.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td><p>Record name</p></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$type</td>
+                <td><p>Optional record type filter</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Array of record data (id, domain_id, name, type, content, ttl, prio, disabled)</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findRecordsByContent">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L597">at line 597</a></div>
+        <code>                    array
+    <strong>findRecordsByContent</strong>(string $content, string|null $type = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Find the records whose content equals the given value across every zone,
+optionally filtered by type. Same 100-candidate cap on the API backend as
+findRecordsByName().</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$content</td>
+                <td><p>Record content, exact match</p></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$type</td>
+                <td><p>Optional record type filter</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Array of record data (id, domain_id, name, type, content, ttl, prio, disabled)</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_getSOARecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L602">at line 602</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L624">at line 624</a></div>
         <code>                    string
     <strong>getSOARecord</strong>(int $domainId)
         </code>
@@ -2152,7 +2261,7 @@ previously-cached state instead of overwriting it with an inferred default.</p><
             </div>
                     <div class="method-item">
                     <h3 id="method_getBestMatchingReverseZoneId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L611">at line 611</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L633">at line 633</a></div>
         <code>                    int
     <strong>getBestMatchingReverseZoneId</strong>(string $reverseName)
         </code>
@@ -2195,7 +2304,7 @@ previously-cached state instead of overwriting it with an inferred default.</p><
             </div>
                     <div class="method-item">
                     <h3 id="method_getZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L636">at line 636</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L658">at line 658</a></div>
         <code>                    array
     <strong>getZones</strong>(bool $withDnssec = true)
         </code>
@@ -2239,10 +2348,10 @@ avoid a per-zone lookup and report dnssec as false</p></td>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getZoneByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L663">at line 663</a></div>
-        <code>                    array|null
-    <strong>getZoneByName</strong>(string $zoneName)
+                    <h3 id="method_getZonesByIds">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L685">at line 685</a></div>
+        <code>                    array
+    <strong>getZonesByIds</strong>(array $domainIds)
         </code>
     </h3>
     <div class="details">    
@@ -2251,16 +2360,16 @@ avoid a per-zone lookup and report dnssec as false</p></td>
             
 
         <div class="method-description">
-                            <p><p>Get a single zone by name with its type, master, and DNSSEC status.</p></p>                        
+                            <p><p>Get id, name and type for the given zone ids, sorted by name.</p></p>                <p><p>Unknown ids are skipped.</p></p>        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
-                <td>$zoneName</td>
-                <td><p>Zone name (without trailing dot)</p></td>
+                <td>array</td>
+                <td>$domainIds</td>
+                <td><p>Domain IDs</p></td>
             </tr>
             </table>
 
@@ -2269,8 +2378,74 @@ avoid a per-zone lookup and report dnssec as false</p></td>
 
                     <table class="table table-condensed">
         <tr>
-            <td>array|null</td>
-            <td><p>Zone data array or null if not found</p></td>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_countZones">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L711">at line 711</a></div>
+        <code>                    int
+    <strong>countZones</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Count all zones in the DNS backend.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td><p>Zone count</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_countRecords">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L717">at line 717</a></div>
+        <code>                    int|null
+    <strong>countRecords</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Count all record rows in the DNS backend, ENTs included.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td><p>Record count, or null when the backend has no global count (API)</p></td>
         </tr>
     </table>
 
@@ -2283,7 +2458,7 @@ avoid a per-zone lookup and report dnssec as false</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L696">at line 696</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L727">at line 727</a></div>
         <code>                    array
     <strong>getZoneRecords</strong>(int $domainId, string $zoneName)
         </code>
@@ -2333,7 +2508,7 @@ ENT records (null/empty type) are excluded.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_searchDnsData">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L729">at line 729</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L760">at line 760</a></div>
         <code>                    array
     <strong>searchDnsData</strong>(string $query, string $objectType = &#039;all&#039;, int $max = 100)
         </code>
@@ -2387,52 +2562,8 @@ Poweradmin metadata (ownership, permissions).</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_updateSOASerial">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L797">at line 797</a></div>
-        <code>                    bool
-    <strong>updateSOASerial</strong>(int $domainId)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Update the SOA serial for a zone.</p></p>                <p><p>In API mode this is a no-op since PowerDNS handles serial
-increments automatically via soa_edit_api.</p></p>        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>int</td>
-                <td>$domainId</td>
-                <td><p>Domain ID</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>bool</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_addSupermaster">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L809">at line 809</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L828">at line 828</a></div>
         <code>                    bool
     <strong>addSupermaster</strong>(string $masterIp, string $nsName, string $account)
         </code>
@@ -2485,7 +2616,7 @@ increments automatically via soa_edit_api.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteSupermaster">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L819">at line 819</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L838">at line 838</a></div>
         <code>                    bool
     <strong>deleteSupermaster</strong>(string $masterIp, string $nsName)
         </code>
@@ -2533,7 +2664,7 @@ increments automatically via soa_edit_api.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getSupermasters">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L829">at line 829</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L848">at line 848</a></div>
         <code>                    array
     <strong>getSupermasters</strong>()
         </code>
@@ -2566,7 +2697,7 @@ increments automatically via soa_edit_api.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_updateSupermaster">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L847">at line 847</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L866">at line 866</a></div>
         <code>                    bool
     <strong>updateSupermaster</strong>(string $oldMasterIp, string $oldNsName, string $newMasterIp, string $newNsName, string $account)
         </code>
@@ -2629,7 +2760,7 @@ increments automatically via soa_edit_api.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isApiBackend">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L867">at line 867</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L886">at line 886</a></div>
         <code>                    bool
     <strong>isApiBackend</strong>()
         </code>
@@ -2662,8 +2793,77 @@ updates, show notices about search limitations).</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_supportsLocalWriteTransaction">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L891">at line 891</a></div>
+        <code>                    bool
+    <strong>supportsLocalWriteTransaction</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether backend writes can be wrapped in a transaction on the Poweradmin database.</p></p>                <p><p>True for the SQL backend, where the PowerDNS tables share the connection. False
+for the API backend: it writes over HTTP and then reads the local zones table for
+the new ids, and an open transaction would hide those rows.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_recordIdsAreNumeric">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L896">at line 896</a></div>
+        <code>                    bool
+    <strong>recordIdsAreNumeric</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether record ids are the integer records.id values.</p></p>                <p><p>True for the SQL backend. False for the API backend, whose record ids are
+encoded composite keys (see RecordIdentifier) that do not fit an INT column.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_hasSoaEditApi">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L872">at line 872</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L901">at line 901</a></div>
         <code>                    bool
     <strong>hasSoaEditApi</strong>(int $domainId)
         </code>
@@ -2706,7 +2906,7 @@ updates, show notices about search limitations).</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_setZoneSerialPolicy">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L877">at line 877</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L906">at line 906</a></div>
         <code>                    bool
     <strong>setZoneSerialPolicy</strong>(int $domainId, string $zoneName, array $properties)
         </code>
@@ -2764,7 +2964,7 @@ matching domainmetadata rows.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/962545a" rel="noreferrer" target="_blank">commit 962545a,</a> built 2026-09-15 15:07 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/baccf5b" rel="noreferrer" target="_blank">commit baccf5b,</a> built 2026-09-16 05:18 UTC.</div></div>
     </div>
     </body>
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Poweradmin\Domain\Repository\AppSettingRepositoryInterface | Poweradmin class reference</title>
+    <title>Poweradmin\Domain\Repository\ZoneWriteRepositoryInterface | Poweradmin class reference</title>
 
                 <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Poweradmin_Domain_Repository_AppSettingRepositoryInterface" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+    <body id="class" data-name="class:Poweradmin_Domain_Repository_ZoneWriteRepositoryInterface" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -83,18 +83,18 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">interface</span></li>
-                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Repository.html">Repository</a></li><li class="backslash">\</li><li>AppSettingRepositoryInterface</li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Repository.html">Repository</a></li><li class="backslash">\</li><li>ZoneWriteRepositoryInterface</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>AppSettingRepositoryInterface    
+        <h1>ZoneWriteRepositoryInterface    
             </h1>
     </div>
 
     
     <p>        interface
-    <strong>AppSettingRepositoryInterface</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/AppSettingRepositoryInterface.php">View source</a>)
+    <strong>ZoneWriteRepositoryInterface</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneWriteRepositoryInterface.php">View source</a>)
 </p>
 
         
@@ -103,7 +103,7 @@
         
 
             <div class="description">
-            <p><p>Persistence for admin-managed settings that override config/settings.php.</p></p>                    </div>
+            <p><p>Zone row, comment and metadata writes (plus the metadata read the editor pairs with them); one of the three roles ZoneRepositoryInterface combines.</p></p>                    </div>
             
         
     
@@ -113,55 +113,12 @@
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    array|null
+                    bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_find">find</a>(string $key)
+                    <a href="#method_updateZoneComment">updateZoneComment</a>(int $zoneId, string $comment)
         
-                                            <p><p>Return the stored value + type for the given key, or null when no
-row exists.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_findAll">findAll</a>()
-        
-                                            <p><p>Return every stored setting keyed by setting_key.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_findByPrefix">findByPrefix</a>(string $prefix)
-        
-                                            <p><p>Return every stored setting whose key starts with the given prefix
-(e.g. &quot;interface.&quot;) keyed by setting_key.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_save">save</a>(string $key, string $value, string $type = &#039;string&#039;)
-        
-                                            <p><p>Insert or update the setting. The repository does not validate the
-type/value relationship - that is the service layer's job.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_delete">delete</a>(string $key)
-        
-                                            <p><p>Remove the setting, falling back to ConfigurationManager / caller default.</p></p>                </div>
+                                            <p><p>Update zone comment</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -169,11 +126,39 @@ type/value relationship - that is the service layer's job.</p></p>              
                     bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_isReady">isReady</a>()
+                    <a href="#method_updateZone">updateZone</a>(int $zoneId, array $updates)
         
-                                            <p><p>Whether the backing table is available. False on installations where
-the migration hasn't been applied yet, letting consumers degrade to
-the legacy ConfigurationManager-only path.</p></p>                </div>
+                                            <p><p>Update zone metadata</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_deleteZone">deleteZone</a>(int $zoneId)
+        
+                                            <p><p>Delete a zone by ID</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getDomainMetadata">getDomainMetadata</a>(int $zoneId)
+        
+                                            <p><p>Get raw PowerDNS domain metadata rows for a zone.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_replaceDomainMetadata">replaceDomainMetadata</a>(int $zoneId, array $metadata)
+        
+                                            <p><p>Replace all PowerDNS domain metadata rows for a zone.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -183,228 +168,10 @@ the legacy ConfigurationManager-only path.</p></p>                </div>
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_find">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/AppSettingRepositoryInterface.php#L36">at line 36</a></div>
-        <code>                    array|null
-    <strong>find</strong>(string $key)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Return the stored value + type for the given key, or null when no
-row exists.</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$key</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>array|null</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_findAll">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/AppSettingRepositoryInterface.php#L43">at line 43</a></div>
-        <code>                    array
-    <strong>findAll</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Return every stored setting keyed by setting_key.</p></p>                        
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>array</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_findByPrefix">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/AppSettingRepositoryInterface.php#L51">at line 51</a></div>
-        <code>                    array
-    <strong>findByPrefix</strong>(string $prefix)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Return every stored setting whose key starts with the given prefix
-(e.g. &quot;interface.&quot;) keyed by setting_key.</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$prefix</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>array</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_save">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/AppSettingRepositoryInterface.php#L57">at line 57</a></div>
-        <code>                    void
-    <strong>save</strong>(string $key, string $value, string $type = &#039;string&#039;)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Insert or update the setting. The repository does not validate the
-type/value relationship - that is the service layer's job.</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$key</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>string</td>
-                <td>$value</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>string</td>
-                <td>$type</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_delete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/AppSettingRepositoryInterface.php#L62">at line 62</a></div>
-        <code>                    void
-    <strong>delete</strong>(string $key)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Remove the setting, falling back to ConfigurationManager / caller default.</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$key</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_isReady">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/AppSettingRepositoryInterface.php#L69">at line 69</a></div>
+                    <h3 id="method_updateZoneComment">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneWriteRepositoryInterface.php#L37">at line 37</a></div>
         <code>                    bool
-    <strong>isReady</strong>()
+    <strong>updateZoneComment</strong>(int $zoneId, string $comment)
         </code>
     </h3>
     <div class="details">    
@@ -413,18 +180,213 @@ type/value relationship - that is the service layer's job.</p></p>
             
 
         <div class="method-description">
-                            <p><p>Whether the backing table is available. False on installations where
-the migration hasn't been applied yet, letting consumers degrade to
-the legacy ConfigurationManager-only path.</p></p>                        
+                            <p><p>Update zone comment</p></p>                        
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td><p>The zone ID</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$comment</td>
+                <td><p>The new comment</p></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td></td>
+            <td><p>True if updated successfully</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_updateZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneWriteRepositoryInterface.php#L46">at line 46</a></div>
+        <code>                    bool
+    <strong>updateZone</strong>(int $zoneId, array $updates)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Update zone metadata</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td><p>The zone ID</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$updates</td>
+                <td><p>Array of field =&gt; value pairs to update</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if zone was updated successfully</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_deleteZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneWriteRepositoryInterface.php#L54">at line 54</a></div>
+        <code>                    bool
+    <strong>deleteZone</strong>(int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Delete a zone by ID</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td><p>The zone ID</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if zone was deleted successfully</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getDomainMetadata">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneWriteRepositoryInterface.php#L64">at line 64</a></div>
+        <code>                    array
+    <strong>getDomainMetadata</strong>(int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get raw PowerDNS domain metadata rows for a zone.</p></p>                <p><p>SQL backend only; ApiZoneRepository throws LogicException.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td><p>The zone ID</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Array of metadata rows [['kind' =&gt; string, 'content' =&gt; string], ...]</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_replaceDomainMetadata">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneWriteRepositoryInterface.php#L75">at line 75</a></div>
+        <code>                    bool
+    <strong>replaceDomainMetadata</strong>(int $zoneId, array $metadata)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Replace all PowerDNS domain metadata rows for a zone.</p></p>                <p><p>SQL backend only; ApiZoneRepository throws LogicException.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td><p>The zone ID</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$metadata</td>
+                <td><p>Array of metadata rows [['kind' =&gt; string, 'content' =&gt; string], ...]</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if metadata was replaced successfully</p></td>
         </tr>
     </table>
 
@@ -439,7 +401,7 @@ the legacy ConfigurationManager-only path.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/962545a" rel="noreferrer" target="_blank">commit 962545a,</a> built 2026-09-15 15:07 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/baccf5b" rel="noreferrer" target="_blank">commit baccf5b,</a> built 2026-09-16 05:18 UTC.</div></div>
     </div>
     </body>
 

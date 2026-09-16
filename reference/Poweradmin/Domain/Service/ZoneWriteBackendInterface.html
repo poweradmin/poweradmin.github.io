@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Poweradmin\Infrastructure\Logger\LdapUserEventLogger | Poweradmin class reference</title>
+    <title>Poweradmin\Domain\Service\ZoneWriteBackendInterface | Poweradmin class reference</title>
 
                 <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Poweradmin_Infrastructure_Logger_LdapUserEventLogger" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+    <body id="class" data-name="class:Poweradmin_Domain_Service_ZoneWriteBackendInterface" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -82,19 +82,19 @@
 
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
-                <li><span class="label label-default">class</span></li>
-                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure.html">Infrastructure</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure/Logger.html">Logger</a></li><li class="backslash">\</li><li>LdapUserEventLogger</li>
+                <li><span class="label label-default">interface</span></li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Service.html">Service</a></li><li class="backslash">\</li><li>ZoneWriteBackendInterface</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>LdapUserEventLogger    
+        <h1>ZoneWriteBackendInterface    
             </h1>
     </div>
 
     
-    <p>        class
-    <strong>LdapUserEventLogger</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/LdapUserEventLogger.php">View source</a>)
+    <p>        interface
+    <strong>ZoneWriteBackendInterface</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneWriteBackendInterface.php">View source</a>)
 </p>
 
         
@@ -103,7 +103,7 @@
         
 
             <div class="description">
-            <p><p>Records LDAP login outcomes (success, failure reason, lockout) with the client IP through LegacyLogger.</p></p>                    </div>
+            <p><p>Zone create, delete, kind, primary, account and AXFR-retrieve writes against the DNS backend.</p></p>                    </div>
             
         
     
@@ -113,90 +113,62 @@
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    int|false
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
+                    <a href="#method_createZone">createZone</a>(string $domain, string $type, string $slaveMaster = &#039;&#039;)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>Create a new zone in the DNS backend.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    void
+                    bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_logFailedReason">logFailedReason</a>($reason)
+                    <a href="#method_deleteZone">deleteZone</a>(int $domainId, string $zoneName)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>Delete a zone and all its associated DNS data (records, metadata, cryptokeys).</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    void
+                    bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_logLockout">logLockout</a>()
+                    <a href="#method_updateZoneType">updateZoneType</a>(int $domainId, string $type)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>Change zone type (NATIVE, MASTER, SLAVE, PRODUCER, CONSUMER).</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    void
+                    bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_logSuccessAuth">logSuccessAuth</a>()
+                    <a href="#method_updateZoneMaster">updateZoneMaster</a>(int $domainId, string $masterIp)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>Update slave zone's master IP address.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    void
+                    bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_logFailedAuth">logFailedAuth</a>()
+                    <a href="#method_retrieveZone">retrieveZone</a>(int $domainId)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>Request an immediate AXFR transfer of a secondary (slave) zone from its master.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    void
+                    bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_logFailedDuplicateAuth">logFailedDuplicateAuth</a>()
+                    <a href="#method_updateZoneAccount">updateZoneAccount</a>(int $domainId, string $account)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_logFailedIncorrectPass">logFailedIncorrectPass</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_logFailedUserInactive">logFailedUserInactive</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>Update zone account field.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -206,10 +178,10 @@
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/LdapUserEventLogger.php#L39">at line 39</a></div>
-        <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
+                    <h3 id="method_createZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneWriteBackendInterface.php#L38">at line 38</a></div>
+        <code>                    int|false
+    <strong>createZone</strong>(string $domain, string $type, string $slaveMaster = &#039;&#039;)
         </code>
     </h3>
     <div class="details">    
@@ -218,52 +190,26 @@
             
 
         <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
+                            <p><p>Create a new zone in the DNS backend.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
-                <td>$db</td>
-                <td></td>
+                <td>string</td>
+                <td>$domain</td>
+                <td><p>Zone name (without trailing dot)</p></td>
             </tr>
-            </table>
-
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_logFailedReason">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/LdapUserEventLogger.php#L45">at line 45</a></div>
-        <code>                    void
-    <strong>logFailedReason</strong>($reason)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
                     <tr>
-                <td></td>
-                <td>$reason</td>
-                <td></td>
+                <td>string</td>
+                <td>$type</td>
+                <td><p>Zone type: NATIVE, MASTER, SLAVE, PRODUCER, or CONSUMER</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$slaveMaster</td>
+                <td><p>Master IP for kinds that replicate from a primary (SLAVE, CONSUMER)</p></td>
             </tr>
             </table>
 
@@ -272,7 +218,58 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>void</td>
+            <td>int|false</td>
+            <td><p>The new domain ID, or false on failure</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_deleteZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneWriteBackendInterface.php#L50">at line 50</a></div>
+        <code>                    bool
+    <strong>deleteZone</strong>(int $domainId, string $zoneName)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Delete a zone and all its associated DNS data (records, metadata, cryptokeys).</p></p>                <p><p>Does NOT delete Poweradmin-internal data (zones table, records_zone_templ, etc.)</p>
+<ul>
+<li>those are handled by the caller.</li>
+</ul></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td><p>Domain ID</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$zoneName</td>
+                <td><p>Zone name (needed for API calls)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
             <td></td>
         </tr>
     </table>
@@ -285,10 +282,10 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_logLockout">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/LdapUserEventLogger.php#L53">at line 53</a></div>
-        <code>                    void
-    <strong>logLockout</strong>()
+                    <h3 id="method_updateZoneType">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneWriteBackendInterface.php#L61">at line 61</a></div>
+        <code>                    bool
+    <strong>updateZoneType</strong>(int $domainId, string $type)
         </code>
     </h3>
     <div class="details">    
@@ -297,16 +294,30 @@
             
 
         <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
+                            <p><p>Change zone type (NATIVE, MASTER, SLAVE, PRODUCER, CONSUMER).</p></p>                <p><p>Masters are cleared unless the new kind replicates from a primary.</p></p>        
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td><p>Domain ID</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$type</td>
+                <td><p>New zone type</p></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>void</td>
+            <td>bool</td>
             <td></td>
         </tr>
     </table>
@@ -319,10 +330,10 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_logSuccessAuth">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/LdapUserEventLogger.php#L58">at line 58</a></div>
-        <code>                    void
-    <strong>logSuccessAuth</strong>()
+                    <h3 id="method_updateZoneMaster">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneWriteBackendInterface.php#L70">at line 70</a></div>
+        <code>                    bool
+    <strong>updateZoneMaster</strong>(int $domainId, string $masterIp)
         </code>
     </h3>
     <div class="details">    
@@ -331,16 +342,30 @@
             
 
         <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
+                            <p><p>Update slave zone's master IP address.</p></p>                        
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td><p>Domain ID</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$masterIp</td>
+                <td><p>Master IP address</p></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>void</td>
+            <td>bool</td>
             <td></td>
         </tr>
     </table>
@@ -353,10 +378,10 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_logFailedAuth">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/LdapUserEventLogger.php#L63">at line 63</a></div>
-        <code>                    void
-    <strong>logFailedAuth</strong>()
+                    <h3 id="method_retrieveZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneWriteBackendInterface.php#L81">at line 81</a></div>
+        <code>                    bool
+    <strong>retrieveZone</strong>(int $domainId)
         </code>
     </h3>
     <div class="details">    
@@ -365,16 +390,26 @@
             
 
         <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
+                            <p><p>Request an immediate AXFR transfer of a secondary (slave) zone from its master.</p></p>                <p><p>Only the API backend can trigger this. The SQL backend returns false,
+since PowerDNS pulls secondaries on its own refresh schedule there.</p></p>        
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td><p>Domain ID</p></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>void</td>
+            <td>bool</td>
             <td></td>
         </tr>
     </table>
@@ -387,10 +422,10 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_logFailedDuplicateAuth">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/LdapUserEventLogger.php#L68">at line 68</a></div>
-        <code>                    void
-    <strong>logFailedDuplicateAuth</strong>()
+                    <h3 id="method_updateZoneAccount">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneWriteBackendInterface.php#L90">at line 90</a></div>
+        <code>                    bool
+    <strong>updateZoneAccount</strong>(int $domainId, string $account)
         </code>
     </h3>
     <div class="details">    
@@ -399,84 +434,30 @@
             
 
         <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
+                            <p><p>Update zone account field.</p></p>                        
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td><p>Domain ID</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$account</td>
+                <td><p>Account value</p></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_logFailedIncorrectPass">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/LdapUserEventLogger.php#L73">at line 73</a></div>
-        <code>                    void
-    <strong>logFailedIncorrectPass</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_logFailedUserInactive">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/LdapUserEventLogger.php#L78">at line 78</a></div>
-        <code>                    void
-    <strong>logFailedUserInactive</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
+            <td>bool</td>
             <td></td>
         </tr>
     </table>
@@ -492,7 +473,7 @@
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/962545a" rel="noreferrer" target="_blank">commit 962545a,</a> built 2026-09-15 15:07 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/baccf5b" rel="noreferrer" target="_blank">commit baccf5b,</a> built 2026-09-16 05:18 UTC.</div></div>
     </div>
     </body>
 

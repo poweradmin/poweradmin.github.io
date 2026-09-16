@@ -126,7 +126,7 @@
                     <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_addRecordGetId">addRecordGetId</a>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true)
+                    <a href="#method_addRecordGetId">addRecordGetId</a>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null)
         
                                             <p><p>Add a record and return its ID</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -262,9 +262,9 @@ rectifies from committed rows.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_addRecordGetId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManagerInterface.php#L58">at line 58</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManagerInterface.php#L60">at line 60</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
-    <strong>addRecordGetId</strong>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true)
+    <strong>addRecordGetId</strong>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null)
         </code>
     </h3>
     <div class="details">    
@@ -319,6 +319,12 @@ rectifies from committed rows.</p></p>                </div>
                 <td>$finalizeZone</td>
                 <td><p>Bump the serial and rectify; a batch caller does that once itself</p></td>
             </tr>
+                    <tr>
+                <td>array|null</td>
+                <td>$comment</td>
+                <td><p>RRset comment ['content' =&gt; string, 'account' =&gt; string]; the API
+backend writes it in the same PATCH as the record, SQL ignores it</p></td>
+            </tr>
             </table>
 
             
@@ -340,7 +346,7 @@ rectifies from committed rows.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_editRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManagerInterface.php#L69">at line 69</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManagerInterface.php#L71">at line 71</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>editRecord</strong>(array $record, bool $finalizeZone = true, array|null $comment = null)
         </code>
@@ -395,7 +401,7 @@ store with the record where the backend keeps them together</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_finalizeZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManagerInterface.php#L78">at line 78</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManagerInterface.php#L80">at line 80</a></div>
         <code>                    void
     <strong>finalizeZone</strong>(int $zoneId, bool $bumpSerial = true)
         </code>
@@ -447,7 +453,7 @@ rectifies from committed rows.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManagerInterface.php#L86">at line 86</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManagerInterface.php#L88">at line 88</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>deleteRecord</strong>(int|string $rid, bool $finalizeZone = true)
         </code>
@@ -495,7 +501,7 @@ rectifies from committed rows.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManagerInterface.php#L96">at line 96</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManagerInterface.php#L98">at line 98</a></div>
         <code>        static            string
     <strong>getZoneComment</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, int $zone_id)
         </code>
@@ -543,7 +549,7 @@ rectifies from committed rows.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_editZoneComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManagerInterface.php#L106">at line 106</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManagerInterface.php#L108">at line 108</a></div>
         <code>                    bool
     <strong>editZoneComment</strong>(int $zone_id, string $comment)
         </code>
@@ -593,7 +599,7 @@ rectifies from committed rows.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/962545a" rel="noreferrer" target="_blank">commit 962545a,</a> built 2026-09-15 15:07 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/baccf5b" rel="noreferrer" target="_blank">commit baccf5b,</a> built 2026-09-16 05:18 UTC.</div></div>
     </div>
     </body>
 
