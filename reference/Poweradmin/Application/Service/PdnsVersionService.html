@@ -104,9 +104,10 @@
 
             <div class="description">
             <p><p>Detects and caches the connected PowerDNS server version so admins can see
-it in the UI and so error reports include it without a manual lookup.</p></p>            <p><p>Cached in the session with a 5-minute TTL to avoid an extra API round-trip
-on every request. Detection failures are swallowed - callers must treat the
-absence of a cached value as &quot;version unknown&quot;, not as an error.</p></p>        </div>
+it in the UI and so error reports include it without a manual lookup.</p></p>            <p><p>Cached in the per-user array the caller hands in (the session, in practice)
+with a 5-minute TTL to avoid an extra API round-trip on every request.
+Detection failures are swallowed - callers must treat the absence of a
+cached value as &quot;version unknown&quot;, not as an error.</p></p>        </div>
             
         
             <h2>Constants</h2>    <table class="table table-condensed">
@@ -130,6 +131,16 @@ absence of a cached value as &quot;version unknown&quot;, not as an error.</p></
                     <p></p>
                 </td>
             </tr>
+                    <tr>
+                <td>
+                                                            private
+                                                                                RETRY_SECONDS
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
             </table>
 
     
@@ -142,7 +153,7 @@ absence of a cached value as &quot;version unknown&quot;, not as an error.</p></
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a> $apiClient, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null)
+                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a> $apiClient, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, array $cache = [])
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -160,6 +171,18 @@ absence of a cached value as &quot;version unknown&quot;, not as an error.</p></
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_refreshFromConfig">refreshFromConfig</a>(<a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger, array $cache)
+        
+                                            <p><p>Refresh the cache from the configured PowerDNS API, at most once a minute
+per cache. A no-op when no API is configured; failures leave the previous
+entry in place, so callers never see an error from here.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     array|null
                 </div>
                 <div class="col-md-8">
@@ -173,11 +196,10 @@ absence of a cached value as &quot;version unknown&quot;, not as an error.</p></
                     static&nbsp;array|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getCachedInfo">getCachedInfo</a>()
+                    <a href="#method_getCachedInfo">getCachedInfo</a>(array $cache)
         
-                                            <p><p>Static accessor for the session-cached server info. Useful for callers
-(e.g. BaseController) that don't want to construct the service just to
-read what IndexController already detected.</p></p>                </div>
+                                            <p><p>Static accessor for the cached server info, for callers that don't want
+to construct the service just to read what IndexController already detected.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -188,9 +210,9 @@ read what IndexController already detected.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/PdnsVersionService.php#L46">at line 46</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/PdnsVersionService.php#L55">at line 55</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a> $apiClient, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null)
+    <strong>__construct</strong>(<a href="../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a> $apiClient, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, array $cache = [])
         </code>
     </h3>
     <div class="details">    
@@ -216,6 +238,11 @@ read what IndexController already detected.</p></p>                </div>
                 <td>$logger</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td>array</td>
+                <td>$cache</td>
+                <td><p>Where the server info and retry stamp live, normally $_SESSION</p></td>
+            </tr>
             </table>
 
             
@@ -228,7 +255,7 @@ read what IndexController already detected.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_detect">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/PdnsVersionService.php#L57">at line 57</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/PdnsVersionService.php#L67">at line 67</a></div>
         <code>                    array|null
     <strong>detect</strong>()
         </code>
@@ -260,8 +287,63 @@ read what IndexController already detected.</p></p>                </div>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_refreshFromConfig">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/PdnsVersionService.php#L120">at line 120</a></div>
+        <code>        static            void
+    <strong>refreshFromConfig</strong>(<a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger, array $cache)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Refresh the cache from the configured PowerDNS API, at most once a minute
+per cache. A no-op when no API is configured; failures leave the previous
+entry in place, so callers never see an error from here.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
+                <td>$config</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr></td>
+                <td>$logger</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$cache</td>
+                <td><p>Normally $_SESSION</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_getCached">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/PdnsVersionService.php#L108">at line 108</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/PdnsVersionService.php#L147">at line 147</a></div>
         <code>                    array|null
     <strong>getCached</strong>()
         </code>
@@ -294,9 +376,9 @@ read what IndexController already detected.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getCachedInfo">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/PdnsVersionService.php#L125">at line 125</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/PdnsVersionService.php#L164">at line 164</a></div>
         <code>        static            array|null
-    <strong>getCachedInfo</strong>()
+    <strong>getCachedInfo</strong>(array $cache)
         </code>
     </h3>
     <div class="details">    
@@ -305,14 +387,23 @@ read what IndexController already detected.</p></p>                </div>
             
 
         <div class="method-description">
-                            <p><p>Static accessor for the session-cached server info. Useful for callers
-(e.g. BaseController) that don't want to construct the service just to
-read what IndexController already detected.</p></p>                <p><p>Returns null when the cached entry is older than TTL_SECONDS so that
+                            <p><p>Static accessor for the cached server info, for callers that don't want
+to construct the service just to read what IndexController already detected.</p></p>                <p><p>Returns null when the cached entry is older than TTL_SECONDS so that
 capability-driven UI does not silently follow a stale version after a
 PowerDNS upgrade or downgrade for the rest of the session - callers
 that get null fall through to detect() and refresh the cache.</p></p>        
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$cache</td>
+                <td><p>Normally $_SESSION</p></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
@@ -334,7 +425,7 @@ that get null fall through to detect() and refresh the cache.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/baccf5b" rel="noreferrer" target="_blank">commit baccf5b,</a> built 2026-09-16 05:22 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/d531556" rel="noreferrer" target="_blank">commit d531556,</a> built 2026-09-16 16:57 UTC.</div></div>
     </div>
     </body>
 

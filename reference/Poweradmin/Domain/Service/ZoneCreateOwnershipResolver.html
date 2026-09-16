@@ -118,7 +118,7 @@ JSON body; the web forms hand in the owner and groups they already parsed.</p></
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Domain/Service/ZoneOwnershipModeService.html"><abbr title="Poweradmin\Domain\Service\ZoneOwnershipModeService">ZoneOwnershipModeService</abbr></a> $mode, <a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../Poweradmin/Domain/Repository/UserGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserGroupRepositoryInterface">UserGroupRepositoryInterface</abbr></a> $groups)
+                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Domain/Service/ZoneOwnershipModeService.html"><abbr title="Poweradmin\Domain\Service\ZoneOwnershipModeService">ZoneOwnershipModeService</abbr></a> $mode, <a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../Poweradmin/Domain/Repository/UserGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserGroupRepositoryInterface">UserGroupRepositoryInterface</abbr></a> $groups, <a href="../../../Poweradmin/Domain/Repository/UserRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserRepositoryInterface">UserRepositoryInterface</abbr></a> $users)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -148,6 +148,17 @@ no group exists at all, or the user belongs to none. Null when they can.</p></p>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canAssignOtherOwners">canAssignOtherOwners</a>(int $callerUserId)
+        
+                                            <p><p>Whether the caller may give a new zone to somebody else; the owner pickers
+offer other users only when this holds.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     <a href="../../../Poweradmin/Domain/Service/ZoneOwnershipResolution.html"><abbr title="Poweradmin\Domain\Service\ZoneOwnershipResolution">ZoneOwnershipResolution</abbr></a>
                 </div>
                 <div class="col-md-8">
@@ -155,7 +166,8 @@ no group exists at all, or the user belongs to none. Null when they can.</p></p>
         
                                             <p><p>The rules shared by the API and the web forms: the groups must exist, a
 zone needs at least one owner, giving it to another user needs
-zone_content_edit_others, and non-admins may only pick their own groups.</p></p>                </div>
+zone_content_edit_others and that user must exist, and non-admins may
+only pick their own groups.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -166,9 +178,9 @@ zone_content_edit_others, and non-admins may only pick their own groups.</p></p>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneCreateOwnershipResolver.php#L38">at line 38</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneCreateOwnershipResolver.php#L41">at line 41</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../Poweradmin/Domain/Service/ZoneOwnershipModeService.html"><abbr title="Poweradmin\Domain\Service\ZoneOwnershipModeService">ZoneOwnershipModeService</abbr></a> $mode, <a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../Poweradmin/Domain/Repository/UserGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserGroupRepositoryInterface">UserGroupRepositoryInterface</abbr></a> $groups)
+    <strong>__construct</strong>(<a href="../../../Poweradmin/Domain/Service/ZoneOwnershipModeService.html"><abbr title="Poweradmin\Domain\Service\ZoneOwnershipModeService">ZoneOwnershipModeService</abbr></a> $mode, <a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../Poweradmin/Domain/Repository/UserGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserGroupRepositoryInterface">UserGroupRepositoryInterface</abbr></a> $groups, <a href="../../../Poweradmin/Domain/Repository/UserRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserRepositoryInterface">UserRepositoryInterface</abbr></a> $users)
         </code>
     </h3>
     <div class="details">    
@@ -199,6 +211,11 @@ zone_content_edit_others, and non-admins may only pick their own groups.</p></p>
                 <td>$groups</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Repository/UserRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserRepositoryInterface">UserRepositoryInterface</abbr></a></td>
+                <td>$users</td>
+                <td></td>
+            </tr>
             </table>
 
             
@@ -211,7 +228,7 @@ zone_content_edit_others, and non-admins may only pick their own groups.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_ownerOptionsBlocker">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneCreateOwnershipResolver.php#L49">at line 49</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneCreateOwnershipResolver.php#L57">at line 57</a></div>
         <code>                    string|null
     <strong>ownerOptionsBlocker</strong>(int $callerUserId)
         </code>
@@ -255,7 +272,7 @@ no group exists at all, or the user belongs to none. Null when they can.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_resolve">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneCreateOwnershipResolver.php#L65">at line 65</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneCreateOwnershipResolver.php#L73">at line 73</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneOwnershipResolution.html"><abbr title="Poweradmin\Domain\Service\ZoneOwnershipResolution">ZoneOwnershipResolution</abbr></a>
     <strong>resolve</strong>(array $input, int $callerUserId)
         </code>
@@ -303,8 +320,52 @@ no group exists at all, or the user belongs to none. Null when they can.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_canAssignOtherOwners">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneCreateOwnershipResolver.php#L136">at line 136</a></div>
+        <code>                    bool
+    <strong>canAssignOtherOwners</strong>(int $callerUserId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the caller may give a new zone to somebody else; the owner pickers
+offer other users only when this holds.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$callerUserId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_resolveOwnership">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneCreateOwnershipResolver.php#L131">at line 131</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneCreateOwnershipResolver.php#L149">at line 149</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneOwnershipResolution.html"><abbr title="Poweradmin\Domain\Service\ZoneOwnershipResolution">ZoneOwnershipResolution</abbr></a>
     <strong>resolveOwnership</strong>(int|null $owner, array $groupIds, int $callerUserId)
         </code>
@@ -317,7 +378,8 @@ no group exists at all, or the user belongs to none. Null when they can.</p></p>
         <div class="method-description">
                             <p><p>The rules shared by the API and the web forms: the groups must exist, a
 zone needs at least one owner, giving it to another user needs
-zone_content_edit_others, and non-admins may only pick their own groups.</p></p>                        
+zone_content_edit_others and that user must exist, and non-admins may
+only pick their own groups.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -361,7 +423,7 @@ zone_content_edit_others, and non-admins may only pick their own groups.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/baccf5b" rel="noreferrer" target="_blank">commit baccf5b,</a> built 2026-09-16 05:22 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/d531556" rel="noreferrer" target="_blank">commit d531556,</a> built 2026-09-16 16:57 UTC.</div></div>
     </div>
     </body>
 

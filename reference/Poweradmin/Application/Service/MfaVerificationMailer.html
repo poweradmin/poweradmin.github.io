@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Poweradmin\Domain\Service\AuthenticationService | Poweradmin class reference</title>
+    <title>Poweradmin\Application\Service\MfaVerificationMailer | Poweradmin class reference</title>
 
                 <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Poweradmin_Domain_Service_AuthenticationService" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+    <body id="class" data-name="class:Poweradmin_Application_Service_MfaVerificationMailer" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -83,18 +83,18 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">class</span></li>
-                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Service.html">Service</a></li><li class="backslash">\</li><li>AuthenticationService</li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Application.html">Application</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Application/Service.html">Service</a></li><li class="backslash">\</li><li>MfaVerificationMailer</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>AuthenticationService    
+        <h1>MfaVerificationMailer    
             </h1>
     </div>
 
     
     <p>        class
-    <strong>AuthenticationService</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/AuthenticationService.php">View source</a>)
+    <strong>MfaVerificationMailer</strong>        implements        <a href="../../../Poweradmin/Domain/Service/MfaVerificationMailerInterface.html"><abbr title="Poweradmin\Domain\Service\MfaVerificationMailerInterface">MfaVerificationMailerInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/MfaVerificationMailer.php">View source</a>)
 </p>
 
         
@@ -103,7 +103,7 @@
         
 
             <div class="description">
-            <p><p>Starts or ends a session with a flash message, then redirects to login; API requests get a 401 JSON instead.</p></p>                    </div>
+            <p><p>Renders the MFA verification email through Twig and sends it with MailService.</p></p>                    </div>
             
         
     
@@ -116,7 +116,18 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Infrastructure/Session/SessionService.html"><abbr title="Poweradmin\Infrastructure\Session\SessionService">SessionService</abbr></a> $sessionService, <a href="../../../Poweradmin/Infrastructure/Service/RedirectService.html"><abbr title="Poweradmin\Infrastructure\Service\RedirectService">RedirectService</abbr></a> $redirectService, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a>|null $config = null)
+                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Application/Service/MailService.html"><abbr title="Poweradmin\Application\Service\MailService">MailService</abbr></a> $mailService, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isMailConfigurationValid">isMailConfigurationValid</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -127,29 +138,7 @@
                     void
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_logout">logout</a>(<a href="../../../Poweradmin/Domain/Model/SessionEntity.html"><abbr title="Poweradmin\Domain\Model\SessionEntity">SessionEntity</abbr></a> $sessionEntity)
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_auth">auth</a>(<a href="../../../Poweradmin/Domain/Model/SessionEntity.html"><abbr title="Poweradmin\Domain\Model\SessionEntity">SessionEntity</abbr></a> $sessionEntity)
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    void
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_redirectToIndex">redirectToIndex</a>()
+                    <a href="#method_sendVerificationCode">sendVerificationCode</a>(string $email, string $code, int $expiresAt, string|null $timezone)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -163,9 +152,9 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/AuthenticationService.php#L41">at line 41</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/MfaVerificationMailer.php#L36">at line 36</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../Poweradmin/Infrastructure/Session/SessionService.html"><abbr title="Poweradmin\Infrastructure\Session\SessionService">SessionService</abbr></a> $sessionService, <a href="../../../Poweradmin/Infrastructure/Service/RedirectService.html"><abbr title="Poweradmin\Infrastructure\Service\RedirectService">RedirectService</abbr></a> $redirectService, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a>|null $config = null)
+    <strong>__construct</strong>(<a href="../../../Poweradmin/Application/Service/MailService.html"><abbr title="Poweradmin\Application\Service\MailService">MailService</abbr></a> $mailService, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
         </code>
     </h3>
     <div class="details">    
@@ -182,17 +171,12 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../Poweradmin/Infrastructure/Session/SessionService.html"><abbr title="Poweradmin\Infrastructure\Session\SessionService">SessionService</abbr></a></td>
-                <td>$sessionService</td>
+                <td><a href="../../../Poweradmin/Application/Service/MailService.html"><abbr title="Poweradmin\Application\Service\MailService">MailService</abbr></a></td>
+                <td>$mailService</td>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Infrastructure/Service/RedirectService.html"><abbr title="Poweradmin\Infrastructure\Service\RedirectService">RedirectService</abbr></a></td>
-                <td>$redirectService</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td><a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a>|null</td>
+                <td><a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
                 <td>$config</td>
                 <td></td>
             </tr>
@@ -207,10 +191,44 @@
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_logout">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/AuthenticationService.php#L48">at line 48</a></div>
+                    <h3 id="method_isMailConfigurationValid">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/MfaVerificationMailer.php#L42">at line 42</a></div>
+        <code>                    bool
+    <strong>isMailConfigurationValid</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_sendVerificationCode">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/MfaVerificationMailer.php#L47">at line 47</a></div>
         <code>                    void
-    <strong>logout</strong>(<a href="../../../Poweradmin/Domain/Model/SessionEntity.html"><abbr title="Poweradmin\Domain\Model\SessionEntity">SessionEntity</abbr></a> $sessionEntity)
+    <strong>sendVerificationCode</strong>(string $email, string $code, int $expiresAt, string|null $timezone)
         </code>
     </h3>
     <div class="details">    
@@ -227,90 +245,27 @@
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../Poweradmin/Domain/Model/SessionEntity.html"><abbr title="Poweradmin\Domain\Model\SessionEntity">SessionEntity</abbr></a></td>
-                <td>$sessionEntity</td>
+                <td>string</td>
+                <td>$email</td>
                 <td></td>
             </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_auth">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/AuthenticationService.php#L55">at line 55</a></div>
-        <code>                    void
-    <strong>auth</strong>(<a href="../../../Poweradmin/Domain/Model/SessionEntity.html"><abbr title="Poweradmin\Domain\Model\SessionEntity">SessionEntity</abbr></a> $sessionEntity)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../Poweradmin/Domain/Model/SessionEntity.html"><abbr title="Poweradmin\Domain\Model\SessionEntity">SessionEntity</abbr></a></td>
-                <td>$sessionEntity</td>
+                <td>string</td>
+                <td>$code</td>
                 <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$expiresAt</td>
+                <td><p>Unix timestamp the code stops being accepted</p></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$timezone</td>
+                <td><p>Timezone the expiry is shown in, or the server default</p></td>
             </tr>
             </table>
 
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_redirectToIndex">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/AuthenticationService.php#L91">at line 91</a></div>
-        <code>                    void
-    <strong>redirectToIndex</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -332,7 +287,7 @@
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/baccf5b" rel="noreferrer" target="_blank">commit baccf5b,</a> built 2026-09-16 05:22 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/d531556" rel="noreferrer" target="_blank">commit d531556,</a> built 2026-09-16 16:57 UTC.</div></div>
     </div>
     </body>
 
