@@ -175,6 +175,60 @@ allowing form fields to retain their values after a failed submission.</p></p>  
                                             <p><p>Generate a unique form ID based on the current request</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_rememberAddRecordForm">rememberAddRecordForm</a>(array $values)
+        
+                                            <p><p>Stash the zone editor's inline add-record form before processing, so a
+failed validation can re-display the submitted values.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_rememberAddRecordError">rememberAddRecordError</a>(array $error)
+        
+                                            <p><p>Record why the stashed add-record submission was refused.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_addRecordFormWithError">addRecordFormWithError</a>()
+        
+                                            <p><p>The stashed add-record values merged with their error, or null unless
+both are present. Non-destructive: the stash survives until the add
+succeeds or the zone changes.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_forgetAddRecordForm">forgetAddRecordForm</a>()
+        
+                                            <p><p>Drop the stashed add-record form and its error, after a successful add.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_trackAddRecordZone">trackAddRecordZone</a>(int $zoneId)
+        
+                                            <p><p>Remember which zone the add-record stash belongs to, clearing it when the
+operator moves to a different zone so values never leak across zones.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
             </div>
 
 
@@ -183,7 +237,7 @@ allowing form fields to retain their values after a failed submission.</p></p>  
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_saveFormData">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L43">at line 43</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L45">at line 45</a></div>
         <code>                    void
     <strong>saveFormData</strong>(string $formId, array $data)
         </code>
@@ -231,7 +285,7 @@ allowing form fields to retain their values after a failed submission.</p></p>  
             </div>
                     <div class="method-item">
                     <h3 id="method_getFormData">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L61">at line 61</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L63">at line 63</a></div>
         <code>                    array|null
     <strong>getFormData</strong>(string $formId)
         </code>
@@ -274,7 +328,7 @@ allowing form fields to retain their values after a failed submission.</p></p>  
             </div>
                     <div class="method-item">
                     <h3 id="method_clearFormData">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L90">at line 90</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L92">at line 92</a></div>
         <code>                    void
     <strong>clearFormData</strong>(string $formId)
         </code>
@@ -317,7 +371,7 @@ allowing form fields to retain their values after a failed submission.</p></p>  
             </div>
                     <div class="method-item">
                     <h3 id="method_generateFormId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L122">at line 122</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L124">at line 124</a></div>
         <code>                    string
     <strong>generateFormId</strong>(string $prefix = &#039;&#039;)
         </code>
@@ -358,11 +412,211 @@ allowing form fields to retain their values after a failed submission.</p></p>  
     </div>
 
             </div>
+                    <div class="method-item">
+                    <h3 id="method_rememberAddRecordForm">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L138">at line 138</a></div>
+        <code>                    void
+    <strong>rememberAddRecordForm</strong>(array $values)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Stash the zone editor's inline add-record form before processing, so a
+failed validation can re-display the submitted values.</p></p>                <p><p>These use the same session keys the zone editor always used, so the
+behaviour (and any in-flight sessions) are unchanged.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$values</td>
+                <td><p>The submitted add-record fields</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_rememberAddRecordError">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L148">at line 148</a></div>
+        <code>                    void
+    <strong>rememberAddRecordError</strong>(array $error)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Record why the stashed add-record submission was refused.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$error</td>
+                <td><p>Error flags/message/field for the re-rendered form</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_addRecordFormWithError">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L158">at line 158</a></div>
+        <code>                    array|null
+    <strong>addRecordFormWithError</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The stashed add-record values merged with their error, or null unless
+both are present. Non-destructive: the stash survives until the add
+succeeds or the zone changes.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_forgetAddRecordForm">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L170">at line 170</a></div>
+        <code>                    void
+    <strong>forgetAddRecordForm</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Drop the stashed add-record form and its error, after a successful add.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_trackAddRecordZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Session/FormStateService.php#L180">at line 180</a></div>
+        <code>                    void
+    <strong>trackAddRecordZone</strong>(int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Remember which zone the add-record stash belongs to, clearing it when the
+operator moves to a different zone so values never leak across zones.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
             </div>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/d531556" rel="noreferrer" target="_blank">commit d531556,</a> built 2026-09-16 18:21 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/fcd15cc" rel="noreferrer" target="_blank">commit fcd15cc,</a> built 2026-09-18 19:27 UTC.</div></div>
     </div>
     </body>
 

@@ -1712,6 +1712,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#api-and-cors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API and CORS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#php-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PHP settings
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7701,6 +7723,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#api-and-cors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API and CORS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#php-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PHP settings
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8234,6 +8278,11 @@ empty, that file is used and the variables below are ignored. See
 <td><code>PA_INIT_PDNS_SCHEMA</code></td>
 <td>false</td>
 <td>Load PowerDNS schema into an empty <code>DB_NAME</code> on startup (MySQL/PostgreSQL; skipped when <code>PA_PDNS_DB_NAME</code> is set)</td>
+</tr>
+<tr>
+<td><code>DB_WAIT_TIMEOUT</code></td>
+<td>30</td>
+<td>Seconds to wait for the MySQL/PostgreSQL server before schema initialization is skipped</td>
 </tr>
 </tbody>
 </table>
@@ -8968,9 +9017,58 @@ them are explained in <a href="../../configuration/oidc/">OIDC</a> and <a href="
 </tr>
 </tbody>
 </table>
-<p>The image's <code>HEALTHCHECK</code> requests <code>/</code>, which succeeds even with a dead database. To have
-container status track real readiness, enable <code>PA_HEALTH_ENABLED</code> and override the
-healthcheck to request <code>/api/health</code>. See <a href="../../operations/health-checks/">Health Checks</a>.</p>
+<p>The image's <code>HEALTHCHECK</code> requests <code>/ping</code> when <code>PA_HEALTH_PING_ENABLED=true</code> (so a
+headless container with <code>PA_WEB_ENABLED=false</code> still reports healthy) and <code>/</code> otherwise.
+Both succeed even with a dead database. To have container status track real readiness,
+enable <code>PA_HEALTH_ENABLED</code> and override the healthcheck to request <code>/api/health</code>.
+See <a href="../../operations/health-checks/">Health Checks</a>.</p>
+<h3 id="api-and-cors">API and CORS<a class="headerlink" href="#api-and-cors" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CORS_ALLOW_ORIGIN</code></td>
+<td><code>*</code></td>
+<td><code>Access-Control-Allow-Origin</code> sent on <code>/api/*</code> responses and preflight requests. The web interface never sends CORS headers</td>
+</tr>
+</tbody>
+</table>
+<h3 id="php-settings">PHP settings<a class="headerlink" href="#php-settings" title="Permanent link">¶</a></h3>
+<p>PHP runs on <code>php.ini-production</code> with these overrides:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>memory_limit</code></td>
+<td><code>256M</code></td>
+</tr>
+<tr>
+<td><code>upload_max_filesize</code> / <code>post_max_size</code></td>
+<td><code>16M</code> / <code>20M</code></td>
+</tr>
+<tr>
+<td><code>expose_php</code></td>
+<td><code>Off</code></td>
+</tr>
+<tr>
+<td><code>opcache.validate_timestamps</code></td>
+<td><code>0</code> (code is cached until the container restarts)</td>
+</tr>
+</tbody>
+</table>
+<p>To change any of them, mount an ini file into <code>/usr/local/etc/php/conf.d/</code>; files load in
+name order, so call it <code>zz-custom.ini</code> or later to win.</p>
 <p>Anything not listed on this page is in
 <a href="https://github.com/poweradmin/poweradmin/blob/master/DOCKER.md">DOCKER.md</a>, which
 tracks the code and is tagged with each release.</p>
