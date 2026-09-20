@@ -7127,11 +7127,15 @@ administrators - see a pending count in the <strong>Zones</strong> menu, open th
 before and after of every row with a warning when the zone moved on since filing, and
 approve or reject it with a comment. Approval applies the changes as the reviewer and bumps
 the serial once; the record change log attributes them to the request and its requester.
-Zone deletion can be requested the same way. <code>approval.require_review_for_all</code> sends every
-change through review, editors and administrators included.</p>
+Zone deletion can be requested the same way; an approved deletion keeps a zone file
+snapshot that reviewers can download from the request. The zone lists carry a pending count
+per zone, and a request whose apply failed can be tried again by a reviewer once the cause
+is fixed. <code>approval.require_review_for_all</code> sends every change through review, editors and
+administrators included.</p>
 <p>Four permissions come with it (<code>zone_change_request_own</code>, <code>zone_change_request_others</code>,
 <code>zone_change_approve_own</code>, <code>zone_change_approve_others</code>), none granted by default. Email to
-reviewers and requesters is a separate switch, <code>notifications.change_request_enabled</code>. The
+reviewers and requesters is a separate switch, <code>notifications.change_request_enabled</code>, and
+<code>notifications.change_request_soa_contact</code> also mails the zone's SOA contact. The
 API v2 gains <code>/change-requests</code> endpoints to file, list, approve, reject and cancel, and
 direct record writes to a reviewed zone answer 403 with a pointer to them. Bulk tools,
 zone creation and dynamic DNS updates stay direct in this first version.</p>
@@ -7176,6 +7180,21 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>Zero TTL accepted in the API</td>
+<td>The v2 record create, update, bulk and RRset endpoints accept <code>ttl: 0</code> (do not cache), as the web editor does; only negative values are refused. Integer fields such as <code>ttl</code> and <code>priority</code> reject fractional strings like <code>"0.5"</code> instead of truncating them</td>
+<td><a href="../../api/overview/">API Overview</a></td>
+</tr>
+<tr>
+<td><code>canonical_id</code> in the zone list</td>
+<td><code>GET /zones</code> returns <code>canonical_id</code> next to <code>id</code>, the identifier the other zone endpoints take, ahead of aligning the two</td>
+<td><a href="../../api/endpoints/">API Endpoints</a></td>
+</tr>
+<tr>
+<td>Bulk actions checked before writing</td>
+<td>An unknown <code>action</code> in <code>POST /zones/{id}/records/bulk</code> is refused with 400 before any operation is applied, and the add-record form refuses a blank content or type with a field-specific message</td>
+<td><a href="../../api/endpoints/">API Endpoints</a></td>
+</tr>
 <tr>
 <td>Change requests in the API</td>
 <td><code>POST /zones/{id}/change-requests</code> files a request, <code>GET /change-requests</code> lists them, and <code>/change-requests/{id}/approve</code> and <code>/reject</code> decide; write endpoints on a reviewed zone answer 403</td>

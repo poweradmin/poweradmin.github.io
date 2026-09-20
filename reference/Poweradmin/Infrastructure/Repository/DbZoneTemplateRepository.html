@@ -94,7 +94,7 @@
 
     
     <p>        class
-    <strong>DbZoneTemplateRepository</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php">View source</a>)
+    <strong>DbZoneTemplateRepository</strong>        implements        <a href="../../../Poweradmin/Domain/Repository/ZoneTemplateRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneTemplateRepositoryInterface">ZoneTemplateRepositoryInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php">View source</a>)
 </p>
 
         
@@ -103,9 +103,34 @@
         
 
             <div class="description">
-            <p><p>SQL persistence for zone templates in zone_templ and their records in zone_templ_records.</p></p>                    </div>
+            <p><p>SQL persistence for zone templates in zone_templ and their records in zone_templ_records.</p></p>            <p><p>The zone listings join the PowerDNS tables on SQL backends; on the API backend
+they read the Poweradmin-native zones table only and take zone details from
+the backend provider.</p></p>        </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                            private
+                                                                                DEFAULT_SOA_NAME
+                                    </td>
+                <td class="last">
+                    <p><em><p>Default SOA record stamped into a template that carries none.</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                            private
+                                                                                DEFAULT_SOA_CONTENT
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -116,7 +141,7 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(object $db, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
+                    <a href="#method___construct">__construct</a>(object $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a>|null $config = null, <a href="../../../Poweradmin/Domain/Service/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null $backendProvider = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -144,10 +169,20 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getTemplateNameForZone">getTemplateNameForZone</a>(int|string $zoneId)
+        
+                                            <p><p>Get the template name linked to a zone</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getZoneTemplateRecords">getZoneTemplateRecords</a>(int $templateId)
+                    <a href="#method_getZoneTemplateRecords">getZoneTemplateRecords</a>(int $templateId, int $rowStart = 0, int $rowAmount = Constants::DEFAULT_MAX_ROWS, string $sortBy = &#039;name&#039;)
         
                                             <p><p>Get all records for a zone template</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -157,7 +192,7 @@
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getZoneTemplateRecordById">getZoneTemplateRecordById</a>(int $id)
+                    <a href="#method_getZoneTemplateRecordById">getZoneTemplateRecordById</a>(int $id, int|null $templateId = null)
         
                                             <p><p>Get a single zone template record by ID</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -174,12 +209,72 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findFlaggedDefaultTemplateId">findFlaggedDefaultTemplateId</a>()
+        
+                                            <p><p>ID of the global template flagged is_default, if any</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_globalTemplateExists">globalTemplateExists</a>(int $id)
+        
+                                            <p><p>Whether a global template (owner 0) with this ID exists</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findGlobalTemplateIdsByName">findGlobalTemplateIdsByName</a>(string $name)
+        
+                                            <p><p>Find global templates (owner 0) by name</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_flagDefaultTemplate">flagDefaultTemplate</a>(int $templateId)
+        
+                                            <p><p>Flag one global template as the default, clearing every other global template</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_clearDefaultTemplate">clearDefaultTemplate</a>()
+        
+                                            <p><p>Clear the system-wide default template flag</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     int
                 </div>
                 <div class="col-md-8">
                     <a href="#method_createZoneTemplate">createZoneTemplate</a>(string $name, string $description, int $owner, int $createdBy)
         
                                             <p><p>Create a new zone template with a default SOA record</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_createZoneTemplateWithRecords">createZoneTemplateWithRecords</a>(string $name, string $description, int $owner, int $createdBy, array $records)
+        
+                                            <p><p>Create a zone template together with its records, in one transaction</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -247,6 +342,16 @@
                     bool
                 </div>
                 <div class="col-md-8">
+                    <a href="#method_unlinkZoneFromTemplate">unlinkZoneFromTemplate</a>(int $zoneId)
+        
+                                            <p><p>Unlink a zone from its template</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
                     <a href="#method_zoneTemplateExists">zoneTemplateExists</a>(int $id)
         
                                             <p><p>Check if a zone template exists</p></p>                </div>
@@ -260,6 +365,16 @@
                     <a href="#method_zoneTemplateNameExists">zoneTemplateNameExists</a>(string $name, int|null $excludeId = null)
         
                                             <p><p>Check if a zone template name already exists</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findTemplateIdsByName">findTemplateIdsByName</a>(string $name)
+        
+                                            <p><p>Find every template ID carrying the given name</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -282,6 +397,46 @@
                                             <p><p>Get the owner ID of a zone template</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_listLinkedZoneIds">listLinkedZoneIds</a>(int $templateId, int|null $ownerId)
+        
+                                            <p><p>Zone IDs of the zones linked to a template</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_listLinkedZoneIdPairs">listLinkedZoneIdPairs</a>(int $templateId, int|null $ownerId)
+        
+                                            <p><p>Both ids of every zone linked to a template</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_listLinkedZones">listLinkedZones</a>(int $templateId, int|null $ownerId)
+        
+                                            <p><p>The zones linked to a template with name, type, record count and owner details</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getZonesByIds">getZonesByIds</a>(array $zoneIds)
+        
+                                            <p><p>Name and type of the given zones</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
             </div>
 
 
@@ -290,9 +445,9 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L40">at line 40</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L64">at line 64</a></div>
         <code>                    
-    <strong>__construct</strong>(object $db, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
+    <strong>__construct</strong>(object $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a>|null $config = null, <a href="../../../Poweradmin/Domain/Service/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null $backendProvider = null)
         </code>
     </h3>
     <div class="details">    
@@ -314,8 +469,13 @@
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
+                <td><a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a>|null</td>
                 <td>$config</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Service/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null</td>
+                <td>$backendProvider</td>
                 <td></td>
             </tr>
             </table>
@@ -330,7 +490,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_listZoneTemplates">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L54">at line 54</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L109">at line 109</a></div>
         <code>                    array
     <strong>listZoneTemplates</strong>(int|null $userId, bool $isUeberuser)
         </code>
@@ -350,12 +510,12 @@
                     <tr>
                 <td>int|null</td>
                 <td>$userId</td>
-                <td><p>User ID (null for all)</p></td>
+                <td><p>User ID (null together with $isUeberuser = true lists all)</p></td>
             </tr>
                     <tr>
                 <td>bool</td>
                 <td>$isUeberuser</td>
-                <td><p>Whether user is an ueberuser</p></td>
+                <td><p>Whether the user may see every template</p></td>
             </tr>
             </table>
 
@@ -378,7 +538,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneTemplateDetails">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L90">at line 90</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L145">at line 145</a></div>
         <code>                    array|false
     <strong>getZoneTemplateDetails</strong>(int $id)
         </code>
@@ -420,10 +580,53 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_getTemplateNameForZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L159">at line 159</a></div>
+        <code>                    string
+    <strong>getTemplateNameForZone</strong>(int|string $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the template name linked to a zone</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int|string</td>
+                <td>$zoneId</td>
+                <td><p>Zone ID (zones.id, or the canonical id column on API backends)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>Template name, or an empty string when the zone has no template</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_getZoneTemplateRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L101">at line 101</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L178">at line 178</a></div>
         <code>                    array
-    <strong>getZoneTemplateRecords</strong>(int $templateId)
+    <strong>getZoneTemplateRecords</strong>(int $templateId, int $rowStart = 0, int $rowAmount = Constants::DEFAULT_MAX_ROWS, string $sortBy = &#039;name&#039;)
         </code>
     </h3>
     <div class="details">    
@@ -442,6 +645,21 @@
                 <td>int</td>
                 <td>$templateId</td>
                 <td><p>Zone template ID</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$rowStart</td>
+                <td><p>Starting row</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$rowAmount</td>
+                <td><p>Number of rows</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$sortBy</td>
+                <td><p>Column to sort by</p></td>
             </tr>
             </table>
 
@@ -464,9 +682,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneTemplateRecordById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L112">at line 112</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L216">at line 216</a></div>
         <code>                    array
-    <strong>getZoneTemplateRecordById</strong>(int $id)
+    <strong>getZoneTemplateRecordById</strong>(int $id, int|null $templateId = null)
         </code>
     </h3>
     <div class="details">    
@@ -486,6 +704,12 @@
                 <td>$id</td>
                 <td><p>Record ID</p></td>
             </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$templateId</td>
+                <td><p>Restrict the lookup to this template, so a record
+ID from another template cannot be read</p></td>
+            </tr>
             </table>
 
             
@@ -494,7 +718,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>array</td>
-            <td><p>Record details or empty array</p></td>
+            <td><p>Record details or an empty array</p></td>
         </tr>
     </table>
 
@@ -507,7 +731,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_countZoneTemplateRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L123">at line 123</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L247">at line 247</a></div>
         <code>                    int
     <strong>countZoneTemplateRecords</strong>(int $templateId)
         </code>
@@ -549,8 +773,203 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_findFlaggedDefaultTemplateId">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L260">at line 260</a></div>
+        <code>                    int|null
+    <strong>findFlaggedDefaultTemplateId</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>ID of the global template flagged is_default, if any</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td><p>Template ID or null when no template is flagged</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_globalTemplateExists">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L276">at line 276</a></div>
+        <code>                    bool
+    <strong>globalTemplateExists</strong>(int $id)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether a global template (owner 0) with this ID exists</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$id</td>
+                <td><p>Template ID</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if it exists and is global</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findGlobalTemplateIdsByName">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L290">at line 290</a></div>
+        <code>                    array
+    <strong>findGlobalTemplateIdsByName</strong>(string $name)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Find global templates (owner 0) by name</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td><p>Template name</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Matching template IDs</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_flagDefaultTemplate">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L303">at line 303</a></div>
+        <code>                    void
+    <strong>flagDefaultTemplate</strong>(int $templateId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Flag one global template as the default, clearing every other global template</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$templateId</td>
+                <td><p>Template to flag</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_clearDefaultTemplate">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L319">at line 319</a></div>
+        <code>                    void
+    <strong>clearDefaultTemplate</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Clear the system-wide default template flag</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_createZoneTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L138">at line 138</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L337">at line 337</a></div>
         <code>                    int
     <strong>createZoneTemplate</strong>(string $name, string $description, int $owner, int $createdBy)
         </code>
@@ -616,8 +1035,80 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_createZoneTemplateWithRecords">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L353">at line 353</a></div>
+        <code>                    int
+    <strong>createZoneTemplateWithRecords</strong>(string $name, string $description, int $owner, int $createdBy, array $records)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Create a zone template together with its records, in one transaction</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td><p>Template name</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$description</td>
+                <td><p>Template description</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$owner</td>
+                <td><p>Owner user ID (0 for global)</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$createdBy</td>
+                <td><p>Creator user ID</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$records</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td><p>New template ID</p></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Exception">Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_updateZoneTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L182">at line 182</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L420">at line 420</a></div>
         <code>                    bool
     <strong>updateZoneTemplate</strong>(int $id, string $name, string $description, int|null $owner = null)
         </code>
@@ -652,7 +1143,7 @@
                     <tr>
                 <td>int|null</td>
                 <td>$owner</td>
-                <td><p>New owner (null to keep current)</p></td>
+                <td><p>New owner (null keeps the current one)</p></td>
             </tr>
             </table>
 
@@ -675,7 +1166,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteZoneTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L216">at line 216</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L453">at line 453</a></div>
         <code>                    bool
     <strong>deleteZoneTemplate</strong>(int $id)
         </code>
@@ -727,7 +1218,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteZoneTemplatesOwnedBy">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L249">at line 249</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L486">at line 486</a></div>
         <code>                    void
     <strong>deleteZoneTemplatesOwnedBy</strong>(int $ownerId)
         </code>
@@ -747,7 +1238,7 @@
                     <tr>
                 <td>int</td>
                 <td>$ownerId</td>
-                <td></td>
+                <td><p>Owner user ID</p></td>
             </tr>
             </table>
 
@@ -770,7 +1261,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_addRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L278">at line 278</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L515">at line 515</a></div>
         <code>                    int
     <strong>addRecord</strong>(int $templateId, string $name, string $type, string $content, int $ttl, int $prio)
         </code>
@@ -838,7 +1329,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_updateRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L307">at line 307</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L544">at line 544</a></div>
         <code>                    bool
     <strong>updateRecord</strong>(int $id, string $name, string $type, string $content, int $ttl, int $prio)
         </code>
@@ -906,7 +1397,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L330">at line 330</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L567">at line 567</a></div>
         <code>                    bool
     <strong>deleteRecord</strong>(int $id)
         </code>
@@ -948,8 +1439,51 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_unlinkZoneFromTemplate">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L581">at line 581</a></div>
+        <code>                    bool
+    <strong>unlinkZoneFromTemplate</strong>(int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Unlink a zone from its template</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td><p>Zone ID (zones.domain_id)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True on success</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_zoneTemplateExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L344">at line 344</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L596">at line 596</a></div>
         <code>                    bool
     <strong>zoneTemplateExists</strong>(int $id)
         </code>
@@ -979,7 +1513,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td><p>True if exists</p></td>
+            <td><p>True if it exists</p></td>
         </tr>
     </table>
 
@@ -992,7 +1526,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneTemplateNameExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L356">at line 356</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L611">at line 611</a></div>
         <code>                    bool
     <strong>zoneTemplateNameExists</strong>(string $name, int|null $excludeId = null)
         </code>
@@ -1027,7 +1561,50 @@
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td><p>True if name exists</p></td>
+            <td><p>True if the name exists</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findTemplateIdsByName">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L630">at line 630</a></div>
+        <code>                    array
+    <strong>findTemplateIdsByName</strong>(string $name)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Find every template ID carrying the given name</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td><p>Zone template name</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Matching template IDs</p></td>
         </tr>
     </table>
 
@@ -1040,7 +1617,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_isOwner">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L376">at line 376</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L645">at line 645</a></div>
         <code>                    bool
     <strong>isOwner</strong>(int $templateId, int $userId)
         </code>
@@ -1075,7 +1652,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td><p>True if user is owner</p></td>
+            <td><p>True if the user is the owner</p></td>
         </tr>
     </table>
 
@@ -1088,7 +1665,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getOwner">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L387">at line 387</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L656">at line 656</a></div>
         <code>                    int|null
     <strong>getOwner</strong>(int $templateId)
         </code>
@@ -1118,7 +1695,194 @@
                     <table class="table table-condensed">
         <tr>
             <td>int|null</td>
-            <td><p>Owner ID or null if not found</p></td>
+            <td><p>Owner ID (0 for a global template) or null if not found</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_listLinkedZoneIds">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L672">at line 672</a></div>
+        <code>                    array
+    <strong>listLinkedZoneIds</strong>(int $templateId, int|null $ownerId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Zone IDs of the zones linked to a template</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$templateId</td>
+                <td><p>Zone template ID</p></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$ownerId</td>
+                <td><p>Only zones owned (zones.owner) by this user, or null for all</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Zone IDs (zones.domain_id, or the canonical id on API backends)</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_listLinkedZoneIdPairs">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L728">at line 728</a></div>
+        <code>                    array
+    <strong>listLinkedZoneIdPairs</strong>(int $templateId, int|null $ownerId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Both ids of every zone linked to a template</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$templateId</td>
+                <td><p>Zone template ID</p></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$ownerId</td>
+                <td><p>Only zones owned (zones.owner) by this user, or null for all</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_listLinkedZones">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L773">at line 773</a></div>
+        <code>                    array
+    <strong>listLinkedZones</strong>(int $templateId, int|null $ownerId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The zones linked to a template with name, type, record count and owner details</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$templateId</td>
+                <td><p>Zone template ID</p></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$ownerId</td>
+                <td><p>Only zones owned (zones.owner) by this user, or null for all</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Rows with id, name, type, count_records, owner, comment, owner_name, owner_fullname</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getZonesByIds">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L855">at line 855</a></div>
+        <code>                    array
+    <strong>getZonesByIds</strong>(array $zoneIds)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Name and type of the given zones</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$zoneIds</td>
+                <td><p>Zone IDs (non-empty)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Rows with id, name, type</p></td>
         </tr>
     </table>
 
@@ -1133,7 +1897,7 @@
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/158e83c" rel="noreferrer" target="_blank">commit 158e83c,</a> built 2026-09-20 10:14 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/f3a2a2a" rel="noreferrer" target="_blank">commit f3a2a2a,</a> built 2026-09-20 16:18 UTC.</div></div>
     </div>
     </body>
 

@@ -758,14 +758,36 @@ API route detection and JSON response negotiation.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Application/Presenter/EditZonePresenter.html"><abbr title="Poweradmin\Application\Presenter\EditZonePresenter">EditZonePresenter</abbr></a>    </div>
+                <div class="col-md-6"><p>The zone editor's view model: maps the facts the controller has already
+resolved (zone, permissions, preferences, listing) onto the variables
+edit.html reads. Everything derived for the page - editability flags,
+record locks, the comment conflict, the offered record types - is computed
+here from those inputs alone.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Application/Presenter/OwnerGroupColumnPresenter.html"><abbr title="Poweradmin\Application\Presenter\OwnerGroupColumnPresenter">OwnerGroupColumnPresenter</abbr></a>    </div>
                 <div class="col-md-6"><p>Prepares the zone-list owner and group cells: the first entries stay visible,
 the rest collapse into a &quot;+N more&quot; tooltip label.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Application/Presenter/OwnerOptionsPresenter.html"><abbr title="Poweradmin\Application\Presenter\OwnerOptionsPresenter">OwnerOptionsPresenter</abbr></a>    </div>
+                <div class="col-md-6"><p>Which users a zone-owner picker offers, and which one it shows again after a
+refused submit. Whether the caller may pick other users is decided by the
+permission layer and passed in.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Application/Presenter/PaginationPresenter.html"><abbr title="Poweradmin\Application\Presenter\PaginationPresenter">PaginationPresenter</abbr></a>    </div>
                 <div class="col-md-6"><p>Renders the Bootstrap page-number list for a Pagination object, with ellipses around the current page.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Presenter/RecordLockPresenter.html"><abbr title="Poweradmin\Application\Presenter\RecordLockPresenter">RecordLockPresenter</abbr></a>    </div>
+                <div class="col-md-6"><p>Decorates the zone editor's record rows with the display fields the template
+expects, and with whether each row may be edited.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -799,6 +821,13 @@ names in one place.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Application/Service/AvatarService.html"><abbr title="Poweradmin\Application\Service\AvatarService">AvatarService</abbr></a>    </div>
                 <div class="col-md-6"><p>Resolves a user's avatar URL from an OAuth profile picture or Gravatar, per the interface.avatar_* settings.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/ChangeApprovalContext.html"><abbr title="Poweradmin\Application\Service\ChangeApprovalContext">ChangeApprovalContext</abbr></a>    </div>
+                <div class="col-md-6"><p>Answers what the change-approval feature means for one user: whether it is on,
+how their edits to a zone are handled, which zones they review, and how many
+requests are waiting.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1115,6 +1144,12 @@ an existing zone.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Read access to settings by group and key.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Error/ApiErrorException.html"><abbr title="Poweradmin\Domain\Error\ApiErrorException">ApiErrorException</abbr></a>    </div>
                 <div class="col-md-6"><p>Runtime exception carrying a message, a code and an array of extra details for API error responses.</p></div>
             </div>
@@ -1272,6 +1307,13 @@ who filed it, and how a reviewer decided it.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/RepositoryFactoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RepositoryFactoryInterface">RepositoryFactoryInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Builds the repositories a domain service needs on demand; the Application layer picks
+the SQL or API implementation for the configured backend.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                                             <em><a href="Poweradmin/Domain/Repository/UserGroupMemberRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserGroupMemberRepositoryInterface">UserGroupMemberRepositoryInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Persistence for user group membership.</p></div>
@@ -1332,6 +1374,13 @@ who filed it, and how a reviewer decided it.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/ZoneTemplateRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneTemplateRepositoryInterface">ZoneTemplateRepositoryInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Persistence for zone templates (zone_templ), their records (zone_templ_records)
+and the zone -&gt; template links kept in zones.zone_templ_id.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                                             <em><a href="Poweradmin/Domain/Repository/ZoneWriteRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneWriteRepositoryInterface">ZoneWriteRepositoryInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Zone row, comment and metadata writes (plus the metadata read the editor pairs with them); one of the three roles ZoneRepositoryInterface combines.</p></div>
@@ -1352,6 +1401,12 @@ its code and the HTTP status.</p></div>
                     <a href="Poweradmin/Domain/Service/ApiPermissionService.html"><abbr title="Poweradmin\Domain\Service\ApiPermissionService">ApiPermissionService</abbr></a>    </div>
                 <div class="col-md-6"><p>Permission gate for the public API. A facade over PermissionService so the API
 and the web UI share one oracle; only the group and visible-zone lookups query here.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Service/AuditLoggerInterface.html"><abbr title="Poweradmin\Domain\Service\AuditLoggerInterface">AuditLoggerInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>The audit events domain services record; the Application layer owns the line format and the actor context.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2283,12 +2338,6 @@ notice, verify what PowerDNS reports afterwards, rectify, and audit.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                                            <em><a href="Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a></em>
-                        </div>
-                <div class="col-md-6"><p>Read access to settings by group and key.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a>    </div>
                 <div class="col-md-6"><p>Singleton that layers config/settings.php over config/settings.defaults.php and serves values by group and key.</p></div>
             </div>
@@ -2863,7 +2912,7 @@ pulling it over AXFR, and converting it to a primary once the data lands.</p></d
             </div>
             </div>
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/158e83c" rel="noreferrer" target="_blank">commit 158e83c,</a> built 2026-09-20 10:14 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/f3a2a2a" rel="noreferrer" target="_blank">commit f3a2a2a,</a> built 2026-09-20 16:18 UTC.</div></div>
     </div>
     </body>
 

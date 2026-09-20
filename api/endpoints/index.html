@@ -7384,7 +7384,7 @@ instance for exploration.</p>
 <tr>
 <td><code>GET</code></td>
 <td><code>/zones</code></td>
-<td>List zones</td>
+<td>List zones; each entry carries <code>canonical_id</code>, the identifier the other zone endpoints take</td>
 </tr>
 <tr>
 <td><code>POST</code></td>
@@ -7614,7 +7614,9 @@ zone are routed through review, the record write endpoints below answer <code>40
 <p>When <code>ttl</code> is omitted on a record create call, Poweradmin applies the
 configured default (<code>dns.ttl_reverse</code> for PTR records in reverse zones when
 set, <code>dns.ttl</code> otherwise). See
-<a href="../../configuration/dns-settings/">DNS settings</a> for details.</p>
+<a href="../../configuration/dns-settings/">DNS settings</a> for details. A <code>ttl</code> of <code>0</code>
+is accepted (do not cache); negative values and fractional strings such as
+<code>"0.5"</code> are refused with <code>400</code>.</p>
 <p>Records in <strong>Secondary</strong> and <strong>Consumer</strong> zones are read-only - they replicate
 from a primary. Create, update, delete, and bulk-write calls against such a
 zone return <code>403</code> with a message stating the zone is read-only (rather than a
