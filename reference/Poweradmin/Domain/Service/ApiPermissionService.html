@@ -486,6 +486,104 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getChangeRequestPermissionLevelForZone">getChangeRequestPermissionLevelForZone</a>(int $userId, int $zoneId)
+        
+                                            <p><p>Change request level narrowed to the zone: &quot;all&quot;, &quot;own&quot;, or &quot;none&quot;.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getChangeApprovePermissionLevelForZone">getChangeApprovePermissionLevelForZone</a>(int $userId, int $zoneId)
+        
+                                            <p><p>Change approve level narrowed to the zone: &quot;all&quot;, &quot;own&quot;, or &quot;none&quot;.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getChangeApprovalMode">getChangeApprovalMode</a>(int $userId, int $zoneId)
+        
+                                            <p><p>How the user's zone changes are handled: written directly, filed as a
+change request, or refused. With change approval off this is today's
+edit rule.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canReviewChangeRequests">canReviewChangeRequests</a>(int $userId, int $zoneId)
+        
+                                            <p><p>Whether the user may approve or reject change requests for the zone.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getReviewableZoneIds">getReviewableZoneIds</a>(int $userId)
+        
+                                            <p><p>Zones whose change requests the user may review: null for every zone,
+otherwise the owned zones (or none) that the approve and edit levels cover.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneDeleteRequiresApproval">zoneDeleteRequiresApproval</a>(int $userId, int $zoneId)
+        
+                                            <p><p>Whether a zone deletion has to go through a change request. Deleting
+stays direct for holders of the delete permission unless every change
+is reviewed.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canRequestZoneDelete">canRequestZoneDelete</a>(int $userId, int $zoneId)
+        
+                                            <p><p>Whether the user may file a request to delete the zone: their request
+level covers it, or every change is reviewed and they could delete it.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canRequestZoneRecord">canRequestZoneRecord</a>(int $userId, int $zoneId, string $recordType, string|null $recordName = null, string|null $zoneName = null)
+        
+                                            <p><p>canEditZoneRecord()'s record-type rule for filing a request: SOA/NS/LUA
+need an edit grant above own_as_client or a request level that covers the
+zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getUserOwnedZoneIds">getUserOwnedZoneIds</a>(int $userId)
+        
+                                            <p><p>Zones the user owns directly or through any group.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     array|null
                 </div>
                 <div class="col-md-8">
@@ -502,7 +600,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L49">at line 49</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L51">at line 51</a></div>
         <code>                    
     <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a>|null $permissions = null, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a>|null $config = null)
         </code>
@@ -533,7 +631,8 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
                     <tr>
                 <td><a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a>|null</td>
                 <td>$config</td>
-                <td><p>Required when no PermissionService is given</p></td>
+                <td><p>Required when no PermissionService is given;
+omitted with one, the change approval flags read as off</p></td>
             </tr>
             </table>
 
@@ -547,7 +646,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_permissions">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L61">at line 61</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L64">at line 64</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a>
     <strong>permissions</strong>()
         </code>
@@ -580,7 +679,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_userHasPermission">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L69">at line 69</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L72">at line 72</a></div>
         <code>                    bool
     <strong>userHasPermission</strong>(int $userId, string $permissionName)
         </code>
@@ -628,7 +727,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserGroupIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L79">at line 79</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L82">at line 82</a></div>
         <code>                    array
     <strong>getUserGroupIds</strong>(int $userId)
         </code>
@@ -671,7 +770,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_getExistingGroupIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L96">at line 96</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L99">at line 99</a></div>
         <code>                    array
     <strong>getExistingGroupIds</strong>(array $groupIds)
         </code>
@@ -714,7 +813,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_userOwnsZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L111">at line 111</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L114">at line 114</a></div>
         <code>                    bool
     <strong>userOwnsZone</strong>(int $userId, int $zoneId)
         </code>
@@ -762,7 +861,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canViewZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L116">at line 116</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L119">at line 119</a></div>
         <code>                    bool
     <strong>canViewZone</strong>(int $userId, int $zoneId)
         </code>
@@ -811,7 +910,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_hasZoneContentEditPermission">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L124">at line 124</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L127">at line 127</a></div>
         <code>                    bool
     <strong>hasZoneContentEditPermission</strong>(int $userId, int $zoneId)
         </code>
@@ -859,7 +958,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditZoneContent">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L129">at line 129</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L132">at line 132</a></div>
         <code>                    bool
     <strong>canEditZoneContent</strong>(int $userId, int $zoneId, string|null $zoneType = null)
         </code>
@@ -913,7 +1012,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditZoneRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L134">at line 134</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L137">at line 137</a></div>
         <code>                    bool
     <strong>canEditZoneRecord</strong>(int $userId, int $zoneId, string $recordType, string|null $zoneType = null, string|null $recordName = null, string|null $zoneName = null)
         </code>
@@ -982,7 +1081,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canDeleteZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L139">at line 139</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L142">at line 142</a></div>
         <code>                    bool
     <strong>canDeleteZone</strong>(int $userId, int $zoneId)
         </code>
@@ -1031,7 +1130,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canCreateZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L147">at line 147</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L150">at line 150</a></div>
         <code>                    bool
     <strong>canCreateZone</strong>(int $userId, string $zoneType = &#039;MASTER&#039;)
         </code>
@@ -1079,7 +1178,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canManageDnssec">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L156">at line 156</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L159">at line 159</a></div>
         <code>                    bool
     <strong>canManageDnssec</strong>(int $userId, int $zoneId)
         </code>
@@ -1128,7 +1227,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canManageDnssecForNewZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L164">at line 164</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L167">at line 167</a></div>
         <code>                    bool
     <strong>canManageDnssecForNewZone</strong>(int $userId, int|null $ownerId, array $groupIds = [])
         </code>
@@ -1181,7 +1280,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canViewUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L186">at line 186</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L189">at line 189</a></div>
         <code>                    bool
     <strong>canViewUser</strong>(int $userId, int $targetUserId)
         </code>
@@ -1230,7 +1329,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L191">at line 191</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L194">at line 194</a></div>
         <code>                    bool
     <strong>canEditUser</strong>(int $userId, int $targetUserId)
         </code>
@@ -1279,7 +1378,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditUserPassword">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L209">at line 209</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L212">at line 212</a></div>
         <code>                    bool
     <strong>canEditUserPassword</strong>(int $userId, int $targetUserId)
         </code>
@@ -1328,7 +1427,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canCreateUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L214">at line 214</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L217">at line 217</a></div>
         <code>                    bool
     <strong>canCreateUser</strong>(int $userId)
         </code>
@@ -1372,7 +1471,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canDeleteUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L219">at line 219</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L222">at line 222</a></div>
         <code>                    bool
     <strong>canDeleteUser</strong>(int $userId, int $targetUserId)
         </code>
@@ -1421,7 +1520,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canManageGroups">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L233">at line 233</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L236">at line 236</a></div>
         <code>                    bool
     <strong>canManageGroups</strong>(int $userId)
         </code>
@@ -1465,7 +1564,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditPermissionTemplates">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L238">at line 238</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L241">at line 241</a></div>
         <code>                    bool
     <strong>canEditPermissionTemplates</strong>(int $userId)
         </code>
@@ -1509,7 +1608,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserPermissionTemplateId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L249">at line 249</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L252">at line 252</a></div>
         <code>                    int|null
     <strong>getUserPermissionTemplateId</strong>(int $userId)
         </code>
@@ -1552,7 +1651,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_templateGrantsSuperuser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L260">at line 260</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L263">at line 263</a></div>
         <code>                    bool
     <strong>templateGrantsSuperuser</strong>(int $permTemplId)
         </code>
@@ -1596,7 +1695,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_checkPermissionTemplateAssignment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L265">at line 265</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L268">at line 268</a></div>
         <code>                    string|null
     <strong>checkPermissionTemplateAssignment</strong>(int $userId, int|null $targetUserId, int $permTemplId)
         </code>
@@ -1650,7 +1749,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canListUsers">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L270">at line 270</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L273">at line 273</a></div>
         <code>                    bool
     <strong>canListUsers</strong>(int $userId)
         </code>
@@ -1694,7 +1793,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canCreateZoneTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L275">at line 275</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L278">at line 278</a></div>
         <code>                    bool
     <strong>canCreateZoneTemplate</strong>(int $userId)
         </code>
@@ -1738,7 +1837,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditZoneTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L280">at line 280</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L283">at line 283</a></div>
         <code>                    bool
     <strong>canEditZoneTemplate</strong>(int $userId)
         </code>
@@ -1782,7 +1881,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canWriteTemplateRecordType">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L288">at line 288</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L291">at line 291</a></div>
         <code>                    bool
     <strong>canWriteTemplateRecordType</strong>(int $userId, string $recordType)
         </code>
@@ -1830,7 +1929,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canViewZoneTemplates">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L293">at line 293</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L296">at line 296</a></div>
         <code>                    bool
     <strong>canViewZoneTemplates</strong>(int $userId)
         </code>
@@ -1874,7 +1973,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditZoneMeta">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L304">at line 304</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L307">at line 307</a></div>
         <code>                    bool
     <strong>canEditZoneMeta</strong>(int $userId, int $zoneId)
         </code>
@@ -1923,7 +2022,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canViewZoneMetadata">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L309">at line 309</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L312">at line 312</a></div>
         <code>                    bool
     <strong>canViewZoneMetadata</strong>(int $userId, int $zoneId)
         </code>
@@ -1972,7 +2071,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
             </div>
                     <div class="method-item">
                     <h3 id="method_canViewZoneOwnership">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L314">at line 314</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L317">at line 317</a></div>
         <code>                    bool
     <strong>canViewZoneOwnership</strong>(int $userId, int $zoneId)
         </code>
@@ -2020,8 +2119,453 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getUserVisibleZoneIds">
+                    <h3 id="method_getChangeRequestPermissionLevelForZone">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L325">at line 325</a></div>
+        <code>                    string
+    <strong>getChangeRequestPermissionLevelForZone</strong>(int $userId, int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Change request level narrowed to the zone: &quot;all&quot;, &quot;own&quot;, or &quot;none&quot;.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getChangeApprovePermissionLevelForZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L333">at line 333</a></div>
+        <code>                    string
+    <strong>getChangeApprovePermissionLevelForZone</strong>(int $userId, int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Change approve level narrowed to the zone: &quot;all&quot;, &quot;own&quot;, or &quot;none&quot;.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getChangeApprovalMode">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L345">at line 345</a></div>
+        <code>                    string
+    <strong>getChangeApprovalMode</strong>(int $userId, int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>How the user's zone changes are handled: written directly, filed as a
+change request, or refused. With change approval off this is today's
+edit rule.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>One of the ChangeApprovalPolicy::MODE_* constants</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canReviewChangeRequests">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L359">at line 359</a></div>
+        <code>                    bool
+    <strong>canReviewChangeRequests</strong>(int $userId, int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the user may approve or reject change requests for the zone.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getReviewableZoneIds">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L374">at line 374</a></div>
+        <code>                    array|null
+    <strong>getReviewableZoneIds</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Zones whose change requests the user may review: null for every zone,
+otherwise the owned zones (or none) that the approve and edit levels cover.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_zoneDeleteRequiresApproval">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L393">at line 393</a></div>
+        <code>                    bool
+    <strong>zoneDeleteRequiresApproval</strong>(int $userId, int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether a zone deletion has to go through a change request. Deleting
+stays direct for holders of the delete permission unless every change
+is reviewed.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canRequestZoneDelete">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L404">at line 404</a></div>
+        <code>                    bool
+    <strong>canRequestZoneDelete</strong>(int $userId, int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the user may file a request to delete the zone: their request
+level covers it, or every change is reviewed and they could delete it.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canRequestZoneRecord">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L421">at line 421</a></div>
+        <code>                    bool
+    <strong>canRequestZoneRecord</strong>(int $userId, int $zoneId, string $recordType, string|null $recordName = null, string|null $zoneName = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>canEditZoneRecord()'s record-type rule for filing a request: SOA/NS/LUA
+need an edit grant above own_as_client or a request level that covers the
+zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$recordType</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$recordName</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$zoneName</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getUserOwnedZoneIds">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L442">at line 442</a></div>
+        <code>                    array
+    <strong>getUserOwnedZoneIds</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Zones the user owns directly or through any group.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getUserVisibleZoneIds">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ApiPermissionService.php#L463">at line 463</a></div>
         <code>                    array|null
     <strong>getUserVisibleZoneIds</strong>(int $userId)
         </code>
@@ -2066,7 +2610,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/f3df917" rel="noreferrer" target="_blank">commit f3df917,</a> built 2026-09-20 04:12 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/a443b7a" rel="noreferrer" target="_blank">commit a443b7a,</a> built 2026-09-20 08:28 UTC.</div></div>
     </div>
     </body>
 

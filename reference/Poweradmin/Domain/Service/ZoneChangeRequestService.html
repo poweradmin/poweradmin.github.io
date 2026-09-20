@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Poweradmin\Domain\Service\ZoneChangeRequestService | Poweradmin class reference</title>
+
+                <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../../fonts/doctum-font.css">
+        <script src="../../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../../doctum.js"></script>
+        <script async defer src="../../../js/bootstrap.min.js"></script>
+        <script async defer src="../../../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+    <link rel="stylesheet" type="text/css" href="../../../css/poweradmin.css">
+    <style>
+        @media (min-width: 992px) {
+            .underlined .row > .col-md-6:first-child { width: 30%; }
+            .underlined .row > .col-md-6:last-child { width: 70%; }
+        }
+    </style>
+
+
+    </head>
+
+    <body id="class" data-name="class:Poweradmin_Domain_Service_ZoneChangeRequestService" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">Poweradmin class reference</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                    <li><a href="../../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Service.html">Service</a></li><li class="backslash">\</li><li>ZoneChangeRequestService</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>ZoneChangeRequestService    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>ZoneChangeRequestService</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneChangeRequestService.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>Files zone change requests and applies the reviewer's decision.</p></p>            <p><p>Filing validates the rows the way a direct save would and stores the diff
+without writing to the zone. Approval replays the stored actions through
+RecordManager as the reviewing user, so RecordManager's own permission
+checks still apply. Who may file or review is decided by the caller.</p></p>        </div>
+            
+        
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                                                                                        MAX_PAYLOAD_BYTES
+                                    </td>
+                <td class="last">
+                    <p><em><p>Same ceiling as the change log's snapshot column</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Domain/Repository/ZoneChangeRequestRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneChangeRequestRepositoryInterface">ZoneChangeRequestRepositoryInterface</abbr></a> $requests, <a href="../../../Poweradmin/Domain/Service/ZoneEditService.html"><abbr title="Poweradmin\Domain\Service\ZoneEditService">ZoneEditService</abbr></a> $zoneEdit, <a href="../../../Poweradmin/Domain/Service/DnsRecordValidationServiceInterface.html"><abbr title="Poweradmin\Domain\Service\DnsRecordValidationServiceInterface">DnsRecordValidationServiceInterface</abbr></a> $validator, <a href="../../../Poweradmin/Domain/Repository/RecordRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordRepositoryInterface">RecordRepositoryInterface</abbr></a> $records, <a href="../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains, <a href="../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a> $zones, <a href="../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a> $recordManager, <a href="../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a> $soaRecords, <a href="../../../Poweradmin/Domain/Service/ZoneManagementService.html"><abbr title="Poweradmin\Domain\Service\ZoneManagementService">ZoneManagementService</abbr></a> $zoneManagement, <a href="../../../Poweradmin/Domain/Service/BackendCapabilitiesInterface.html"><abbr title="Poweradmin\Domain\Service\BackendCapabilitiesInterface">BackendCapabilitiesInterface</abbr></a> $backend, <a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Repository/RecordCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordCommentRepositoryInterface">RecordCommentRepositoryInterface</abbr></a>|null $recordComments = null, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $changeset = null, <a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a>|null $permissions = null, <a href="../../../Poweradmin/Domain/Service/ChangeRequestNotifierInterface.html"><abbr title="Poweradmin\Domain\Service\ChangeRequestNotifierInterface">ChangeRequestNotifierInterface</abbr></a>|null $notifier = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_fileRecordEdits">fileRecordEdits</a>(<a href="../../../Poweradmin/Domain/Service/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\ZoneEditSubmission">ZoneEditSubmission</abbr></a> $submission, string|null $comment = null)
+        
+                                            <p><p>Files the rows of an editor submission that differ from the zone, plus the
+zone comment when it changed. Nothing is written to the zone.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_fileRecordAdd">fileRecordAdd</a>(int $zoneId, string $zoneName, array $record, int $userId, string $username, string|null $comment = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_fileRecordDelete">fileRecordDelete</a>(int $zoneId, int|string $recordId, int $userId, string $username, string|null $comment = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_fileZoneDelete">fileZoneDelete</a>(int $zoneId, int $userId, string $username, string|null $comment = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_approve">approve</a>(int $requestId, int $reviewerId, string $reviewerName, string|null $comment = null)
+        
+                                            <p><p>Applies a pending request as the reviewing user. A refused or failed write
+leaves the request in the failed state with the reason in its error field.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_reject">reject</a>(int $requestId, int $reviewerId, string $reviewerName, string|null $comment = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_cancel">cancel</a>(int $requestId, int $userId)
+        
+                                            <p><p>Withdraws the caller's own pending request.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_staleActions">staleActions</a>(<a href="../../../Poweradmin/Domain/Model/ZoneChangeRequest.html"><abbr title="Poweradmin\Domain\Model\ZoneChangeRequest">ZoneChangeRequest</abbr></a> $request)
+        
+                                            <p><p>Indexes of the actions the zone has moved away from: an edited or deleted
+record whose stored row no longer matches the filed &quot;before&quot; state (or is
+gone), and an addition the zone already holds.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_baseSerialMismatch">baseSerialMismatch</a>(<a href="../../../Poweradmin/Domain/Model/ZoneChangeRequest.html"><abbr title="Poweradmin\Domain\Model\ZoneChangeRequest">ZoneChangeRequest</abbr></a> $request)
+        
+                                            <p><p>Whether the zone's SOA serial moved since the request's form was rendered.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneChangeRequestService.php#L68">at line 68</a></div>
+        <code>                    
+    <strong>__construct</strong>(<a href="../../../Poweradmin/Domain/Repository/ZoneChangeRequestRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneChangeRequestRepositoryInterface">ZoneChangeRequestRepositoryInterface</abbr></a> $requests, <a href="../../../Poweradmin/Domain/Service/ZoneEditService.html"><abbr title="Poweradmin\Domain\Service\ZoneEditService">ZoneEditService</abbr></a> $zoneEdit, <a href="../../../Poweradmin/Domain/Service/DnsRecordValidationServiceInterface.html"><abbr title="Poweradmin\Domain\Service\DnsRecordValidationServiceInterface">DnsRecordValidationServiceInterface</abbr></a> $validator, <a href="../../../Poweradmin/Domain/Repository/RecordRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordRepositoryInterface">RecordRepositoryInterface</abbr></a> $records, <a href="../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains, <a href="../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a> $zones, <a href="../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a> $recordManager, <a href="../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a> $soaRecords, <a href="../../../Poweradmin/Domain/Service/ZoneManagementService.html"><abbr title="Poweradmin\Domain\Service\ZoneManagementService">ZoneManagementService</abbr></a> $zoneManagement, <a href="../../../Poweradmin/Domain/Service/BackendCapabilitiesInterface.html"><abbr title="Poweradmin\Domain\Service\BackendCapabilitiesInterface">BackendCapabilitiesInterface</abbr></a> $backend, <a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Repository/RecordCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordCommentRepositoryInterface">RecordCommentRepositoryInterface</abbr></a>|null $recordComments = null, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $changeset = null, <a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a>|null $permissions = null, <a href="../../../Poweradmin/Domain/Service/ChangeRequestNotifierInterface.html"><abbr title="Poweradmin\Domain\Service\ChangeRequestNotifierInterface">ChangeRequestNotifierInterface</abbr></a>|null $notifier = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Repository/ZoneChangeRequestRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneChangeRequestRepositoryInterface">ZoneChangeRequestRepositoryInterface</abbr></a></td>
+                <td>$requests</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Service/ZoneEditService.html"><abbr title="Poweradmin\Domain\Service\ZoneEditService">ZoneEditService</abbr></a></td>
+                <td>$zoneEdit</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Service/DnsRecordValidationServiceInterface.html"><abbr title="Poweradmin\Domain\Service\DnsRecordValidationServiceInterface">DnsRecordValidationServiceInterface</abbr></a></td>
+                <td>$validator</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Repository/RecordRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordRepositoryInterface">RecordRepositoryInterface</abbr></a></td>
+                <td>$records</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a></td>
+                <td>$domains</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a></td>
+                <td>$zones</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a></td>
+                <td>$recordManager</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a></td>
+                <td>$soaRecords</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Service/ZoneManagementService.html"><abbr title="Poweradmin\Domain\Service\ZoneManagementService">ZoneManagementService</abbr></a></td>
+                <td>$zoneManagement</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Service/BackendCapabilitiesInterface.html"><abbr title="Poweradmin\Domain\Service\BackendCapabilitiesInterface">BackendCapabilitiesInterface</abbr></a></td>
+                <td>$backend</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
+                <td>$db</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationInterface.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
+                <td>$config</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Repository/RecordCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordCommentRepositoryInterface">RecordCommentRepositoryInterface</abbr></a>|null</td>
+                <td>$recordComments</td>
+                <td><p>Omit to leave comments of approved additions unstored</p></td>
+            </tr>
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null</td>
+                <td>$changeset</td>
+                <td><p>fn(?int $zoneId, ?string $comment, callable $work): mixed grouping the
+applied writes in the change log; omitted, the work runs ungrouped</p></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a>|null</td>
+                <td>$permissions</td>
+                <td><p>Gates zone deletion on the reviewer's delete permission; omitted, no gate</p></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Service/ChangeRequestNotifierInterface.html"><abbr title="Poweradmin\Domain\Service\ChangeRequestNotifierInterface">ChangeRequestNotifierInterface</abbr></a>|null</td>
+                <td>$notifier</td>
+                <td><p>Told about filed and decided requests; omitted, nobody is</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_fileRecordEdits">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneChangeRequestService.php#L93">at line 93</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+    <strong>fileRecordEdits</strong>(<a href="../../../Poweradmin/Domain/Service/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\ZoneEditSubmission">ZoneEditSubmission</abbr></a> $submission, string|null $comment = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Files the rows of an editor submission that differ from the zone, plus the
+zone comment when it changed. Nothing is written to the zone.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Service/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\ZoneEditSubmission">ZoneEditSubmission</abbr></a></td>
+                <td>$submission</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$comment</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_fileRecordAdd">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneChangeRequestService.php#L152">at line 152</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+    <strong>fileRecordAdd</strong>(int $zoneId, string $zoneName, array $record, int $userId, string $username, string|null $comment = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$zoneName</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$record</td>
+                <td><p>name, type, content, ttl, prio and optionally disabled (0/1) and comment</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$comment</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_fileRecordDelete">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneChangeRequestService.php#L182">at line 182</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+    <strong>fileRecordDelete</strong>(int $zoneId, int|string $recordId, int $userId, string $username, string|null $comment = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int|string</td>
+                <td>$recordId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$comment</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_fileZoneDelete">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneChangeRequestService.php#L206">at line 206</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+    <strong>fileZoneDelete</strong>(int $zoneId, int $userId, string $username, string|null $comment = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$comment</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_approve">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneChangeRequestService.php#L222">at line 222</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+    <strong>approve</strong>(int $requestId, int $reviewerId, string $reviewerName, string|null $comment = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Applies a pending request as the reviewing user. A refused or failed write
+leaves the request in the failed state with the reason in its error field.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$requestId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$reviewerId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$reviewerName</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$comment</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_reject">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneChangeRequestService.php#L247">at line 247</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+    <strong>reject</strong>(int $requestId, int $reviewerId, string $reviewerName, string|null $comment = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$requestId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$reviewerId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$reviewerName</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$comment</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_cancel">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneChangeRequestService.php#L265">at line 265</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a>
+    <strong>cancel</strong>(int $requestId, int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Withdraws the caller's own pending request.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$requestId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestResult.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestResult">ZoneChangeRequestResult</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_staleActions">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneChangeRequestService.php#L290">at line 290</a></div>
+        <code>                    array
+    <strong>staleActions</strong>(<a href="../../../Poweradmin/Domain/Model/ZoneChangeRequest.html"><abbr title="Poweradmin\Domain\Model\ZoneChangeRequest">ZoneChangeRequest</abbr></a> $request)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Indexes of the actions the zone has moved away from: an edited or deleted
+record whose stored row no longer matches the filed &quot;before&quot; state (or is
+gone), and an addition the zone already holds.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Model/ZoneChangeRequest.html"><abbr title="Poweradmin\Domain\Model\ZoneChangeRequest">ZoneChangeRequest</abbr></a></td>
+                <td>$request</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_baseSerialMismatch">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/ZoneChangeRequestService.php#L318">at line 318</a></div>
+        <code>                    bool
+    <strong>baseSerialMismatch</strong>(<a href="../../../Poweradmin/Domain/Model/ZoneChangeRequest.html"><abbr title="Poweradmin\Domain\Model\ZoneChangeRequest">ZoneChangeRequest</abbr></a> $request)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the zone's SOA serial moved since the request's form was rendered.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Model/ZoneChangeRequest.html"><abbr title="Poweradmin\Domain\Model\ZoneChangeRequest">ZoneChangeRequest</abbr></a></td>
+                <td>$request</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/a443b7a" rel="noreferrer" target="_blank">commit a443b7a,</a> built 2026-09-20 08:28 UTC.</div></div>
+    </div>
+    </body>
+
+</html>

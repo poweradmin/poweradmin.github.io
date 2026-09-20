@@ -1002,6 +1002,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#change-approval-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change approval workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#retrieve-a-secondary-zone-from-its-primary" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3332,6 +3343,8 @@
       
         
       
+        
+      
     
     
     
@@ -3608,6 +3621,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../user-guide/change-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Change Requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../user-guide/secondary-zone-import/" class="md-nav__link">
         
   
@@ -3743,10 +3784,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2_13">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2_14">
         
           
-          <label class="md-nav__link" for="__nav_6_2_13" id="__nav_6_2_13_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6_2_14" id="__nav_6_2_14_label" tabindex="0">
             
   
   
@@ -3764,8 +3805,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_2_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_2_13">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_2_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2_14">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4388,6 +4429,8 @@
       
         
       
+        
+      
     
     
     
@@ -4432,6 +4475,34 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../upgrading/v4.6.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v4.6.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -6927,6 +6998,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#change-approval-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change approval workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#retrieve-a-secondary-zone-from-its-primary" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7028,12 +7110,32 @@
 lists what has landed so far and grows until the release is cut. The latest release is
 v4.4.1, and 4.3.x remains the stable line recommended for production.</p>
 </blockquote>
-<p>4.6.0 so far is a release of small operational knobs and a large internal cleanup. Secondary
-zones can be pulled from their primary on demand, an installation can stop bumping the SOA
-serial on saves that change nothing, and every setting from earlier releases can now be set
-from a Docker environment variable. Underneath, the web forms and the API were moved onto
-the same service layer, which closed a number of gaps where the two behaved differently.</p>
+<p>4.6.0 so far brings an opt-in change approval workflow, a handful of operational knobs and
+a large internal cleanup. Zone changes can be routed through a reviewer before they are
+written, secondary zones can be pulled from their primary on demand, an installation can
+stop bumping the SOA serial on saves that change nothing, and every setting from earlier
+releases can now be set from a Docker environment variable. Underneath, the web forms and
+the API were moved onto the same service layer, which closed a number of gaps where the two
+behaved differently.</p>
 <h2 id="highlights">Highlights<a class="headerlink" href="#highlights" title="Permanent link">¶</a></h2>
+<h3 id="change-approval-workflow">Change approval workflow<a class="headerlink" href="#change-approval-workflow" title="Permanent link">¶</a></h3>
+<p>With <code>approval.enabled</code> on, a user who holds a change request permission but cannot edit
+a zone gets the normal editor, and the save button reads <strong>Submit for approval</strong>. The
+changes are stored as a change request with a reason instead of being written. Reviewers -
+users with a change approve permission and the edit permission for the zone, or
+administrators - see a pending count in the <strong>Zones</strong> menu, open the request, read the
+before and after of every row with a warning when the zone moved on since filing, and
+approve or reject it with a comment. Approval applies the changes as the reviewer and bumps
+the serial once; the record change log attributes them to the request and its requester.
+Zone deletion can be requested the same way. <code>approval.require_review_for_all</code> sends every
+change through review, editors and administrators included.</p>
+<p>Four permissions come with it (<code>zone_change_request_own</code>, <code>zone_change_request_others</code>,
+<code>zone_change_approve_own</code>, <code>zone_change_approve_others</code>), none granted by default. Email to
+reviewers and requesters is a separate switch, <code>notifications.change_request_enabled</code>. The
+API v2 gains <code>/change-requests</code> endpoints to file, list, approve, reject and cancel, and
+direct record writes to a reviewed zone answer 403 with a pointer to them. Bulk tools,
+zone creation and dynamic DNS updates stay direct in this first version.</p>
+<p>See <a href="../../user-guide/change-requests/">Change Requests</a>.</p>
 <h3 id="retrieve-a-secondary-zone-from-its-primary">Retrieve a secondary zone from its primary<a class="headerlink" href="#retrieve-a-secondary-zone-from-its-primary" title="Permanent link">¶</a></h3>
 <p>The edit page of a Secondary zone offers <strong>Retrieve from primary</strong> next to the primary IP.
 It asks PowerDNS to transfer the zone right away instead of waiting for the next SOA
@@ -7074,6 +7176,11 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>Change requests in the API</td>
+<td><code>POST /zones/{id}/change-requests</code> files a request, <code>GET /change-requests</code> lists them, and <code>/change-requests/{id}/approve</code> and <code>/reject</code> decide; write endpoints on a reviewed zone answer 403</td>
+<td><a href="../../user-guide/change-requests/#api-v2">Change Requests</a></td>
+</tr>
 <tr>
 <td>Zone type change needs the target grant</td>
 <td>Converting a zone into another kind requires the same permission as creating one of that kind: <code>zone_slave_add</code> for Secondary and Consumer, <code>zone_master_add</code> for the rest</td>

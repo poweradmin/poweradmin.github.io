@@ -194,6 +194,26 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_renderChangeRequestFiledEmail">renderChangeRequestFiledEmail</a>(string $zoneName, int $requestId, string $recipientName, string $requesterName, string $kind, string $comment, string $filedAt, string|null $requestUrl)
+        
+                                            <p><p>Render the &quot;change request filed&quot; email sent to each reviewer of a zone</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_renderChangeRequestDecidedEmail">renderChangeRequestDecidedEmail</a>(string $zoneName, int $requestId, string $recipientName, string $status, string $reviewerName, string $reviewComment, string $decidedAt, string|null $requestUrl)
+        
+                                            <p><p>Render the &quot;change request decided&quot; email sent to the requester</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     bool
                 </div>
                 <div class="col-md-8">
@@ -751,8 +771,198 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_renderChangeRequestFiledEmail">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/EmailTemplateService.php#L307">at line 307</a></div>
+        <code>                    array
+    <strong>renderChangeRequestFiledEmail</strong>(string $zoneName, int $requestId, string $recipientName, string $requesterName, string $kind, string $comment, string $filedAt, string|null $requestUrl)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Render the &quot;change request filed&quot; email sent to each reviewer of a zone</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$zoneName</td>
+                <td><p>Zone the request targets</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$requestId</td>
+                <td><p>Change request ID</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$recipientName</td>
+                <td><p>Reviewer's full name or username</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$requesterName</td>
+                <td><p>Name of the user who filed the request</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$kind</td>
+                <td><p>'records' or 'zone_delete'</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$comment</td>
+                <td><p>Requester's comment, may be empty</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$filedAt</td>
+                <td><p>Timestamp of when the request was filed</p></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$requestUrl</td>
+                <td><p>URL of the review page, or null to omit the link</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>['html' =&gt; string, 'text' =&gt; string, 'subject' =&gt; string]</p></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Twig\Error\LoaderError">LoaderError</abbr></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Twig\Error\RuntimeError">RuntimeError</abbr></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Twig\Error\SyntaxError">SyntaxError</abbr></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_renderChangeRequestDecidedEmail">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/EmailTemplateService.php#L351">at line 351</a></div>
+        <code>                    array
+    <strong>renderChangeRequestDecidedEmail</strong>(string $zoneName, int $requestId, string $recipientName, string $status, string $reviewerName, string $reviewComment, string $decidedAt, string|null $requestUrl)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Render the &quot;change request decided&quot; email sent to the requester</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$zoneName</td>
+                <td><p>Zone the request targets</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$requestId</td>
+                <td><p>Change request ID</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$recipientName</td>
+                <td><p>Requester's full name or username</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$status</td>
+                <td><p>'approved', 'rejected' or 'failed'</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$reviewerName</td>
+                <td><p>Name of the reviewer, may be empty</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$reviewComment</td>
+                <td><p>Reviewer's comment, may be empty</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$decidedAt</td>
+                <td><p>Timestamp of the decision</p></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$requestUrl</td>
+                <td><p>URL of the review page, or null to omit the link</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>['html' =&gt; string, 'text' =&gt; string, 'subject' =&gt; string]</p></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Twig\Error\LoaderError">LoaderError</abbr></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Twig\Error\RuntimeError">RuntimeError</abbr></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Twig\Error\SyntaxError">SyntaxError</abbr></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_hasCustomTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/EmailTemplateService.php#L297">at line 297</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/EmailTemplateService.php#L406">at line 406</a></div>
         <code>                    bool
     <strong>hasCustomTemplate</strong>(string $template)
         </code>
@@ -795,7 +1005,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getTemplatePaths">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/EmailTemplateService.php#L307">at line 307</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/EmailTemplateService.php#L416">at line 416</a></div>
         <code>                    array
     <strong>getTemplatePaths</strong>()
         </code>
@@ -830,7 +1040,7 @@
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/f3df917" rel="noreferrer" target="_blank">commit f3df917,</a> built 2026-09-20 04:12 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/a443b7a" rel="noreferrer" target="_blank">commit a443b7a,</a> built 2026-09-20 08:28 UTC.</div></div>
     </div>
     </body>
 
