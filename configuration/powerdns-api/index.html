@@ -7460,7 +7460,7 @@ RRset can be fetched instead of a whole zone. See
 <h3 id="migrating-from-sql-to-api-backend">Migrating from SQL to API Backend<a class="headerlink" href="#migrating-from-sql-to-api-backend" title="Permanent link">¶</a></h3>
 <ol>
 <li>Ensure the PowerDNS API is enabled and accessible</li>
-<li>Run the v4.3.0 database migration (adds required columns to <code>zones</code> table)</li>
+<li>Run the v4.3.0 database migration (adds required columns to <code>zones</code> table). On MySQL/MariaDB with <code>pdns_db_name</code>, check afterwards that <code>SELECT COUNT(*) FROM zones WHERE zone_name IS NULL</code> returns 0; if not, the backfill was skipped and the <a href="../../upgrading/v4.3.0/#step-3-run-database-updates">4.3.0 upgrade guide</a> shows how to run it with the qualified table name</li>
 <li>Add <code>pdns_api.url</code> and <code>pdns_api.key</code> to <code>config/settings.php</code> and verify the API is reachable (see Testing Connection above)</li>
 <li>Change <code>dns.backend</code> from <code>sql</code> to <code>api</code></li>
 <li>Load any page - the zone sync service automatically populates cached zone metadata</li>
