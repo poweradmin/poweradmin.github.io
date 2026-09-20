@@ -215,10 +215,31 @@ never prefixed and is shared by the SQL and API backends.</p></p>               
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_storeSnapshot">storeSnapshot</a>(int $id, string $snapshot)
+        
+                                            <p><p>Keeps a copy of the zone (a BIND zone file) taken before an approved deletion.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_countPendingByZone">countPendingByZone</a>(array $zoneIds, array|null $reviewableZoneIds, int $requesterId)
+        
+                                            <p><p>Pending requests per zone, for the zones that have any, counting only the
+requests the user may list: those in the zones they review or their own.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_markReviewed">markReviewed</a>(int $id, string $status, int $reviewerId, string $reviewerName, string|null $comment)
+                    <a href="#method_markReviewed">markReviewed</a>(int $id, string $status, int $reviewerId, string $reviewerName, string|null $comment, array $fromStatuses = [ZoneChangeRequest::STATUS_PENDING])
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -667,10 +688,112 @@ never prefixed and is shared by the SQL and API backends.</p></p>               
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_markReviewed">
+                    <h3 id="method_storeSnapshot">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L117">at line 117</a></div>
+        <code>                    void
+    <strong>storeSnapshot</strong>(int $id, string $snapshot)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Keeps a copy of the zone (a BIND zone file) taken before an approved deletion.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$snapshot</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_countPendingByZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L125">at line 125</a></div>
+        <code>                    array
+    <strong>countPendingByZone</strong>(array $zoneIds, array|null $reviewableZoneIds, int $requesterId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Pending requests per zone, for the zones that have any, counting only the
+requests the user may list: those in the zones they review or their own.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$zoneIds</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array|null</td>
+                <td>$reviewableZoneIds</td>
+                <td><p>null for every zone</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$requesterId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>zone id =&gt; pending count</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_markReviewed">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L151">at line 151</a></div>
         <code>                    bool
-    <strong>markReviewed</strong>(int $id, string $status, int $reviewerId, string $reviewerName, string|null $comment)
+    <strong>markReviewed</strong>(int $id, string $status, int $reviewerId, string $reviewerName, string|null $comment, array $fromStatuses = [ZoneChangeRequest::STATUS_PENDING])
         </code>
     </h3>
     <div class="details">    
@@ -711,6 +834,11 @@ never prefixed and is shared by the SQL and API backends.</p></p>               
                 <td>$comment</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td>array</td>
+                <td>$fromStatuses</td>
+                <td><p>The states the request may be in for the decision to take</p></td>
+            </tr>
             </table>
 
             
@@ -719,7 +847,7 @@ never prefixed and is shared by the SQL and API backends.</p></p>               
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td><p>False when the request was no longer pending, so nothing changed</p></td>
+            <td><p>False when the request was in none of them, so nothing changed</p></td>
         </tr>
     </table>
 
@@ -732,7 +860,7 @@ never prefixed and is shared by the SQL and API backends.</p></p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_markApplied">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L137">at line 137</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L177">at line 177</a></div>
         <code>                    void
     <strong>markApplied</strong>(int $id)
         </code>
@@ -776,7 +904,7 @@ never prefixed and is shared by the SQL and API backends.</p></p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_markFailed">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L147">at line 147</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L187">at line 187</a></div>
         <code>                    void
     <strong>markFailed</strong>(int $id, string $error)
         </code>
@@ -825,7 +953,7 @@ never prefixed and is shared by the SQL and API backends.</p></p>               
             </div>
                     <div class="method-item">
                     <h3 id="method_cancel">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L156">at line 156</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L196">at line 196</a></div>
         <code>                    bool
     <strong>cancel</strong>(int $id)
         </code>
@@ -871,7 +999,7 @@ never prefixed and is shared by the SQL and API backends.</p></p>               
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/a443b7a" rel="noreferrer" target="_blank">commit a443b7a,</a> built 2026-09-20 08:28 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/158e83c" rel="noreferrer" target="_blank">commit 158e83c,</a> built 2026-09-20 10:14 UTC.</div></div>
     </div>
     </body>
 

@@ -7602,6 +7602,12 @@ request permission for the zone but not the delete permission, or when
 <code>require_review_for_all</code> is on. The button reads <strong>Request deletion</strong>, the page carries the
 same reason field, and the zone stays until a reviewer approves. Approving deletes the whole
 zone with all of its records.</p>
+<p>Before the zone is deleted, a copy of it is stored with the request as a BIND zone file.
+The review page of the approved request offers <strong>Download zone file taken before
+deletion</strong>, and the API returns it in the <code>snapshot</code> field of the request. Re-import it
+through the zone import tool to bring the zone back. The copy is visible to the requester,
+to reviewers and to users who may view the zone, and is skipped when it exceeds 60000
+bytes.</p>
 <p>Deleting several zones at once from the zone list stays direct-only.</p>
 <h3 id="following-your-own-requests">Following your own requests<a class="headerlink" href="#following-your-own-requests" title="Permanent link">¶</a></h3>
 <p>The edit page shows a <strong>Pending change requests</strong> card to everyone who can edit or request
@@ -7610,6 +7616,8 @@ request. A requester can open a request from there and <strong>Cancel request</s
 pending. Cancelling is limited to the person who filed it.</p>
 <p>The <strong>Change requests</strong> page under the <strong>Zones</strong> menu lists your own requests when you
 hold a request permission but no review scope, with a status filter.</p>
+<p>The zone lists show a count next to each zone that has pending requests you may list,
+linking to the requests page filtered to that zone.</p>
 <h2 id="reviewing">Reviewing<a class="headerlink" href="#reviewing" title="Permanent link">¶</a></h2>
 <p>The <strong>Change requests</strong> entry appears in the <strong>Zones</strong> menu for everyone who holds one of
 the four permissions, and for administrators. The entry carries a badge with the number of
@@ -7652,8 +7660,13 @@ delete the zone, or when the backend reports an error.</p>
 <p>On the SQL backend the actions of a records request are applied in one transaction, so a
 failure leaves the zone untouched and the error says "Nothing was applied." On the PowerDNS
 API backend the actions land one at a time, and the error names the actions that had
-already been applied before the failure. A failed request is not retried; the requester
-files a new one.</p>
+already been applied before the failure.</p>
+<p>Once the cause is fixed, a reviewer opens the failed request and presses <strong>Try again</strong>,
+which applies it once more. Actions that already landed in full are skipped: an addition
+whose record exists with the requested name, type, content, TTL, priority and disabled
+flag, an edit whose record already holds the requested state, and a deletion whose record
+is gone. The API does the same through the approve endpoint. Rejecting or cancelling a
+failed request is not possible.</p>
 <h2 id="notifications">Notifications<a class="headerlink" href="#notifications" title="Permanent link">¶</a></h2>
 <p>Mail is off by default and needs both switches:</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="x">return [</span>
@@ -7680,7 +7693,7 @@ warning is logged.</p>
 <tbody>
 <tr>
 <td>Request filed</td>
-<td>Every active user who may review the zone (approve level plus edit permission, administrators included) and has an email address. The requester is skipped</td>
+<td>Every active user who may review the zone (approve level plus edit permission, administrators included) and has an email address. The requester is skipped. With <code>notifications.change_request_soa_contact</code> on, the mailbox from the zone's SOA record as well</td>
 <td><code>Change Request #N Filed: example.com</code></td>
 </tr>
 <tr>
@@ -7690,8 +7703,14 @@ warning is logged.</p>
 </tr>
 </tbody>
 </table>
-<p>A cancelled request sends no mail. The messages link to the review page, so set
-<code>interface.application_url</code> for the link to be right. A mail failure never undoes the
+<p>A cancelled request sends no mail. The filed message carries the requester's address as
+<code>Reply-To</code>, so a reviewer can answer them directly. The messages link to the review page, so
+set <code>interface.application_url</code> for the link to be right.</p>
+<p>The SOA contact is derived from the RNAME field of the SOA record: the first label becomes
+the mailbox, an escaped dot in it stays a dot, and the rest becomes the domain, so
+<code>hostmaster.example.com.</code> is mailed as <code>hostmaster@example.com</code>. It is off by default
+(<code>PA_NOTIFICATION_CHANGE_REQUEST_SOA_CONTACT</code> in Docker) because that mailbox may belong to
+someone outside the installation. A mail failure never undoes the
 request or the decision; it is logged and the workflow continues.</p>
 <p>Templates are <code>templates/emails/change-request-filed.*.twig</code> and
 <code>change-request-decided.*.twig</code>; see <a href="../../configuration/mail/">Mail Configuration</a>.</p>
@@ -7891,11 +7910,10 @@ keep <code>require_review_for_all</code> off for installations that rely on DDNS
 <li>A request carries the record itself only: the "Add PTR", "Add A/AAAA" and "Update PTR"
   companion options are not offered in request mode. File the reverse record separately.</li>
 <li>Zone creation is not reviewed.</li>
-<li>Deleting several zones at once from the zone list is not reviewed.</li>
+<li>Deleting several zones at once from the zone list is not reviewed and keeps no snapshot.</li>
 <li>Self-approval is allowed; there is no rule that the reviewer must differ from the
   requester.</li>
 <li>Stale requests warn but can still be approved.</li>
-<li>A failed request cannot be retried; file a new one.</li>
 <li>Requests are kept indefinitely. Prune the <code>zone_change_requests</code> table on your own
   schedule.</li>
 </ul>
