@@ -94,7 +94,7 @@
 
     
     <p>        class
-    <strong>DbRecordCommentRepository</strong>        implements        <a href="../../../Poweradmin/Domain/Repository/RecordCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordCommentRepositoryInterface">RecordCommentRepositoryInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php">View source</a>)
+    <strong>DbRecordCommentRepository</strong>        implements        <a href="../../../Poweradmin/Domain/Repository/RecordCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordCommentRepositoryInterface">RecordCommentRepositoryInterface</abbr></a>, <a href="../../../Poweradmin/Domain/Repository/RecordLinkedCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLinkedCommentRepositoryInterface">RecordLinkedCommentRepositoryInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php">View source</a>)
 </p>
 
         
@@ -116,7 +116,7 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $connection, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a> $config, <a href="../../../Poweradmin/Domain/Service/BackendCapabilitiesInterface.html"><abbr title="Poweradmin\Domain\Service\BackendCapabilitiesInterface">BackendCapabilitiesInterface</abbr></a>|null $backendProvider = null)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $connection, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Port/BackendCapabilitiesInterface.html"><abbr title="Poweradmin\Domain\Port\BackendCapabilitiesInterface">BackendCapabilitiesInterface</abbr></a>|null $backendProvider = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -189,7 +189,7 @@
                 <div class="col-md-8">
                     <a href="#method_findByRecordId">findByRecordId</a>(int|string $recordId)
         
-                                            <p><p>Find a comment linked to a specific record ID.</p></p>                </div>
+                                            <p><p>Find the comment linked to a record.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -199,7 +199,7 @@
                 <div class="col-md-8">
                     <a href="#method_deleteByRecordId">deleteByRecordId</a>(int|string $recordId)
         
-                                            <p><p>Delete the comment linked to a specific record ID.</p></p>                </div>
+                                            <p><p>Delete the comment linked to a record, and the link.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -251,9 +251,9 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L44">at line 44</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L45">at line 45</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $connection, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a> $config, <a href="../../../Poweradmin/Domain/Service/BackendCapabilitiesInterface.html"><abbr title="Poweradmin\Domain\Service\BackendCapabilitiesInterface">BackendCapabilitiesInterface</abbr></a>|null $backendProvider = null)
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $connection, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Port/BackendCapabilitiesInterface.html"><abbr title="Poweradmin\Domain\Port\BackendCapabilitiesInterface">BackendCapabilitiesInterface</abbr></a>|null $backendProvider = null)
         </code>
     </h3>
     <div class="details">    
@@ -275,12 +275,12 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a></td>
+                <td><a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
                 <td>$config</td>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Domain/Service/BackendCapabilitiesInterface.html"><abbr title="Poweradmin\Domain\Service\BackendCapabilitiesInterface">BackendCapabilitiesInterface</abbr></a>|null</td>
+                <td><a href="../../../Poweradmin/Domain/Port/BackendCapabilitiesInterface.html"><abbr title="Poweradmin\Domain\Port\BackendCapabilitiesInterface">BackendCapabilitiesInterface</abbr></a>|null</td>
                 <td>$backendProvider</td>
                 <td></td>
             </tr>
@@ -296,7 +296,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_add">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L58">at line 58</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L59">at line 59</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a>
     <strong>add</strong>(<a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a> $comment)
         </code>
@@ -339,7 +339,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_delete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L87">at line 87</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L88">at line 88</a></div>
         <code>                    bool
     <strong>delete</strong>(int $domainId, string $name, string $type)
         </code>
@@ -392,7 +392,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteLegacyComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L102">at line 102</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L103">at line 103</a></div>
         <code>                    bool
     <strong>deleteLegacyComment</strong>(int $domainId, string $name, string $type)
         </code>
@@ -445,7 +445,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteByDomainId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L117">at line 117</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L118">at line 118</a></div>
         <code>                    void
     <strong>deleteByDomainId</strong>(int $domainId)
         </code>
@@ -488,7 +488,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_find">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L133">at line 133</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L134">at line 134</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a>|null
     <strong>find</strong>(int $domainId, string $name, string $type)
         </code>
@@ -541,7 +541,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_update">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L152">at line 152</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L153">at line 153</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a>|null
     <strong>update</strong>(int $domainId, string $oldName, string $oldType, <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a> $comment)
         </code>
@@ -599,7 +599,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_findByRecordId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L188">at line 188</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L189">at line 189</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a>|null
     <strong>findByRecordId</strong>(int|string $recordId)
         </code>
@@ -610,7 +610,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             
 
         <div class="method-description">
-                            <p><p>Find a comment linked to a specific record ID.</p></p>                        
+                            <p><p>Find the comment linked to a record.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -642,7 +642,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteByRecordId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L202">at line 202</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L203">at line 203</a></div>
         <code>                    bool
     <strong>deleteByRecordId</strong>(int|string $recordId)
         </code>
@@ -653,7 +653,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             
 
         <div class="method-description">
-                            <p><p>Delete the comment linked to a specific record ID.</p></p>                        
+                            <p><p>Delete the comment linked to a record, and the link.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -685,7 +685,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_linkRecordToComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L227">at line 227</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L228">at line 228</a></div>
         <code>                    bool
     <strong>linkRecordToComment</strong>(int|string $recordId, int $commentId)
         </code>
@@ -733,7 +733,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_unlinkRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L240">at line 240</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L241">at line 241</a></div>
         <code>                    bool
     <strong>unlinkRecord</strong>(int|string $recordId)
         </code>
@@ -776,7 +776,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_addForRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L248">at line 248</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L249">at line 249</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a>|null
     <strong>addForRecord</strong>(int|string $recordId, <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a> $comment)
         </code>
@@ -824,7 +824,7 @@ in the RRset that don't have linked comments yet.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_migrateLegacyComments">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L293">at line 293</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbRecordCommentRepository.php#L294">at line 294</a></div>
         <code>                    bool
     <strong>migrateLegacyComments</strong>(int $domainId, string $name, string $type, int|string $excludeRecordId)
         </code>
@@ -860,7 +860,7 @@ in the RRset that don't have linked comments yet.</p></p>                <p><p>T
                     <tr>
                 <td>int|string</td>
                 <td>$excludeRecordId</td>
-                <td><p>Record ID to exclude (int for SQL, encoded string for API)</p></td>
+                <td><p>Record ID to leave alone</p></td>
             </tr>
             </table>
 
@@ -885,7 +885,7 @@ in the RRset that don't have linked comments yet.</p></p>                <p><p>T
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/f3a2a2a" rel="noreferrer" target="_blank">commit f3a2a2a,</a> built 2026-09-20 16:18 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/0465df9" rel="noreferrer" target="_blank">commit 0465df9,</a> built 2026-09-21 12:12 UTC.</div></div>
     </div>
     </body>
 

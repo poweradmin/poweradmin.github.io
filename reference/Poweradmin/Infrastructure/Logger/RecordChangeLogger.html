@@ -94,7 +94,7 @@
 
     
     <p>        class
-    <strong>RecordChangeLogger</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php">View source</a>)
+    <strong>RecordChangeLogger</strong>        implements        <a href="../../../Poweradmin/Domain/Port/RecordChangeWriterInterface.html"><abbr title="Poweradmin\Domain\Port\RecordChangeWriterInterface">RecordChangeWriterInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php">View source</a>)
 </p>
 
         
@@ -203,7 +203,7 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Service/UserContextService.html"><abbr title="Poweradmin\Domain\Service\UserContextService">UserContextService</abbr></a>|null $userContext = null, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a>|null $config = null)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null $userContext = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -211,7 +211,7 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    static&nbsp;mixed
+                    mixed
                 </div>
                 <div class="col-md-8">
                     <a href="#method_withChangeset">withChangeset</a>(int|null $zoneId, string|null $comment, callable $work)
@@ -223,30 +223,7 @@ cross-zone submission leaves it null and the per-change rows carry the truth.</p
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    static&nbsp;void
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_beginChangeset">beginChangeset</a>(int|null $zoneId = null, string|null $comment = null)
-        
-                                            <p><p>Open a changeset scope. Every change logged until the matching endChangeset()
-is grouped under one row carrying the reason for the change. Nested calls join
-the outermost scope so a controller can wrap a service that also wraps.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    static&nbsp;void
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_endChangeset">endChangeset</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    static&nbsp;bool
+                    bool
                 </div>
                 <div class="col-md-8">
                     <a href="#method_changeCommentRequired">changeCommentRequired</a>()
@@ -395,9 +372,9 @@ between them.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L71">at line 71</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L72">at line 72</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Service/UserContextService.html"><abbr title="Poweradmin\Domain\Service\UserContextService">UserContextService</abbr></a>|null $userContext = null, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a>|null $config = null)
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null $userContext = null)
         </code>
     </h3>
     <div class="details">    
@@ -419,13 +396,13 @@ between them.</p></p>                </div>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Domain/Service/UserContextService.html"><abbr title="Poweradmin\Domain\Service\UserContextService">UserContextService</abbr></a>|null</td>
-                <td>$userContext</td>
+                <td><a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
+                <td>$config</td>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a>|null</td>
-                <td>$config</td>
+                <td><a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null</td>
+                <td>$userContext</td>
                 <td></td>
             </tr>
             </table>
@@ -440,8 +417,8 @@ between them.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_withChangeset">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L90">at line 90</a></div>
-        <code>        static            mixed
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L91">at line 91</a></div>
+        <code>                    mixed
     <strong>withChangeset</strong>(int|null $zoneId, string|null $comment, callable $work)
         </code>
     </h3>
@@ -507,102 +484,9 @@ cross-zone submission leaves it null and the per-change rows carry the truth.</p
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_beginChangeset">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L109">at line 109</a></div>
-        <code>        static            void
-    <strong>beginChangeset</strong>(int|null $zoneId = null, string|null $comment = null)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Open a changeset scope. Every change logged until the matching endChangeset()
-is grouped under one row carrying the reason for the change. Nested calls join
-the outermost scope so a controller can wrap a service that also wraps.</p></p>                <p><p>Prefer withChangeset(), which cannot leave a scope open if $work throws.</p></p>        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>int|null</td>
-                <td>$zoneId</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>string|null</td>
-                <td>$comment</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-                            <h4>Exceptions</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/InvalidArgumentException">InvalidArgumentException</a></td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_endChangeset">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L127">at line 127</a></div>
-        <code>        static            void
-    <strong>endChangeset</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>void</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_changeCommentRequired">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L140">at line 140</a></div>
-        <code>        static            bool
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L139">at line 139</a></div>
+        <code>                    bool
     <strong>changeCommentRequired</strong>()
         </code>
     </h3>
@@ -635,7 +519,7 @@ the outermost scope so a controller can wrap a service that also wraps.</p></p> 
             </div>
                     <div class="method-item">
                     <h3 id="method_resetChangesetScope">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L149">at line 149</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L148">at line 148</a></div>
         <code>        static            void
     <strong>resetChangesetScope</strong>()
         </code>
@@ -669,7 +553,7 @@ between them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logRecordCreate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L157">at line 157</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L156">at line 156</a></div>
         <code>                    void
     <strong>logRecordCreate</strong>(array $afterRecord, int|null $zoneId)
         </code>
@@ -690,7 +574,7 @@ between them.</p></p>
                     <tr>
                 <td>array</td>
                 <td>$afterRecord</td>
-                <td></td>
+                <td><p>The record as stored</p></td>
             </tr>
                     <tr>
                 <td>int|null</td>
@@ -718,7 +602,7 @@ between them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logRecordEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L168">at line 168</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L167">at line 167</a></div>
         <code>                    void
     <strong>logRecordEdit</strong>(array $beforeRecord, array $afterRecord, int $zoneId)
         </code>
@@ -772,7 +656,7 @@ between them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logRecordDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L183">at line 183</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L182">at line 182</a></div>
         <code>                    void
     <strong>logRecordDelete</strong>(array $beforeRecord, int|null $zoneId)
         </code>
@@ -793,7 +677,7 @@ between them.</p></p>
                     <tr>
                 <td>array</td>
                 <td>$beforeRecord</td>
-                <td></td>
+                <td><p>The record as it was before deletion</p></td>
             </tr>
                     <tr>
                 <td>int|null</td>
@@ -821,7 +705,7 @@ between them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneCreate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L194">at line 194</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L193">at line 193</a></div>
         <code>                    void
     <strong>logZoneCreate</strong>(array $zoneData)
         </code>
@@ -865,7 +749,7 @@ between them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L205">at line 205</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L204">at line 204</a></div>
         <code>                    void
     <strong>logZoneDelete</strong>(array $zoneData, int $recordCount)
         </code>
@@ -914,7 +798,7 @@ between them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneMetadataEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L219">at line 219</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L218">at line 218</a></div>
         <code>                    void
     <strong>logZoneMetadataEdit</strong>(array $beforeZone, array $afterZone)
         </code>
@@ -963,7 +847,7 @@ between them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_normalizeMetadataRows">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L384">at line 384</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L382">at line 382</a></div>
         <code>        static            array
     <strong>normalizeMetadataRows</strong>(array $rows)
         </code>
@@ -1007,7 +891,7 @@ between them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_countFiltered">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L497">at line 497</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L495">at line 495</a></div>
         <code>                    int
     <strong>countFiltered</strong>(array $filters)
         </code>
@@ -1051,7 +935,7 @@ between them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getFiltered">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L513">at line 513</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L511">at line 511</a></div>
         <code>                    array
     <strong>getFiltered</strong>(array $filters, int $limit, int $offset)
         </code>
@@ -1105,7 +989,7 @@ between them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getDistinctActions">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L545">at line 545</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L543">at line 543</a></div>
         <code>                    array
     <strong>getDistinctActions</strong>()
         </code>
@@ -1139,7 +1023,7 @@ between them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getDistinctUsers">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L557">at line 557</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Logger/RecordChangeLogger.php#L555">at line 555</a></div>
         <code>                    array
     <strong>getDistinctUsers</strong>()
         </code>
@@ -1175,7 +1059,7 @@ between them.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/f3a2a2a" rel="noreferrer" target="_blank">commit f3a2a2a,</a> built 2026-09-20 16:18 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/0465df9" rel="noreferrer" target="_blank">commit 0465df9,</a> built 2026-09-21 12:12 UTC.</div></div>
     </div>
     </body>
 

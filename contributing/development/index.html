@@ -7387,14 +7387,50 @@ and is overwritten on upgrade.</p>
 <h2 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">¶</a></h2>
 <h3 id="core-components">Core components<a class="headerlink" href="#core-components" title="Permanent link">¶</a></h3>
 <ul>
-<li><strong>lib/</strong>: core library code, following Domain-Driven Design<ul>
-<li><strong>Domain/</strong>: business logic, entities and value objects</li>
-<li><strong>Application/</strong>: controllers and services</li>
-<li><strong>Infrastructure/</strong>: database access, the PowerDNS API client, LDAP and other external services</li>
+<li><strong>lib/</strong>: core library code in three layers; a lower layer never imports a higher one
+  (<code>composer analyse:all</code> enforces this)<ul>
+<li><strong>Domain/</strong>: business rules with no framework or storage dependency<ul>
+<li><code>Model/</code>, <code>ValueObject/</code>, <code>Enum/</code>: entities, value objects and constant tables</li>
+<li><code>Port/</code>: the interfaces the application and infrastructure layers implement
+  (backend providers, DNSSEC, audit logging, record change writer, password hashing)</li>
+<li><code>Repository/</code>: repository interfaces, split into narrow roles such as
+  <code>UserLookupInterface</code> and <code>RecordListingInterface</code></li>
+<li><code>Service/Auth/</code>, <code>Service/Zone/</code>, <code>Service/Template/</code>, <code>Service/Dns/</code>,
+  <code>Service/User/</code>, <code>Service/Database/</code>, <code>Service/Consistency/</code>: the use cases,
+  grouped by the concern that changes them</li>
+<li><code>Service/DnsValidation/</code>: one validator per record type</li>
+<li><code>Database/</code>: SQL dialect helpers (<code>DbCompat</code>, <code>TableNameService</code>, <code>CanonicalZoneSql</code>)
+  shared by the domain services that still own SQL</li>
+<li><code>Module/</code>: the <code>ModuleInterface</code> bundled modules implement</li>
+</ul>
+</li>
+<li><strong>Application/</strong>: everything that faces a request<ul>
+<li><code>Controller/</code>: web controllers grouped by route (<code>Zone/</code>, <code>Record/</code>, <code>Dnssec/</code>,
+  <code>Auth/</code>, <code>User/</code>, <code>Template/</code>, <code>Log/</code>, <code>System/</code>) plus <code>Api/</code> and the shared
+  <code>BaseController</code></li>
+<li><code>Service/</code>: application services, the composition-root factories
+  (<code>ControllerServiceFactory</code> and the concern factories under <code>Service/Factory/</code>),
+  and <code>Service/Auth/</code> for the login pipeline</li>
+<li><code>Boot/</code>, <code>Http/</code>, <code>Routing/</code>, <code>Web/</code>, <code>Presenter/</code>, <code>Module/</code>: bootstrap, request
+  handling, routing, page rendering, view models and the module manifest</li>
+</ul>
+</li>
+<li><strong>Infrastructure/</strong>: adapters for the outside world: <code>Repository/</code> (PDO), <code>Api/</code>
+  (the PowerDNS API client), <code>Service/</code> (backend providers), <code>Logger/</code>, <code>Session/</code>,
+  <code>Configuration/</code>, <code>Utility/</code></li>
+<li><strong>Module/</strong>: the bundled modules (DNS wizards, zone import/export, WHOIS, RDAP,
+  secondary zone import, CSV export, email previews), registered in
+  <code>Application/Module/ModuleManifest.php</code></li>
 </ul>
 </li>
 </ul>
 <p>Entry points are <code>index.php</code>, <code>dynamic_update.php</code> and <code>install/index.php</code>.</p>
+<p>Modules extend <code>Application\Controller\BaseController</code>, implement
+<code>Domain\Module\ModuleInterface</code>, and otherwise depend on the <code>Domain\Port</code>,
+<code>Domain\Repository</code> and <code>Domain\Service</code> namespaces plus a few application services
+(<code>RecordAddService</code>, <code>ZoneCreateRequest</code>, <code>ZoneOwnershipFormResolver</code>, the <code>*Messages</code>
+catalogues). Treat those as the module surface; the rest of <code>lib/</code> may move between
+releases without notice.</p>
 <h3 id="frontend">Frontend<a class="headerlink" href="#frontend" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>assets/</strong>: JavaScript and images</li>

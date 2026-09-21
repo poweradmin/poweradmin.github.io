@@ -94,7 +94,7 @@
 
     
     <p>        class
-    <strong>RecordCommentService</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php">View source</a>)
+    <strong>RecordCommentService</strong>        implements        <a href="../../../Poweradmin/Domain/Port/RecordCommentEditorInterface.html"><abbr title="Poweradmin\Domain\Port\RecordCommentEditorInterface">RecordCommentEditorInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php">View source</a>)
 </p>
 
         
@@ -103,9 +103,10 @@
         
 
             <div class="description">
-            <p><p>Reads and writes the comment attached to a record.</p></p>            <p><p>Comments are stored per-record using a linking table (record_comment_links)
-that associates individual record IDs with comment IDs in the PowerDNS comments table.
-This allows different records with the same name and type to have different comments.</p></p>        </div>
+            <p><p>Reads and writes the comment attached to a record.</p></p>            <p><p>On the SQL backend comments are stored per record through a linking table
+(record_comment_links), so records sharing a name and type can carry
+different comments. The API backend has no such table: it keeps one comment
+per RRset and the per-record operations report that they are unsupported.</p></p>        </div>
             
         
     
@@ -118,10 +119,20 @@ This allows different records with the same name and type to have different comm
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Domain/Repository/RecordCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordCommentRepositoryInterface">RecordCommentRepositoryInterface</abbr></a> $recordCommentRepository)
+                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Domain/Repository/RecordCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordCommentRepositoryInterface">RecordCommentRepositoryInterface</abbr></a> $recordCommentRepository, <a href="../../../Poweradmin/Domain/Repository/RecordLinkedCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLinkedCommentRepositoryInterface">RecordLinkedCommentRepositoryInterface</abbr></a>|null $linkedComments = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_supportsPerRecordComments">supportsPerRecordComments</a>()
+        
+                                            <p><p>Whether this backend can attach a comment to one record rather than its whole RRset</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -232,9 +243,9 @@ This allows different records with the same name and type to have different comm
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L39">at line 39</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L43">at line 43</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../Poweradmin/Domain/Repository/RecordCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordCommentRepositoryInterface">RecordCommentRepositoryInterface</abbr></a> $recordCommentRepository)
+    <strong>__construct</strong>(<a href="../../../Poweradmin/Domain/Repository/RecordCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordCommentRepositoryInterface">RecordCommentRepositoryInterface</abbr></a> $recordCommentRepository, <a href="../../../Poweradmin/Domain/Repository/RecordLinkedCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLinkedCommentRepositoryInterface">RecordLinkedCommentRepositoryInterface</abbr></a>|null $linkedComments = null)
         </code>
     </h3>
     <div class="details">    
@@ -255,6 +266,11 @@ This allows different records with the same name and type to have different comm
                 <td>$recordCommentRepository</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Repository/RecordLinkedCommentRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLinkedCommentRepositoryInterface">RecordLinkedCommentRepositoryInterface</abbr></a>|null</td>
+                <td>$linkedComments</td>
+                <td><p>Null on a backend without per-record links</p></td>
+            </tr>
             </table>
 
             
@@ -266,8 +282,41 @@ This allows different records with the same name and type to have different comm
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_supportsPerRecordComments">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L50">at line 50</a></div>
+        <code>                    bool
+    <strong>supportsPerRecordComments</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether this backend can attach a comment to one record rather than its whole RRset</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_createCommentForRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L57">at line 57</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L67">at line 67</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a>|null
     <strong>createCommentForRecord</strong>(int $domainId, string $name, string $type, string $comment, int|string $recordId, string|null $account = null)
         </code>
@@ -335,7 +384,7 @@ This allows different records with the same name and type to have different comm
             </div>
                     <div class="method-item">
                     <h3 id="method_createComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L105">at line 105</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L115">at line 115</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a>|null
     <strong>createComment</strong>(int $domainId, string $name, string $type, string $comment, string|null $account = null)
         </code>
@@ -398,7 +447,7 @@ This allows different records with the same name and type to have different comm
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L129">at line 129</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L139">at line 139</a></div>
         <code>                    bool
     <strong>deleteComment</strong>(int $domainId, string $name, string $type)
         </code>
@@ -451,7 +500,7 @@ This allows different records with the same name and type to have different comm
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteLegacyComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L142">at line 142</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L152">at line 152</a></div>
         <code>                    bool
     <strong>deleteLegacyComment</strong>(int $domainId, string $name, string $type)
         </code>
@@ -504,7 +553,7 @@ This allows different records with the same name and type to have different comm
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteCommentByRecordId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L154">at line 154</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L164">at line 164</a></div>
         <code>                    bool
     <strong>deleteCommentByRecordId</strong>(int|string $recordId)
         </code>
@@ -534,7 +583,7 @@ This allows different records with the same name and type to have different comm
                     <table class="table table-condensed">
         <tr>
             <td>bool</td>
-            <td></td>
+            <td><p>False when the backend has no per-record comments</p></td>
         </tr>
     </table>
 
@@ -547,7 +596,7 @@ This allows different records with the same name and type to have different comm
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteCommentsByDomainId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L164">at line 164</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L182">at line 182</a></div>
         <code>                    void
     <strong>deleteCommentsByDomainId</strong>(int $domainId)
         </code>
@@ -590,7 +639,7 @@ This allows different records with the same name and type to have different comm
             </div>
                     <div class="method-item">
                     <h3 id="method_updateCommentForRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L181">at line 181</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L199">at line 199</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a>|null
     <strong>updateCommentForRecord</strong>(int $domainId, string $name, string $type, string $comment, int|string $recordId, string|null $account = null)
         </code>
@@ -658,7 +707,7 @@ This allows different records with the same name and type to have different comm
             </div>
                     <div class="method-item">
                     <h3 id="method_updateComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L222">at line 222</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L240">at line 240</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a>|null
     <strong>updateComment</strong>(int $domainId, string $oldName, string $oldType, string $newName, string $newType, string $comment, string|null $account = null)
         </code>
@@ -731,7 +780,7 @@ This allows different records with the same name and type to have different comm
             </div>
                     <div class="method-item">
                     <h3 id="method_findComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L253">at line 253</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L271">at line 271</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a>|null
     <strong>findComment</strong>(int $domainId, string $name, string $type)
         </code>
@@ -784,7 +833,7 @@ This allows different records with the same name and type to have different comm
             </div>
                     <div class="method-item">
                     <h3 id="method_findCommentByRecordId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L264">at line 264</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordCommentService.php#L282">at line 282</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a>|null
     <strong>findCommentByRecordId</strong>(int|string $recordId)
         </code>
@@ -829,7 +878,7 @@ This allows different records with the same name and type to have different comm
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/f3a2a2a" rel="noreferrer" target="_blank">commit f3a2a2a,</a> built 2026-09-20 16:18 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/0465df9" rel="noreferrer" target="_blank">commit 0465df9,</a> built 2026-09-21 12:12 UTC.</div></div>
     </div>
     </body>
 

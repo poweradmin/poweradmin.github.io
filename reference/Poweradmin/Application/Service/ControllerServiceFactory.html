@@ -103,9 +103,9 @@
         
 
             <div class="description">
-            <p><p>Builds the repositories and domain services controllers ask for, and
-memoizes the per-request shared instances (backend provider, permission
-cache). Owns the wiring so BaseController only exposes thin accessors.</p></p>                    </div>
+            <p><p>The services controllers ask for, split by concern into five factories that
+each memoize their per-request instances. The flat accessors below delegate
+to them so call sites and test doubles keep one entry point.</p></p>                    </div>
             
         
     
@@ -118,7 +118,7 @@ cache). Owns the wiring so BaseController only exposes thin accessors.</p></p>  
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -126,21 +126,10 @@ cache). Owns the wiring so BaseController only exposes thin accessors.</p></p>  
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/UserPreferenceService.html"><abbr title="Poweradmin\Domain\Service\UserPreferenceService">UserPreferenceService</abbr></a>
+                    <a href="../../../Poweradmin/Application/Service/Factory/BackendServices.html"><abbr title="Poweradmin\Application\Service\Factory\BackendServices">BackendServices</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_userPreferenceService">userPreferenceService</a>()
-        
-                                            <p><p>Shared instance so its per-request preference cache survives across
-consumers (pagination, timezone, and direct preference reads).</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/UserTimezoneService.html"><abbr title="Poweradmin\Domain\Service\UserTimezoneService">UserTimezoneService</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_userTimezoneService">userTimezoneService</a>()
+                    <a href="#method_backend">backend</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -148,10 +137,10 @@ consumers (pagination, timezone, and direct preference reads).</p></p>          
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Application/Service/PaginationService.html"><abbr title="Poweradmin\Application\Service\PaginationService">PaginationService</abbr></a>
+                    <a href="../../../Poweradmin/Application/Service/Factory/UserServices.html"><abbr title="Poweradmin\Application\Service\Factory\UserServices">UserServices</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_paginationService">paginationService</a>()
+                    <a href="#method_users">users</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -159,12 +148,46 @@ consumers (pagination, timezone, and direct preference reads).</p></p>          
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>
+                    <a href="../../../Poweradmin/Application/Service/Factory/AuthServices.html"><abbr title="Poweradmin\Application\Service\Factory\AuthServices">AuthServices</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_auth">auth</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/Factory/ZoneServices.html"><abbr title="Poweradmin\Application\Service\Factory\ZoneServices">ZoneServices</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zones">zones</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/Factory/RecordServices.html"><abbr title="Poweradmin\Application\Service\Factory\RecordServices">RecordServices</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_records">records</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_dnsBackendProvider">dnsBackendProvider</a>()
         
-                                            <p><p>Providers are stateless, so one shared instance serves the whole request.</p></p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -174,38 +197,16 @@ consumers (pagination, timezone, and direct preference reads).</p></p>          
                 <div class="col-md-8">
                     <a href="#method_apiClient">apiClient</a>()
         
-                                            <p><p>The provider's API client, or null outside API backend mode. Sharing it
-keeps one set of per-request read caches for the whole request.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_soaRecordManager">soaRecordManager</a>()
-        
                                             <p class="no-description">No description</p>
                                     </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/DnssecProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnssecProviderInterface">DnssecProviderInterface</abbr></a>
+                    <a href="../../../Poweradmin/Application/Service/RepositoryFactory.html"><abbr title="Poweradmin\Application\Service\RepositoryFactory">RepositoryFactory</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_dnssecProvider">dnssecProvider</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Application/Service/DnsDataService.html"><abbr title="Poweradmin\Application\Service\DnsDataService">DnsDataService</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_dnsDataService">dnsDataService</a>()
+                    <a href="#method_repositoryFactory">repositoryFactory</a>(<a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null $backendProvider = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -246,6 +247,61 @@ keeps one set of per-request read caches for the whole request.</p></p>         
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_soaRecordManager">soaRecordManager</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Port/DnssecProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnssecProviderInterface">DnssecProviderInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_dnssecProvider">dnssecProvider</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/DnsDataService.html"><abbr title="Poweradmin\Application\Service\DnsDataService">DnsDataService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_dnsDataService">dnsDataService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Repository/ZoneMetadataStoreInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneMetadataStoreInterface">ZoneMetadataStoreInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneMetadataStore">zoneMetadataStore</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Consistency/ConsistencyCheckerInterface.html"><abbr title="Poweradmin\Domain\Service\Consistency\ConsistencyCheckerInterface">ConsistencyCheckerInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_consistencyChecker">consistencyChecker</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     <a href="../../../Poweradmin/Domain/Repository/UserRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserRepositoryInterface">UserRepositoryInterface</abbr></a>
                 </div>
                 <div class="col-md-8">
@@ -257,32 +313,35 @@ keeps one set of per-request read caches for the whole request.</p></p>         
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a>
+                    <a href="../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_permissionService">permissionService</a>()
         
-                                            <p><p>Shared instance so the per-user permission cache spans the whole request</p></p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/ApiPermissionService.html"><abbr title="Poweradmin\Domain\Service\ApiPermissionService">ApiPermissionService</abbr></a>
+                    <a href="../../../Poweradmin/Domain/Service/Auth/ApiPermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\ApiPermissionService">ApiPermissionService</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_apiPermissionService">apiPermissionService</a>()
         
-                                            <p><p>The permission rules that need group or template lookups beyond PermissionService</p></p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/UserManagementService.html"><abbr title="Poweradmin\Domain\Service\UserManagementService">UserManagementService</abbr></a>
+                    <a href="../../../Poweradmin/Domain/Service/User/UserManagementService.html"><abbr title="Poweradmin\Domain\Service\User\UserManagementService">UserManagementService</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_userManagementService">userManagementService</a>()
         
-                                            <p><p>The user service the API uses, over the request's shared permission cache</p></p>                </div>
+                                            <p class="no-description">No description</p>
+                                    </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -291,83 +350,6 @@ keeps one set of per-request read caches for the whole request.</p></p>         
                 </div>
                 <div class="col-md-8">
                     <a href="#method_userGroupRepository">userGroupRepository</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/ZoneManagementService.html"><abbr title="Poweradmin\Domain\Service\ZoneManagementService">ZoneManagementService</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_zoneManagementService">zoneManagementService</a>(<a href="../../../Poweradmin/Domain/Service/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Service\PdnsCapabilities">PdnsCapabilities</abbr></a>|<a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $capabilities = null)
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Application/Service/AuditService.html"><abbr title="Poweradmin\Application\Service\AuditService">AuditService</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_auditService">auditService</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/ZoneMetadataService.html"><abbr title="Poweradmin\Domain\Service\ZoneMetadataService">ZoneMetadataService</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_zoneMetadataService">zoneMetadataService</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/ZoneSigningService.html"><abbr title="Poweradmin\Domain\Service\ZoneSigningService">ZoneSigningService</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_zoneSigningService">zoneSigningService</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/ZoneOwnershipModeService.html"><abbr title="Poweradmin\Domain\Service\ZoneOwnershipModeService">ZoneOwnershipModeService</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_zoneOwnershipModeService">zoneOwnershipModeService</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/ZoneCreateOwnershipResolver.html"><abbr title="Poweradmin\Domain\Service\ZoneCreateOwnershipResolver">ZoneCreateOwnershipResolver</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_zoneCreateOwnershipResolver">zoneCreateOwnershipResolver</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Application/Service/ZoneOwnershipFormResolver.html"><abbr title="Poweradmin\Application\Service\ZoneOwnershipFormResolver">ZoneOwnershipFormResolver</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_zoneOwnershipFormResolver">zoneOwnershipFormResolver</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -408,10 +390,10 @@ keeps one set of per-request read caches for the whole request.</p></p>         
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Application/Service/DashboardStatsService.html"><abbr title="Poweradmin\Application\Service\DashboardStatsService">DashboardStatsService</abbr></a>
+                    <a href="../../../Poweradmin/Domain/Service/User/UserPreferenceService.html"><abbr title="Poweradmin\Domain\Service\User\UserPreferenceService">UserPreferenceService</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_dashboardStatsService">dashboardStatsService</a>()
+                    <a href="#method_userPreferenceService">userPreferenceService</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -419,7 +401,304 @@ keeps one set of per-request read caches for the whole request.</p></p>         
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/ZoneListPermissionService.html"><abbr title="Poweradmin\Domain\Service\ZoneListPermissionService">ZoneListPermissionService</abbr></a>
+                    <a href="../../../Poweradmin/Domain/Service/User/UserTimezoneService.html"><abbr title="Poweradmin\Domain\Service\User\UserTimezoneService">UserTimezoneService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_userTimezoneService">userTimezoneService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/PaginationService.html"><abbr title="Poweradmin\Application\Service\PaginationService">PaginationService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_paginationService">paginationService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/UserProvisioningService.html"><abbr title="Poweradmin\Application\Service\UserProvisioningService">UserProvisioningService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_userProvisioningService">userProvisioningService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Repository/UserAgreementRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserAgreementRepositoryInterface">UserAgreementRepositoryInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_userAgreementRepository">userAgreementRepository</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Infrastructure/Logger/DbUserLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbUserLogger">DbUserLogger</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_userLogger">userLogger</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Infrastructure/Logger/DbGroupLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbGroupLogger">DbGroupLogger</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_groupLogger">groupLogger</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Infrastructure/Session/SessionService.html"><abbr title="Poweradmin\Infrastructure\Session\SessionService">SessionService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_sessionService">sessionService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Infrastructure/Service/RedirectService.html"><abbr title="Poweradmin\Infrastructure\Service\RedirectService">RedirectService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_redirectService">redirectService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/Auth/AuthenticationService.html"><abbr title="Poweradmin\Application\Service\Auth\AuthenticationService">AuthenticationService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_authenticationService">authenticationService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Http/ClientContext.html"><abbr title="Poweradmin\Application\Http\ClientContext">ClientContext</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_clientContext">clientContext</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/UrlService.html"><abbr title="Poweradmin\Application\Service\UrlService">UrlService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_urlService">urlService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Repository/UserMfaRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserMfaRepositoryInterface">UserMfaRepositoryInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_userMfaRepository">userMfaRepository</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Auth/MfaService.html"><abbr title="Poweradmin\Domain\Service\Auth\MfaService">MfaService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_mfaService">mfaService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Repository/ApiKeyRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ApiKeyRepositoryInterface">ApiKeyRepositoryInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_apiKeyRepository">apiKeyRepository</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/Auth/ApiKeyAuthenticationMiddleware.html"><abbr title="Poweradmin\Application\Service\Auth\ApiKeyAuthenticationMiddleware">ApiKeyAuthenticationMiddleware</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_apiKeyAuthenticationMiddleware">apiKeyAuthenticationMiddleware</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/Auth/BasicAuthenticationMiddleware.html"><abbr title="Poweradmin\Application\Service\Auth\BasicAuthenticationMiddleware">BasicAuthenticationMiddleware</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_basicAuthenticationMiddleware">basicAuthenticationMiddleware</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Infrastructure/Repository/DbPasswordResetTokenRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbPasswordResetTokenRepository">DbPasswordResetTokenRepository</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_passwordResetTokenRepository">passwordResetTokenRepository</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Infrastructure/Repository/DbUsernameRecoveryRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbUsernameRecoveryRepository">DbUsernameRecoveryRepository</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_usernameRecoveryRepository">usernameRecoveryRepository</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/AuditService.html"><abbr title="Poweradmin\Application\Service\AuditService">AuditService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_auditService">auditService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Infrastructure/Logger/AuditLogWriter.html"><abbr title="Poweradmin\Infrastructure\Logger\AuditLogWriter">AuditLogWriter</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_auditLogWriter">auditLogWriter</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Infrastructure/Logger/DbApiLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbApiLogger">DbApiLogger</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_apiLogger">apiLogger</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneManagementService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneManagementService">ZoneManagementService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneManagementService">zoneManagementService</a>(<a href="../../../Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a>|<a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $capabilities = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/ZoneCreateService.html"><abbr title="Poweradmin\Application\Service\ZoneCreateService">ZoneCreateService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneCreateService">zoneCreateService</a>(<a href="../../../Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a>|<a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $capabilities = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneSigningService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneSigningService">ZoneSigningService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneSigningService">zoneSigningService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipModeService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipModeService">ZoneOwnershipModeService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneOwnershipModeService">zoneOwnershipModeService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneCreateOwnershipResolver.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneCreateOwnershipResolver">ZoneCreateOwnershipResolver</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneCreateOwnershipResolver">zoneCreateOwnershipResolver</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/ZoneOwnershipFormResolver.html"><abbr title="Poweradmin\Application\Service\ZoneOwnershipFormResolver">ZoneOwnershipFormResolver</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneOwnershipFormResolver">zoneOwnershipFormResolver</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Auth/ZoneListPermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\ZoneListPermissionService">ZoneListPermissionService</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_zoneListPermissionService">zoneListPermissionService</a>()
@@ -441,10 +720,109 @@ keeps one set of per-request read caches for the whole request.</p></p>         
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\ReverseTtlResolver">ReverseTtlResolver</abbr></a>
+                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneSortingService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneSortingService">ZoneSortingService</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_reverseTtlResolver">reverseTtlResolver</a>()
+                    <a href="#method_zoneSortingService">zoneSortingService</a>(<a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null $userContext = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneMetadataService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneMetadataService">ZoneMetadataService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneMetadataService">zoneMetadataService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/DashboardStatsService.html"><abbr title="Poweradmin\Application\Service\DashboardStatsService">DashboardStatsService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_dashboardStatsService">dashboardStatsService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Dns/DomainManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\DomainManagerInterface">DomainManagerInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_domainManager">domainManager</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Dns/ZoneTemplateApplier.html"><abbr title="Poweradmin\Domain\Service\Dns\ZoneTemplateApplier">ZoneTemplateApplier</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneTemplateApplier">zoneTemplateApplier</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Dns/SupermasterManager.html"><abbr title="Poweradmin\Domain\Service\Dns\SupermasterManager">SupermasterManager</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_supermasterManager">supermasterManager</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Repository/ZoneTemplateRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneTemplateRepositoryInterface">ZoneTemplateRepositoryInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneTemplateRepository">zoneTemplateRepository</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Template/ZoneTemplateService.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplateService">ZoneTemplateService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneTemplateService">zoneTemplateService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Zone/CatalogZoneService.html"><abbr title="Poweradmin\Domain\Service\Zone\CatalogZoneService">CatalogZoneService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_catalogZoneService">catalogZoneService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Infrastructure/Logger/DbZoneLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbZoneLogger">DbZoneLogger</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneLogger">zoneLogger</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -463,6 +841,39 @@ keeps one set of per-request read caches for the whole request.</p></p>         
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Port/RecordChangeWriterInterface.html"><abbr title="Poweradmin\Domain\Port\RecordChangeWriterInterface">RecordChangeWriterInterface</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_recordChangeLogger">recordChangeLogger</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Infrastructure/Logger/RecordChangeLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\RecordChangeLogger">RecordChangeLogger</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_recordChangeLog">recordChangeLog</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Dns/RRSetReplaceService.html"><abbr title="Poweradmin\Domain\Service\Dns\RRSetReplaceService">RRSetReplaceService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_rrsetReplaceService">rrsetReplaceService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     <a href="../../../Poweradmin/Application/Service/RecordCommentService.html"><abbr title="Poweradmin\Application\Service\RecordCommentService">RecordCommentService</abbr></a>
                 </div>
                 <div class="col-md-8">
@@ -474,7 +885,7 @@ keeps one set of per-request read caches for the whole request.</p></p>         
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/ZoneEditService.html"><abbr title="Poweradmin\Domain\Service\ZoneEditService">ZoneEditService</abbr></a>
+                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneEditService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditService">ZoneEditService</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_zoneEditService">zoneEditService</a>()
@@ -496,7 +907,7 @@ keeps one set of per-request read caches for the whole request.</p></p>         
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestService.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestService">ZoneChangeRequestService</abbr></a>
+                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneChangeRequestService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneChangeRequestService">ZoneChangeRequestService</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_zoneChangeRequestService">zoneChangeRequestService</a>()
@@ -540,7 +951,18 @@ keeps one set of per-request read caches for the whole request.</p></p>         
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\ReverseRecordCreator">ReverseRecordCreator</abbr></a>
+                    <a href="../../../Poweradmin/Application/Service/ChangeApprovalContext.html"><abbr title="Poweradmin\Application\Service\ChangeApprovalContext">ChangeApprovalContext</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_changeApprovalContext">changeApprovalContext</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Dns/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseRecordCreator">ReverseRecordCreator</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_reverseRecordCreator">reverseRecordCreator</a>()
@@ -551,7 +973,18 @@ keeps one set of per-request read caches for the whole request.</p></p>         
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/BatchReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\BatchReverseRecordCreator">BatchReverseRecordCreator</abbr></a>
+                    <a href="../../../Poweradmin/Domain/Service/Dns/RecordDeletionService.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordDeletionService">RecordDeletionService</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_recordDeletionService">recordDeletionService</a>()
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Domain/Service/Dns/BatchReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\BatchReverseRecordCreator">BatchReverseRecordCreator</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_batchReverseRecordCreator">batchReverseRecordCreator</a>()
@@ -562,10 +995,10 @@ keeps one set of per-request read caches for the whole request.</p></p>         
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/Dns/DomainManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\DomainManagerInterface">DomainManagerInterface</abbr></a>
+                    <a href="../../../Poweradmin/Domain/Service/Dns/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseTtlResolver">ReverseTtlResolver</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_domainManager">domainManager</a>()
+                    <a href="#method_reverseTtlResolver">reverseTtlResolver</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -573,54 +1006,10 @@ keeps one set of per-request read caches for the whole request.</p></p>         
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/Dns/SupermasterManager.html"><abbr title="Poweradmin\Domain\Service\Dns\SupermasterManager">SupermasterManager</abbr></a>
+                    <a href="../../../Poweradmin/Domain/Repository/RecordTypeDefaultRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordTypeDefaultRepositoryInterface">RecordTypeDefaultRepositoryInterface</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_supermasterManager">supermasterManager</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Repository/ZoneTemplateRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneTemplateRepositoryInterface">ZoneTemplateRepositoryInterface</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_zoneTemplateRepository">zoneTemplateRepository</a>()
-        
-                                            <p><p>Shared so the zone template model, the domain manager and the zone
-management service all read through one instance.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Model/ZoneTemplate.html"><abbr title="Poweradmin\Domain\Model\ZoneTemplate">ZoneTemplate</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_zoneTemplate">zoneTemplate</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Domain/Service/CatalogZoneService.html"><abbr title="Poweradmin\Domain\Service\CatalogZoneService">CatalogZoneService</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_catalogZoneService">catalogZoneService</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    <a href="../../../Poweradmin/Application/Service/RepositoryFactory.html"><abbr title="Poweradmin\Application\Service\RepositoryFactory">RepositoryFactory</abbr></a>
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_repositoryFactory">repositoryFactory</a>(<a href="../../../Poweradmin/Domain/Service/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null $backendProvider = null)
+                    <a href="#method_recordTypeDefaultRepository">recordTypeDefaultRepository</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -634,9 +1023,9 @@ management service all read through one instance.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L120">at line 120</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L126">at line 126</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger)
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger)
         </code>
     </h3>
     <div class="details">    
@@ -658,7 +1047,7 @@ management service all read through one instance.</p></p>                </div>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a></td>
+                <td><a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
                 <td>$config</td>
                 <td></td>
             </tr>
@@ -678,10 +1067,10 @@ management service all read through one instance.</p></p>                </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_userPreferenceService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L131">at line 131</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/UserPreferenceService.html"><abbr title="Poweradmin\Domain\Service\UserPreferenceService">UserPreferenceService</abbr></a>
-    <strong>userPreferenceService</strong>()
+                    <h3 id="method_backend">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L135">at line 135</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/Factory/BackendServices.html"><abbr title="Poweradmin\Application\Service\Factory\BackendServices">BackendServices</abbr></a>
+    <strong>backend</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -690,8 +1079,8 @@ management service all read through one instance.</p></p>                </div>
             
 
         <div class="method-description">
-                            <p><p>Shared instance so its per-request preference cache survives across
-consumers (pagination, timezone, and direct preference reads).</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
             
@@ -699,7 +1088,7 @@ consumers (pagination, timezone, and direct preference reads).</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/UserPreferenceService.html"><abbr title="Poweradmin\Domain\Service\UserPreferenceService">UserPreferenceService</abbr></a></td>
+            <td><a href="../../../Poweradmin/Application/Service/Factory/BackendServices.html"><abbr title="Poweradmin\Application\Service\Factory\BackendServices">BackendServices</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -712,10 +1101,10 @@ consumers (pagination, timezone, and direct preference reads).</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_userTimezoneService">
+                    <h3 id="method_users">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L140">at line 140</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/UserTimezoneService.html"><abbr title="Poweradmin\Domain\Service\UserTimezoneService">UserTimezoneService</abbr></a>
-    <strong>userTimezoneService</strong>()
+        <code>                    <a href="../../../Poweradmin/Application/Service/Factory/UserServices.html"><abbr title="Poweradmin\Application\Service\Factory\UserServices">UserServices</abbr></a>
+    <strong>users</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -733,7 +1122,7 @@ consumers (pagination, timezone, and direct preference reads).</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/UserTimezoneService.html"><abbr title="Poweradmin\Domain\Service\UserTimezoneService">UserTimezoneService</abbr></a></td>
+            <td><a href="../../../Poweradmin/Application/Service/Factory/UserServices.html"><abbr title="Poweradmin\Application\Service\Factory\UserServices">UserServices</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -746,10 +1135,10 @@ consumers (pagination, timezone, and direct preference reads).</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_paginationService">
+                    <h3 id="method_auth">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L145">at line 145</a></div>
-        <code>                    <a href="../../../Poweradmin/Application/Service/PaginationService.html"><abbr title="Poweradmin\Application\Service\PaginationService">PaginationService</abbr></a>
-    <strong>paginationService</strong>()
+        <code>                    <a href="../../../Poweradmin/Application/Service/Factory/AuthServices.html"><abbr title="Poweradmin\Application\Service\Factory\AuthServices">AuthServices</abbr></a>
+    <strong>auth</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -767,7 +1156,75 @@ consumers (pagination, timezone, and direct preference reads).</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Application/Service/PaginationService.html"><abbr title="Poweradmin\Application\Service\PaginationService">PaginationService</abbr></a></td>
+            <td><a href="../../../Poweradmin/Application/Service/Factory/AuthServices.html"><abbr title="Poweradmin\Application\Service\Factory\AuthServices">AuthServices</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_zones">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L150">at line 150</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/Factory/ZoneServices.html"><abbr title="Poweradmin\Application\Service\Factory\ZoneServices">ZoneServices</abbr></a>
+    <strong>zones</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/Factory/ZoneServices.html"><abbr title="Poweradmin\Application\Service\Factory\ZoneServices">ZoneServices</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_records">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L155">at line 155</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/Factory/RecordServices.html"><abbr title="Poweradmin\Application\Service\Factory\RecordServices">RecordServices</abbr></a>
+    <strong>records</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/Factory/RecordServices.html"><abbr title="Poweradmin\Application\Service\Factory\RecordServices">RecordServices</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -781,8 +1238,8 @@ consumers (pagination, timezone, and direct preference reads).</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_dnsBackendProvider">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L153">at line 153</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L160">at line 160</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>
     <strong>dnsBackendProvider</strong>()
         </code>
     </h3>
@@ -792,7 +1249,8 @@ consumers (pagination, timezone, and direct preference reads).</p></p>
             
 
         <div class="method-description">
-                            <p><p>Providers are stateless, so one shared instance serves the whole request.</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
             
@@ -800,7 +1258,7 @@ consumers (pagination, timezone, and direct preference reads).</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a></td>
+            <td><a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -814,7 +1272,7 @@ consumers (pagination, timezone, and direct preference reads).</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_apiClient">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L162">at line 162</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L165">at line 165</a></div>
         <code>                    <a href="../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a>|null
     <strong>apiClient</strong>()
         </code>
@@ -825,8 +1283,8 @@ consumers (pagination, timezone, and direct preference reads).</p></p>
             
 
         <div class="method-description">
-                            <p><p>The provider's API client, or null outside API backend mode. Sharing it
-keeps one set of per-request read caches for the whole request.</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
             
@@ -847,10 +1305,10 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_soaRecordManager">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L172">at line 172</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a>
-    <strong>soaRecordManager</strong>()
+                    <h3 id="method_repositoryFactory">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L170">at line 170</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/RepositoryFactory.html"><abbr title="Poweradmin\Application\Service\RepositoryFactory">RepositoryFactory</abbr></a>
+    <strong>repositoryFactory</strong>(<a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null $backendProvider = null)
         </code>
     </h3>
     <div class="details">    
@@ -863,80 +1321,22 @@ keeps one set of per-request read caches for the whole request.</p></p>
                     
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null</td>
+                <td>$backendProvider</td>
+                <td></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_dnssecProvider">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L181">at line 181</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/DnssecProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnssecProviderInterface">DnssecProviderInterface</abbr></a>
-    <strong>dnssecProvider</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/DnssecProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnssecProviderInterface">DnssecProviderInterface</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_dnsDataService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L186">at line 186</a></div>
-        <code>                    <a href="../../../Poweradmin/Application/Service/DnsDataService.html"><abbr title="Poweradmin\Application\Service\DnsDataService">DnsDataService</abbr></a>
-    <strong>dnsDataService</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Application/Service/DnsDataService.html"><abbr title="Poweradmin\Application\Service\DnsDataService">DnsDataService</abbr></a></td>
+            <td><a href="../../../Poweradmin/Application/Service/RepositoryFactory.html"><abbr title="Poweradmin\Application\Service\RepositoryFactory">RepositoryFactory</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -950,7 +1350,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L191">at line 191</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L175">at line 175</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a>
     <strong>zoneRepository</strong>()
         </code>
@@ -984,7 +1384,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_domainRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L196">at line 196</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L180">at line 180</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a>
     <strong>domainRepository</strong>()
         </code>
@@ -1018,7 +1418,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_recordRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L201">at line 201</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L185">at line 185</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Repository/RecordRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordRepositoryInterface">RecordRepositoryInterface</abbr></a>
     <strong>recordRepository</strong>()
         </code>
@@ -1051,8 +1451,178 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_soaRecordManager">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L190">at line 190</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a>
+    <strong>soaRecordManager</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_dnssecProvider">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L195">at line 195</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Port/DnssecProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnssecProviderInterface">DnssecProviderInterface</abbr></a>
+    <strong>dnssecProvider</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Port/DnssecProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnssecProviderInterface">DnssecProviderInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_dnsDataService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L200">at line 200</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/DnsDataService.html"><abbr title="Poweradmin\Application\Service\DnsDataService">DnsDataService</abbr></a>
+    <strong>dnsDataService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/DnsDataService.html"><abbr title="Poweradmin\Application\Service\DnsDataService">DnsDataService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_zoneMetadataStore">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L205">at line 205</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Repository/ZoneMetadataStoreInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneMetadataStoreInterface">ZoneMetadataStoreInterface</abbr></a>
+    <strong>zoneMetadataStore</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Repository/ZoneMetadataStoreInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneMetadataStoreInterface">ZoneMetadataStoreInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_consistencyChecker">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L210">at line 210</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Consistency/ConsistencyCheckerInterface.html"><abbr title="Poweradmin\Domain\Service\Consistency\ConsistencyCheckerInterface">ConsistencyCheckerInterface</abbr></a>
+    <strong>consistencyChecker</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Consistency/ConsistencyCheckerInterface.html"><abbr title="Poweradmin\Domain\Service\Consistency\ConsistencyCheckerInterface">ConsistencyCheckerInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_userRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L206">at line 206</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L215">at line 215</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Repository/UserRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserRepositoryInterface">UserRepositoryInterface</abbr></a>
     <strong>userRepository</strong>()
         </code>
@@ -1086,8 +1656,8 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_permissionService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L214">at line 214</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L220">at line 220</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a>
     <strong>permissionService</strong>()
         </code>
     </h3>
@@ -1097,7 +1667,8 @@ keeps one set of per-request read caches for the whole request.</p></p>
             
 
         <div class="method-description">
-                            <p><p>Shared instance so the per-user permission cache spans the whole request</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
             
@@ -1105,7 +1676,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a></td>
+            <td><a href="../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1119,8 +1690,8 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_apiPermissionService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L222">at line 222</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/ApiPermissionService.html"><abbr title="Poweradmin\Domain\Service\ApiPermissionService">ApiPermissionService</abbr></a>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L225">at line 225</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Auth/ApiPermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\ApiPermissionService">ApiPermissionService</abbr></a>
     <strong>apiPermissionService</strong>()
         </code>
     </h3>
@@ -1130,7 +1701,8 @@ keeps one set of per-request read caches for the whole request.</p></p>
             
 
         <div class="method-description">
-                            <p><p>The permission rules that need group or template lookups beyond PermissionService</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
             
@@ -1138,7 +1710,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/ApiPermissionService.html"><abbr title="Poweradmin\Domain\Service\ApiPermissionService">ApiPermissionService</abbr></a></td>
+            <td><a href="../../../Poweradmin/Domain/Service/Auth/ApiPermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\ApiPermissionService">ApiPermissionService</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1153,7 +1725,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
                     <div class="method-item">
                     <h3 id="method_userManagementService">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L230">at line 230</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/UserManagementService.html"><abbr title="Poweradmin\Domain\Service\UserManagementService">UserManagementService</abbr></a>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/User/UserManagementService.html"><abbr title="Poweradmin\Domain\Service\User\UserManagementService">UserManagementService</abbr></a>
     <strong>userManagementService</strong>()
         </code>
     </h3>
@@ -1163,7 +1735,8 @@ keeps one set of per-request read caches for the whole request.</p></p>
             
 
         <div class="method-description">
-                            <p><p>The user service the API uses, over the request's shared permission cache</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
             
@@ -1171,7 +1744,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/UserManagementService.html"><abbr title="Poweradmin\Domain\Service\UserManagementService">UserManagementService</abbr></a></td>
+            <td><a href="../../../Poweradmin/Domain/Service/User/UserManagementService.html"><abbr title="Poweradmin\Domain\Service\User\UserManagementService">UserManagementService</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1185,7 +1758,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_userGroupRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L244">at line 244</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L235">at line 235</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Repository/UserGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserGroupRepositoryInterface">UserGroupRepositoryInterface</abbr></a>
     <strong>userGroupRepository</strong>()
         </code>
@@ -1218,256 +1791,8 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_zoneManagementService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L249">at line 249</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneManagementService.html"><abbr title="Poweradmin\Domain\Service\ZoneManagementService">ZoneManagementService</abbr></a>
-    <strong>zoneManagementService</strong>(<a href="../../../Poweradmin/Domain/Service/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Service\PdnsCapabilities">PdnsCapabilities</abbr></a>|<a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $capabilities = null)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a href="../../../Poweradmin/Domain/Service/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Service\PdnsCapabilities">PdnsCapabilities</abbr></a>|<a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null</td>
-                <td>$capabilities</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/ZoneManagementService.html"><abbr title="Poweradmin\Domain\Service\ZoneManagementService">ZoneManagementService</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_auditService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L265">at line 265</a></div>
-        <code>                    <a href="../../../Poweradmin/Application/Service/AuditService.html"><abbr title="Poweradmin\Application\Service\AuditService">AuditService</abbr></a>
-    <strong>auditService</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Application/Service/AuditService.html"><abbr title="Poweradmin\Application\Service\AuditService">AuditService</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_zoneMetadataService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L270">at line 270</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneMetadataService.html"><abbr title="Poweradmin\Domain\Service\ZoneMetadataService">ZoneMetadataService</abbr></a>
-    <strong>zoneMetadataService</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/ZoneMetadataService.html"><abbr title="Poweradmin\Domain\Service\ZoneMetadataService">ZoneMetadataService</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_zoneSigningService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L283">at line 283</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneSigningService.html"><abbr title="Poweradmin\Domain\Service\ZoneSigningService">ZoneSigningService</abbr></a>
-    <strong>zoneSigningService</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/ZoneSigningService.html"><abbr title="Poweradmin\Domain\Service\ZoneSigningService">ZoneSigningService</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_zoneOwnershipModeService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L295">at line 295</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneOwnershipModeService.html"><abbr title="Poweradmin\Domain\Service\ZoneOwnershipModeService">ZoneOwnershipModeService</abbr></a>
-    <strong>zoneOwnershipModeService</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/ZoneOwnershipModeService.html"><abbr title="Poweradmin\Domain\Service\ZoneOwnershipModeService">ZoneOwnershipModeService</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_zoneCreateOwnershipResolver">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L300">at line 300</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneCreateOwnershipResolver.html"><abbr title="Poweradmin\Domain\Service\ZoneCreateOwnershipResolver">ZoneCreateOwnershipResolver</abbr></a>
-    <strong>zoneCreateOwnershipResolver</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/ZoneCreateOwnershipResolver.html"><abbr title="Poweradmin\Domain\Service\ZoneCreateOwnershipResolver">ZoneCreateOwnershipResolver</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_zoneOwnershipFormResolver">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L305">at line 305</a></div>
-        <code>                    <a href="../../../Poweradmin/Application/Service/ZoneOwnershipFormResolver.html"><abbr title="Poweradmin\Application\Service\ZoneOwnershipFormResolver">ZoneOwnershipFormResolver</abbr></a>
-    <strong>zoneOwnershipFormResolver</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Application/Service/ZoneOwnershipFormResolver.html"><abbr title="Poweradmin\Application\Service\ZoneOwnershipFormResolver">ZoneOwnershipFormResolver</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_userGroupMemberRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L310">at line 310</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L240">at line 240</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Repository/UserGroupMemberRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserGroupMemberRepositoryInterface">UserGroupMemberRepositoryInterface</abbr></a>
     <strong>userGroupMemberRepository</strong>()
         </code>
@@ -1501,7 +1826,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_permissionTemplateRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L315">at line 315</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L245">at line 245</a></div>
         <code>                    <a href="../../../Poweradmin/Infrastructure/Repository/DbPermissionTemplateRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbPermissionTemplateRepository">DbPermissionTemplateRepository</abbr></a>
     <strong>permissionTemplateRepository</strong>()
         </code>
@@ -1535,7 +1860,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_permissionTemplateWriteService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L320">at line 320</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L250">at line 250</a></div>
         <code>                    <a href="../../../Poweradmin/Application/Service/PermissionTemplateWriteService.html"><abbr title="Poweradmin\Application\Service\PermissionTemplateWriteService">PermissionTemplateWriteService</abbr></a>
     <strong>permissionTemplateWriteService</strong>()
         </code>
@@ -1568,10 +1893,10 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_dashboardStatsService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L325">at line 325</a></div>
-        <code>                    <a href="../../../Poweradmin/Application/Service/DashboardStatsService.html"><abbr title="Poweradmin\Application\Service\DashboardStatsService">DashboardStatsService</abbr></a>
-    <strong>dashboardStatsService</strong>()
+                    <h3 id="method_userPreferenceService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L255">at line 255</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/User/UserPreferenceService.html"><abbr title="Poweradmin\Domain\Service\User\UserPreferenceService">UserPreferenceService</abbr></a>
+    <strong>userPreferenceService</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -1589,7 +1914,945 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Application/Service/DashboardStatsService.html"><abbr title="Poweradmin\Application\Service\DashboardStatsService">DashboardStatsService</abbr></a></td>
+            <td><a href="../../../Poweradmin/Domain/Service/User/UserPreferenceService.html"><abbr title="Poweradmin\Domain\Service\User\UserPreferenceService">UserPreferenceService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_userTimezoneService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L260">at line 260</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/User/UserTimezoneService.html"><abbr title="Poweradmin\Domain\Service\User\UserTimezoneService">UserTimezoneService</abbr></a>
+    <strong>userTimezoneService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/User/UserTimezoneService.html"><abbr title="Poweradmin\Domain\Service\User\UserTimezoneService">UserTimezoneService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_paginationService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L265">at line 265</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/PaginationService.html"><abbr title="Poweradmin\Application\Service\PaginationService">PaginationService</abbr></a>
+    <strong>paginationService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/PaginationService.html"><abbr title="Poweradmin\Application\Service\PaginationService">PaginationService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_userProvisioningService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L270">at line 270</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/UserProvisioningService.html"><abbr title="Poweradmin\Application\Service\UserProvisioningService">UserProvisioningService</abbr></a>
+    <strong>userProvisioningService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/UserProvisioningService.html"><abbr title="Poweradmin\Application\Service\UserProvisioningService">UserProvisioningService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_userAgreementRepository">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L275">at line 275</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Repository/UserAgreementRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserAgreementRepositoryInterface">UserAgreementRepositoryInterface</abbr></a>
+    <strong>userAgreementRepository</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Repository/UserAgreementRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserAgreementRepositoryInterface">UserAgreementRepositoryInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_userLogger">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L280">at line 280</a></div>
+        <code>                    <a href="../../../Poweradmin/Infrastructure/Logger/DbUserLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbUserLogger">DbUserLogger</abbr></a>
+    <strong>userLogger</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Infrastructure/Logger/DbUserLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbUserLogger">DbUserLogger</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_groupLogger">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L285">at line 285</a></div>
+        <code>                    <a href="../../../Poweradmin/Infrastructure/Logger/DbGroupLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbGroupLogger">DbGroupLogger</abbr></a>
+    <strong>groupLogger</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Infrastructure/Logger/DbGroupLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbGroupLogger">DbGroupLogger</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_sessionService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L290">at line 290</a></div>
+        <code>                    <a href="../../../Poweradmin/Infrastructure/Session/SessionService.html"><abbr title="Poweradmin\Infrastructure\Session\SessionService">SessionService</abbr></a>
+    <strong>sessionService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Infrastructure/Session/SessionService.html"><abbr title="Poweradmin\Infrastructure\Session\SessionService">SessionService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_redirectService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L295">at line 295</a></div>
+        <code>                    <a href="../../../Poweradmin/Infrastructure/Service/RedirectService.html"><abbr title="Poweradmin\Infrastructure\Service\RedirectService">RedirectService</abbr></a>
+    <strong>redirectService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Infrastructure/Service/RedirectService.html"><abbr title="Poweradmin\Infrastructure\Service\RedirectService">RedirectService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_authenticationService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L300">at line 300</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/Auth/AuthenticationService.html"><abbr title="Poweradmin\Application\Service\Auth\AuthenticationService">AuthenticationService</abbr></a>
+    <strong>authenticationService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/Auth/AuthenticationService.html"><abbr title="Poweradmin\Application\Service\Auth\AuthenticationService">AuthenticationService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_clientContext">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L305">at line 305</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Http/ClientContext.html"><abbr title="Poweradmin\Application\Http\ClientContext">ClientContext</abbr></a>
+    <strong>clientContext</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Http/ClientContext.html"><abbr title="Poweradmin\Application\Http\ClientContext">ClientContext</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_urlService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L310">at line 310</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/UrlService.html"><abbr title="Poweradmin\Application\Service\UrlService">UrlService</abbr></a>
+    <strong>urlService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/UrlService.html"><abbr title="Poweradmin\Application\Service\UrlService">UrlService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_userMfaRepository">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L315">at line 315</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Repository/UserMfaRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserMfaRepositoryInterface">UserMfaRepositoryInterface</abbr></a>
+    <strong>userMfaRepository</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Repository/UserMfaRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserMfaRepositoryInterface">UserMfaRepositoryInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_mfaService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L320">at line 320</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Auth/MfaService.html"><abbr title="Poweradmin\Domain\Service\Auth\MfaService">MfaService</abbr></a>
+    <strong>mfaService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Auth/MfaService.html"><abbr title="Poweradmin\Domain\Service\Auth\MfaService">MfaService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_apiKeyRepository">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L325">at line 325</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Repository/ApiKeyRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ApiKeyRepositoryInterface">ApiKeyRepositoryInterface</abbr></a>
+    <strong>apiKeyRepository</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Repository/ApiKeyRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ApiKeyRepositoryInterface">ApiKeyRepositoryInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_apiKeyAuthenticationMiddleware">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L330">at line 330</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/Auth/ApiKeyAuthenticationMiddleware.html"><abbr title="Poweradmin\Application\Service\Auth\ApiKeyAuthenticationMiddleware">ApiKeyAuthenticationMiddleware</abbr></a>
+    <strong>apiKeyAuthenticationMiddleware</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/Auth/ApiKeyAuthenticationMiddleware.html"><abbr title="Poweradmin\Application\Service\Auth\ApiKeyAuthenticationMiddleware">ApiKeyAuthenticationMiddleware</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_basicAuthenticationMiddleware">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L335">at line 335</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/Auth/BasicAuthenticationMiddleware.html"><abbr title="Poweradmin\Application\Service\Auth\BasicAuthenticationMiddleware">BasicAuthenticationMiddleware</abbr></a>
+    <strong>basicAuthenticationMiddleware</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/Auth/BasicAuthenticationMiddleware.html"><abbr title="Poweradmin\Application\Service\Auth\BasicAuthenticationMiddleware">BasicAuthenticationMiddleware</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_passwordResetTokenRepository">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L340">at line 340</a></div>
+        <code>                    <a href="../../../Poweradmin/Infrastructure/Repository/DbPasswordResetTokenRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbPasswordResetTokenRepository">DbPasswordResetTokenRepository</abbr></a>
+    <strong>passwordResetTokenRepository</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Infrastructure/Repository/DbPasswordResetTokenRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbPasswordResetTokenRepository">DbPasswordResetTokenRepository</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_usernameRecoveryRepository">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L345">at line 345</a></div>
+        <code>                    <a href="../../../Poweradmin/Infrastructure/Repository/DbUsernameRecoveryRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbUsernameRecoveryRepository">DbUsernameRecoveryRepository</abbr></a>
+    <strong>usernameRecoveryRepository</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Infrastructure/Repository/DbUsernameRecoveryRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbUsernameRecoveryRepository">DbUsernameRecoveryRepository</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_auditService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L350">at line 350</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/AuditService.html"><abbr title="Poweradmin\Application\Service\AuditService">AuditService</abbr></a>
+    <strong>auditService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/AuditService.html"><abbr title="Poweradmin\Application\Service\AuditService">AuditService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_auditLogWriter">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L355">at line 355</a></div>
+        <code>                    <a href="../../../Poweradmin/Infrastructure/Logger/AuditLogWriter.html"><abbr title="Poweradmin\Infrastructure\Logger\AuditLogWriter">AuditLogWriter</abbr></a>
+    <strong>auditLogWriter</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Infrastructure/Logger/AuditLogWriter.html"><abbr title="Poweradmin\Infrastructure\Logger\AuditLogWriter">AuditLogWriter</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_apiLogger">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L360">at line 360</a></div>
+        <code>                    <a href="../../../Poweradmin/Infrastructure/Logger/DbApiLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbApiLogger">DbApiLogger</abbr></a>
+    <strong>apiLogger</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Infrastructure/Logger/DbApiLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbApiLogger">DbApiLogger</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_zoneManagementService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L365">at line 365</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneManagementService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneManagementService">ZoneManagementService</abbr></a>
+    <strong>zoneManagementService</strong>(<a href="../../../Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a>|<a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $capabilities = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a>|<a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null</td>
+                <td>$capabilities</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Zone/ZoneManagementService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneManagementService">ZoneManagementService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_zoneCreateService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L370">at line 370</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/ZoneCreateService.html"><abbr title="Poweradmin\Application\Service\ZoneCreateService">ZoneCreateService</abbr></a>
+    <strong>zoneCreateService</strong>(<a href="../../../Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a>|<a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $capabilities = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a>|<a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null</td>
+                <td>$capabilities</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/ZoneCreateService.html"><abbr title="Poweradmin\Application\Service\ZoneCreateService">ZoneCreateService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_zoneSigningService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L375">at line 375</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneSigningService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneSigningService">ZoneSigningService</abbr></a>
+    <strong>zoneSigningService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Zone/ZoneSigningService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneSigningService">ZoneSigningService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_zoneOwnershipModeService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L380">at line 380</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipModeService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipModeService">ZoneOwnershipModeService</abbr></a>
+    <strong>zoneOwnershipModeService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipModeService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipModeService">ZoneOwnershipModeService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_zoneCreateOwnershipResolver">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L385">at line 385</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneCreateOwnershipResolver.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneCreateOwnershipResolver">ZoneCreateOwnershipResolver</abbr></a>
+    <strong>zoneCreateOwnershipResolver</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Zone/ZoneCreateOwnershipResolver.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneCreateOwnershipResolver">ZoneCreateOwnershipResolver</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_zoneOwnershipFormResolver">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L390">at line 390</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/ZoneOwnershipFormResolver.html"><abbr title="Poweradmin\Application\Service\ZoneOwnershipFormResolver">ZoneOwnershipFormResolver</abbr></a>
+    <strong>zoneOwnershipFormResolver</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/ZoneOwnershipFormResolver.html"><abbr title="Poweradmin\Application\Service\ZoneOwnershipFormResolver">ZoneOwnershipFormResolver</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1603,8 +2866,8 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneListPermissionService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L336">at line 336</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneListPermissionService.html"><abbr title="Poweradmin\Domain\Service\ZoneListPermissionService">ZoneListPermissionService</abbr></a>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L395">at line 395</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Auth/ZoneListPermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\ZoneListPermissionService">ZoneListPermissionService</abbr></a>
     <strong>zoneListPermissionService</strong>()
         </code>
     </h3>
@@ -1623,7 +2886,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/ZoneListPermissionService.html"><abbr title="Poweradmin\Domain\Service\ZoneListPermissionService">ZoneListPermissionService</abbr></a></td>
+            <td><a href="../../../Poweradmin/Domain/Service/Auth/ZoneListPermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\ZoneListPermissionService">ZoneListPermissionService</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1637,7 +2900,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneGroupRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L341">at line 341</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L400">at line 400</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Repository/ZoneGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneGroupRepositoryInterface">ZoneGroupRepositoryInterface</abbr></a>
     <strong>zoneGroupRepository</strong>()
         </code>
@@ -1670,10 +2933,10 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_reverseTtlResolver">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L346">at line 346</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\ReverseTtlResolver">ReverseTtlResolver</abbr></a>
-    <strong>reverseTtlResolver</strong>()
+                    <h3 id="method_zoneSortingService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L405">at line 405</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneSortingService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneSortingService">ZoneSortingService</abbr></a>
+    <strong>zoneSortingService</strong>(<a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null $userContext = null)
         </code>
     </h3>
     <div class="details">    
@@ -1686,12 +2949,22 @@ keeps one set of per-request read caches for the whole request.</p></p>
                     
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null</td>
+                <td>$userContext</td>
+                <td></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\ReverseTtlResolver">ReverseTtlResolver</abbr></a></td>
+            <td><a href="../../../Poweradmin/Domain/Service/Zone/ZoneSortingService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneSortingService">ZoneSortingService</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1704,10 +2977,10 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_recordManager">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L351">at line 351</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a>
-    <strong>recordManager</strong>()
+                    <h3 id="method_zoneMetadataService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L410">at line 410</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneMetadataService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneMetadataService">ZoneMetadataService</abbr></a>
+    <strong>zoneMetadataService</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -1725,7 +2998,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a></td>
+            <td><a href="../../../Poweradmin/Domain/Service/Zone/ZoneMetadataService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneMetadataService">ZoneMetadataService</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -1738,10 +3011,10 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_recordCommentService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L356">at line 356</a></div>
-        <code>                    <a href="../../../Poweradmin/Application/Service/RecordCommentService.html"><abbr title="Poweradmin\Application\Service\RecordCommentService">RecordCommentService</abbr></a>
-    <strong>recordCommentService</strong>()
+                    <h3 id="method_dashboardStatsService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L415">at line 415</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/DashboardStatsService.html"><abbr title="Poweradmin\Application\Service\DashboardStatsService">DashboardStatsService</abbr></a>
+    <strong>dashboardStatsService</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -1759,279 +3032,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Application/Service/RecordCommentService.html"><abbr title="Poweradmin\Application\Service\RecordCommentService">RecordCommentService</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_zoneEditService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L361">at line 361</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneEditService.html"><abbr title="Poweradmin\Domain\Service\ZoneEditService">ZoneEditService</abbr></a>
-    <strong>zoneEditService</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/ZoneEditService.html"><abbr title="Poweradmin\Domain\Service\ZoneEditService">ZoneEditService</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_zoneChangeRequestRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L379">at line 379</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Repository/ZoneChangeRequestRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneChangeRequestRepositoryInterface">ZoneChangeRequestRepositoryInterface</abbr></a>
-    <strong>zoneChangeRequestRepository</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Domain/Repository/ZoneChangeRequestRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneChangeRequestRepositoryInterface">ZoneChangeRequestRepositoryInterface</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_zoneChangeRequestService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L384">at line 384</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestService.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestService">ZoneChangeRequestService</abbr></a>
-    <strong>zoneChangeRequestService</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/ZoneChangeRequestService.html"><abbr title="Poweradmin\Domain\Service\ZoneChangeRequestService">ZoneChangeRequestService</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_changeRequestNotificationService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L420">at line 420</a></div>
-        <code>                    <a href="../../../Poweradmin/Application/Service/ChangeRequestNotificationService.html"><abbr title="Poweradmin\Application\Service\ChangeRequestNotificationService">ChangeRequestNotificationService</abbr></a>
-    <strong>changeRequestNotificationService</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Application/Service/ChangeRequestNotificationService.html"><abbr title="Poweradmin\Application\Service\ChangeRequestNotificationService">ChangeRequestNotificationService</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_recordManagerService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L435">at line 435</a></div>
-        <code>                    <a href="../../../Poweradmin/Application/Service/RecordManagerService.html"><abbr title="Poweradmin\Application\Service\RecordManagerService">RecordManagerService</abbr></a>
-    <strong>recordManagerService</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Application/Service/RecordManagerService.html"><abbr title="Poweradmin\Application\Service\RecordManagerService">RecordManagerService</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_recordAddService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L448">at line 448</a></div>
-        <code>                    <a href="../../../Poweradmin/Application/Service/RecordAddService.html"><abbr title="Poweradmin\Application\Service\RecordAddService">RecordAddService</abbr></a>
-    <strong>recordAddService</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Application/Service/RecordAddService.html"><abbr title="Poweradmin\Application\Service\RecordAddService">RecordAddService</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_reverseRecordCreator">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L462">at line 462</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\ReverseRecordCreator">ReverseRecordCreator</abbr></a>
-    <strong>reverseRecordCreator</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\ReverseRecordCreator">ReverseRecordCreator</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_batchReverseRecordCreator">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L474">at line 474</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/BatchReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\BatchReverseRecordCreator">BatchReverseRecordCreator</abbr></a>
-    <strong>batchReverseRecordCreator</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/BatchReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\BatchReverseRecordCreator">BatchReverseRecordCreator</abbr></a></td>
+            <td><a href="../../../Poweradmin/Application/Service/DashboardStatsService.html"><abbr title="Poweradmin\Application\Service\DashboardStatsService">DashboardStatsService</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -2045,7 +3046,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_domainManager">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L487">at line 487</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L420">at line 420</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Service/Dns/DomainManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\DomainManagerInterface">DomainManagerInterface</abbr></a>
     <strong>domainManager</strong>()
         </code>
@@ -2078,8 +3079,42 @@ keeps one set of per-request read caches for the whole request.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_zoneTemplateApplier">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L425">at line 425</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Dns/ZoneTemplateApplier.html"><abbr title="Poweradmin\Domain\Service\Dns\ZoneTemplateApplier">ZoneTemplateApplier</abbr></a>
+    <strong>zoneTemplateApplier</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Dns/ZoneTemplateApplier.html"><abbr title="Poweradmin\Domain\Service\Dns\ZoneTemplateApplier">ZoneTemplateApplier</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_supermasterManager">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L500">at line 500</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L430">at line 430</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Service/Dns/SupermasterManager.html"><abbr title="Poweradmin\Domain\Service\Dns\SupermasterManager">SupermasterManager</abbr></a>
     <strong>supermasterManager</strong>()
         </code>
@@ -2113,7 +3148,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneTemplateRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L509">at line 509</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L435">at line 435</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Repository/ZoneTemplateRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneTemplateRepositoryInterface">ZoneTemplateRepositoryInterface</abbr></a>
     <strong>zoneTemplateRepository</strong>()
         </code>
@@ -2124,8 +3159,8 @@ keeps one set of per-request read caches for the whole request.</p></p>
             
 
         <div class="method-description">
-                            <p><p>Shared so the zone template model, the domain manager and the zone
-management service all read through one instance.</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
             
@@ -2146,10 +3181,10 @@ management service all read through one instance.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_zoneTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L514">at line 514</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Model/ZoneTemplate.html"><abbr title="Poweradmin\Domain\Model\ZoneTemplate">ZoneTemplate</abbr></a>
-    <strong>zoneTemplate</strong>()
+                    <h3 id="method_zoneTemplateService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L440">at line 440</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Template/ZoneTemplateService.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplateService">ZoneTemplateService</abbr></a>
+    <strong>zoneTemplateService</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -2167,7 +3202,7 @@ management service all read through one instance.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Domain/Model/ZoneTemplate.html"><abbr title="Poweradmin\Domain\Model\ZoneTemplate">ZoneTemplate</abbr></a></td>
+            <td><a href="../../../Poweradmin/Domain/Service/Template/ZoneTemplateService.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplateService">ZoneTemplateService</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -2181,8 +3216,8 @@ management service all read through one instance.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_catalogZoneService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L519">at line 519</a></div>
-        <code>                    <a href="../../../Poweradmin/Domain/Service/CatalogZoneService.html"><abbr title="Poweradmin\Domain\Service\CatalogZoneService">CatalogZoneService</abbr></a>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L445">at line 445</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Zone/CatalogZoneService.html"><abbr title="Poweradmin\Domain\Service\Zone\CatalogZoneService">CatalogZoneService</abbr></a>
     <strong>catalogZoneService</strong>()
         </code>
     </h3>
@@ -2201,7 +3236,7 @@ management service all read through one instance.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Domain/Service/CatalogZoneService.html"><abbr title="Poweradmin\Domain\Service\CatalogZoneService">CatalogZoneService</abbr></a></td>
+            <td><a href="../../../Poweradmin/Domain/Service/Zone/CatalogZoneService.html"><abbr title="Poweradmin\Domain\Service\Zone\CatalogZoneService">CatalogZoneService</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -2214,10 +3249,10 @@ management service all read through one instance.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_repositoryFactory">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L528">at line 528</a></div>
-        <code>                    <a href="../../../Poweradmin/Application/Service/RepositoryFactory.html"><abbr title="Poweradmin\Application\Service\RepositoryFactory">RepositoryFactory</abbr></a>
-    <strong>repositoryFactory</strong>(<a href="../../../Poweradmin/Domain/Service/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null $backendProvider = null)
+                    <h3 id="method_zoneLogger">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L450">at line 450</a></div>
+        <code>                    <a href="../../../Poweradmin/Infrastructure/Logger/DbZoneLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbZoneLogger">DbZoneLogger</abbr></a>
+    <strong>zoneLogger</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -2230,22 +3265,590 @@ management service all read through one instance.</p></p>
                     
         </div>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td><a href="../../../Poweradmin/Domain/Service/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null</td>
-                <td>$backendProvider</td>
-                <td></td>
-            </tr>
-            </table>
-
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td><a href="../../../Poweradmin/Application/Service/RepositoryFactory.html"><abbr title="Poweradmin\Application\Service\RepositoryFactory">RepositoryFactory</abbr></a></td>
+            <td><a href="../../../Poweradmin/Infrastructure/Logger/DbZoneLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\DbZoneLogger">DbZoneLogger</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_recordManager">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L455">at line 455</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a>
+    <strong>recordManager</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_recordChangeLogger">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L460">at line 460</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Port/RecordChangeWriterInterface.html"><abbr title="Poweradmin\Domain\Port\RecordChangeWriterInterface">RecordChangeWriterInterface</abbr></a>
+    <strong>recordChangeLogger</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Port/RecordChangeWriterInterface.html"><abbr title="Poweradmin\Domain\Port\RecordChangeWriterInterface">RecordChangeWriterInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_recordChangeLog">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L465">at line 465</a></div>
+        <code>                    <a href="../../../Poweradmin/Infrastructure/Logger/RecordChangeLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\RecordChangeLogger">RecordChangeLogger</abbr></a>
+    <strong>recordChangeLog</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Infrastructure/Logger/RecordChangeLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\RecordChangeLogger">RecordChangeLogger</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_rrsetReplaceService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L470">at line 470</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Dns/RRSetReplaceService.html"><abbr title="Poweradmin\Domain\Service\Dns\RRSetReplaceService">RRSetReplaceService</abbr></a>
+    <strong>rrsetReplaceService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Dns/RRSetReplaceService.html"><abbr title="Poweradmin\Domain\Service\Dns\RRSetReplaceService">RRSetReplaceService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_recordCommentService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L475">at line 475</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/RecordCommentService.html"><abbr title="Poweradmin\Application\Service\RecordCommentService">RecordCommentService</abbr></a>
+    <strong>recordCommentService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/RecordCommentService.html"><abbr title="Poweradmin\Application\Service\RecordCommentService">RecordCommentService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_zoneEditService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L480">at line 480</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneEditService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditService">ZoneEditService</abbr></a>
+    <strong>zoneEditService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Zone/ZoneEditService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditService">ZoneEditService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_zoneChangeRequestRepository">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L485">at line 485</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Repository/ZoneChangeRequestRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneChangeRequestRepositoryInterface">ZoneChangeRequestRepositoryInterface</abbr></a>
+    <strong>zoneChangeRequestRepository</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Repository/ZoneChangeRequestRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneChangeRequestRepositoryInterface">ZoneChangeRequestRepositoryInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_zoneChangeRequestService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L490">at line 490</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneChangeRequestService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneChangeRequestService">ZoneChangeRequestService</abbr></a>
+    <strong>zoneChangeRequestService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Zone/ZoneChangeRequestService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneChangeRequestService">ZoneChangeRequestService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_changeRequestNotificationService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L495">at line 495</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/ChangeRequestNotificationService.html"><abbr title="Poweradmin\Application\Service\ChangeRequestNotificationService">ChangeRequestNotificationService</abbr></a>
+    <strong>changeRequestNotificationService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/ChangeRequestNotificationService.html"><abbr title="Poweradmin\Application\Service\ChangeRequestNotificationService">ChangeRequestNotificationService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_recordManagerService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L500">at line 500</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/RecordManagerService.html"><abbr title="Poweradmin\Application\Service\RecordManagerService">RecordManagerService</abbr></a>
+    <strong>recordManagerService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/RecordManagerService.html"><abbr title="Poweradmin\Application\Service\RecordManagerService">RecordManagerService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_recordAddService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L505">at line 505</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/RecordAddService.html"><abbr title="Poweradmin\Application\Service\RecordAddService">RecordAddService</abbr></a>
+    <strong>recordAddService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/RecordAddService.html"><abbr title="Poweradmin\Application\Service\RecordAddService">RecordAddService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_changeApprovalContext">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L510">at line 510</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/ChangeApprovalContext.html"><abbr title="Poweradmin\Application\Service\ChangeApprovalContext">ChangeApprovalContext</abbr></a>
+    <strong>changeApprovalContext</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/ChangeApprovalContext.html"><abbr title="Poweradmin\Application\Service\ChangeApprovalContext">ChangeApprovalContext</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_reverseRecordCreator">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L515">at line 515</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Dns/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseRecordCreator">ReverseRecordCreator</abbr></a>
+    <strong>reverseRecordCreator</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Dns/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseRecordCreator">ReverseRecordCreator</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_recordDeletionService">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L520">at line 520</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Dns/RecordDeletionService.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordDeletionService">RecordDeletionService</abbr></a>
+    <strong>recordDeletionService</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Dns/RecordDeletionService.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordDeletionService">RecordDeletionService</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_batchReverseRecordCreator">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L525">at line 525</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Dns/BatchReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\BatchReverseRecordCreator">BatchReverseRecordCreator</abbr></a>
+    <strong>batchReverseRecordCreator</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Dns/BatchReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\BatchReverseRecordCreator">BatchReverseRecordCreator</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_reverseTtlResolver">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L530">at line 530</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Service/Dns/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseTtlResolver">ReverseTtlResolver</abbr></a>
+    <strong>reverseTtlResolver</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Service/Dns/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseTtlResolver">ReverseTtlResolver</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_recordTypeDefaultRepository">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerServiceFactory.php#L535">at line 535</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Repository/RecordTypeDefaultRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordTypeDefaultRepositoryInterface">RecordTypeDefaultRepositoryInterface</abbr></a>
+    <strong>recordTypeDefaultRepository</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Domain/Repository/RecordTypeDefaultRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordTypeDefaultRepositoryInterface">RecordTypeDefaultRepositoryInterface</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -2261,7 +3864,7 @@ management service all read through one instance.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/f3a2a2a" rel="noreferrer" target="_blank">commit f3a2a2a,</a> built 2026-09-20 16:18 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/0465df9" rel="noreferrer" target="_blank">commit 0465df9,</a> built 2026-09-21 12:12 UTC.</div></div>
     </div>
     </body>
 

@@ -106,23 +106,6 @@
             <p><p>Creates, updates and deletes zones for the web UI, including template records and DNSSEC setup.</p></p>                    </div>
             
         
-            <h2>Constants</h2>    <table class="table table-condensed">
-                    <tr>
-                <td>
-                                                            private
-                                                                                IPV4_REVERSE_TEMPLATE_TYPES
-                                    </td>
-                <td class="last">
-                    <p><em><p>Decide whether a template record should be inserted into the target zone.</p></em></p>
-                    <p><p>Historically IPv4 reverse zones (in-addr.arpa) were limited to NS/SOA because
-early templates auto-populated A records for webip/mailip. The allowlist now
-also covers PTR, LUA, CNAME and TXT so legitimate reverse-zone records (e.g.
-LUA-driven dynamic PTR generation, RFC 2317 classless delegations) are no
-longer silently dropped. IPv6 reverse zones (ip6.arpa) carry no restriction.</p></p>
-                </td>
-            </tr>
-            </table>
-
     
     
             <h2>Methods</h2>
@@ -133,7 +116,7 @@ longer silently dropped. IPv6 reverse zones (ip6.arpa) carry no restriction.</p>
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a> $soaRecordManager, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domainRepository, <a href="../../../../Poweradmin/Domain/Service/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null $backendProvider = null, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, <a href="../../../../Poweradmin/Infrastructure/Logger/RecordChangeLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\RecordChangeLogger">RecordChangeLogger</abbr></a>|null $changeLogger = null, <a href="../../../../Poweradmin/Domain/Service/UserContextService.html"><abbr title="Poweradmin\Domain\Service\UserContextService">UserContextService</abbr></a>|null $userContext = null, <a href="../../../../Poweradmin/Domain/Repository/ZoneTemplateRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneTemplateRepositoryInterface">ZoneTemplateRepositoryInterface</abbr></a>|null $zoneTemplateRepository = null, <a href="../../../../Poweradmin/Domain/Repository/RepositoryFactoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RepositoryFactoryInterface">RepositoryFactoryInterface</abbr></a>|null $repositoryFactory = null)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domainRepository, <a href="../../../../Poweradmin/Domain/Repository/RepositoryFactoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RepositoryFactoryInterface">RepositoryFactoryInterface</abbr></a> $repositoryFactory, <a href="../../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissionService, <a href="../../../../Poweradmin/Domain/Repository/UserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a> $userRepository, <a href="../../../../Poweradmin/Domain/Port/RecordChangeWriterInterface.html"><abbr title="Poweradmin\Domain\Port\RecordChangeWriterInterface">RecordChangeWriterInterface</abbr></a> $changeLogger, <a href="../../../../Poweradmin/Domain/Service/Dns/ZoneTemplateApplier.html"><abbr title="Poweradmin\Domain\Service\Dns\ZoneTemplateApplier">ZoneTemplateApplier</abbr></a> $templateApplier, <a href="../../../../Poweradmin/Domain/Repository/ZoneTemplateRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneTemplateRepositoryInterface">ZoneTemplateRepositoryInterface</abbr></a> $zoneTemplateRepository, <a href="../../../../Poweradmin/Domain/Service/Template/ZoneTemplatePlaceholders.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplatePlaceholders">ZoneTemplatePlaceholders</abbr></a> $placeholders, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, <a href="../../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null $userContext = null)
         
                                             <p>Constructor</p>                </div>
                 <div class="col-md-2"></div>
@@ -191,22 +174,12 @@ reported as success.</p></p>                </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    static&nbsp;int
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getZoneTemplate">getZoneTemplate</a>(object $db, int $zone_id)
-        
-                                            <p><p>Get Zone Template ID for Zone ID</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
                     <a href="../../../../Poweradmin/Domain/Service/Dns/ZoneWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\ZoneWriteResult">ZoneWriteResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_updateZoneRecords">updateZoneRecords</a>(string $db_type, int $dns_ttl, int $zone_id, int $zone_template_id)
+                    <a href="#method_updateZoneRecords">updateZoneRecords</a>(int $dns_ttl, int $zone_id, int $zone_template_id)
         
-                                            <p><p>Update All Zone Records for Zone ID with Zone Template</p></p>                </div>
+                                            <p><p>Apply a zone template to a zone, or unlink it with template id 0.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -217,9 +190,9 @@ reported as success.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L79">at line 79</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L82">at line 82</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a> $soaRecordManager, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domainRepository, <a href="../../../../Poweradmin/Domain/Service/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null $backendProvider = null, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, <a href="../../../../Poweradmin/Infrastructure/Logger/RecordChangeLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\RecordChangeLogger">RecordChangeLogger</abbr></a>|null $changeLogger = null, <a href="../../../../Poweradmin/Domain/Service/UserContextService.html"><abbr title="Poweradmin\Domain\Service\UserContextService">UserContextService</abbr></a>|null $userContext = null, <a href="../../../../Poweradmin/Domain/Repository/ZoneTemplateRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneTemplateRepositoryInterface">ZoneTemplateRepositoryInterface</abbr></a>|null $zoneTemplateRepository = null, <a href="../../../../Poweradmin/Domain/Repository/RepositoryFactoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RepositoryFactoryInterface">RepositoryFactoryInterface</abbr></a>|null $repositoryFactory = null)
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domainRepository, <a href="../../../../Poweradmin/Domain/Repository/RepositoryFactoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RepositoryFactoryInterface">RepositoryFactoryInterface</abbr></a> $repositoryFactory, <a href="../../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissionService, <a href="../../../../Poweradmin/Domain/Repository/UserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a> $userRepository, <a href="../../../../Poweradmin/Domain/Port/RecordChangeWriterInterface.html"><abbr title="Poweradmin\Domain\Port\RecordChangeWriterInterface">RecordChangeWriterInterface</abbr></a> $changeLogger, <a href="../../../../Poweradmin/Domain/Service/Dns/ZoneTemplateApplier.html"><abbr title="Poweradmin\Domain\Service\Dns\ZoneTemplateApplier">ZoneTemplateApplier</abbr></a> $templateApplier, <a href="../../../../Poweradmin/Domain/Repository/ZoneTemplateRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneTemplateRepositoryInterface">ZoneTemplateRepositoryInterface</abbr></a> $zoneTemplateRepository, <a href="../../../../Poweradmin/Domain/Service/Template/ZoneTemplatePlaceholders.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplatePlaceholders">ZoneTemplatePlaceholders</abbr></a> $placeholders, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, <a href="../../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null $userContext = null)
         </code>
     </h3>
     <div class="details">    
@@ -245,19 +218,49 @@ reported as success.</p></p>                </div>
                 <td><p>Configuration manager</p></td>
             </tr>
                     <tr>
-                <td><a href="../../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a></td>
-                <td>$soaRecordManager</td>
-                <td><p>SOA record manager</p></td>
-            </tr>
-                    <tr>
                 <td><a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a></td>
                 <td>$domainRepository</td>
                 <td><p>Domain repository</p></td>
             </tr>
                     <tr>
-                <td><a href="../../../../Poweradmin/Domain/Service/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Service\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null</td>
+                <td><a href="../../../../Poweradmin/Domain/Repository/RepositoryFactoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RepositoryFactoryInterface">RepositoryFactoryInterface</abbr></a></td>
+                <td>$repositoryFactory</td>
+                <td><p>Builds the zone repository</p></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a></td>
                 <td>$backendProvider</td>
-                <td><p>DNS backend provider (auto-created if null)</p></td>
+                <td><p>DNS backend provider</p></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a></td>
+                <td>$permissionService</td>
+                <td><p>Permissions and zone ownership of the acting user</p></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Repository/UserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a></td>
+                <td>$userRepository</td>
+                <td><p>Resolves the users named as zone owners</p></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Port/RecordChangeWriterInterface.html"><abbr title="Poweradmin\Domain\Port\RecordChangeWriterInterface">RecordChangeWriterInterface</abbr></a></td>
+                <td>$changeLogger</td>
+                <td><p>Receives the zone and record snapshots</p></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Service/Dns/ZoneTemplateApplier.html"><abbr title="Poweradmin\Domain\Service\Dns\ZoneTemplateApplier">ZoneTemplateApplier</abbr></a></td>
+                <td>$templateApplier</td>
+                <td><p>Applies a template to an existing zone</p></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Repository/ZoneTemplateRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneTemplateRepositoryInterface">ZoneTemplateRepositoryInterface</abbr></a></td>
+                <td>$zoneTemplateRepository</td>
+                <td><p>Reads the template records seeded into a new zone</p></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Service/Template/ZoneTemplatePlaceholders.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplatePlaceholders">ZoneTemplatePlaceholders</abbr></a></td>
+                <td>$placeholders</td>
+                <td><p>Expands the placeholders in those records</p></td>
             </tr>
                     <tr>
                 <td><abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null</td>
@@ -265,24 +268,9 @@ reported as success.</p></p>                </div>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../../Poweradmin/Infrastructure/Logger/RecordChangeLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\RecordChangeLogger">RecordChangeLogger</abbr></a>|null</td>
-                <td>$changeLogger</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td><a href="../../../../Poweradmin/Domain/Service/UserContextService.html"><abbr title="Poweradmin\Domain\Service\UserContextService">UserContextService</abbr></a>|null</td>
+                <td><a href="../../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null</td>
                 <td>$userContext</td>
                 <td></td>
-            </tr>
-                    <tr>
-                <td><a href="../../../../Poweradmin/Domain/Repository/ZoneTemplateRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneTemplateRepositoryInterface">ZoneTemplateRepositoryInterface</abbr></a>|null</td>
-                <td>$zoneTemplateRepository</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td><a href="../../../../Poweradmin/Domain/Repository/RepositoryFactoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RepositoryFactoryInterface">RepositoryFactoryInterface</abbr></a>|null</td>
-                <td>$repositoryFactory</td>
-                <td><p>Builds the zone repository (auto-created if null)</p></td>
             </tr>
             </table>
 
@@ -296,7 +284,7 @@ reported as success.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_addDomain">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L191">at line 191</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L189">at line 189</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/ZoneWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\ZoneWriteResult">ZoneWriteResult</abbr></a>
     <strong>addDomain</strong>(object $db, string $domain, int|null $owner, string $type, string $slave_master, int|string $zone_template, array $groupIds = [], string|null $soaEditApi = null)
         </code>
@@ -374,7 +362,7 @@ reported as success.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_retrieveZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L541">at line 541</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L564">at line 564</a></div>
         <code>                    bool
     <strong>retrieveZone</strong>(int $id)
         </code>
@@ -417,7 +405,7 @@ reported as success.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_changeZoneType">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L552">at line 552</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L575">at line 575</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/ZoneWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\ZoneWriteResult">ZoneWriteResult</abbr></a>
     <strong>changeZoneType</strong>(string $type, int $id)
         </code>
@@ -465,7 +453,7 @@ reported as success.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_changeZoneSlaveMaster">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L596">at line 596</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L619">at line 619</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/ZoneWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\ZoneWriteResult">ZoneWriteResult</abbr></a>
     <strong>changeZoneSlaveMaster</strong>(int $zone_id, string $ip_slave_master)
         </code>
@@ -513,7 +501,7 @@ reported as success.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_addOwnerToZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L629">at line 629</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L652">at line 652</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/ZoneWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\ZoneWriteResult">ZoneWriteResult</abbr></a>
     <strong>addOwnerToZone</strong>(int $zone_id, int $user_id)
         </code>
@@ -561,58 +549,10 @@ reported as success.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getZoneTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L654">at line 654</a></div>
-        <code>        static            int
-    <strong>getZoneTemplate</strong>(object $db, int $zone_id)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Get Zone Template ID for Zone ID</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>object</td>
-                <td>$db</td>
-                <td><p>Database connection</p></td>
-            </tr>
-                    <tr>
-                <td>int</td>
-                <td>$zone_id</td>
-                <td><p>Zone ID</p></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>int</td>
-            <td><p>Zone Template ID</p></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_updateZoneRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L677">at line 677</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/DomainManager.php#L676">at line 676</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/ZoneWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\ZoneWriteResult">ZoneWriteResult</abbr></a>
-    <strong>updateZoneRecords</strong>(string $db_type, int $dns_ttl, int $zone_id, int $zone_template_id)
+    <strong>updateZoneRecords</strong>(int $dns_ttl, int $zone_id, int $zone_template_id)
         </code>
     </h3>
     <div class="details">    
@@ -621,17 +561,12 @@ reported as success.</p></p>
             
 
         <div class="method-description">
-                            <p><p>Update All Zone Records for Zone ID with Zone Template</p></p>                        
+                            <p><p>Apply a zone template to a zone, or unlink it with template id 0.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$db_type</td>
-                <td><p>Database type</p></td>
-            </tr>
                     <tr>
                 <td>int</td>
                 <td>$dns_ttl</td>
@@ -670,7 +605,7 @@ reported as success.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/f3a2a2a" rel="noreferrer" target="_blank">commit f3a2a2a,</a> built 2026-09-20 16:18 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/0465df9" rel="noreferrer" target="_blank">commit 0465df9,</a> built 2026-09-21 12:12 UTC.</div></div>
     </div>
     </body>
 

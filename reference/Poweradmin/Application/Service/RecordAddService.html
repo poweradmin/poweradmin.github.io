@@ -103,9 +103,10 @@
         
 
             <div class="description">
-            <p><p>The add-record flow shared by the add-record page and the inline form on the
-zone editor: name and content are normalised the same way, the TTL default is
-resolved the same way, and the companion PTR or A record follows the same rules.</p></p>                    </div>
+            <p><p>The add-record flow shared by the add-record page, the inline form on the
+zone editor and the record wizards: open() applies the same gates in the
+same order, and add() normalises name, content and TTL the same way and
+follows the same rules for the companion PTR or A record.</p></p>                    </div>
             
         
     
@@ -118,10 +119,22 @@ resolved the same way, and the companion PTR or A record follows the same rules.
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Application/Service/RecordManagerService.html"><abbr title="Poweradmin\Application\Service\RecordManagerService">RecordManagerService</abbr></a> $records, <a href="../../../Poweradmin/Domain/Service/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\ReverseRecordCreator">ReverseRecordCreator</abbr></a> $reverseRecords, <a href="../../../Poweradmin/Domain/Service/DomainRecordCreator.html"><abbr title="Poweradmin\Domain\Service\DomainRecordCreator">DomainRecordCreator</abbr></a> $domainRecords, <a href="../../../Poweradmin/Domain/Service/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\ReverseTtlResolver">ReverseTtlResolver</abbr></a> $ttlResolver, <a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains)
+                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Application/Service/RecordManagerService.html"><abbr title="Poweradmin\Application\Service\RecordManagerService">RecordManagerService</abbr></a> $records, <a href="../../../Poweradmin/Domain/Service/Dns/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseRecordCreator">ReverseRecordCreator</abbr></a> $reverseRecords, <a href="../../../Poweradmin/Domain/Service/Dns/DomainRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\DomainRecordCreator">DomainRecordCreator</abbr></a> $domainRecords, <a href="../../../Poweradmin/Domain/Service/Dns/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseTtlResolver">ReverseTtlResolver</abbr></a> $ttlResolver, <a href="../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains, <a href="../../../Poweradmin/Application/Service/ChangeApprovalContext.html"><abbr title="Poweradmin\Application\Service\ChangeApprovalContext">ChangeApprovalContext</abbr></a> $approval)
         
                                             <p class="no-description">No description</p>
                                     </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../Poweradmin/Application/Service/RecordAddAccess.html"><abbr title="Poweradmin\Application\Service\RecordAddAccess">RecordAddAccess</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_open">open</a>(int $zoneId, int $userId)
+        
+                                            <p><p>Whether the user may add records to the zone directly: the zone must
+exist, the user's changes must not be routed through review (those go
+through the zone editor), and the zone must be writable by them.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -143,9 +156,9 @@ resolved the same way, and the companion PTR or A record follows the same rules.
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordAddService.php#L41">at line 41</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordAddService.php#L43">at line 43</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../Poweradmin/Application/Service/RecordManagerService.html"><abbr title="Poweradmin\Application\Service\RecordManagerService">RecordManagerService</abbr></a> $records, <a href="../../../Poweradmin/Domain/Service/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\ReverseRecordCreator">ReverseRecordCreator</abbr></a> $reverseRecords, <a href="../../../Poweradmin/Domain/Service/DomainRecordCreator.html"><abbr title="Poweradmin\Domain\Service\DomainRecordCreator">DomainRecordCreator</abbr></a> $domainRecords, <a href="../../../Poweradmin/Domain/Service/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\ReverseTtlResolver">ReverseTtlResolver</abbr></a> $ttlResolver, <a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains)
+    <strong>__construct</strong>(<a href="../../../Poweradmin/Application/Service/RecordManagerService.html"><abbr title="Poweradmin\Application\Service\RecordManagerService">RecordManagerService</abbr></a> $records, <a href="../../../Poweradmin/Domain/Service/Dns/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseRecordCreator">ReverseRecordCreator</abbr></a> $reverseRecords, <a href="../../../Poweradmin/Domain/Service/Dns/DomainRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\DomainRecordCreator">DomainRecordCreator</abbr></a> $domainRecords, <a href="../../../Poweradmin/Domain/Service/Dns/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseTtlResolver">ReverseTtlResolver</abbr></a> $ttlResolver, <a href="../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains, <a href="../../../Poweradmin/Application/Service/ChangeApprovalContext.html"><abbr title="Poweradmin\Application\Service\ChangeApprovalContext">ChangeApprovalContext</abbr></a> $approval)
         </code>
     </h3>
     <div class="details">    
@@ -167,28 +180,33 @@ resolved the same way, and the companion PTR or A record follows the same rules.
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Domain/Service/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\ReverseRecordCreator">ReverseRecordCreator</abbr></a></td>
+                <td><a href="../../../Poweradmin/Domain/Service/Dns/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseRecordCreator">ReverseRecordCreator</abbr></a></td>
                 <td>$reverseRecords</td>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Domain/Service/DomainRecordCreator.html"><abbr title="Poweradmin\Domain\Service\DomainRecordCreator">DomainRecordCreator</abbr></a></td>
+                <td><a href="../../../Poweradmin/Domain/Service/Dns/DomainRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\DomainRecordCreator">DomainRecordCreator</abbr></a></td>
                 <td>$domainRecords</td>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Domain/Service/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\ReverseTtlResolver">ReverseTtlResolver</abbr></a></td>
+                <td><a href="../../../Poweradmin/Domain/Service/Dns/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseTtlResolver">ReverseTtlResolver</abbr></a></td>
                 <td>$ttlResolver</td>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Domain/Service/PermissionService.html"><abbr title="Poweradmin\Domain\Service\PermissionService">PermissionService</abbr></a></td>
+                <td><a href="../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a></td>
                 <td>$permissions</td>
                 <td></td>
             </tr>
                     <tr>
                 <td><a href="../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a></td>
                 <td>$domains</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Application/Service/ChangeApprovalContext.html"><abbr title="Poweradmin\Application\Service\ChangeApprovalContext">ChangeApprovalContext</abbr></a></td>
+                <td>$approval</td>
                 <td></td>
             </tr>
             </table>
@@ -202,8 +220,58 @@ resolved the same way, and the companion PTR or A record follows the same rules.
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_open">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordAddService.php#L59">at line 59</a></div>
+        <code>                    <a href="../../../Poweradmin/Application/Service/RecordAddAccess.html"><abbr title="Poweradmin\Application\Service\RecordAddAccess">RecordAddAccess</abbr></a>
+    <strong>open</strong>(int $zoneId, int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the user may add records to the zone directly: the zone must
+exist, the user's changes must not be routed through review (those go
+through the zone editor), and the zone must be writable by them.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../Poweradmin/Application/Service/RecordAddAccess.html"><abbr title="Poweradmin\Application\Service\RecordAddAccess">RecordAddAccess</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_add">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordAddService.php#L56">at line 56</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/RecordAddService.php#L82">at line 82</a></div>
         <code>                    <a href="../../../Poweradmin/Application/Service/RecordAddResult.html"><abbr title="Poweradmin\Application\Service\RecordAddResult">RecordAddResult</abbr></a>
     <strong>add</strong>(int $zoneId, string $zoneName, string $name, string $type, string $content, int|null $ttl, int $prio, string $comment, int $userId, string $username, string $companion = &#039;&#039;, int $disabled = 0)
         </code>
@@ -304,7 +372,7 @@ resolved the same way, and the companion PTR or A record follows the same rules.
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/f3a2a2a" rel="noreferrer" target="_blank">commit f3a2a2a,</a> built 2026-09-20 16:18 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/0465df9" rel="noreferrer" target="_blank">commit 0465df9,</a> built 2026-09-21 12:12 UTC.</div></div>
     </div>
     </body>
 

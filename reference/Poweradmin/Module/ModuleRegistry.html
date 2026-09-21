@@ -103,8 +103,7 @@
         
 
             <div class="description">
-            <p><p>Loads the bundled modules and answers which are enabled for the current user.</p></p>            <p><p>Central registry for all available modules. Manages module lifecycle,
-availability, and provides aggregated routes, navigation, and capabilities.</p></p>        </div>
+            <p><p>Loads the modules listed in the manifest and answers which are enabled for the current user.</p></p>            <p><p>Provides aggregated routes, navigation, and capabilities of the enabled modules.</p></p>        </div>
             
         
     
@@ -117,7 +116,7 @@ availability, and provides aggregated routes, navigation, and capabilities.</p><
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a> $config)
+                    <a href="#method___construct">__construct</a>(<a href="../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, array $moduleClasses = ModuleManifest::MODULES)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -182,9 +181,9 @@ availability, and provides aggregated routes, navigation, and capabilities.</p><
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Module/ModuleRegistry.php#L62">at line 62</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Module/ModuleRegistry.php#L49">at line 49</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a> $config)
+    <strong>__construct</strong>(<a href="../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, array $moduleClasses = ModuleManifest::MODULES)
         </code>
     </h3>
     <div class="details">    
@@ -201,9 +200,14 @@ availability, and provides aggregated routes, navigation, and capabilities.</p><
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a></td>
+                <td><a href="../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
                 <td>$config</td>
                 <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$moduleClasses</td>
+                <td><p>Module classes by config name; the manifest by default</p></td>
             </tr>
             </table>
 
@@ -217,7 +221,7 @@ availability, and provides aggregated routes, navigation, and capabilities.</p><
             </div>
                     <div class="method-item">
                     <h3 id="method_loadModules">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Module/ModuleRegistry.php#L71">at line 71</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Module/ModuleRegistry.php#L59">at line 59</a></div>
         <code>                    void
     <strong>loadModules</strong>()
         </code>
@@ -250,7 +254,7 @@ availability, and provides aggregated routes, navigation, and capabilities.</p><
             </div>
                     <div class="method-item">
                     <h3 id="method_getEnabledModules">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Module/ModuleRegistry.php#L113">at line 113</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Module/ModuleRegistry.php#L103">at line 103</a></div>
         <code>                    array
     <strong>getEnabledModules</strong>()
         </code>
@@ -284,7 +288,7 @@ availability, and provides aggregated routes, navigation, and capabilities.</p><
             </div>
                     <div class="method-item">
                     <h3 id="method_getRoutes">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Module/ModuleRegistry.php#L123">at line 123</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Module/ModuleRegistry.php#L113">at line 113</a></div>
         <code>                    array
     <strong>getRoutes</strong>()
         </code>
@@ -317,7 +321,7 @@ availability, and provides aggregated routes, navigation, and capabilities.</p><
             </div>
                     <div class="method-item">
                     <h3 id="method_getNavItems">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Module/ModuleRegistry.php#L140">at line 140</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Module/ModuleRegistry.php#L130">at line 130</a></div>
         <code>                    array
     <strong>getNavItems</strong>(bool $isAdmin = false)
         </code>
@@ -360,7 +364,7 @@ availability, and provides aggregated routes, navigation, and capabilities.</p><
             </div>
                     <div class="method-item">
                     <h3 id="method_getCapabilityData">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Module/ModuleRegistry.php#L163">at line 163</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Module/ModuleRegistry.php#L153">at line 153</a></div>
         <code>                    array
     <strong>getCapabilityData</strong>(string $capability, array $context = [], bool $isAdmin = false)
         </code>
@@ -415,7 +419,7 @@ availability, and provides aggregated routes, navigation, and capabilities.</p><
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/f3a2a2a" rel="noreferrer" target="_blank">commit f3a2a2a,</a> built 2026-09-20 16:18 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/0465df9" rel="noreferrer" target="_blank">commit 0465df9,</a> built 2026-09-21 12:12 UTC.</div></div>
     </div>
     </body>
 

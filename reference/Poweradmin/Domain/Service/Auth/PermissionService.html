@@ -1,0 +1,2350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Poweradmin\Domain\Service\Auth\PermissionService | Poweradmin class reference</title>
+
+                <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../../../fonts/doctum-font.css">
+        <script src="../../../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../../../doctum.js"></script>
+        <script async defer src="../../../../js/bootstrap.min.js"></script>
+        <script async defer src="../../../../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+    <link rel="stylesheet" type="text/css" href="../../../../css/poweradmin.css">
+    <style>
+        @media (min-width: 992px) {
+            .underlined .row > .col-md-6:first-child { width: 30%; }
+            .underlined .row > .col-md-6:last-child { width: 70%; }
+        }
+    </style>
+
+
+    </head>
+
+    <body id="class" data-name="class:Poweradmin_Domain_Service_Auth_PermissionService" data-root-path="../../../../" data-search-index-url="../../../../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../../../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../../index.html">Poweradmin class reference</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../../classes.html">Classes</a></li>
+                    <li><a href="../../../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../../Poweradmin/Domain/Service.html">Service</a></li><li class="backslash">\</li><li><a href="../../../../Poweradmin/Domain/Service/Auth.html">Auth</a></li><li class="backslash">\</li><li>PermissionService</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>PermissionService    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>PermissionService</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php">View source</a>)
+</p>
+
+        
+        
+    
+        
+
+            <div class="description">
+            <p><p>Answers permission questions for a user from their template and group grants, cached per request.</p></p>            <p><p>This service provides methods to check and retrieve user permissions
+using Domain-Driven Design principles.</p></p>        </div>
+            
+        
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                                                                                        TEMPLATE_ASSIGN_DENIED
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                                                                                        TEMPLATE_SELF_ASSIGN_DENIED
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                                                                                        TEMPLATE_SUPERUSER_DENIED
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                            private
+                                                                                LEVEL_PAIRS
+                                    </td>
+                <td class="last">
+                    <p><em><p>Level ladders: name =&gt; [grants that yield &quot;all&quot;, grants that yield &quot;own&quot;].</p></em></p>
+                    <p><p>Holders of zone_meta<em>edit</em>* may always see what they are allowed to edit.</p></p>
+                </td>
+            </tr>
+            </table>
+
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Domain/Repository/UserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a>&<a href="../../../../Poweradmin/Domain/Repository/UserPermissionReadInterface.html"><abbr title="Poweradmin\Domain\Repository\UserPermissionReadInterface">UserPermissionReadInterface</abbr></a> $userRepository)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasPermission">hasPermission</a>(int $userId, string $permissionName)
+        
+                                            <p><p>Check if a user has a specific permission</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getUserPermissions">getUserPermissions</a>(int $userId)
+        
+                                            <p><p>Get all permissions for a specific user (direct template and group-based)</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canManageGroups">canManageGroups</a>(int $userId)
+        
+                                            <p><p>Check whether a user may create, edit or delete groups.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isAdmin">isAdmin</a>(int $userId)
+        
+                                            <p><p>Check if a user is an admin (has the &quot;überuser&quot; permission)</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_userOwnsZone">userOwnsZone</a>(int $userId, int $domainId)
+        
+                                            <p><p>Check if a user owns a zone directly or via group membership</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_forgetUser">forgetUser</a>(int $userId)
+        
+                                            <p><p>Drop the cached answers for a user after their template, groups or zone
+ownership changed within the request.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_forgetZone">forgetZone</a>(int $zoneId)
+        
+                                            <p><p>Drop the cached ownership answers for a zone after its owners or groups changed.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canPerformZoneAction">canPerformZoneAction</a>(int $userId, int $domainId, string $permissionName)
+        
+                                            <p><p>Whether the user may perform an &quot;_own&quot; action on a zone: the grant comes from
+the user's template or any of their groups (union), and the zone is owned
+directly or through any group.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getViewPermissionLevel">getViewPermissionLevel</a>(int $userId)
+        
+                                            <p><p>Get view permission level for a user</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getEditPermissionLevel">getEditPermissionLevel</a>(int $userId)
+        
+                                            <p><p>Get edit permission level for a user</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getEditPermissionLevelForZone">getEditPermissionLevelForZone</a>(int $userId, int $domainId)
+        
+                                            <p><p>The user's edit level narrowed to one zone: &quot;own&quot; levels apply only when
+the zone is owned directly or via any group.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getZoneMetaEditPermissionLevel">getZoneMetaEditPermissionLevel</a>(int $userId)
+        
+                                            <p><p>Get zone meta edit permission level for a user</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getZoneMetadataViewPermissionLevel">getZoneMetadataViewPermissionLevel</a>(int $userId)
+        
+                                            <p><p>Get zone metadata view permission level for a user</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getZoneOwnershipViewPermissionLevel">getZoneOwnershipViewPermissionLevel</a>(int $userId)
+        
+                                            <p><p>Get zone ownership view permission level for a user</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canViewOthersContent">canViewOthersContent</a>(int $userId)
+        
+                                            <p><p>Check if user can view other users' content</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canCreateZone">canCreateZone</a>(int $userId, string $zoneType)
+        
+                                            <p><p>Whether the user may create (or convert a zone into) the given kind.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canAddZoneTemplates">canAddZoneTemplates</a>(int $userId)
+        
+                                            <p><p>Check if user can add zone templates</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canManageUsers">canManageUsers</a>(int $userId)
+        
+                                            <p><p>Check if a user may access user management (any view/edit/add grant or admin).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canManageDnssecForZone">canManageDnssecForZone</a>(int $userId, int $domainId)
+        
+                                            <p><p>DNSSEC key management on a zone: zone_dnssec_manage_own plus ownership (admins always).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canViewZone">canViewZone</a>(int $userId, int $domainId)
+        
+                                            <p><p>Whether the user may open a zone: view_others (or admin), or view_own on a
+zone owned directly or via any group.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasZoneContentEditPermission">hasZoneContentEditPermission</a>(int $userId, int $domainId)
+        
+                                            <p><p>Whether the user holds a content-edit grant that applies to the zone: edit_others
+(or admin), or edit_own on an owned zone. own_as_client is NOT included, so this
+is the gate for record types clients may not touch and never for zone metadata.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canEditZoneContent">canEditZoneContent</a>(int $userId, int $domainId, string|null $zoneType = null)
+        
+                                            <p><p>Whether the user may edit records in the zone. Secondary and Consumer zones
+replicate from a primary and reject every content edit when the type is known.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canEditZoneRecord">canEditZoneRecord</a>(int $userId, int $domainId, string $recordType, string|null $zoneType = null, string|null $recordName = null, string|null $zoneName = null)
+        
+                                            <p><p>canEditZoneContent() plus the own_as_client record-type restriction: SOA/NS/LUA
+need edit_own or better, except subzone NS records for zone_content_edit_ns_subzone
+holders. Pass the record and zone names (FQDN) to enable that exemption.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canEditZoneMeta">canEditZoneMeta</a>(int $userId, int $domainId)
+        
+                                            <p><p>Zone metadata (name, type, primaries): meta_edit_others (or admin), or meta_edit_own on an owned zone.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canViewZoneMetadata">canViewZoneMetadata</a>(int $userId, int $domainId)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canViewZoneOwnership">canViewZoneOwnership</a>(int $userId, int $domainId)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_templateGrantsUberuser">templateGrantsUberuser</a>(int $permTemplId)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_checkPermissionTemplateAssignment">checkPermissionTemplateAssignment</a>(int $actorId, int|null $targetUserId, int $permTemplId)
+        
+                                            <p><p>Why the actor may not put the target on this permission template, or null
+when allowed. Echoing back an unchanged ordinary template is not a change.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getZoneLogPermissionLevel">getZoneLogPermissionLevel</a>(int $userId)
+        
+                                            <p><p>Zone log access level: &quot;all&quot; (others or admin), &quot;own&quot;, or &quot;none&quot;.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getChangeRequestPermissionLevel">getChangeRequestPermissionLevel</a>(int $userId)
+        
+                                            <p><p>Change request level: &quot;all&quot; (others or admin), &quot;own&quot;, or &quot;none&quot;. Decides
+whether the user may file a change request instead of editing directly.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getChangeApprovePermissionLevel">getChangeApprovePermissionLevel</a>(int $userId)
+        
+                                            <p><p>Change approve level: &quot;all&quot; (others or admin), &quot;own&quot;, or &quot;none&quot;. Reviewing
+additionally requires the edit permission, see ChangeApprovalPolicy::canReview().</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getChangeRequestPermissionLevelForZone">getChangeRequestPermissionLevelForZone</a>(int $userId, int $domainId)
+        
+                                            <p><p>The user's change request level narrowed to one zone: &quot;own&quot; applies only
+when the zone is owned directly or via any group.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getChangeApprovePermissionLevelForZone">getChangeApprovePermissionLevelForZone</a>(int $userId, int $domainId)
+        
+                                            <p><p>The user's change approve level narrowed to one zone: &quot;own&quot; applies only
+when the zone is owned directly or via any group.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getPermissionFlags">getPermissionFlags</a>(int $userId, array $permissionNames)
+        
+                                            <p><p>Several permissions at once, as name =&gt; granted, for templates that branch on them.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getDeletePermissionLevel">getDeletePermissionLevel</a>(int $userId)
+        
+                                            <p><p>Get delete permission level for a user</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canDeleteZone">canDeleteZone</a>(int $userId, bool $isOwner)
+        
+                                            <p><p>Check if user can delete a zone</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canDeleteZoneById">canDeleteZoneById</a>(int $userId, int $domainId)
+        
+                                            <p><p>Whether the user may delete this zone; ownership is looked up only when
+their delete level depends on it.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L76">at line 76</a></div>
+        <code>                    
+    <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Repository/UserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a>&<a href="../../../../Poweradmin/Domain/Repository/UserPermissionReadInterface.html"><abbr title="Poweradmin\Domain\Repository\UserPermissionReadInterface">UserPermissionReadInterface</abbr></a> $userRepository)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Repository/UserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a>&<a href="../../../../Poweradmin/Domain/Repository/UserPermissionReadInterface.html"><abbr title="Poweradmin\Domain\Repository\UserPermissionReadInterface">UserPermissionReadInterface</abbr></a></td>
+                <td>$userRepository</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasPermission">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L88">at line 88</a></div>
+        <code>                    bool
+    <strong>hasPermission</strong>(int $userId, string $permissionName)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if a user has a specific permission</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$permissionName</td>
+                <td><p>Name of the permission to check</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if the user has the permission, false otherwise</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getUserPermissions">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L106">at line 106</a></div>
+        <code>                    array
+    <strong>getUserPermissions</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get all permissions for a specific user (direct template and group-based)</p></p>                <p><p>Permissions do not change within a request, so they are cached per user
+to keep repeated checks at a single query.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to get permissions for</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Array of permission names</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canManageGroups">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L123">at line 123</a></div>
+        <code>                    bool
+    <strong>canManageGroups</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check whether a user may create, edit or delete groups.</p></p>                <p><p>Group management is superuser-only, unlike user permission templates which
+<code>user_edit_templ_perm</code> delegates. Two reasons: that permission is defined as
+covering the template assigned to <em>users</em>, and a group's template lands in the
+same global permission union as a user's, so delegating it would hand out a
+second, unguarded route to superuser.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if the user may manage groups</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isAdmin">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L134">at line 134</a></div>
+        <code>                    bool
+    <strong>isAdmin</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if a user is an admin (has the &quot;überuser&quot; permission)</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if the user is an admin, false otherwise</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_userOwnsZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L146">at line 146</a></div>
+        <code>                    bool
+    <strong>userOwnsZone</strong>(int $userId, int $domainId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if a user owns a zone directly or via group membership</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td><p>Domain/zone ID</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if the user owns the zone</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_forgetUser">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L155">at line 155</a></div>
+        <code>                    void
+    <strong>forgetUser</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Drop the cached answers for a user after their template, groups or zone
+ownership changed within the request.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_forgetZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L168">at line 168</a></div>
+        <code>                    void
+    <strong>forgetZone</strong>(int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Drop the cached ownership answers for a zone after its owners or groups changed.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canPerformZoneAction">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L184">at line 184</a></div>
+        <code>                    bool
+    <strong>canPerformZoneAction</strong>(int $userId, int $domainId, string $permissionName)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the user may perform an &quot;_own&quot; action on a zone: the grant comes from
+the user's template or any of their groups (union), and the zone is owned
+directly or through any group.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$permissionName</td>
+                <td><p>Permission name (e.g. 'zone_delete_own')</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getViewPermissionLevel">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L199">at line 199</a></div>
+        <code>                    string
+    <strong>getViewPermissionLevel</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get view permission level for a user</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>&quot;all&quot;, &quot;own&quot;, or &quot;none&quot; depending on the user's view permission</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getEditPermissionLevel">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L210">at line 210</a></div>
+        <code>                    string
+    <strong>getEditPermissionLevel</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get edit permission level for a user</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>&quot;all&quot;, &quot;own&quot;, &quot;own_as_client&quot;, or &quot;none&quot; depending on the user's edit permission</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getEditPermissionLevelForZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L226">at line 226</a></div>
+        <code>                    string
+    <strong>getEditPermissionLevelForZone</strong>(int $userId, int $domainId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The user's edit level narrowed to one zone: &quot;own&quot; levels apply only when
+the zone is owned directly or via any group.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>&quot;all&quot;, &quot;own&quot;, &quot;own_as_client&quot;, or &quot;none&quot;</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getZoneMetaEditPermissionLevel">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L237">at line 237</a></div>
+        <code>                    string
+    <strong>getZoneMetaEditPermissionLevel</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get zone meta edit permission level for a user</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>&quot;all&quot;, &quot;own&quot;, or &quot;none&quot; depending on the user's meta edit permission</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getZoneMetadataViewPermissionLevel">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L250">at line 250</a></div>
+        <code>                    string
+    <strong>getZoneMetadataViewPermissionLevel</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get zone metadata view permission level for a user</p></p>                <p><p>Holders of zone_meta<em>edit</em>* may always see what they are allowed to edit.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>&quot;all&quot;, &quot;own&quot;, or &quot;none&quot; depending on the user's metadata view permission</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getZoneOwnershipViewPermissionLevel">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L263">at line 263</a></div>
+        <code>                    string
+    <strong>getZoneOwnershipViewPermissionLevel</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get zone ownership view permission level for a user</p></p>                <p><p>Holders of zone_meta<em>edit</em>* may always see what they are allowed to edit.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>&quot;all&quot;, &quot;own&quot;, or &quot;none&quot; depending on the user's ownership view permission</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canViewOthersContent">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L274">at line 274</a></div>
+        <code>                    bool
+    <strong>canViewOthersContent</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if user can view other users' content</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if user can view others' content</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canCreateZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L284">at line 284</a></div>
+        <code>                    bool
+    <strong>canCreateZone</strong>(int $userId, string $zoneType)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the user may create (or convert a zone into) the given kind.</p></p>                <p><p>Kinds that replicate from a primary (SLAVE, CONSUMER) are governed by
+zone_slave_add, the rest by zone_master_add; the add forms use the same split.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$zoneType</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canAddZoneTemplates">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L301">at line 301</a></div>
+        <code>                    bool
+    <strong>canAddZoneTemplates</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if user can add zone templates</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if user can add zone templates</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canManageUsers">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L312">at line 312</a></div>
+        <code>                    bool
+    <strong>canManageUsers</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if a user may access user management (any view/edit/add grant or admin).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if the user may manage other users</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canManageDnssecForZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L323">at line 323</a></div>
+        <code>                    bool
+    <strong>canManageDnssecForZone</strong>(int $userId, int $domainId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>DNSSEC key management on a zone: zone_dnssec_manage_own plus ownership (admins always).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canViewZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L332">at line 332</a></div>
+        <code>                    bool
+    <strong>canViewZone</strong>(int $userId, int $domainId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the user may open a zone: view_others (or admin), or view_own on a
+zone owned directly or via any group.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasZoneContentEditPermission">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L345">at line 345</a></div>
+        <code>                    bool
+    <strong>hasZoneContentEditPermission</strong>(int $userId, int $domainId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the user holds a content-edit grant that applies to the zone: edit_others
+(or admin), or edit_own on an owned zone. own_as_client is NOT included, so this
+is the gate for record types clients may not touch and never for zone metadata.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canEditZoneContent">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L360">at line 360</a></div>
+        <code>                    bool
+    <strong>canEditZoneContent</strong>(int $userId, int $domainId, string|null $zoneType = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the user may edit records in the zone. Secondary and Consumer zones
+replicate from a primary and reject every content edit when the type is known.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$zoneType</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canEditZoneRecord">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L374">at line 374</a></div>
+        <code>                    bool
+    <strong>canEditZoneRecord</strong>(int $userId, int $domainId, string $recordType, string|null $zoneType = null, string|null $recordName = null, string|null $zoneName = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>canEditZoneContent() plus the own_as_client record-type restriction: SOA/NS/LUA
+need edit_own or better, except subzone NS records for zone_content_edit_ns_subzone
+holders. Pass the record and zone names (FQDN) to enable that exemption.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$recordType</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$zoneType</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$recordName</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$zoneName</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canEditZoneMeta">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L401">at line 401</a></div>
+        <code>                    bool
+    <strong>canEditZoneMeta</strong>(int $userId, int $domainId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Zone metadata (name, type, primaries): meta_edit_others (or admin), or meta_edit_own on an owned zone.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canViewZoneMetadata">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L409">at line 409</a></div>
+        <code>                    bool
+    <strong>canViewZoneMetadata</strong>(int $userId, int $domainId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canViewZoneOwnership">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L417">at line 417</a></div>
+        <code>                    bool
+    <strong>canViewZoneOwnership</strong>(int $userId, int $domainId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_templateGrantsUberuser">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L425">at line 425</a></div>
+        <code>                    bool
+    <strong>templateGrantsUberuser</strong>(int $permTemplId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$permTemplId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_checkPermissionTemplateAssignment">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L435">at line 435</a></div>
+        <code>                    string|null
+    <strong>checkPermissionTemplateAssignment</strong>(int $actorId, int|null $targetUserId, int $permTemplId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Why the actor may not put the target on this permission template, or null
+when allowed. Echoing back an unchanged ordinary template is not a change.</p></p>                <p><p>The strings are API contract.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$actorId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$targetUserId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$permTemplId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getZoneLogPermissionLevel">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L467">at line 467</a></div>
+        <code>                    string
+    <strong>getZoneLogPermissionLevel</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Zone log access level: &quot;all&quot; (others or admin), &quot;own&quot;, or &quot;none&quot;.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getChangeRequestPermissionLevel">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L476">at line 476</a></div>
+        <code>                    string
+    <strong>getChangeRequestPermissionLevel</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Change request level: &quot;all&quot; (others or admin), &quot;own&quot;, or &quot;none&quot;. Decides
+whether the user may file a change request instead of editing directly.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getChangeApprovePermissionLevel">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L485">at line 485</a></div>
+        <code>                    string
+    <strong>getChangeApprovePermissionLevel</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Change approve level: &quot;all&quot; (others or admin), &quot;own&quot;, or &quot;none&quot;. Reviewing
+additionally requires the edit permission, see ChangeApprovalPolicy::canReview().</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getChangeRequestPermissionLevelForZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L496">at line 496</a></div>
+        <code>                    string
+    <strong>getChangeRequestPermissionLevelForZone</strong>(int $userId, int $domainId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The user's change request level narrowed to one zone: &quot;own&quot; applies only
+when the zone is owned directly or via any group.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>&quot;all&quot;, &quot;own&quot;, or &quot;none&quot;</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getChangeApprovePermissionLevelForZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L507">at line 507</a></div>
+        <code>                    string
+    <strong>getChangeApprovePermissionLevelForZone</strong>(int $userId, int $domainId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The user's change approve level narrowed to one zone: &quot;own&quot; applies only
+when the zone is owned directly or via any group.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>&quot;all&quot;, &quot;own&quot;, or &quot;none&quot;</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getPermissionFlags">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L544">at line 544</a></div>
+        <code>                    array
+    <strong>getPermissionFlags</strong>(int $userId, array $permissionNames)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Several permissions at once, as name =&gt; granted, for templates that branch on them.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$permissionNames</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getDeletePermissionLevel">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L560">at line 560</a></div>
+        <code>                    string
+    <strong>getDeletePermissionLevel</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get delete permission level for a user</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>&quot;all&quot;, &quot;own&quot;, or &quot;none&quot; depending on the user's delete permission</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canDeleteZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L572">at line 572</a></div>
+        <code>                    bool
+    <strong>canDeleteZone</strong>(int $userId, bool $isOwner)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if user can delete a zone</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td><p>User ID to check</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$isOwner</td>
+                <td><p>Whether the user owns the zone</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if user can delete the zone</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canDeleteZoneById">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/PermissionService.php#L588">at line 588</a></div>
+        <code>                    bool
+    <strong>canDeleteZoneById</strong>(int $userId, int $domainId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the user may delete this zone; ownership is looked up only when
+their delete level depends on it.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/0465df9" rel="noreferrer" target="_blank">commit 0465df9,</a> built 2026-09-21 12:12 UTC.</div></div>
+    </div>
+    </body>
+
+</html>

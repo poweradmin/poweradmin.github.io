@@ -91,14 +91,12 @@
         <h1>Poweradmin\Application\Service</h1>
     </div>
 
+            <h2>Namespaces</h2>
+        <div class="namespace-list">
+            <a href="../../Poweradmin/Application/Service/Auth.html">Poweradmin\Application\Service\Auth</a><a href="../../Poweradmin/Application/Service/Factory.html">Poweradmin\Application\Service\Factory</a>        </div>
     
             <h2>Classes</h2>
     <div class="container-fluid underlined">
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="../../Poweradmin/Application/Service/ApiStatusService.html"><abbr title="Poweradmin\Application\Service\ApiStatusService">ApiStatusService</abbr></a>    </div>
-                <div class="col-md-6"><p>Tracks the most recent PowerDNS API error so the UI can surface it.</p></div>
-            </div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="../../Poweradmin/Application/Service/AuditService.html"><abbr title="Poweradmin\Application\Service\AuditService">AuditService</abbr></a>    </div>
@@ -141,9 +139,9 @@ BaseController::__construct() otherwise performs.</p></div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="../../Poweradmin/Application/Service/ControllerServiceFactory.html"><abbr title="Poweradmin\Application\Service\ControllerServiceFactory">ControllerServiceFactory</abbr></a>    </div>
-                <div class="col-md-6"><p>Builds the repositories and domain services controllers ask for, and
-memoizes the per-request shared instances (backend provider, permission
-cache). Owns the wiring so BaseController only exposes thin accessors.</p></div>
+                <div class="col-md-6"><p>The services controllers ask for, split by concern into five factories that
+each memoize their per-request instances. The flat accessors below delegate
+to them so call sites and test doubles keep one entry point.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -170,6 +168,11 @@ they cannot be read, so the page still renders.</p></div>
                 <div class="col-md-6">
                     <a href="../../Poweradmin/Application/Service/DnsDataService.html"><abbr title="Poweradmin\Application\Service\DnsDataService">DnsDataService</abbr></a>    </div>
                 <div class="col-md-6"><p>Orchestration service for DNS data reads.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="../../Poweradmin/Application/Service/DnsServiceFactory.html"><abbr title="Poweradmin\Application\Service\DnsServiceFactory">DnsServiceFactory</abbr></a>    </div>
+                <div class="col-md-6"><p>Builds the DNS manager services with their backend provider and repositories.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -279,6 +282,12 @@ it in the UI and so error reports include it without a manual lookup.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="../../Poweradmin/Application/Service/RecordAddAccess.html"><abbr title="Poweradmin\Application\Service\RecordAddAccess">RecordAddAccess</abbr></a>    </div>
+                <div class="col-md-6"><p>Whether a user may add records to a zone directly, as RecordAddService::open()
+answers it. Each add-record entry point words the refusal codes itself.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="../../Poweradmin/Application/Service/RecordAddMessages.html"><abbr title="Poweradmin\Application\Service\RecordAddMessages">RecordAddMessages</abbr></a>    </div>
                 <div class="col-md-6"><p>Words a successful RecordAddResult for the add-record page and the zone editor.</p></div>
             </div>
@@ -291,9 +300,10 @@ the operator asked for alongside it.</p></div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="../../Poweradmin/Application/Service/RecordAddService.html"><abbr title="Poweradmin\Application\Service\RecordAddService">RecordAddService</abbr></a>    </div>
-                <div class="col-md-6"><p>The add-record flow shared by the add-record page and the inline form on the
-zone editor: name and content are normalised the same way, the TTL default is
-resolved the same way, and the companion PTR or A record follows the same rules.</p></div>
+                <div class="col-md-6"><p>The add-record flow shared by the add-record page, the inline form on the
+zone editor and the record wizards: open() applies the same gates in the
+same order, and add() normalises name, content and TTL the same way and
+follows the same rules for the companion PTR or A record.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -325,11 +335,6 @@ read record listing, so the warning does not also cost the operator their edits.
                 <div class="col-md-6">
                     <a href="../../Poweradmin/Application/Service/RequestValidator.html"><abbr title="Poweradmin\Application\Service\RequestValidator">RequestValidator</abbr></a>    </div>
                 <div class="col-md-6"><p>Validates controller request data against Symfony constraints.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="../../Poweradmin/Application/Service/ResultPaginator.html"><abbr title="Poweradmin\Application\Service\ResultPaginator">ResultPaginator</abbr></a>    </div>
-                <div class="col-md-6"><p>In-memory sorting, filtering, and pagination for datasets.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -390,8 +395,34 @@ external-auth password messages are the same on both sides and pass through.</p>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="../../Poweradmin/Application/Service/ZoneBatchCreateOutcome.html"><abbr title="Poweradmin\Application\Service\ZoneBatchCreateOutcome">ZoneBatchCreateOutcome</abbr></a>    </div>
+                <div class="col-md-6"><p>What ZoneCreateService made of a batch: either a refusal that stopped the
+batch before any zone was tried, or one outcome per submitted name.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="../../Poweradmin/Application/Service/ZoneCreateFormMessages.html"><abbr title="Poweradmin\Application\Service\ZoneCreateFormMessages">ZoneCreateFormMessages</abbr></a>    </div>
                 <div class="col-md-6"><p>Words a refused ZoneManagementService::createZone() for the add-zone forms.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="../../Poweradmin/Application/Service/ZoneCreateOutcome.html"><abbr title="Poweradmin\Application\Service\ZoneCreateOutcome">ZoneCreateOutcome</abbr></a>    </div>
+                <div class="col-md-6"><p>What ZoneCreateService made of one request: the created zone, or the
+refusal worded for the form.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="../../Poweradmin/Application/Service/ZoneCreateRequest.html"><abbr title="Poweradmin\Application\Service\ZoneCreateRequest">ZoneCreateRequest</abbr></a>    </div>
+                <div class="col-md-6"><p>What a zone creation form submitted, as ZoneCreateService takes it: the
+name as typed, the owner controls as posted, and the kind-specific options.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="../../Poweradmin/Application/Service/ZoneCreateService.html"><abbr title="Poweradmin\Application\Service\ZoneCreateService">ZoneCreateService</abbr></a>    </div>
+                <div class="col-md-6"><p>The zone creation flow shared by the add-zone forms, bulk registration and
+the secondary zone import: the name is normalised the same way, the owner
+controls are resolved by the same rules, the zone is created and audited
+the same way, and every refusal is worded for the form.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -421,17 +452,12 @@ instead of rejecting it, and word the refusals in the user's language.</p></div>
                 <div class="col-md-6"><p>Words a ZoneSigningService outcome for the web pages that sign or unsign
 an existing zone.</p></div>
             </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="../../Poweradmin/Application/Service/ZoneSyncService.html"><abbr title="Poweradmin\Application\Service\ZoneSyncService">ZoneSyncService</abbr></a>    </div>
-                <div class="col-md-6"><p>Synchronizes zone metadata between the PowerDNS API and the local zones table.</p></div>
-            </div>
             </div>
     
     
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/f3a2a2a" rel="noreferrer" target="_blank">commit f3a2a2a,</a> built 2026-09-20 16:18 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/0465df9" rel="noreferrer" target="_blank">commit 0465df9,</a> built 2026-09-21 12:12 UTC.</div></div>
     </div>
     </body>
 

@@ -7301,6 +7301,11 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../configuration/dnssec/">DNSSEC</a></td>
 </tr>
 <tr>
+<td>Internals reorganised</td>
+<td>The code under <code>lib/</code> now follows its layers strictly: domain services are grouped by concern (<code>Domain/Service/Auth</code>, <code>Zone</code>, <code>Template</code>, <code>Dns</code>, <code>User</code>), their interfaces live in <code>Domain/Port</code>, web controllers are grouped by route, and <code>BaseController</code> moved to <code>Application\Controller</code>. Behaviour is unchanged; addon code that imports these classes needs its <code>use</code> lines updated</td>
+<td><a href="../../contributing/development/#project-structure">Development Setup</a></td>
+</tr>
+<tr>
 <td>Owner picker follows the create rule</td>
 <td>The add-zone forms list other users only for callers who may assign them, and an owner id that does not exist is refused instead of creating a zone nobody owns (#1558)</td>
 <td><a href="../../user-guide/zones/#zone-ownership">Zone Management</a></td>
