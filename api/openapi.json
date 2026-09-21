@@ -12,6 +12,391 @@
         }
     ],
     "paths": {
+        "/v2/change-requests": {
+            "get": {
+                "tags": [
+                    "change-requests"
+                ],
+                "summary": "List change requests",
+                "description": "Change requests for the zones the caller may review plus the requests the caller filed. Answers 404 while change approval is disabled.",
+                "operationId": "v2ListChangeRequests",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "pending (default), approved, rejected, cancelled, failed or all",
+                        "schema": {
+                            "type": "string",
+                            "example": "pending"
+                        }
+                    },
+                    {
+                        "name": "zone_id",
+                        "in": "query",
+                        "description": "Only requests for this zone",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number, used when per_page is given",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Requests per page; omit to return every match",
+                        "schema": {
+                            "type": "integer",
+                            "example": 25
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Change requests",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "change_requests": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ChangeRequest"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "pagination": {
+                                            "description": "Present when per_page was given",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unknown status"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Change approval is not enabled"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            }
+        },
+        "/v2/change-requests/{id}": {
+            "get": {
+                "tags": [
+                    "change-requests"
+                ],
+                "summary": "Get a change request",
+                "description": "Visible to reviewers of the zone and to the requester. stale_actions lists the indexes of actions the zone has moved away from since filing.",
+                "operationId": "v2GetChangeRequest",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Change request ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The change request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "change_request": {
+                                                    "$ref": "#/components/schemas/ChangeRequest"
+                                                },
+                                                "snapshot": {
+                                                    "description": "BIND zone file taken before an approved zone deletion; null when none was kept or the caller may not view the zone",
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "stale_actions": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "integer"
+                                                    },
+                                                    "example": [
+                                                        0
+                                                    ]
+                                                },
+                                                "base_serial_mismatch": {
+                                                    "type": "boolean",
+                                                    "example": false
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Change request not found or change approval is not enabled"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "change-requests"
+                ],
+                "summary": "Cancel your own pending change request",
+                "operationId": "v2CancelChangeRequest",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Change request ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cancelled",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChangeRequestEnvelope"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Not the requester"
+                    },
+                    "404": {
+                        "description": "Change request not found or change approval is not enabled"
+                    },
+                    "409": {
+                        "description": "Already decided"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            }
+        },
+        "/v2/change-requests/{id}/approve": {
+            "post": {
+                "tags": [
+                    "change-requests"
+                ],
+                "summary": "Approve and apply a change request",
+                "description": "Applies the stored actions to the zone as the caller. Needs the change approve permission for the zone together with the edit permission. A refused or failed write leaves the request in the failed state and answers with the failure. Approving a failed request applies it again; actions that already landed are skipped.",
+                "operationId": "v2ApproveChangeRequest",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Change request ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "comment": {
+                                        "type": "string",
+                                        "example": "Looks good"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Applied",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChangeRequestEnvelope"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Change request not found or change approval is not enabled"
+                    },
+                    "409": {
+                        "description": "Already decided"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            }
+        },
+        "/v2/change-requests/{id}/reject": {
+            "post": {
+                "tags": [
+                    "change-requests"
+                ],
+                "summary": "Reject a change request",
+                "description": "Marks the request rejected without touching the zone. Needs the change approve permission for the zone together with the edit permission.",
+                "operationId": "v2RejectChangeRequest",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Change request ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "comment": {
+                                        "type": "string",
+                                        "example": "Wrong address"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Rejected",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChangeRequestEnvelope"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Change request not found or change approval is not enabled"
+                    },
+                    "409": {
+                        "description": "Already decided"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            }
+        },
         "/v2/dynamic-dns": {
             "post": {
                 "tags": [
@@ -1055,11 +1440,11 @@
         "/v2/permission-templates": {
             "get": {
                 "tags": [
-                    "Permission Templates"
+                    "permission-templates"
                 ],
                 "summary": "Get list of permission templates",
                 "description": "Get list of permission templates",
-                "operationId": "a408aa1f11bfe87aa26479943f279f18",
+                "operationId": "v2ListPermissionTemplates",
                 "responses": {
                     "200": {
                         "description": "List of permission templates",
@@ -1115,11 +1500,11 @@
             },
             "post": {
                 "tags": [
-                    "Permission Templates"
+                    "permission-templates"
                 ],
                 "summary": "Create new permission template",
                 "description": "Create new permission template",
-                "operationId": "d108d14ed7e3db55e9b77354bf7c75b1",
+                "operationId": "v2CreatePermissionTemplate",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1208,11 +1593,11 @@
         "/v2/permission-templates/{id}": {
             "get": {
                 "tags": [
-                    "Permission Templates"
+                    "permission-templates"
                 ],
                 "summary": "Get specific permission template",
                 "description": "Get specific permission template",
-                "operationId": "14e2109b6e58898d2e13a5f8077e33e8",
+                "operationId": "v2GetPermissionTemplate",
                 "parameters": [
                     {
                         "name": "id",
@@ -1304,11 +1689,11 @@
             },
             "put": {
                 "tags": [
-                    "Permission Templates"
+                    "permission-templates"
                 ],
                 "summary": "Update permission template",
                 "description": "Update permission template",
-                "operationId": "70516124f4a79bd74532e955795ad001",
+                "operationId": "v2UpdatePermissionTemplate",
                 "parameters": [
                     {
                         "name": "id",
@@ -1409,11 +1794,11 @@
             },
             "delete": {
                 "tags": [
-                    "Permission Templates"
+                    "permission-templates"
                 ],
                 "summary": "Delete permission template",
                 "description": "Delete permission template",
-                "operationId": "85ca7232fb745ca321d00e795195c0d5",
+                "operationId": "v2DeletePermissionTemplate",
                 "parameters": [
                     {
                         "name": "id",
@@ -1472,11 +1857,11 @@
         "/v2/permissions": {
             "get": {
                 "tags": [
-                    "Permissions"
+                    "permissions"
                 ],
                 "summary": "Get list of available permissions",
                 "description": "Get list of available permissions",
-                "operationId": "a6e20b37777556e20a5a02b6dee13ff8",
+                "operationId": "v2ListPermissions",
                 "responses": {
                     "200": {
                         "description": "List of available permissions",
@@ -1534,11 +1919,11 @@
         "/v2/permissions/{id}": {
             "get": {
                 "tags": [
-                    "Permissions"
+                    "permissions"
                 ],
                 "summary": "Get a specific permission",
                 "description": "Get a specific permission by ID",
-                "operationId": "8e9b30a829093fc41ef01ab094edae0c",
+                "operationId": "v2GetPermission",
                 "parameters": [
                     {
                         "name": "id",
@@ -1984,7 +2369,7 @@
                             "schema": {
                                 "properties": {
                                     "transfer_to_user_id": {
-                                        "description": "User ID to transfer zones to (required if user owns zones)",
+                                        "description": "User ID to transfer zones to (required if user owns zones). The caller needs zone_meta_edit rights on every zone being transferred.",
                                         "type": "integer",
                                         "example": 2
                                     }
@@ -2057,6 +2442,26 @@
                                         "message": {
                                             "type": "string",
                                             "example": "User owns zones. Please specify transfer_to_user_id to transfer zones to another user."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - caller may not delete this user or may not reassign one of their zones",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You do not have permission to reassign zone 12"
                                         }
                                     },
                                     "type": "object"
@@ -2277,70 +2682,75 @@
                                             "example": "Users retrieved successfully"
                                         },
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "user_id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "username": {
-                                                        "type": "string",
-                                                        "example": "admin"
-                                                    },
-                                                    "fullname": {
-                                                        "type": "string",
-                                                        "example": "Administrator"
-                                                    },
-                                                    "email": {
-                                                        "type": "string",
-                                                        "example": "admin@example.com"
-                                                    },
-                                                    "description": {
-                                                        "type": "string",
-                                                        "example": "System Administrator"
-                                                    },
-                                                    "active": {
-                                                        "type": "boolean",
-                                                        "example": true
-                                                    },
-                                                    "zone_count": {
-                                                        "type": "integer",
-                                                        "example": 5
-                                                    },
-                                                    "is_admin": {
-                                                        "type": "boolean",
-                                                        "example": true
-                                                    },
-                                                    "perm_templ": {
-                                                        "type": "integer",
-                                                        "example": 2,
-                                                        "nullable": true
-                                                    },
-                                                    "perm_templ_name": {
-                                                        "type": "string",
-                                                        "example": "Zone Manager",
-                                                        "nullable": true
-                                                    },
-                                                    "groups": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "properties": {
-                                                                "id": {
-                                                                    "type": "integer",
-                                                                    "example": 3
-                                                                },
-                                                                "name": {
-                                                                    "type": "string",
-                                                                    "example": "dns-operators"
-                                                                }
+                                            "properties": {
+                                                "users": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "user_id": {
+                                                                "type": "integer",
+                                                                "example": 1
                                                             },
-                                                            "type": "object"
-                                                        }
+                                                            "username": {
+                                                                "type": "string",
+                                                                "example": "admin"
+                                                            },
+                                                            "fullname": {
+                                                                "type": "string",
+                                                                "example": "Administrator"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "admin@example.com"
+                                                            },
+                                                            "description": {
+                                                                "type": "string",
+                                                                "example": "System Administrator"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean",
+                                                                "example": true
+                                                            },
+                                                            "zone_count": {
+                                                                "type": "integer",
+                                                                "example": 5
+                                                            },
+                                                            "is_admin": {
+                                                                "type": "boolean",
+                                                                "example": true
+                                                            },
+                                                            "perm_templ": {
+                                                                "type": "integer",
+                                                                "example": 2,
+                                                                "nullable": true
+                                                            },
+                                                            "perm_templ_name": {
+                                                                "type": "string",
+                                                                "example": "Zone Manager",
+                                                                "nullable": true
+                                                            },
+                                                            "groups": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer",
+                                                                            "example": 3
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string",
+                                                                            "example": "dns-operators"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
                                                     }
-                                                },
-                                                "type": "object"
-                                            }
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "pagination": {
                                             "properties": {
@@ -3404,10 +3814,10 @@
         "/v2/zone-templates/{id}/records": {
             "get": {
                 "tags": [
-                    "Zone Templates"
+                    "zone-templates"
                 ],
                 "summary": "List all records in a zone template",
-                "operationId": "f4ee0b5555ac1f88a3229ca9b9053291",
+                "operationId": "v2ListZoneTemplateRecords",
                 "parameters": [
                     {
                         "name": "id",
@@ -3492,10 +3902,10 @@
             },
             "post": {
                 "tags": [
-                    "Zone Templates"
+                    "zone-templates"
                 ],
                 "summary": "Create a new record in a zone template",
-                "operationId": "4078964c4b1389b6fcb09daa427dd553",
+                "operationId": "v2CreateZoneTemplateRecord",
                 "parameters": [
                     {
                         "name": "id",
@@ -3599,10 +4009,10 @@
         "/v2/zone-templates/{template_id}/records/{id}": {
             "get": {
                 "tags": [
-                    "Zone Templates"
+                    "zone-templates"
                 ],
                 "summary": "Get a specific record in a zone template",
-                "operationId": "fa302b785937b3dc5ddea66d4fd9a8aa",
+                "operationId": "v2GetZoneTemplateRecord",
                 "parameters": [
                     {
                         "name": "template_id",
@@ -3693,10 +4103,10 @@
             },
             "put": {
                 "tags": [
-                    "Zone Templates"
+                    "zone-templates"
                 ],
                 "summary": "Update a record in a zone template",
-                "operationId": "115dbec644679af0127a5c8be8a31429",
+                "operationId": "v2UpdateZoneTemplateRecord",
                 "parameters": [
                     {
                         "name": "template_id",
@@ -3802,10 +4212,10 @@
             },
             "delete": {
                 "tags": [
-                    "Zone Templates"
+                    "zone-templates"
                 ],
                 "summary": "Delete a record from a zone template",
-                "operationId": "99eab91098a3ff6c8ba63501fe228b4e",
+                "operationId": "v2DeleteZoneTemplateRecord",
                 "parameters": [
                     {
                         "name": "template_id",
@@ -3873,10 +4283,10 @@
         "/v2/zone-templates": {
             "get": {
                 "tags": [
-                    "Zone Templates"
+                    "zone-templates"
                 ],
                 "summary": "Get list of zone templates",
-                "operationId": "e7d645f79f47570dedc4250de920fd1f",
+                "operationId": "v2ListZoneTemplates",
                 "responses": {
                     "200": {
                         "description": "List of zone templates",
@@ -3944,10 +4354,10 @@
             },
             "post": {
                 "tags": [
-                    "Zone Templates"
+                    "zone-templates"
                 ],
                 "summary": "Create new zone template",
-                "operationId": "ead90ec00f9a3acb465eb32dff5910df",
+                "operationId": "v2CreateZoneTemplate",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -4036,10 +4446,10 @@
         "/v2/zone-templates/{id}": {
             "get": {
                 "tags": [
-                    "Zone Templates"
+                    "zone-templates"
                 ],
                 "summary": "Get specific zone template with records",
-                "operationId": "0326f72bc273e53c9cfebb8afba563cf",
+                "operationId": "v2GetZoneTemplate",
                 "parameters": [
                     {
                         "name": "id",
@@ -4149,10 +4559,10 @@
             },
             "put": {
                 "tags": [
-                    "Zone Templates"
+                    "zone-templates"
                 ],
                 "summary": "Update zone template",
-                "operationId": "7ff0963cde493cb6a4957e7794306a4e",
+                "operationId": "v2UpdateZoneTemplate",
                 "parameters": [
                     {
                         "name": "id",
@@ -4244,10 +4654,10 @@
             },
             "delete": {
                 "tags": [
-                    "Zone Templates"
+                    "zone-templates"
                 ],
                 "summary": "Delete zone template",
-                "operationId": "c3e231cb8f167b49e5d29b703867566b",
+                "operationId": "v2DeleteZoneTemplate",
                 "parameters": [
                     {
                         "name": "id",
@@ -4291,6 +4701,173 @@
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            }
+        },
+        "/v2/zones/{id}/change-requests": {
+            "post": {
+                "tags": [
+                    "change-requests"
+                ],
+                "summary": "File a change request for a zone",
+                "description": "Stores the requested actions for review without writing to the zone. Allowed when the caller may edit the zone or holds a change request permission that covers it; SOA, NS and LUA records follow the same record-type rule as direct edits. A zone_delete action must be the only action and needs a request permission for the zone, or the delete permission when every change is reviewed. Each add and delete action is filed as its own request; all edit actions are filed together as one request. Actions are checked before anything is filed; when filing one of them is still refused, the response carries the requests filed so far under data.change_requests.",
+                "operationId": "v2CreateZoneChangeRequest",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Zone ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "actions"
+                                ],
+                                "properties": {
+                                    "comment": {
+                                        "type": "string",
+                                        "example": "New web server"
+                                    },
+                                    "actions": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "op": {
+                                                    "type": "string",
+                                                    "example": "add",
+                                                    "enum": [
+                                                        "add",
+                                                        "edit",
+                                                        "delete",
+                                                        "zone_delete"
+                                                    ]
+                                                },
+                                                "record_id": {
+                                                    "description": "For edit and delete",
+                                                    "example": 123,
+                                                    "oneOf": [
+                                                        {
+                                                            "type": "integer"
+                                                        },
+                                                        {
+                                                            "type": "string"
+                                                        }
+                                                    ]
+                                                },
+                                                "record": {
+                                                    "description": "For add (name, type and content required) and edit (omitted fields keep their stored value)",
+                                                    "properties": {
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "www"
+                                                        },
+                                                        "type": {
+                                                            "type": "string",
+                                                            "example": "A"
+                                                        },
+                                                        "content": {
+                                                            "type": "string",
+                                                            "example": "192.0.2.1"
+                                                        },
+                                                        "ttl": {
+                                                            "type": "integer",
+                                                            "example": 3600
+                                                        },
+                                                        "priority": {
+                                                            "type": "integer",
+                                                            "example": 0
+                                                        },
+                                                        "disabled": {
+                                                            "type": "boolean",
+                                                            "example": false
+                                                        },
+                                                        "comment": {
+                                                            "type": "string",
+                                                            "example": "web server"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Filed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Change request filed for review."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "change_request": {
+                                                    "$ref": "#/components/schemas/ChangeRequest"
+                                                },
+                                                "change_requests": {
+                                                    "description": "Every request filed by this call",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ChangeRequest"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid body, unsupported action mix, or a row the validator refused"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Zone or record not found, or change approval is not enabled"
+                    },
+                    "409": {
+                        "description": "A record with this hostname, type, and content already exists"
+                    },
+                    "413": {
+                        "description": "The request is too large to store"
                     }
                 },
                 "security": [
@@ -4347,33 +4924,38 @@
                                             "example": "Zones retrieved successfully"
                                         },
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "canonical_id": {
-                                                        "description": "Zone id accepted by the other zone endpoints; equals id except for API-backend zones migrated from SQL mode",
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "name": {
-                                                        "type": "string",
-                                                        "example": "example.com"
-                                                    },
-                                                    "type": {
-                                                        "type": "string",
-                                                        "example": "MASTER"
-                                                    },
-                                                    "created_at": {
-                                                        "type": "string",
-                                                        "example": "2025-01-01 12:00:00"
+                                            "properties": {
+                                                "zones": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "canonical_id": {
+                                                                "description": "Zone id accepted by the other zone endpoints; equals id except for API-backend zones migrated from SQL mode",
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "example.com"
+                                                            },
+                                                            "type": {
+                                                                "type": "string",
+                                                                "example": "MASTER"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "example": "2025-01-01 12:00:00"
+                                                            }
+                                                        },
+                                                        "type": "object"
                                                     }
-                                                },
-                                                "type": "object"
-                                            }
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "pagination": {
                                             "properties": {
@@ -4910,27 +5492,7 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "Zone deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Zone deleted successfully"
-                                        },
-                                        "data": {
-                                            "type": "null"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Zone deleted successfully"
                     },
                     "404": {
                         "description": "Zone not found",
@@ -5651,33 +6213,7 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "RRSet deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "RRSet deleted successfully"
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "records_deleted": {
-                                                    "type": "integer",
-                                                    "example": 2
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "RRSet deleted successfully"
                     },
                     "404": {
                         "description": "RRSet not found"
@@ -6030,6 +6566,11 @@
                                         "description": "Automatically create PTR record (reverse DNS). Only applicable for A and AAAA records. Requires matching reverse zone. Default: false",
                                         "type": "boolean",
                                         "example": false
+                                    },
+                                    "comment": {
+                                        "description": "Optional change-log/RRset comment stored with the record",
+                                        "type": "string",
+                                        "example": "web server"
                                     }
                                 },
                                 "type": "object"
@@ -6179,7 +6720,7 @@
                 ]
             }
         },
-        "/v2/zones/{id}/records/{recordId}": {
+        "/v2/zones/{id}/records/{record_id}": {
             "get": {
                 "tags": [
                     "records"
@@ -6198,7 +6739,7 @@
                         }
                     },
                     {
-                        "name": "recordId",
+                        "name": "record_id",
                         "in": "path",
                         "description": "Record ID",
                         "required": true,
@@ -6310,7 +6851,7 @@
                         }
                     },
                     {
-                        "name": "recordId",
+                        "name": "record_id",
                         "in": "path",
                         "description": "Record ID",
                         "required": true,
@@ -6485,7 +7026,7 @@
                         }
                     },
                     {
-                        "name": "recordId",
+                        "name": "record_id",
                         "in": "path",
                         "description": "Record ID",
                         "required": true,
@@ -6496,27 +7037,7 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "Record deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Record deleted successfully"
-                                        },
-                                        "data": {
-                                            "type": "null"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Record deleted successfully"
                     },
                     "404": {
                         "description": "Record not found",
@@ -6554,6 +7075,137 @@
         }
     },
     "components": {
+        "schemas": {
+            "ChangeRequest": {
+                "properties": {
+                    "id": {
+                        "description": "/api/v2/change-requests: lists and shows filed change requests, applies a\nreviewer's decision and lets a requester withdraw their own request.\nEvery endpoint answers 404 while approval.enabled is off.",
+                        "type": "integer",
+                        "example": 12
+                    },
+                    "zone_id": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "zone_name": {
+                        "type": "string",
+                        "example": "example.com"
+                    },
+                    "kind": {
+                        "type": "string",
+                        "example": "records",
+                        "enum": [
+                            "records",
+                            "zone_delete"
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "pending",
+                        "enum": [
+                            "pending",
+                            "approved",
+                            "rejected",
+                            "cancelled",
+                            "failed"
+                        ]
+                    },
+                    "requester": {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 7,
+                                "nullable": true
+                            },
+                            "username": {
+                                "type": "string",
+                                "example": "operator"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "request_comment": {
+                        "type": "string",
+                        "example": "New web server",
+                        "nullable": true
+                    },
+                    "base_serial": {
+                        "type": "string",
+                        "example": "2026092001",
+                        "nullable": true
+                    },
+                    "actions": {
+                        "description": "The stored actions: add {op, after}, edit {op, record_id, before, after}, delete {op, record_id, before}, zone_delete {op}",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "zone_comment": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "reviewer": {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 1,
+                                "nullable": true
+                            },
+                            "username": {
+                                "type": "string",
+                                "example": "admin"
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "review_comment": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "2026-09-20 10:00:00"
+                    },
+                    "reviewed_at": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "applied_at": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "error": {
+                        "description": "Why applying failed, for status failed",
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "ChangeRequestEnvelope": {
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "properties": {
+                            "change_request": {
+                                "$ref": "#/components/schemas/ChangeRequest"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Change request approved and applied."
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
@@ -6569,6 +7221,10 @@
     },
     "tags": [
         {
+            "name": "change-requests",
+            "description": "change-requests"
+        },
+        {
             "name": "dynamic-dns",
             "description": "dynamic-dns"
         },
@@ -6577,12 +7233,12 @@
             "description": "groups"
         },
         {
-            "name": "Permission Templates",
-            "description": "Permission Templates"
+            "name": "permission-templates",
+            "description": "permission-templates"
         },
         {
-            "name": "Permissions",
-            "description": "Permissions"
+            "name": "permissions",
+            "description": "permissions"
         },
         {
             "name": "users",
@@ -6593,8 +7249,8 @@
             "description": "zones"
         },
         {
-            "name": "Zone Templates",
-            "description": "Zone Templates"
+            "name": "zone-templates",
+            "description": "zone-templates"
         },
         {
             "name": "rrsets",
