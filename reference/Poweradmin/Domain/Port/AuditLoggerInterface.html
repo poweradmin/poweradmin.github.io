@@ -106,6 +106,27 @@
             <p><p>The audit events domain services record; the Application layer owns the line format and the actor context.</p></p>                    </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                                                                                        ORIGIN_WEB
+                                    </td>
+                <td class="last">
+                    <p><em><p>Who drove a record mutation: the web forms or the public API. Each writes its own event.</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                                                                                        ORIGIN_API
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -139,6 +160,28 @@
                 </div>
                 <div class="col-md-8">
                     <a href="#method_logRecordDelete">logRecordDelete</a>(int $zoneId, string $type, string $name, string $content, int|string $ttl, int|string|null $prio)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_logApiRecordAdd">logApiRecordAdd</a>(int $zoneId, string $name, string $type, string $content)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_logApiRecordEdit">logApiRecordEdit</a>(int $zoneId, string $name, string $type, string $content)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -239,7 +282,7 @@ line is repeated against the zone to show in that zone's history.</p></p>       
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_logRecordAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L30">at line 30</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L34">at line 34</a></div>
         <code>                    void
     <strong>logRecordAdd</strong>(int $zoneId, string $type, string $name, string $content, int|string $ttl, int|string $prio)
         </code>
@@ -308,7 +351,7 @@ line is repeated against the zone to show in that zone's history.</p></p>       
             </div>
                     <div class="method-item">
                     <h3 id="method_logRecordEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L36">at line 36</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L40">at line 40</a></div>
         <code>                    void
     <strong>logRecordEdit</strong>(int|null $zoneId, array $before, array $after)
         </code>
@@ -362,7 +405,7 @@ line is repeated against the zone to show in that zone's history.</p></p>       
             </div>
                     <div class="method-item">
                     <h3 id="method_logRecordDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L38">at line 38</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L42">at line 42</a></div>
         <code>                    void
     <strong>logRecordDelete</strong>(int $zoneId, string $type, string $name, string $content, int|string $ttl, int|string|null $prio)
         </code>
@@ -430,8 +473,126 @@ line is repeated against the zone to show in that zone's history.</p></p>       
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_logApiRecordAdd">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L44">at line 44</a></div>
+        <code>                    void
+    <strong>logApiRecordAdd</strong>(int $zoneId, string $name, string $type, string $content)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$type</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$content</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_logApiRecordEdit">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L46">at line 46</a></div>
+        <code>                    void
+    <strong>logApiRecordEdit</strong>(int $zoneId, string $name, string $type, string $content)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$type</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$content</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_logBatchPtrRecordAdd">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L40">at line 40</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L48">at line 48</a></div>
         <code>                    void
     <strong>logBatchPtrRecordAdd</strong>(int $zoneId, string $name, string $content, int|string $ttl, int|string $prio)
         </code>
@@ -495,7 +656,7 @@ line is repeated against the zone to show in that zone's history.</p></p>       
             </div>
                     <div class="method-item">
                     <h3 id="method_logDynamicDnsUpdate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L48">at line 48</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L56">at line 56</a></div>
         <code>                    void
     <strong>logDynamicDnsUpdate</strong>(string $username, string $hostname, int $zoneId, string $ip)
         </code>
@@ -554,7 +715,7 @@ line is repeated against the zone to show in that zone's history.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneCatalogAssign">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L53">at line 53</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L61">at line 61</a></div>
         <code>                    void
     <strong>logZoneCatalogAssign</strong>(int $zoneId, string $zoneName, string $catalog)
         </code>
@@ -607,7 +768,7 @@ line is repeated against the zone to show in that zone's history.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneCatalogClear">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L55">at line 55</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L63">at line 63</a></div>
         <code>                    void
     <strong>logZoneCatalogClear</strong>(int $zoneId, string $zoneName, string $catalog)
         </code>
@@ -661,7 +822,7 @@ line is repeated against the zone to show in that zone's history.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logZoneMetadataEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L60">at line 60</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L68">at line 68</a></div>
         <code>                    void
     <strong>logZoneMetadataEdit</strong>(int $zoneId, string $zoneName, array $kinds)
         </code>
@@ -715,7 +876,7 @@ line is repeated against the zone to show in that zone's history.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logDnssecSignZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L62">at line 62</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L70">at line 70</a></div>
         <code>                    void
     <strong>logDnssecSignZone</strong>(int $zoneId, string $zoneName)
         </code>
@@ -764,7 +925,7 @@ line is repeated against the zone to show in that zone's history.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logDnssecUnsignZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L64">at line 64</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L72">at line 72</a></div>
         <code>                    void
     <strong>logDnssecUnsignZone</strong>(int $zoneId, string $zoneName)
         </code>
@@ -813,7 +974,7 @@ line is repeated against the zone to show in that zone's history.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_logApiRrsetReplace">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L69">at line 69</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/AuditLoggerInterface.php#L77">at line 77</a></div>
         <code>                    void
     <strong>logApiRrsetReplace</strong>(int $zoneId, string $name, string $type, int $records)
         </code>
@@ -874,7 +1035,7 @@ line is repeated against the zone to show in that zone's history.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/7b6fb2c" rel="noreferrer" target="_blank">commit 7b6fb2c,</a> built 2026-09-22 16:54 UTC.</div></div>
     </div>
     </body>
 

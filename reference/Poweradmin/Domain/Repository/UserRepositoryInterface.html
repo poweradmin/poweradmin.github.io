@@ -94,7 +94,7 @@
 
     
     <p>        interface
-    <strong>UserRepositoryInterface</strong>        implements        <a href="../../../Poweradmin/Domain/Repository/UserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a>, <a href="../../../Poweradmin/Domain/Repository/UserPermissionReadInterface.html"><abbr title="Poweradmin\Domain\Repository\UserPermissionReadInterface">UserPermissionReadInterface</abbr></a>, <a href="../../../Poweradmin/Domain/Repository/UserCredentialWriterInterface.html"><abbr title="Poweradmin\Domain\Repository\UserCredentialWriterInterface">UserCredentialWriterInterface</abbr></a>, <a href="../../../Poweradmin/Domain/Repository/UserAdminInterface.html"><abbr title="Poweradmin\Domain\Repository\UserAdminInterface">UserAdminInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserRepositoryInterface.php">View source</a>)
+    <strong>UserRepositoryInterface</strong>        implements        <a href="../../../Poweradmin/Domain/Repository/UserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a>, <a href="../../../Poweradmin/Domain/Repository/AuthUserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\AuthUserLookupInterface">AuthUserLookupInterface</abbr></a>, <a href="../../../Poweradmin/Domain/Repository/UserNotificationRecipientInterface.html"><abbr title="Poweradmin\Domain\Repository\UserNotificationRecipientInterface">UserNotificationRecipientInterface</abbr></a>, <a href="../../../Poweradmin/Domain/Repository/UserPermissionReadInterface.html"><abbr title="Poweradmin\Domain\Repository\UserPermissionReadInterface">UserPermissionReadInterface</abbr></a>, <a href="../../../Poweradmin/Domain/Repository/UserCredentialWriterInterface.html"><abbr title="Poweradmin\Domain\Repository\UserCredentialWriterInterface">UserCredentialWriterInterface</abbr></a>, <a href="../../../Poweradmin/Domain/Repository/UserAdminInterface.html"><abbr title="Poweradmin\Domain\Repository\UserAdminInterface">UserAdminInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserRepositoryInterface.php">View source</a>)
 </p>
 
         
@@ -157,6 +157,17 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findActiveUsersByEmail">findActiveUsersByEmail</a>(string $email)
+        
+                                            <p><p>Every active account registered to an email address, ordered by username.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Poweradmin/Domain/Repository/UserLookupInterface.html#method_findActiveUsersByEmail">
+<abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     int
                 </div>
                 <div class="col-md-8">
@@ -199,6 +210,97 @@ look-alike address from an identity provider cannot resolve to another account.<
                                             <p><p>Get a user's full name by ID</p></p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../../Poweradmin/Domain/Repository/UserLookupInterface.html#method_getFullNameById">
 <abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getFullNameByUsername">getFullNameByUsername</a>(string $username)
+        
+                                            <p><p>Full name of the user with exactly this username (accent-exact match), or null when there is none</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Poweradmin/Domain/Repository/UserLookupInterface.html#method_getFullNameByUsername">
+<abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findSqlLoginUser">findSqlLoginUser</a>(string $username)
+        
+                                            <p><p>The password-login row: id, fullname, password, active, email. LDAP accounts
+are excluded so a directory account cannot be logged into with a local hash.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Poweradmin/Domain/Repository/AuthUserLookupInterface.html#method_findSqlLoginUser">
+<abbr title="Poweradmin\Domain\Repository\AuthUserLookupInterface">AuthUserLookupInterface</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findActiveLdapUser">findActiveLdapUser</a>(string $username)
+        
+                                            <p><p>The LDAP-login row: id, fullname, email, for active LDAP-enabled accounts only.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Poweradmin/Domain/Repository/AuthUserLookupInterface.html#method_findActiveLdapUser">
+<abbr title="Poweradmin\Domain\Repository\AuthUserLookupInterface">AuthUserLookupInterface</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasActiveLdapUser">hasActiveLdapUser</a>(string $username)
+        
+                                            <p><p>Whether the account is still active and still LDAP-enabled, re-checked on
+every request so a disabled account loses a cached LDAP bind at once.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Poweradmin/Domain/Repository/AuthUserLookupInterface.html#method_hasActiveLdapUser">
+<abbr title="Poweradmin\Domain\Repository\AuthUserLookupInterface">AuthUserLookupInterface</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findBasicAuthUser">findBasicAuthUser</a>(string $username)
+        
+                                            <p><p>The HTTP Basic row: id, password, use_ldap, for active accounts only.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Poweradmin/Domain/Repository/AuthUserLookupInterface.html#method_findBasicAuthUser">
+<abbr title="Poweradmin\Domain\Repository\AuthUserLookupInterface">AuthUserLookupInterface</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findAuthMethodRow">findAuthMethodRow</a>(string $username)
+        
+                                            <p><p>The stored auth_method for a username, or null when no such account exists.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Poweradmin/Domain/Repository/AuthUserLookupInterface.html#method_findAuthMethodRow">
+<abbr title="Poweradmin\Domain\Repository\AuthUserLookupInterface">AuthUserLookupInterface</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findNotificationRecipient">findNotificationRecipient</a>(int $userId)
+        
+                                            <p><p>One recipient by id: id, username, fullname, email.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Poweradmin/Domain/Repository/UserNotificationRecipientInterface.html#method_findNotificationRecipient">
+<abbr title="Poweradmin\Domain\Repository\UserNotificationRecipientInterface">UserNotificationRecipientInterface</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_listNotifiableUsers">listNotifiableUsers</a>()
+        
+                                            <p><p>Every active account with a usable email address, ordered by id. The caller
+filters further by permission.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Poweradmin/Domain/Repository/UserNotificationRecipientInterface.html#method_listNotifiableUsers">
+<abbr title="Poweradmin\Domain\Repository\UserNotificationRecipientInterface">UserNotificationRecipientInterface</abbr></a></small></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -681,9 +783,53 @@ IdP-asserted claim cannot map to a look-alike template.</p></p>                <
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_findActiveUsersByEmail">
+        <div class="location">in <a href="../../../Poweradmin/Domain/Repository/UserLookupInterface.html#method_findActiveUsersByEmail">
+<abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserLookupInterface.php#L69">at line 69</a></div>
+        <code>                    array
+    <strong>findActiveUsersByEmail</strong>(string $email)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Every active account registered to an email address, ordered by username.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$email</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_countUsersByEmail">
         <div class="location">in <a href="../../../Poweradmin/Domain/Repository/UserLookupInterface.html#method_countUsersByEmail">
-<abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserLookupInterface.php#L70">at line 70</a></div>
+<abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserLookupInterface.php#L77">at line 77</a></div>
         <code>                    int
     <strong>countUsersByEmail</strong>(string $email)
         </code>
@@ -727,7 +873,7 @@ IdP-asserted claim cannot map to a look-alike template.</p></p>                <
                     <div class="method-item">
                     <h3 id="method_findActiveUserIdByEmail">
         <div class="location">in <a href="../../../Poweradmin/Domain/Repository/UserLookupInterface.html#method_findActiveUserIdByEmail">
-<abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserLookupInterface.php#L76">at line 76</a></div>
+<abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserLookupInterface.php#L83">at line 83</a></div>
         <code>                    int|null
     <strong>findActiveUserIdByEmail</strong>(string $email)
         </code>
@@ -772,7 +918,7 @@ look-alike address from an identity provider cannot resolve to another account.<
                     <div class="method-item">
                     <h3 id="method_getProvisioningProfile">
         <div class="location">in <a href="../../../Poweradmin/Domain/Repository/UserLookupInterface.html#method_getProvisioningProfile">
-<abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserLookupInterface.php#L83">at line 83</a></div>
+<abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserLookupInterface.php#L90">at line 90</a></div>
         <code>                    array
     <strong>getProvisioningProfile</strong>(int $userId)
         </code>
@@ -816,7 +962,7 @@ look-alike address from an identity provider cannot resolve to another account.<
                     <div class="method-item">
                     <h3 id="method_getFullNameById">
         <div class="location">in <a href="../../../Poweradmin/Domain/Repository/UserLookupInterface.html#method_getFullNameById">
-<abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserLookupInterface.php#L91">at line 91</a></div>
+<abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserLookupInterface.php#L98">at line 98</a></div>
         <code>                    string|null
     <strong>getFullNameById</strong>(int $userId)
         </code>
@@ -847,6 +993,352 @@ look-alike address from an identity provider cannot resolve to another account.<
         <tr>
             <td>string|null</td>
             <td><p>Full name, or null if the user does not exist</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getFullNameByUsername">
+        <div class="location">in <a href="../../../Poweradmin/Domain/Repository/UserLookupInterface.html#method_getFullNameByUsername">
+<abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserLookupInterface.php#L103">at line 103</a></div>
+        <code>                    string|null
+    <strong>getFullNameByUsername</strong>(string $username)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Full name of the user with exactly this username (accent-exact match), or null when there is none</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findSqlLoginUser">
+        <div class="location">in <a href="../../../Poweradmin/Domain/Repository/AuthUserLookupInterface.html#method_findSqlLoginUser">
+<abbr title="Poweradmin\Domain\Repository\AuthUserLookupInterface">AuthUserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/AuthUserLookupInterface.php#L37">at line 37</a></div>
+        <code>                    array|null
+    <strong>findSqlLoginUser</strong>(string $username)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The password-login row: id, fullname, password, active, email. LDAP accounts
+are excluded so a directory account cannot be logged into with a local hash.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findActiveLdapUser">
+        <div class="location">in <a href="../../../Poweradmin/Domain/Repository/AuthUserLookupInterface.html#method_findActiveLdapUser">
+<abbr title="Poweradmin\Domain\Repository\AuthUserLookupInterface">AuthUserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/AuthUserLookupInterface.php#L42">at line 42</a></div>
+        <code>                    array|null
+    <strong>findActiveLdapUser</strong>(string $username)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The LDAP-login row: id, fullname, email, for active LDAP-enabled accounts only.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasActiveLdapUser">
+        <div class="location">in <a href="../../../Poweradmin/Domain/Repository/AuthUserLookupInterface.html#method_hasActiveLdapUser">
+<abbr title="Poweradmin\Domain\Repository\AuthUserLookupInterface">AuthUserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/AuthUserLookupInterface.php#L48">at line 48</a></div>
+        <code>                    bool
+    <strong>hasActiveLdapUser</strong>(string $username)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the account is still active and still LDAP-enabled, re-checked on
+every request so a disabled account loses a cached LDAP bind at once.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findBasicAuthUser">
+        <div class="location">in <a href="../../../Poweradmin/Domain/Repository/AuthUserLookupInterface.html#method_findBasicAuthUser">
+<abbr title="Poweradmin\Domain\Repository\AuthUserLookupInterface">AuthUserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/AuthUserLookupInterface.php#L53">at line 53</a></div>
+        <code>                    array|null
+    <strong>findBasicAuthUser</strong>(string $username)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The HTTP Basic row: id, password, use_ldap, for active accounts only.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findAuthMethodRow">
+        <div class="location">in <a href="../../../Poweradmin/Domain/Repository/AuthUserLookupInterface.html#method_findAuthMethodRow">
+<abbr title="Poweradmin\Domain\Repository\AuthUserLookupInterface">AuthUserLookupInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/AuthUserLookupInterface.php#L62">at line 62</a></div>
+        <code>                    array|null
+    <strong>findAuthMethodRow</strong>(string $username)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The stored auth_method for a username, or null when no such account exists.</p></p>                <p><p>The row is returned rather than the value so a missing account stays
+distinguishable from an account with no auth_method set.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findNotificationRecipient">
+        <div class="location">in <a href="../../../Poweradmin/Domain/Repository/UserNotificationRecipientInterface.html#method_findNotificationRecipient">
+<abbr title="Poweradmin\Domain\Repository\UserNotificationRecipientInterface">UserNotificationRecipientInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserNotificationRecipientInterface.php#L33">at line 33</a></div>
+        <code>                    array|null
+    <strong>findNotificationRecipient</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>One recipient by id: id, username, fullname, email.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_listNotifiableUsers">
+        <div class="location">in <a href="../../../Poweradmin/Domain/Repository/UserNotificationRecipientInterface.html#method_listNotifiableUsers">
+<abbr title="Poweradmin\Domain\Repository\UserNotificationRecipientInterface">UserNotificationRecipientInterface</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/UserNotificationRecipientInterface.php#L41">at line 41</a></div>
+        <code>                    array
+    <strong>listNotifiableUsers</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Every active account with a usable email address, ordered by id. The caller
+filters further by permission.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
         </tr>
     </table>
 
@@ -2100,7 +2592,7 @@ all of them grant the permission.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/7b6fb2c" rel="noreferrer" target="_blank">commit 7b6fb2c,</a> built 2026-09-22 16:54 UTC.</div></div>
     </div>
     </body>
 

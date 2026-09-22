@@ -123,21 +123,48 @@ remaining positional words. Options may appear before or after the command.</p><
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Application/Console/CommandInterface.html"><abbr title="Poweradmin\Application\Console\CommandInterface">CommandInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>One bin/poweradmin command. The metadata is static so the registry can
+print usage and validate options before the service graph is booted.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Application/Console/CommandLineActor.html"><abbr title="Poweradmin\Application\Console\CommandLineActor">CommandLineActor</abbr></a>    </div>
                 <div class="col-md-6"><p>The actor of a console run: nobody (the system itself) unless the caller
 named a user with --as-user, in which case that user's permissions apply.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Application/Console/CommandRegistry.html"><abbr title="Poweradmin\Application\Console\CommandRegistry">CommandRegistry</abbr></a>    </div>
+                <div class="col-md-6"><p>The commands bin/poweradmin knows, keyed by name. Each entry is a factory
+that builds the command from the booted service graph.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Application/Console/Command/ZoneListCommand.html"><abbr title="Poweradmin\Application\Console\Command\ZoneListCommand">ZoneListCommand</abbr></a>    </div>
-                <div class="col-md-6"><p>zone:list - the zones the actor may view, one tab-separated row per zone.</p></div>
+                <div class="col-md-6"><p>zone:list - the zones the actor may view, one row per zone.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Console/Command/ZoneShowCommand.html"><abbr title="Poweradmin\Application\Console\Command\ZoneShowCommand">ZoneShowCommand</abbr></a>    </div>
+                <div class="col-md-6"><p>zone:show &lt;id|name&gt; - the records of one zone, one row per record, in the
+order the web zone editor shows them. The actor needs the same view
+permission as for opening the zone in the browser; a refusal exits 1.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Application/Console/ConsoleApplication.html"><abbr title="Poweradmin\Application\Console\ConsoleApplication">ConsoleApplication</abbr></a>    </div>
                 <div class="col-md-6"><p>The bin/poweradmin entry point: parses the command line, boots the same
 service graph the web controllers use (without a session) and runs one
-command as an explicitly named actor.</p></div>
+registered command as an explicitly named actor.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Console/TableWriter.html"><abbr title="Poweradmin\Application\Console\TableWriter">TableWriter</abbr></a>    </div>
+                <div class="col-md-6"><p>Writes the tabular output of a command as tab-separated lines (a header
+row, then one line per row) or as a JSON list of objects keyed by the
+lower-cased column names.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1455,6 +1482,12 @@ status badges in the zone list without an extra round-trip.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Error/LastZoneOwnerException.html"><abbr title="Poweradmin\Domain\Error\LastZoneOwnerException">LastZoneOwnerException</abbr></a>    </div>
+                <div class="col-md-6"><p>Thrown when a write would leave zones without an owner, carrying the zones it
+would strand so the caller can name them.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Error/ZoneCreationFailedException.html"><abbr title="Poweradmin\Domain\Error\ZoneCreationFailedException">ZoneCreationFailedException</abbr></a>    </div>
                 <div class="col-md-6"><p>Thrown by a zone creation step once the backend zone exists, so the caller
 can roll back and remove the zone. The message is the user-facing failure text.</p></div>
@@ -1593,6 +1626,12 @@ the keys and their types stay as they are.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Model/ZoneSummary.html"><abbr title="Poweradmin\Domain\Model\ZoneSummary">ZoneSummary</abbr></a>    </div>
+                <div class="col-md-6"><p>One row of a zone list: the forward and reverse pages, the internal API list
+and the console listing.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Model/ZoneType.html"><abbr title="Poweradmin\Domain\Model\ZoneType">ZoneType</abbr></a>    </div>
                 <div class="col-md-6"><p>ZoneType class represents the different types of zones in a DNS system.</p></div>
             </div>
@@ -1660,6 +1699,13 @@ must not throw; a failed notification never undoes the event.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Port/EmailTemplateRendererInterface.html"><abbr title="Poweradmin\Domain\Port\EmailTemplateRendererInterface">EmailTemplateRendererInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Renders the account emails a preview tool can show; the Application layer
+owns the templates and their custom overrides.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                                             <em><a href="Poweradmin/Domain/Port/LoginThrottleInterface.html"><abbr title="Poweradmin\Domain\Port\LoginThrottleInterface">LoginThrottleInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Records login attempts and reports lockouts; the Application layer owns the storage and thresholds.</p></div>
@@ -1681,6 +1727,13 @@ must not throw; a failed notification never undoes the event.</p></div>
                                             <em><a href="Poweradmin/Domain/Port/PasswordPolicyInterface.html"><abbr title="Poweradmin\Domain\Port\PasswordPolicyInterface">PasswordPolicyInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Checks a password against the configured policy rules; the Application layer owns the configuration.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Port/ProxyContextInterface.html"><abbr title="Poweradmin\Domain\Port\ProxyContextInterface">ProxyContextInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Merges the outbound HTTP proxy, when one applies to the URL, into a set of
+PHP stream context options.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1739,9 +1792,23 @@ sorted, and the unpaged match count. Rows carry <code>disabled</code> as a bool.
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>The request's session store. One implementation wraps PHP's own session, the
+other keeps the values in memory for tests and for request-scoped caches.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                                             <em><a href="Poweradmin/Domain/Port/SupermasterBackendInterface.html"><abbr title="Poweradmin\Domain\Port\SupermasterBackendInterface">SupermasterBackendInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Supermaster (autoprimary) reads and writes against the DNS backend.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Port/TransactionInterface.html"><abbr title="Poweradmin\Domain\Port\TransactionInterface">TransactionInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>The request's unit of work: one transaction shared with every repository
+that writes through the same connection.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1788,6 +1855,12 @@ and the unpaged match count. Each backend keeps its own row shape.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/AuthUserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\AuthUserLookupInterface">AuthUserLookupInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>The account rows the authenticators read while deciding a login.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                                             <em><a href="Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Lookups on the domains table; implemented for SQL and for the API backend mode.</p></div>
@@ -1803,6 +1876,12 @@ and the unpaged match count. Each backend keeps its own row shape.</p></div>
                                             <em><a href="Poweradmin/Domain/Repository/ExternalIdentityRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ExternalIdentityRepositoryInterface">ExternalIdentityRepositoryInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Persistence for the OIDC and SAML identity links that tie a provider subject to a local user.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/LoginAttemptRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\LoginAttemptRepositoryInterface">LoginAttemptRepositoryInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Persistence for the login_attempts counters the authentication throttle reads and writes.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1922,6 +2001,12 @@ application of the same template can remove exactly those records.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/UserNotificationRecipientInterface.html"><abbr title="Poweradmin\Domain\Repository\UserNotificationRecipientInterface">UserNotificationRecipientInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>The account rows the notification mailers address their messages to.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                                             <em><a href="Poweradmin/Domain/Repository/UserPermissionReadInterface.html"><abbr title="Poweradmin\Domain\Repository\UserPermissionReadInterface">UserPermissionReadInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Read access to what a user may do: permissions, uberuser status, template grants and zone ownership.</p></div>
@@ -1943,6 +2028,12 @@ application of the same template can remove exactly those records.</p></div>
                                             <em><a href="Poweradmin/Domain/Repository/UsernameRecoveryRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UsernameRecoveryRepositoryInterface">UsernameRecoveryRepositoryInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Persistence for username recovery attempts and their rate-limit counters.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/ZoneAccountOwnerLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneAccountOwnerLookupInterface">ZoneAccountOwnerLookupInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Resolves the owner whose username the PowerDNS account field mirrors.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2823,7 +2914,8 @@ persisted and logged. Callers parse their input and word the refusals.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Zone/ZoneOwnershipGuard.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipGuard">ZoneOwnershipGuard</abbr></a>    </div>
                 <div class="col-md-6"><p>The last-owner rule: a zone keeps at least one owner of a kind the ownership
-mode allows. Every writer that removes a user owner or a group asks here first.</p></div>
+mode allows. Every writer removes owners through here, so the check and the
+delete share one transaction and two concurrent removals cannot both pass.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -3008,6 +3100,11 @@ notice, verify what PowerDNS reports afterwards, rectify, and audit.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Database/PdoTransaction.html"><abbr title="Poweradmin\Infrastructure\Database\PdoTransaction">PdoTransaction</abbr></a>    </div>
+                <div class="col-md-6"><p>Transaction control over the request's PDO handle, the one the repositories write through.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Database/SeedRepository.html"><abbr title="Poweradmin\Infrastructure\Database\SeedRepository">SeedRepository</abbr></a>    </div>
                 <div class="col-md-6"><p>Writes the PermissionCatalogue seed data into freshly created Poweradmin tables.</p></div>
             </div>
@@ -3067,6 +3164,12 @@ logging is on, to the log_users, log_zones, log_groups or log_api table.</p></di
                 <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Logger/SyslogLogger.html"><abbr title="Poweradmin\Infrastructure\Logger\SyslogLogger">SyslogLogger</abbr></a>    </div>
                 <div class="col-md-6"><p>PSR-3 logger that writes every message to syslog under the configured identity and facility.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Network/EnvironmentProxyContext.html"><abbr title="Poweradmin\Infrastructure\Network\EnvironmentProxyContext">EnvironmentProxyContext</abbr></a>    </div>
+                <div class="col-md-6"><p>The HTTP(S)_PROXY / NO_PROXY lookup of ProxyContext behind the port, for
+services that take the proxy as a dependency.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -3142,6 +3245,11 @@ Poweradmin's zones table and filtered, sorted and paged in memory.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Repository/DbLoginAttemptRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbLoginAttemptRepository">DbLoginAttemptRepository</abbr></a>    </div>
+                <div class="col-md-6"><p>SQL persistence for the authentication throttle counters in login_attempts.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Repository/DbPasswordResetTokenRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbPasswordResetTokenRepository">DbPasswordResetTokenRepository</abbr></a>    </div>
                 <div class="col-md-6"><p>SQL persistence for password reset tokens and their rate-limit counters in password_reset_tokens.</p></div>
             </div>
@@ -3199,6 +3307,11 @@ Poweradmin's zones table and filtered, sorted and paged in memory.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Repository/DbUsernameRecoveryRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbUsernameRecoveryRepository">DbUsernameRecoveryRepository</abbr></a>    </div>
                 <div class="col-md-6"><p>SQL persistence for username recovery attempts and their rate-limit counters in username_recovery_requests.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Repository/DbZoneAccountOwnerRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbZoneAccountOwnerRepository">DbZoneAccountOwnerRepository</abbr></a>    </div>
+                <div class="col-md-6"><p>Reads the oldest direct owner of a zone from the native zones table.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -3333,6 +3446,12 @@ Used when PowerDNS API is not configured or DNSSEC is disabled</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Session/ArraySession.html"><abbr title="Poweradmin\Infrastructure\Session\ArraySession">ArraySession</abbr></a>    </div>
+                <div class="col-md-6"><p>A session held in memory: what a test injects, and what a request without a
+session (the public API) uses as a request-scoped cache.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Session/AuthFlowSessionKeys.html"><abbr title="Poweradmin\Infrastructure\Session\AuthFlowSessionKeys">AuthFlowSessionKeys</abbr></a>    </div>
                 <div class="col-md-6"><p>$_SESSION keys owned by the authentication flows: MFA, the OIDC and SAML
 logout round trips, and password and username recovery.</p></div>
@@ -3350,7 +3469,12 @@ logout round trips, and password and username recovery.</p></div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Session/MfaSessionManager.html"><abbr title="Poweradmin\Infrastructure\Session\MfaSessionManager">MfaSessionManager</abbr></a>    </div>
-                <div class="col-md-6"><p>Static helpers that set, read and reset the MFA pending/verified state in the session.</p></div>
+                <div class="col-md-6"><p>Sets, reads and resets the MFA pending/verified state in the session.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Session/PhpSession.html"><abbr title="Poweradmin\Infrastructure\Session\PhpSession">PhpSession</abbr></a>    </div>
+                <div class="col-md-6"><p>PHP's own session: $<em>SESSION plus the session</em>*() lifecycle functions.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -3592,7 +3716,7 @@ pulling it over AXFR, and converting it to a primary once the data lands.</p></d
             </div>
             </div>
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/7b6fb2c" rel="noreferrer" target="_blank">commit 7b6fb2c,</a> built 2026-09-22 16:54 UTC.</div></div>
     </div>
     </body>
 

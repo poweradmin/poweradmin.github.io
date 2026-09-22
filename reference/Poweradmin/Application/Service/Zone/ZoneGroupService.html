@@ -134,12 +134,13 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    bool
+                    bool|<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipRefusal.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipRefusal">ZoneOwnershipRefusal</abbr></a>
                 </div>
                 <div class="col-md-8">
                     <a href="#method_removeGroupFromZone">removeGroupFromZone</a>(int $domainId, int $groupId)
         
-                                            <p><p>Remove a group from zone owners</p></p>                </div>
+                                            <p><p>Remove a group from zone owners. The guard answers before the group
+lookup so a refusal outranks a missing group, as the API contract orders them.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -313,8 +314,8 @@ this group stays assigned and is reported in <code>failed</code> with the reason
             </div>
                     <div class="method-item">
                     <h3 id="method_removeGroupFromZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L88">at line 88</a></div>
-        <code>                    bool
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L87">at line 87</a></div>
+        <code>                    bool|<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipRefusal.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipRefusal">ZoneOwnershipRefusal</abbr></a>
     <strong>removeGroupFromZone</strong>(int $domainId, int $groupId)
         </code>
     </h3>
@@ -324,7 +325,8 @@ this group stays assigned and is reported in <code>failed</code> with the reason
             
 
         <div class="method-description">
-                            <p><p>Remove a group from zone owners</p></p>                <p><p>Note: Zones can exist without any owners</p></p>        
+                            <p><p>Remove a group from zone owners. The guard answers before the group
+lookup so a refusal outranks a missing group, as the API contract orders them.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -347,8 +349,8 @@ this group stays assigned and is reported in <code>failed</code> with the reason
 
                     <table class="table table-condensed">
         <tr>
-            <td>bool</td>
-            <td></td>
+            <td>bool|<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipRefusal.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipRefusal">ZoneOwnershipRefusal</abbr></a></td>
+            <td><p>True when removed, false when the group did not own the zone, the refusal when the last-owner rule forbids it</p></td>
         </tr>
     </table>
 
@@ -357,7 +359,7 @@ this group stays assigned and is reported in <code>failed</code> with the reason
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/InvalidArgumentException">InvalidArgumentException</a></td>
+                <td><a href="../../../../Poweradmin/Domain/Error/GroupNotFoundException.html"><abbr title="Poweradmin\Domain\Error\GroupNotFoundException">GroupNotFoundException</abbr></a></td>
                 <td></td>
             </tr>
             </table>
@@ -370,7 +372,7 @@ this group stays assigned and is reported in <code>failed</code> with the reason
             </div>
                     <div class="method-item">
                     <h3 id="method_listZoneOwners">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L105">at line 105</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L110">at line 110</a></div>
         <code>                    array
     <strong>listZoneOwners</strong>(int $domainId)
         </code>
@@ -413,7 +415,7 @@ this group stays assigned and is reported in <code>failed</code> with the reason
             </div>
                     <div class="method-item">
                     <h3 id="method_listGroupZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L117">at line 117</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L122">at line 122</a></div>
         <code>                    array
     <strong>listGroupZones</strong>(int $groupId)
         </code>
@@ -465,7 +467,7 @@ this group stays assigned and is reported in <code>failed</code> with the reason
             </div>
                     <div class="method-item">
                     <h3 id="method_bulkAddZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L135">at line 135</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L140">at line 140</a></div>
         <code>                    array
     <strong>bulkAddZones</strong>(int $groupId, array $domainIds)
         </code>
@@ -513,7 +515,7 @@ this group stays assigned and is reported in <code>failed</code> with the reason
             </div>
                     <div class="method-item">
                     <h3 id="method_bulkRemoveZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L172">at line 172</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L177">at line 177</a></div>
         <code>                    array
     <strong>bulkRemoveZones</strong>(int $groupId, array $domainIds)
         </code>
@@ -562,7 +564,7 @@ this group stays assigned and is reported in <code>failed</code> with the reason
             </div>
                     <div class="method-item">
                     <h3 id="method_isGroupOwner">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L219">at line 219</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L224">at line 224</a></div>
         <code>                    bool
     <strong>isGroupOwner</strong>(int $domainId, int $groupId)
         </code>
@@ -610,7 +612,7 @@ this group stays assigned and is reported in <code>failed</code> with the reason
             </div>
                     <div class="method-item">
                     <h3 id="method_getGroupDeletionImpact">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L231">at line 231</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneGroupService.php#L236">at line 236</a></div>
         <code>                    array
     <strong>getGroupDeletionImpact</strong>(int $groupId, int $limit = 20)
         </code>
@@ -660,7 +662,7 @@ this group stays assigned and is reported in <code>failed</code> with the reason
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/7b6fb2c" rel="noreferrer" target="_blank">commit 7b6fb2c,</a> built 2026-09-22 16:54 UTC.</div></div>
     </div>
     </body>
 

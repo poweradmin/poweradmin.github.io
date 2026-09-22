@@ -142,7 +142,7 @@ through the zone editor), and the zone must be writable by them.</p></p>        
                     <a href="../../../../Poweradmin/Application/Service/Record/RecordAddResult.html"><abbr title="Poweradmin\Application\Service\Record\RecordAddResult">RecordAddResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_add">add</a>(int $zoneId, string $zoneName, string $name, string $type, string $content, int|null $ttl, int $prio, string $comment, int $userId, string $username, string $companion = &#039;&#039;, int $disabled = 0)
+                    <a href="#method_add">add</a>(int $zoneId, string $zoneName, string $name, string $type, string $content, int|null $ttl, int $prio, string $comment, int $userId, string $username, string $companion = &#039;&#039;, int $disabled = 0, string $origin = AuditLoggerInterface::ORIGIN_WEB)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -156,7 +156,7 @@ through the zone editor), and the zone must be writable by them.</p></p>        
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Record/RecordAddService.php#L44">at line 44</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Record/RecordAddService.php#L45">at line 45</a></div>
         <code>                    
     <strong>__construct</strong>(<a href="../../../../Poweradmin/Application/Service/Record/RecordManagerService.html"><abbr title="Poweradmin\Application\Service\Record\RecordManagerService">RecordManagerService</abbr></a> $records, <a href="../../../../Poweradmin/Domain/Service/Dns/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseRecordCreator">ReverseRecordCreator</abbr></a> $reverseRecords, <a href="../../../../Poweradmin/Domain/Service/Dns/DomainRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\DomainRecordCreator">DomainRecordCreator</abbr></a> $domainRecords, <a href="../../../../Poweradmin/Domain/Service/Dns/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseTtlResolver">ReverseTtlResolver</abbr></a> $ttlResolver, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains, <a href="../../../../Poweradmin/Application/Service/Zone/ChangeApprovalContext.html"><abbr title="Poweradmin\Application\Service\Zone\ChangeApprovalContext">ChangeApprovalContext</abbr></a> $approval)
         </code>
@@ -221,7 +221,7 @@ through the zone editor), and the zone must be writable by them.</p></p>        
             </div>
                     <div class="method-item">
                     <h3 id="method_open">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Record/RecordAddService.php#L60">at line 60</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Record/RecordAddService.php#L61">at line 61</a></div>
         <code>                    <a href="../../../../Poweradmin/Application/Service/Record/RecordAddAccess.html"><abbr title="Poweradmin\Application\Service\Record\RecordAddAccess">RecordAddAccess</abbr></a>
     <strong>open</strong>(int $zoneId, int $userId)
         </code>
@@ -271,9 +271,9 @@ through the zone editor), and the zone must be writable by them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_add">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Record/RecordAddService.php#L83">at line 83</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Record/RecordAddService.php#L85">at line 85</a></div>
         <code>                    <a href="../../../../Poweradmin/Application/Service/Record/RecordAddResult.html"><abbr title="Poweradmin\Application\Service\Record\RecordAddResult">RecordAddResult</abbr></a>
-    <strong>add</strong>(int $zoneId, string $zoneName, string $name, string $type, string $content, int|null $ttl, int $prio, string $comment, int $userId, string $username, string $companion = &#039;&#039;, int $disabled = 0)
+    <strong>add</strong>(int $zoneId, string $zoneName, string $name, string $type, string $content, int|null $ttl, int $prio, string $comment, int $userId, string $username, string $companion = &#039;&#039;, int $disabled = 0, string $origin = AuditLoggerInterface::ORIGIN_WEB)
         </code>
     </h3>
     <div class="details">    
@@ -349,6 +349,11 @@ through the zone editor), and the zone must be writable by them.</p></p>
                 <td>$disabled</td>
                 <td><p>1 to create the record disabled (API callers); the forms always pass 0</p></td>
             </tr>
+                    <tr>
+                <td>string</td>
+                <td>$origin</td>
+                <td><p>One of the AuditLoggerInterface::ORIGIN_* values; the API writes api_add_record</p></td>
+            </tr>
             </table>
 
             
@@ -372,7 +377,7 @@ through the zone editor), and the zone must be writable by them.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/7b6fb2c" rel="noreferrer" target="_blank">commit 7b6fb2c,</a> built 2026-09-22 16:54 UTC.</div></div>
     </div>
     </body>
 

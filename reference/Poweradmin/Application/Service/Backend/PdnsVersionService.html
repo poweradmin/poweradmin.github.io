@@ -104,7 +104,7 @@
 
             <div class="description">
             <p><p>Detects and caches the connected PowerDNS server version so admins can see
-it in the UI and so error reports include it without a manual lookup.</p></p>            <p><p>Cached in the per-user array the caller hands in (the session, in practice)
+it in the UI and so error reports include it without a manual lookup.</p></p>            <p><p>Cached in the store the caller hands in (the session, in practice)
 with a 5-minute TTL to avoid an extra API round-trip on every request.
 Detection failures are swallowed - callers must treat the absence of a
 cached value as &quot;version unknown&quot;, not as an error.</p></p>        </div>
@@ -153,7 +153,7 @@ cached value as &quot;version unknown&quot;, not as an error.</p></p>        </d
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a> $apiClient, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, array $cache = [])
+                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a> $apiClient, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger, <a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $cache)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -174,7 +174,7 @@ cached value as &quot;version unknown&quot;, not as an error.</p></p>        </d
                     static&nbsp;void
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_refreshFromConfig">refreshFromConfig</a>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger, array $cache)
+                    <a href="#method_refreshFromConfig">refreshFromConfig</a>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger, <a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $cache)
         
                                             <p><p>Refresh the cache from the configured PowerDNS API, at most once a minute
 per cache. A no-op when no API is configured; failures leave the previous
@@ -196,7 +196,7 @@ entry in place, so callers never see an error from here.</p></p>                
                     static&nbsp;array|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getCachedInfo">getCachedInfo</a>(array $cache, bool $allowExpired = false)
+                    <a href="#method_getCachedInfo">getCachedInfo</a>(<a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $cache, bool $allowExpired = false)
         
                                             <p><p>Static accessor for the cached server info, for callers that don't want
 to construct the service just to read what IndexController already detected.</p></p>                </div>
@@ -212,7 +212,7 @@ to construct the service just to read what IndexController already detected.</p>
                     <h3 id="method___construct">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/PdnsVersionService.php#L55">at line 55</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a> $apiClient, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, array $cache = [])
+    <strong>__construct</strong>(<a href="../../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a> $apiClient, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger, <a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $cache)
         </code>
     </h3>
     <div class="details">    
@@ -239,9 +239,9 @@ to construct the service just to read what IndexController already detected.</p>
                 <td></td>
             </tr>
                     <tr>
-                <td>array</td>
+                <td><a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a></td>
                 <td>$cache</td>
-                <td><p>Where the server info and retry stamp live, normally $_SESSION</p></td>
+                <td><p>Where the server info and retry stamp live, the session in practice</p></td>
             </tr>
             </table>
 
@@ -290,7 +290,7 @@ to construct the service just to read what IndexController already detected.</p>
                     <h3 id="method_refreshFromConfig">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/PdnsVersionService.php#L120">at line 120</a></div>
         <code>        static            void
-    <strong>refreshFromConfig</strong>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger, array $cache)
+    <strong>refreshFromConfig</strong>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger, <a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $cache)
         </code>
     </h3>
     <div class="details">    
@@ -318,9 +318,9 @@ entry in place, so callers never see an error from here.</p></p>
                 <td></td>
             </tr>
                     <tr>
-                <td>array</td>
+                <td><a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a></td>
                 <td>$cache</td>
-                <td><p>Normally $_SESSION</p></td>
+                <td><p>Normally the request's session</p></td>
             </tr>
             </table>
 
@@ -378,7 +378,7 @@ entry in place, so callers never see an error from here.</p></p>
                     <h3 id="method_getCachedInfo">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/PdnsVersionService.php#L165">at line 165</a></div>
         <code>        static            array|null
-    <strong>getCachedInfo</strong>(array $cache, bool $allowExpired = false)
+    <strong>getCachedInfo</strong>(<a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $cache, bool $allowExpired = false)
         </code>
     </h3>
     <div class="details">    
@@ -399,9 +399,9 @@ $allowExpired to read the old entry anyway once that refresh has failed.</p></p>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>array</td>
+                <td><a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a></td>
                 <td>$cache</td>
-                <td><p>Normally $_SESSION</p></td>
+                <td><p>Normally the request's session</p></td>
             </tr>
                     <tr>
                 <td>bool</td>
@@ -431,7 +431,7 @@ $allowExpired to read the old entry anyway once that refresh has failed.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/7b6fb2c" rel="noreferrer" target="_blank">commit 7b6fb2c,</a> built 2026-09-22 16:54 UTC.</div></div>
     </div>
     </body>
 

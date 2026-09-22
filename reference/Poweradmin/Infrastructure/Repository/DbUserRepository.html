@@ -134,6 +134,89 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findActiveUsersByEmail">findActiveUsersByEmail</a>(string $email)
+        
+                                            <p><p>Every active account registered to an email address, ordered by username.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findNotificationRecipient">findNotificationRecipient</a>(int $userId)
+        
+                                            <p><p>One recipient by id: id, username, fullname, email.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_listNotifiableUsers">listNotifiableUsers</a>()
+        
+                                            <p><p>Every active account with a usable email address, ordered by id. The caller
+filters further by permission.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findSqlLoginUser">findSqlLoginUser</a>(string $username)
+        
+                                            <p><p>The password-login row: id, fullname, password, active, email. LDAP accounts
+are excluded so a directory account cannot be logged into with a local hash.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findActiveLdapUser">findActiveLdapUser</a>(string $username)
+        
+                                            <p><p>The LDAP-login row: id, fullname, email, for active LDAP-enabled accounts only.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_hasActiveLdapUser">hasActiveLdapUser</a>(string $username)
+        
+                                            <p><p>Whether the account is still active and still LDAP-enabled, re-checked on
+every request so a disabled account loses a cached LDAP bind at once.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findBasicAuthUser">findBasicAuthUser</a>(string $username)
+        
+                                            <p><p>The HTTP Basic row: id, password, use_ldap, for active accounts only.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findAuthMethodRow">findAuthMethodRow</a>(string $username)
+        
+                                            <p><p>The stored auth_method for a username, or null when no such account exists.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     bool
                 </div>
                 <div class="col-md-8">
@@ -160,6 +243,16 @@
                     <a href="#method_getFullNameById">getFullNameById</a>(int $userId)
         
                                             <p><p>Get a user's full name by ID</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getFullNameByUsername">getFullNameByUsername</a>(string $username)
+        
+                                            <p><p>Full name of the user with exactly this username (accent-exact match), or null when there is none</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -572,8 +665,346 @@ row without a domain_id is keyed by zones.id instead</p></td>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_updatePassword">
+                    <h3 id="method_findActiveUsersByEmail">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L74">at line 74</a></div>
+        <code>                    array
+    <strong>findActiveUsersByEmail</strong>(string $email)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Every active account registered to an email address, ordered by username.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$email</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findNotificationRecipient">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L88">at line 88</a></div>
+        <code>                    array|null
+    <strong>findNotificationRecipient</strong>(int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>One recipient by id: id, username, fullname, email.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_listNotifiableUsers">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L103">at line 103</a></div>
+        <code>                    array
+    <strong>listNotifiableUsers</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Every active account with a usable email address, ordered by id. The caller
+filters further by permission.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findSqlLoginUser">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L116">at line 116</a></div>
+        <code>                    array|null
+    <strong>findSqlLoginUser</strong>(string $username)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The password-login row: id, fullname, password, active, email. LDAP accounts
+are excluded so a directory account cannot be logged into with a local hash.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findActiveLdapUser">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L126">at line 126</a></div>
+        <code>                    array|null
+    <strong>findActiveLdapUser</strong>(string $username)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The LDAP-login row: id, fullname, email, for active LDAP-enabled accounts only.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasActiveLdapUser">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L139">at line 139</a></div>
+        <code>                    bool
+    <strong>hasActiveLdapUser</strong>(string $username)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the account is still active and still LDAP-enabled, re-checked on
+every request so a disabled account loses a cached LDAP bind at once.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findBasicAuthUser">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L149">at line 149</a></div>
+        <code>                    array|null
+    <strong>findBasicAuthUser</strong>(string $username)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The HTTP Basic row: id, password, use_ldap, for active accounts only.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findAuthMethodRow">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L158">at line 158</a></div>
+        <code>                    array|null
+    <strong>findAuthMethodRow</strong>(string $username)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The stored auth_method for a username, or null when no such account exists.</p></p>                <p><p>The row is returned rather than the value so a missing account stays
+distinguishable from an account with no auth_method set.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_updatePassword">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L169">at line 169</a></div>
         <code>                    bool
     <strong>updatePassword</strong>(int $userId, string $hashedPassword)
         </code>
@@ -621,7 +1052,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L86">at line 86</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L181">at line 181</a></div>
         <code>                    array|null
     <strong>getUserById</strong>(int $userId)
         </code>
@@ -664,7 +1095,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getFullNameById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L103">at line 103</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L198">at line 198</a></div>
         <code>                    string|null
     <strong>getFullNameById</strong>(int $userId)
         </code>
@@ -706,8 +1137,51 @@ row without a domain_id is keyed by zones.id instead</p></td>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_getFullNameByUsername">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L206">at line 206</a></div>
+        <code>                    string|null
+    <strong>getFullNameByUsername</strong>(string $username)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Full name of the user with exactly this username (accent-exact match), or null when there is none</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$username</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_getZoneOwnerFullNames">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L111">at line 111</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L215">at line 215</a></div>
         <code>                    string
     <strong>getZoneOwnerFullNames</strong>(int $domainId)
         </code>
@@ -750,7 +1224,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_userOwnsZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L133">at line 133</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L237">at line 237</a></div>
         <code>                    bool
     <strong>userOwnsZone</strong>(int $userId, int $domainId)
         </code>
@@ -798,7 +1272,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserGroupIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L160">at line 160</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L264">at line 264</a></div>
         <code>                    array
     <strong>getUserGroupIds</strong>(int $userId)
         </code>
@@ -842,7 +1316,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserOwnedZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L174">at line 174</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L278">at line 278</a></div>
         <code>                    array
     <strong>getUserOwnedZoneIds</strong>(int $userId)
         </code>
@@ -886,7 +1360,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserPermissions">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L195">at line 195</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L299">at line 299</a></div>
         <code>                    array
     <strong>getUserPermissions</strong>(int $userId)
         </code>
@@ -929,7 +1403,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_hasAdminPermission">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L242">at line 242</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L346">at line 346</a></div>
         <code>                    bool
     <strong>hasAdminPermission</strong>(int $userId)
         </code>
@@ -972,7 +1446,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUsersList">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L282">at line 282</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L386">at line 386</a></div>
         <code>                    array
     <strong>getUsersList</strong>(int $offset, int $limit)
         </code>
@@ -1020,7 +1494,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUsersWithZoneCounts">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L337">at line 337</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L441">at line 441</a></div>
         <code>                    array
     <strong>getUsersWithZoneCounts</strong>()
         </code>
@@ -1053,7 +1527,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserDetailList">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L406">at line 406</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L510">at line 510</a></div>
         <code>                    array
     <strong>getUserDetailList</strong>(bool $ldapUse, int|null $restrictToUserId, int|null $specific = null, int|null $limit = null, int|null $offset = null, string|null $search = null)
         </code>
@@ -1121,7 +1595,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getTotalUserCount">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L582">at line 582</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L686">at line 686</a></div>
         <code>                    int
     <strong>getTotalUserCount</strong>(int|null $restrictToUserId = null, string|null $search = null)
         </code>
@@ -1169,7 +1643,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L614">at line 614</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L718">at line 718</a></div>
         <code>                    bool
     <strong>deleteUser</strong>(int $userId)
         </code>
@@ -1212,7 +1686,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L696">at line 696</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L800">at line 800</a></div>
         <code>                    array
     <strong>getUserZones</strong>(int $userId)
         </code>
@@ -1255,7 +1729,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_transferUserZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L714">at line 714</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L818">at line 818</a></div>
         <code>                    bool
     <strong>transferUserZones</strong>(int $fromUserId, int $toUserId)
         </code>
@@ -1303,7 +1777,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_countUberusers">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L725">at line 725</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L829">at line 829</a></div>
         <code>                    int
     <strong>countUberusers</strong>()
         </code>
@@ -1336,7 +1810,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_isLastUberuser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L745">at line 745</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L849">at line 849</a></div>
         <code>                    bool
     <strong>isLastUberuser</strong>(int $userId)
         </code>
@@ -1379,7 +1853,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_isUberuser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L750">at line 750</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L854">at line 854</a></div>
         <code>                    bool
     <strong>isUberuser</strong>(int $userId)
         </code>
@@ -1422,7 +1896,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getAdminUserIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L766">at line 766</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L870">at line 870</a></div>
         <code>                    array
     <strong>getAdminUserIds</strong>()
         </code>
@@ -1455,7 +1929,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_templateGrantsUberuser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L792">at line 792</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L896">at line 896</a></div>
         <code>                    bool
     <strong>templateGrantsUberuser</strong>(int $permTemplId)
         </code>
@@ -1498,7 +1972,7 @@ row without a domain_id is keyed by zones.id instead</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_findPermissionTemplateIdByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L805">at line 805</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L909">at line 909</a></div>
         <code>                    int|null
     <strong>findPermissionTemplateIdByName</strong>(string $name)
         </code>
@@ -1542,7 +2016,7 @@ IdP-asserted claim cannot map to a look-alike template.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getPermissionIdsByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L815">at line 815</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L919">at line 919</a></div>
         <code>                    array
     <strong>getPermissionIdsByName</strong>(string $name)
         </code>
@@ -1586,7 +2060,7 @@ all of them grant the permission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_createUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L824">at line 824</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L928">at line 928</a></div>
         <code>                    int|null
     <strong>createUser</strong>(<a href="../../../Poweradmin/Domain/Service/User/CreateUserCommand.html"><abbr title="Poweradmin\Domain\Service\User\CreateUserCommand">CreateUserCommand</abbr></a> $user)
         </code>
@@ -1629,7 +2103,7 @@ all of them grant the permission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_createProvisionedUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L858">at line 858</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L962">at line 962</a></div>
         <code>                    int
     <strong>createProvisionedUser</strong>(array $userData)
         </code>
@@ -1681,7 +2155,7 @@ all of them grant the permission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_updateProvisionedUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L885">at line 885</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L989">at line 989</a></div>
         <code>                    void
     <strong>updateProvisionedUser</strong>(int $userId, array $fields)
         </code>
@@ -1729,7 +2203,7 @@ all of them grant the permission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserByUsername">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L906">at line 906</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L1010">at line 1010</a></div>
         <code>                    array|null
     <strong>getUserByUsername</strong>(string $username)
         </code>
@@ -1772,7 +2246,7 @@ all of them grant the permission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserByEmail">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L920">at line 920</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L1024">at line 1024</a></div>
         <code>                    array|null
     <strong>getUserByEmail</strong>(string $email)
         </code>
@@ -1815,7 +2289,7 @@ all of them grant the permission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_findActiveUserIdByEmail">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L935">at line 935</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L1039">at line 1039</a></div>
         <code>                    int|null
     <strong>findActiveUserIdByEmail</strong>(string $email)
         </code>
@@ -1859,7 +2333,7 @@ look-alike address from an identity provider cannot resolve to another account.<
             </div>
                     <div class="method-item">
                     <h3 id="method_getProvisioningProfile">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L945">at line 945</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L1049">at line 1049</a></div>
         <code>                    array
     <strong>getProvisioningProfile</strong>(int $userId)
         </code>
@@ -1902,7 +2376,7 @@ look-alike address from an identity provider cannot resolve to another account.<
             </div>
                     <div class="method-item">
                     <h3 id="method_countUsersByEmail">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L953">at line 953</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L1057">at line 1057</a></div>
         <code>                    int
     <strong>countUsersByEmail</strong>(string $email)
         </code>
@@ -1945,7 +2419,7 @@ look-alike address from an identity provider cannot resolve to another account.<
             </div>
                     <div class="method-item">
                     <h3 id="method_updateUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L972">at line 972</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L1076">at line 1076</a></div>
         <code>                    bool
     <strong>updateUser</strong>(int $userId, <a href="../../../Poweradmin/Domain/Service/User/UpdateUserCommand.html"><abbr title="Poweradmin\Domain\Service\User\UpdateUserCommand">UpdateUserCommand</abbr></a> $changes)
         </code>
@@ -1993,7 +2467,7 @@ look-alike address from an identity provider cannot resolve to another account.<
             </div>
                     <div class="method-item">
                     <h3 id="method_assignPermissionTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L1038">at line 1038</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L1142">at line 1142</a></div>
         <code>                    bool
     <strong>assignPermissionTemplate</strong>(int $userId, int $permTemplId)
         </code>
@@ -2041,7 +2515,7 @@ look-alike address from an identity provider cannot resolve to another account.<
             </div>
                     <div class="method-item">
                     <h3 id="method_permissionTemplateExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L1051">at line 1051</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbUserRepository.php#L1155">at line 1155</a></div>
         <code>                    bool
     <strong>permissionTemplateExists</strong>(int $permTemplId, string|null $templateType = null)
         </code>
@@ -2091,7 +2565,7 @@ look-alike address from an identity provider cannot resolve to another account.<
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/7b6fb2c" rel="noreferrer" target="_blank">commit 7b6fb2c,</a> built 2026-09-22 16:54 UTC.</div></div>
     </div>
     </body>
 
