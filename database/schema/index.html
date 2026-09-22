@@ -2188,6 +2188,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#zone_change_requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        zone_change_requests
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7967,6 +7978,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#zone_change_requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        zone_change_requests
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8708,6 +8730,11 @@
 <td>varchar(1024)</td>
 <td>Template description</td>
 </tr>
+<tr>
+<td><code>template_type</code></td>
+<td>enum('user','group')</td>
+<td>Whether the template applies to users or to groups (default <code>user</code>, added in 4.2.0)</td>
+</tr>
 </tbody>
 </table>
 <h3 id="perm_templ_items"><code>perm_templ_items</code><a class="headerlink" href="#perm_templ_items" title="Permanent link">¶</a></h3>
@@ -8826,6 +8853,11 @@
 <td><code>created_by</code></td>
 <td>int</td>
 <td>Foreign key to users.id (creator)</td>
+</tr>
+<tr>
+<td><code>is_default</code></td>
+<td>tinyint</td>
+<td>Marks the system-wide default template (default 0, added in 4.4.0)</td>
 </tr>
 </tbody>
 </table>
@@ -8946,6 +8978,11 @@
 <td><code>successful</code></td>
 <td>tinyint</td>
 <td>Success flag</td>
+</tr>
+<tr>
+<td><code>attempt_type</code></td>
+<td>varchar(16)</td>
+<td>Which credential was tried, <code>password</code> or <code>mfa</code>, so the two are throttled separately (default <code>password</code>, added in 4.5.0)</td>
 </tr>
 </tbody>
 </table>
@@ -9419,6 +9456,110 @@
 <td><code>updated_at</code></td>
 <td>timestamp</td>
 <td>Update timestamp</td>
+</tr>
+</tbody>
+</table>
+<h3 id="zone_change_requests"><code>zone_change_requests</code><a class="headerlink" href="#zone_change_requests" title="Permanent link">¶</a></h3>
+<p>Holds record and zone-deletion changes awaiting review, for the change approval
+workflow. Present from 4.6.0; the table is only read when <code>approval.enabled</code> is on.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>zone_id</code></td>
+<td>int</td>
+<td>Foreign key to domains.id</td>
+</tr>
+<tr>
+<td><code>zone_name</code></td>
+<td>varchar(255)</td>
+<td>Zone name, kept so history survives zone deletion</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td>varchar(16)</td>
+<td><code>records</code> or <code>zone_delete</code></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>varchar(16)</td>
+<td><code>pending</code>, <code>approved</code>, <code>rejected</code>, <code>cancelled</code> or <code>failed</code></td>
+</tr>
+<tr>
+<td><code>requester_id</code></td>
+<td>int</td>
+<td>Foreign key to users.id (nullable)</td>
+</tr>
+<tr>
+<td><code>requester_name</code></td>
+<td>varchar(64)</td>
+<td>Requester name, kept if the account is removed</td>
+</tr>
+<tr>
+<td><code>request_comment</code></td>
+<td>text</td>
+<td>Reason given when filing</td>
+</tr>
+<tr>
+<td><code>base_serial</code></td>
+<td>varchar(32)</td>
+<td>SOA serial the form was rendered with, for staleness detection</td>
+</tr>
+<tr>
+<td><code>payload</code></td>
+<td>text</td>
+<td>JSON action list describing the requested change</td>
+</tr>
+<tr>
+<td><code>reviewer_id</code></td>
+<td>int</td>
+<td>Foreign key to users.id (nullable)</td>
+</tr>
+<tr>
+<td><code>reviewer_name</code></td>
+<td>varchar(64)</td>
+<td>Reviewer name</td>
+</tr>
+<tr>
+<td><code>review_comment</code></td>
+<td>text</td>
+<td>Reason given when approving or rejecting</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>timestamp</td>
+<td>When the request was filed</td>
+</tr>
+<tr>
+<td><code>reviewed_at</code></td>
+<td>timestamp</td>
+<td>When it was approved or rejected</td>
+</tr>
+<tr>
+<td><code>applied_at</code></td>
+<td>timestamp</td>
+<td>When the change was written</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>text</td>
+<td>Failure detail when status is <code>failed</code></td>
+</tr>
+<tr>
+<td><code>snapshot</code></td>
+<td>text</td>
+<td>Record state captured for the review diff</td>
 </tr>
 </tbody>
 </table>
