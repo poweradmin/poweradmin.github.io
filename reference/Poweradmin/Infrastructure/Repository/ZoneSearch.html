@@ -93,8 +93,8 @@
     </div>
 
     
-    <p>        class
-    <strong>ZoneSearch</strong>        extends <a href="../../../Poweradmin/Infrastructure/Repository/BaseSearch.html"><abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ZoneSearch.php">View source</a>)
+    <p>final         class
+    <strong>ZoneSearch</strong>        extends <a href="../../../Poweradmin/Infrastructure/Repository/BaseSearch.html"><abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a>        implements        <a href="../../../Poweradmin/Domain/Port/ZoneSearchInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneSearchInterface">ZoneSearchInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ZoneSearch.php">View source</a>)
 </p>
 
         
@@ -150,16 +150,6 @@
                 <td><small>from&nbsp;<a href="../../../Poweradmin/Infrastructure/Repository/BaseSearch.html#property_ipValidator">
 <abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a></small></td>
             </tr>
-                    <tr>
-                <td class="type" id="property_userContext">
-                                        protected                                        <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>
-                                                                                
-                                    </td>
-                <td>$userContext</td>
-                <td class="last"></td>
-                <td><small>from&nbsp;<a href="../../../Poweradmin/Infrastructure/Repository/BaseSearch.html#property_userContext">
-<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a></small></td>
-            </tr>
             </table>
 
     
@@ -171,7 +161,7 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>($db, $config, string $db_type, <a href="../../../Poweradmin/Domain/Service/DnsValidation/IPAddressValidator.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\IPAddressValidator">IPAddressValidator</abbr></a>|null $ipValidator = null, <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null $userContext = null)
+                    <a href="#method___construct">__construct</a>($db, $config, string $db_type, <a href="../../../Poweradmin/Domain/Service/DnsValidation/IPAddressValidator.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\IPAddressValidator">IPAddressValidator</abbr></a>|null $ipValidator = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -252,7 +242,7 @@ binding one placeholder per matching name into $params.</p></p>                <
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_searchZones">searchZones</a>(array $parameters, string $permission_view, string $sort_zones_by, string $zone_sort_direction, int $iface_rowamount, bool $iface_zone_comments, int $page)
+                    <a href="#method_searchZones">searchZones</a>(array $parameters, string $permission_view, int|null $userId, string $sort_zones_by, string $zone_sort_direction, int $iface_rowamount, bool $iface_zone_comments, int $page)
         
                                             <p><p>Search for zones based on specified parameters.</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -272,7 +262,7 @@ binding one placeholder per matching name into $params.</p></p>                <
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_fetchZones">fetchZones</a>(array $parameters, mixed $search_string, bool $reverse, mixed $reverse_search_string, string $permission_view, string $sort_zones_by, string $zone_sort_direction, int $iface_rowamount, bool $iface_zone_comments, int $page)
+                    <a href="#method_fetchZones">fetchZones</a>(array $parameters, mixed $search_string, bool $reverse, mixed $reverse_search_string, string $permission_view, int|null $userId, string $sort_zones_by, string $zone_sort_direction, int $iface_rowamount, bool $iface_zone_comments, int $page)
         
                                             <p><p>Fetch zones based on specified search criteria and pagination.</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -282,7 +272,7 @@ binding one placeholder per matching name into $params.</p></p>                <
                     int
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getTotalZones">getTotalZones</a>(array $parameters, string $permission_view)
+                    <a href="#method_getTotalZones">getTotalZones</a>(array $parameters, string $permission_view, int|null $userId)
         
                                             <p><p>Get the total number of zones based on the specified search criteria.</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -292,7 +282,7 @@ binding one placeholder per matching name into $params.</p></p>                <
                     int
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getFoundZones">getFoundZones</a>(array $parameters, mixed $search_string, bool $reverse, mixed $reverse_search_string, string $permission_view)
+                    <a href="#method_getFoundZones">getFoundZones</a>(array $parameters, mixed $search_string, bool $reverse, mixed $reverse_search_string, string $permission_view, int|null $userId)
         
                                             <p><p>Get the number of found zones based on the search criteria.</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -306,9 +296,9 @@ binding one placeholder per matching name into $params.</p></p>                <
                     <div class="method-item">
                     <h3 id="method___construct">
         <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/BaseSearch.html#method___construct">
-<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L44">at line 44</a></div>
+<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L42">at line 42</a></div>
         <code>                    
-    <strong>__construct</strong>($db, $config, string $db_type, <a href="../../../Poweradmin/Domain/Service/DnsValidation/IPAddressValidator.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\IPAddressValidator">IPAddressValidator</abbr></a>|null $ipValidator = null, <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null $userContext = null)
+    <strong>__construct</strong>($db, $config, string $db_type, <a href="../../../Poweradmin/Domain/Service/DnsValidation/IPAddressValidator.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\IPAddressValidator">IPAddressValidator</abbr></a>|null $ipValidator = null)
         </code>
     </h3>
     <div class="details">    
@@ -344,11 +334,6 @@ binding one placeholder per matching name into $params.</p></p>                <
                 <td>$ipValidator</td>
                 <td></td>
             </tr>
-                    <tr>
-                <td><a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null</td>
-                <td>$userContext</td>
-                <td></td>
-            </tr>
             </table>
 
             
@@ -362,7 +347,7 @@ binding one placeholder per matching name into $params.</p></p>                <
                     <div class="method-item">
                     <h3 id="method_buildSearchString">
         <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/BaseSearch.html#method_buildSearchString">
-<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L62">at line 62</a></div>
+<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L59">at line 59</a></div>
         <code>            protected        array
     <strong>buildSearchString</strong>(array $parameters)
         </code>
@@ -409,7 +394,7 @@ the generated search string.</p></td>
                     <div class="method-item">
                     <h3 id="method_buildRawSearchString">
         <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/BaseSearch.html#method_buildRawSearchString">
-<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L94">at line 94</a></div>
+<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L91">at line 91</a></div>
         <code>            protected        string
     <strong>buildRawSearchString</strong>(array $parameters)
         </code>
@@ -454,7 +439,7 @@ user typed, so the punycoded form of the query cannot match them.</p></p>
                     <div class="method-item">
                     <h3 id="method_idnNamesMatching">
         <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/BaseSearch.html#method_idnNamesMatching">
-<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L115">at line 115</a></div>
+<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L112">at line 112</a></div>
         <code>            protected        array
     <strong>idnNamesMatching</strong>(string $table, string $column, string $query)
         </code>
@@ -510,7 +495,7 @@ IDN names and comparing in PHP is bounded to the rows that are actually punycode
                     <div class="method-item">
                     <h3 id="method_idnNameCondition">
         <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/BaseSearch.html#method_idnNameCondition">
-<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L139">at line 139</a></div>
+<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L136">at line 136</a></div>
         <code>            protected        string
     <strong>idnNameCondition</strong>(string $table, string $column, string $query, string $prefix, array $params)
         </code>
@@ -575,7 +560,7 @@ binding one placeholder per matching name into $params.</p></p>
                     <div class="method-item">
                     <h3 id="method_handleSqlMode">
         <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/BaseSearch.html#method_handleSqlMode">
-<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L156">at line 156</a></div>
+<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L153">at line 153</a></div>
         <code>            protected        string
     <strong>handleSqlMode</strong>()
         </code>
@@ -610,7 +595,7 @@ binding one placeholder per matching name into $params.</p></p>
                     <div class="method-item">
                     <h3 id="method_restoreSqlMode">
         <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/BaseSearch.html#method_restoreSqlMode">
-<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L167">at line 167</a></div>
+<abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/BaseSearch.php#L164">at line 164</a></div>
         <code>            protected        void
     <strong>restoreSqlMode</strong>(string $originalSqlMode)
         </code>
@@ -653,9 +638,9 @@ binding one placeholder per matching name into $params.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_searchZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ZoneSearch.php#L47">at line 47</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ZoneSearch.php#L49">at line 49</a></div>
         <code>                    array
-    <strong>searchZones</strong>(array $parameters, string $permission_view, string $sort_zones_by, string $zone_sort_direction, int $iface_rowamount, bool $iface_zone_comments, int $page)
+    <strong>searchZones</strong>(array $parameters, string $permission_view, int|null $userId, string $sort_zones_by, string $zone_sort_direction, int $iface_rowamount, bool $iface_zone_comments, int $page)
         </code>
     </h3>
     <div class="details">    
@@ -673,12 +658,17 @@ binding one placeholder per matching name into $params.</p></p>
                     <tr>
                 <td>array</td>
                 <td>$parameters</td>
-                <td><p>An array of search parameters.</p></td>
+                <td><p>query, zones, records, comments, wildcard, reverse</p></td>
             </tr>
                     <tr>
                 <td>string</td>
                 <td>$permission_view</td>
                 <td><p>The permission view for the search (e.g. 'all' or 'own' zones).</p></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$userId</td>
+                <td><p>The user an 'own' view is limited to; null matches nothing</p></td>
             </tr>
                     <tr>
                 <td>string</td>
@@ -703,7 +693,7 @@ binding one placeholder per matching name into $params.</p></p>
                     <tr>
                 <td>int</td>
                 <td>$page</td>
-                <td><p>The current page number.</p></td>
+                <td></td>
             </tr>
             </table>
 
@@ -713,7 +703,7 @@ binding one placeholder per matching name into $params.</p></p>
                     <table class="table table-condensed">
         <tr>
             <td>array</td>
-            <td><p>An array of found zones.</p></td>
+            <td></td>
         </tr>
     </table>
 
@@ -726,7 +716,7 @@ binding one placeholder per matching name into $params.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_prepareFoundZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ZoneSearch.php#L66">at line 66</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ZoneSearch.php#L68">at line 68</a></div>
         <code>                    array
     <strong>prepareFoundZones</strong>(array $zones)
         </code>
@@ -769,9 +759,9 @@ binding one placeholder per matching name into $params.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_fetchZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ZoneSearch.php#L116">at line 116</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ZoneSearch.php#L119">at line 119</a></div>
         <code>                    array
-    <strong>fetchZones</strong>(array $parameters, mixed $search_string, bool $reverse, mixed $reverse_search_string, string $permission_view, string $sort_zones_by, string $zone_sort_direction, int $iface_rowamount, bool $iface_zone_comments, int $page)
+    <strong>fetchZones</strong>(array $parameters, mixed $search_string, bool $reverse, mixed $reverse_search_string, string $permission_view, int|null $userId, string $sort_zones_by, string $zone_sort_direction, int $iface_rowamount, bool $iface_zone_comments, int $page)
         </code>
     </h3>
     <div class="details">    
@@ -810,6 +800,11 @@ binding one placeholder per matching name into $params.</p></p>
                 <td>string</td>
                 <td>$permission_view</td>
                 <td><p>Permission view for the search</p></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$userId</td>
+                <td><p>The user an 'own' view is limited to</p></td>
             </tr>
                     <tr>
                 <td>string</td>
@@ -857,9 +852,9 @@ binding one placeholder per matching name into $params.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getTotalZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ZoneSearch.php#L187">at line 187</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ZoneSearch.php#L192">at line 192</a></div>
         <code>                    int
-    <strong>getTotalZones</strong>(array $parameters, string $permission_view)
+    <strong>getTotalZones</strong>(array $parameters, string $permission_view, int|null $userId)
         </code>
     </h3>
     <div class="details">    
@@ -877,12 +872,17 @@ binding one placeholder per matching name into $params.</p></p>
                     <tr>
                 <td>array</td>
                 <td>$parameters</td>
-                <td><p>Array of parameters to configure the search.</p></td>
+                <td></td>
             </tr>
                     <tr>
                 <td>string</td>
                 <td>$permission_view</td>
                 <td><p>The permission view for the search (e.g. 'all' or 'own' zones).</p></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$userId</td>
+                <td></td>
             </tr>
             </table>
 
@@ -892,7 +892,7 @@ binding one placeholder per matching name into $params.</p></p>
                     <table class="table table-condensed">
         <tr>
             <td>int</td>
-            <td><p>The total number of zones found.</p></td>
+            <td></td>
         </tr>
     </table>
 
@@ -905,9 +905,9 @@ binding one placeholder per matching name into $params.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getFoundZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ZoneSearch.php#L204">at line 204</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ZoneSearch.php#L210">at line 210</a></div>
         <code>                    int
-    <strong>getFoundZones</strong>(array $parameters, mixed $search_string, bool $reverse, mixed $reverse_search_string, string $permission_view)
+    <strong>getFoundZones</strong>(array $parameters, mixed $search_string, bool $reverse, mixed $reverse_search_string, string $permission_view, int|null $userId)
         </code>
     </h3>
     <div class="details">    
@@ -947,6 +947,11 @@ binding one placeholder per matching name into $params.</p></p>
                 <td>$permission_view</td>
                 <td><p>The permission view for the search (e.g. 'all' or 'own' zones).</p></td>
             </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$userId</td>
+                <td><p>The user an 'own' view is limited to.</p></td>
+            </tr>
             </table>
 
             
@@ -970,7 +975,7 @@ binding one placeholder per matching name into $params.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ca8a14a" rel="noreferrer" target="_blank">commit ca8a14a,</a> built 2026-09-21 14:36 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
     </div>
     </body>
 

@@ -7396,41 +7396,50 @@ and is overwritten on upgrade.</p>
 <li><code>Repository/</code>: repository interfaces, split into narrow roles such as
   <code>UserLookupInterface</code> and <code>RecordListingInterface</code></li>
 <li><code>Service/Auth/</code>, <code>Service/Zone/</code>, <code>Service/Template/</code>, <code>Service/Dns/</code>,
-  <code>Service/User/</code>, <code>Service/Database/</code>, <code>Service/Consistency/</code>: the use cases,
-  grouped by the concern that changes them</li>
-<li><code>Service/DnsValidation/</code>: one validator per record type</li>
-<li><code>Database/</code>: SQL dialect helpers (<code>DbCompat</code>, <code>TableNameService</code>, <code>CanonicalZoneSql</code>)
-  shared by the domain services that still own SQL</li>
+  <code>Service/User/</code>, <code>Service/Consistency/</code>, <code>Service/Validation/</code>: the use cases,
+  grouped by the concern that changes them. They write through the repository
+  interfaces, take the acting user as <code>Port\ActorInterface</code>, and report failures
+  as result objects carrying a <code>Refusal</code>, never an HTTP status</li>
+<li><code>Service/DnsValidation/</code>: one validator per record type, sharing one
+  <code>HostnameValidator</code> built from a <code>HostnamePolicy</code></li>
+<li><code>Database/</code>: SQL dialect helpers (<code>DbCompat</code>, <code>TableNameService</code>, <code>CanonicalZoneSql</code>)</li>
 <li><code>Module/</code>: the <code>ModuleInterface</code> bundled modules implement</li>
 </ul>
 </li>
 <li><strong>Application/</strong>: everything that faces a request<ul>
 <li><code>Controller/</code>: web controllers grouped by route (<code>Zone/</code>, <code>Record/</code>, <code>Dnssec/</code>,
-  <code>Auth/</code>, <code>User/</code>, <code>Template/</code>, <code>Log/</code>, <code>System/</code>) plus <code>Api/</code> and the shared
-  <code>BaseController</code></li>
-<li><code>Service/</code>: application services, the composition-root factories
-  (<code>ControllerServiceFactory</code> and the concern factories under <code>Service/Factory/</code>),
-  and <code>Service/Auth/</code> for the login pipeline</li>
-<li><code>Boot/</code>, <code>Http/</code>, <code>Routing/</code>, <code>Web/</code>, <code>Presenter/</code>, <code>Module/</code>: bootstrap, request
-  handling, routing, page rendering, view models and the module manifest</li>
+  <code>Auth/</code>, <code>User/</code>, <code>Template/</code>, <code>Log/</code>, <code>System/</code>) plus <code>Api/</code> (with the v2
+  resource shapers under <code>Api/V2/Resource/</code>) and the shared <code>BaseController</code></li>
+<li><code>Service/</code>: application services grouped like the domain ones (<code>Auth/</code>, <code>User/</code>,
+  <code>Zone/</code>, <code>Record/</code>, <code>Backend/</code>, <code>Mail/</code>, <code>Web/</code>), and the composition root
+  (<code>ControllerServiceFactory</code> with the concern factories under <code>Service/Factory/</code>)</li>
+<li><code>Boot/</code>: the <code>Kernel</code> every entry point boots through, <code>Http/</code> (request, refusal
+  to status mapping), <code>Routing/</code>, <code>Web/</code> (page rendering), <code>Presenter/</code> (view
+  models), <code>Module/</code> (module manifest, registry and the <code>ModuleServices</code> contract),
+  <code>Console/</code> (the <code>bin/poweradmin</code> commands)</li>
 </ul>
 </li>
-<li><strong>Infrastructure/</strong>: adapters for the outside world: <code>Repository/</code> (PDO), <code>Api/</code>
-  (the PowerDNS API client), <code>Service/</code> (backend providers), <code>Logger/</code>, <code>Session/</code>,
-  <code>Configuration/</code>, <code>Utility/</code></li>
+<li><strong>Infrastructure/</strong>: adapters for the outside world: <code>Repository/</code> (PDO and the
+  PowerDNS API repositories, incl. search), <code>Api/</code> (the PowerDNS API client), <code>Service/</code>
+  (backend providers), <code>Database/</code> (schema, credentials, seed data), <code>Logger/</code>,
+  <code>Session/</code>, <code>Configuration/</code>, <code>Utility/</code>. Infrastructure imports nothing from the
+  layers above it</li>
 <li><strong>Module/</strong>: the bundled modules (DNS wizards, zone import/export, WHOIS, RDAP,
   secondary zone import, CSV export, email previews), registered in
   <code>Application/Module/ModuleManifest.php</code></li>
 </ul>
 </li>
 </ul>
-<p>Entry points are <code>index.php</code>, <code>dynamic_update.php</code> and <code>install/index.php</code>.</p>
+<p>Entry points are <code>index.php</code>, <code>dynamic_update.php</code>, <code>install/index.php</code> and
+<code>bin/poweradmin</code>; all four boot through <code>Application\Boot\Kernel</code>.</p>
 <p>Modules extend <code>Application\Controller\BaseController</code>, implement
-<code>Domain\Module\ModuleInterface</code>, and otherwise depend on the <code>Domain\Port</code>,
-<code>Domain\Repository</code> and <code>Domain\Service</code> namespaces plus a few application services
-(<code>RecordAddService</code>, <code>ZoneCreateRequest</code>, <code>ZoneOwnershipFormResolver</code>, the <code>*Messages</code>
-catalogues). Treat those as the module surface; the rest of <code>lib/</code> may move between
-releases without notice.</p>
+<code>Domain\Module\ModuleInterface</code>, obtain core services through
+<code>$this-&gt;moduleServices()</code> (<code>Application\Module\ModuleServices</code>), and otherwise depend on
+the <code>Domain\Port</code>, <code>Domain\Repository</code> and <code>Domain\Service</code> namespaces plus the SDK value
+types (<code>RecordAddResult</code>, <code>RecordAddAccess</code>, <code>ZoneCreateRequest</code>, <code>ZoneCreateFormMessages</code>,
+<code>ChangeRequestMessages</code>). <code>composer analyse:all</code> rejects other imports of application
+services from a module. Treat that as the module surface; the rest of <code>lib/</code> may move
+between releases without notice.</p>
 <h3 id="frontend">Frontend<a class="headerlink" href="#frontend" title="Permanent link">¶</a></h3>
 <ul>
 <li><strong>assets/</strong>: JavaScript and images</li>

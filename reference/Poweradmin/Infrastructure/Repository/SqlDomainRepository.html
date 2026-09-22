@@ -93,7 +93,7 @@
     </div>
 
     
-    <p>        class
+    <p>final         class
     <strong>SqlDomainRepository</strong>        implements        <a href="../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php">View source</a>)
 </p>
 
@@ -181,7 +181,7 @@ costs one round trip to PowerDNS.</p></p>                </div>
                 <div class="col-md-8">
                     <a href="#method_domainExists">domainExists</a>(string $domain)
         
-                                            <p><p>Check if a domain is already existing.</p></p>                </div>
+                                            <p><p>Check if a domain is already existing. An invalid zone name never exists.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -199,7 +199,7 @@ costs one round trip to PowerDNS.</p></p>                </div>
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getZoneInfoFromId">getZoneInfoFromId</a>(int $zid, string $viewPermissionLevel)
+                    <a href="#method_getZoneInfoFromId">getZoneInfoFromId</a>(int $zid)
         
                                             <p><p>Get Zone details from Zone ID</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -209,7 +209,7 @@ costs one round trip to PowerDNS.</p></p>                </div>
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getZoneInfoFromIds">getZoneInfoFromIds</a>(array $zones, string $viewPermissionLevel)
+                    <a href="#method_getZoneInfoFromIds">getZoneInfoFromIds</a>(array $zones)
         
                                             <p><p>Get Zone(s) details from Zone IDs</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -234,6 +234,26 @@ costs one round trip to PowerDNS.</p></p>                </div>
                                             <p><p>Get Best Matching in-addr.arpa Zone ID from Domain Name</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findZoneIdsByNames">findZoneIdsByNames</a>(array $names)
+        
+                                            <p><p>Zone ids for the given lowercased names, matched case-insensitively.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_findZonesUnder">findZonesUnder</a>(string $suffix)
+        
+                                            <p><p>Zones whose name ends in &quot;.$suffix&quot;, matched case-insensitively and ordered by name.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
             </div>
 
 
@@ -242,7 +262,7 @@ costs one round trip to PowerDNS.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L53">at line 53</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L52">at line 52</a></div>
         <code>                    
     <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
         </code>
@@ -282,7 +302,7 @@ costs one round trip to PowerDNS.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneIdExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L70">at line 70</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L68">at line 68</a></div>
         <code>                    bool
     <strong>zoneIdExists</strong>(int $zid)
         </code>
@@ -326,7 +346,7 @@ domains table, or the zones table in API backend mode); PowerDNS is not asked.</
             </div>
                     <div class="method-item">
                     <h3 id="method_getDomainNameById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L80">at line 80</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L78">at line 78</a></div>
         <code>                    string|null
     <strong>getDomainNameById</strong>(int $id)
         </code>
@@ -369,7 +389,7 @@ domains table, or the zones table in API backend mode); PowerDNS is not asked.</
             </div>
                     <div class="method-item">
                     <h3 id="method_getDomainIdByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L91">at line 91</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L89">at line 89</a></div>
         <code>                    int|null
     <strong>getDomainIdByName</strong>(string $name)
         </code>
@@ -412,7 +432,7 @@ domains table, or the zones table in API backend mode); PowerDNS is not asked.</
             </div>
                     <div class="method-item">
                     <h3 id="method_getDomainType">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L108">at line 108</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L106">at line 106</a></div>
         <code>                    string
     <strong>getDomainType</strong>(int $id)
         </code>
@@ -456,7 +476,7 @@ costs one round trip to PowerDNS.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getDomainMaster">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L118">at line 118</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L116">at line 116</a></div>
         <code>                    string|null
     <strong>getDomainMaster</strong>(int $id)
         </code>
@@ -500,7 +520,7 @@ In API backend mode a zones row without a cached kind costs one round trip to Po
             </div>
                     <div class="method-item">
                     <h3 id="method_domainExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L129">at line 129</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L127">at line 127</a></div>
         <code>                    bool
     <strong>domainExists</strong>(string $domain)
         </code>
@@ -511,7 +531,7 @@ In API backend mode a zones row without a cached kind costs one round trip to Po
             
 
         <div class="method-description">
-                            <p><p>Check if a domain is already existing.</p></p>                        
+                            <p><p>Check if a domain is already existing. An invalid zone name never exists.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -543,7 +563,7 @@ In API backend mode a zones row without a cached kind costs one round trip to Po
             </div>
                     <div class="method-item">
                     <h3 id="method_getZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L196">at line 196</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L193">at line 193</a></div>
         <code>                    array
     <strong>getZones</strong>(string $perm, int $userid = 0, string $letterstart = &#039;all&#039;, int $rowstart = 0, int $rowamount = Constants::DEFAULT_MAX_ROWS, string $sortby = &#039;name&#039;, string $sortDirection = &#039;ASC&#039;, bool $excludeReverse = false, bool|null $showSerial = null, bool|null $showTemplate = null, bool $includeHealth = true, bool $includeRecordCount = true)
         </code>
@@ -641,9 +661,9 @@ In API backend mode a zones row without a cached kind costs one round trip to Po
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneInfoFromId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L504">at line 504</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L501">at line 501</a></div>
         <code>                    array
-    <strong>getZoneInfoFromId</strong>(int $zid, string $viewPermissionLevel)
+    <strong>getZoneInfoFromId</strong>(int $zid)
         </code>
     </h3>
     <div class="details">    
@@ -663,11 +683,6 @@ In API backend mode a zones row without a cached kind costs one round trip to Po
                 <td>$zid</td>
                 <td><p>Zone ID</p></td>
             </tr>
-                    <tr>
-                <td>string</td>
-                <td>$viewPermissionLevel</td>
-                <td><p>The caller's view level; &quot;none&quot; withholds the details</p></td>
-            </tr>
             </table>
 
             
@@ -676,7 +691,7 @@ In API backend mode a zones row without a cached kind costs one round trip to Po
                     <table class="table table-condensed">
         <tr>
             <td>array</td>
-            <td><p>array of zone details [type,name,master_ip,record_count]</p></td>
+            <td><p>array of zone details [type,name,master_ip,record_count], or [] when not found</p></td>
         </tr>
     </table>
 
@@ -689,9 +704,9 @@ In API backend mode a zones row without a cached kind costs one round trip to Po
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneInfoFromIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L537">at line 537</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L529">at line 529</a></div>
         <code>                    array
-    <strong>getZoneInfoFromIds</strong>(array $zones, string $viewPermissionLevel)
+    <strong>getZoneInfoFromIds</strong>(array $zones)
         </code>
     </h3>
     <div class="details">    
@@ -710,11 +725,6 @@ In API backend mode a zones row without a cached kind costs one round trip to Po
                 <td>array</td>
                 <td>$zones</td>
                 <td><p>Zone IDs</p></td>
-            </tr>
-                    <tr>
-                <td>string</td>
-                <td>$viewPermissionLevel</td>
-                <td><p>The caller's view level; &quot;none&quot; withholds the details</p></td>
             </tr>
             </table>
 
@@ -737,7 +747,7 @@ In API backend mode a zones row without a cached kind costs one round trip to Po
             </div>
                     <div class="method-item">
                     <h3 id="method_listZoneNames">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L547">at line 547</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L539">at line 539</a></div>
         <code>                    array
     <strong>listZoneNames</strong>()
         </code>
@@ -770,7 +780,7 @@ In API backend mode a zones row without a cached kind costs one round trip to Po
             </div>
                     <div class="method-item">
                     <h3 id="method_getBestMatchingZoneIdFromName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L559">at line 559</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L551">at line 551</a></div>
         <code>                    int
     <strong>getBestMatchingZoneIdFromName</strong>(string $domain)
         </code>
@@ -811,11 +821,97 @@ In API backend mode a zones row without a cached kind costs one round trip to Po
     </div>
 
             </div>
+                    <div class="method-item">
+                    <h3 id="method_findZoneIdsByNames">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L572">at line 572</a></div>
+        <code>                    array
+    <strong>findZoneIdsByNames</strong>(array $names)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Zone ids for the given lowercased names, matched case-insensitively.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$names</td>
+                <td><p>Lowercased zone names</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Stored zone name =&gt; zone id, for the names that exist</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_findZonesUnder">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlDomainRepository.php#L593">at line 593</a></div>
+        <code>                    array
+    <strong>findZonesUnder</strong>(string $suffix)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Zones whose name ends in &quot;.$suffix&quot;, matched case-insensitively and ordered by name.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$suffix</td>
+                <td><p>Lowercased zone name without a trailing dot</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
             </div>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ca8a14a" rel="noreferrer" target="_blank">commit ca8a14a,</a> built 2026-09-21 14:36 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
     </div>
     </body>
 

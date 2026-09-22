@@ -93,8 +93,8 @@
     </div>
 
     
-    <p>        class
-    <strong>PageRenderer</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php">View source</a>)
+    <p>final         class
+    <strong>PageRenderer</strong>        implements        <a href="../../../Poweradmin/Application/Web/PageOutputInterface.html"><abbr title="Poweradmin\Application\Web\PageOutputInterface">PageOutputInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php">View source</a>)
 </p>
 
         
@@ -132,10 +132,30 @@ triggers authentication or database work on construction.</p></p>        </div>
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Application/Boot/AppManager.html"><abbr title="Poweradmin\Application\Boot\AppManager">AppManager</abbr></a> $app, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Application/Service/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\CsrfTokenService">CsrfTokenService</abbr></a> $csrfTokenService, <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a> $userContextService, <a href="../../../Poweradmin/Module/ModuleRegistry.html"><abbr title="Poweradmin\Module\ModuleRegistry">ModuleRegistry</abbr></a> $moduleRegistry, bool $isApiBackend, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $hasPermission, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $getPdnsServerInfo, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $getDebugQueries, bool $wideLayout, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $pendingChangeRequestCount = null)
+                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Application/Boot/AppManager.html"><abbr title="Poweradmin\Application\Boot\AppManager">AppManager</abbr></a> $app, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Application/Service/Auth/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\Auth\CsrfTokenService">CsrfTokenService</abbr></a> $csrfTokenService, <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a> $userContextService, <a href="../../../Poweradmin/Application/Module/ModuleRegistry.html"><abbr title="Poweradmin\Application\Module\ModuleRegistry">ModuleRegistry</abbr></a> $moduleRegistry, bool $isApiBackend, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $hasPermission, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $getPdnsServerInfo, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $getDebugQueries, bool $wideLayout, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $pendingChangeRequestCount = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_renderPage">renderPage</a>(string $template, array $params, array $requestData, string $pageTitle, array|null $systemMessages, array|null $scriptMessages)
+        
+                                            <p><p>A full page: the chrome, then $template rendered with $params.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_renderChrome">renderChrome</a>(array $requestData, string $pageTitle, array|null $systemMessages)
+        
+                                            <p><p>The chrome alone, which is how an error page shows its system messages.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -204,7 +224,7 @@ and the page's lang metadata always agree.</p></p>                </div>
                     <h3 id="method___construct">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L80">at line 80</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../Poweradmin/Application/Boot/AppManager.html"><abbr title="Poweradmin\Application\Boot\AppManager">AppManager</abbr></a> $app, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Application/Service/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\CsrfTokenService">CsrfTokenService</abbr></a> $csrfTokenService, <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a> $userContextService, <a href="../../../Poweradmin/Module/ModuleRegistry.html"><abbr title="Poweradmin\Module\ModuleRegistry">ModuleRegistry</abbr></a> $moduleRegistry, bool $isApiBackend, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $hasPermission, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $getPdnsServerInfo, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $getDebugQueries, bool $wideLayout, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $pendingChangeRequestCount = null)
+    <strong>__construct</strong>(<a href="../../../Poweradmin/Application/Boot/AppManager.html"><abbr title="Poweradmin\Application\Boot\AppManager">AppManager</abbr></a> $app, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Application/Service/Auth/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\Auth\CsrfTokenService">CsrfTokenService</abbr></a> $csrfTokenService, <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a> $userContextService, <a href="../../../Poweradmin/Application/Module/ModuleRegistry.html"><abbr title="Poweradmin\Application\Module\ModuleRegistry">ModuleRegistry</abbr></a> $moduleRegistry, bool $isApiBackend, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $hasPermission, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $getPdnsServerInfo, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $getDebugQueries, bool $wideLayout, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $pendingChangeRequestCount = null)
         </code>
     </h3>
     <div class="details">    
@@ -231,7 +251,7 @@ and the page's lang metadata always agree.</p></p>                </div>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Application/Service/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\CsrfTokenService">CsrfTokenService</abbr></a></td>
+                <td><a href="../../../Poweradmin/Application/Service/Auth/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\Auth\CsrfTokenService">CsrfTokenService</abbr></a></td>
                 <td>$csrfTokenService</td>
                 <td></td>
             </tr>
@@ -241,7 +261,7 @@ and the page's lang metadata always agree.</p></p>                </div>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Module/ModuleRegistry.html"><abbr title="Poweradmin\Module\ModuleRegistry">ModuleRegistry</abbr></a></td>
+                <td><a href="../../../Poweradmin/Application/Module/ModuleRegistry.html"><abbr title="Poweradmin\Application\Module\ModuleRegistry">ModuleRegistry</abbr></a></td>
                 <td>$moduleRegistry</td>
                 <td><p>Already loaded; the renderer only reads its nav items</p></td>
             </tr>
@@ -286,8 +306,129 @@ and the page's lang metadata always agree.</p></p>                </div>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_renderPage">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L236">at line 236</a></div>
+        <code>                    void
+    <strong>renderPage</strong>(string $template, array $params, array $requestData, string $pageTitle, array|null $systemMessages, array|null $scriptMessages)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>A full page: the chrome, then $template rendered with $params.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$template</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$params</td>
+                <td><p>The template variables as the controller built them</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$requestData</td>
+                <td><p>The request data, read for the current page marker</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$pageTitle</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array|null</td>
+                <td>$systemMessages</td>
+                <td><p>Messages flashed for every page</p></td>
+            </tr>
+                    <tr>
+                <td>array|null</td>
+                <td>$scriptMessages</td>
+                <td><p>Messages flashed for this page</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_renderChrome">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L259">at line 259</a></div>
+        <code>                    void
+    <strong>renderChrome</strong>(array $requestData, string $pageTitle, array|null $systemMessages)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The chrome alone, which is how an error page shows its system messages.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$requestData</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$pageTitle</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array|null</td>
+                <td>$systemMessages</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_renderHeader">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L243">at line 243</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L272">at line 272</a></div>
         <code>                    void
     <strong>renderHeader</strong>(array $requestData, string $pageTitle, array|null $systemMessages = null, array|null $scriptMessages = null)
         </code>
@@ -345,7 +486,7 @@ and the page's lang metadata always agree.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_renderFooter">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L368">at line 368</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L397">at line 397</a></div>
         <code>                    void
     <strong>renderFooter</strong>()
         </code>
@@ -378,7 +519,7 @@ and the page's lang metadata always agree.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_languageVars">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L401">at line 401</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L430">at line 430</a></div>
         <code>                    array
     <strong>languageVars</strong>()
         </code>
@@ -413,7 +554,7 @@ userlang field), and any later render call in the same request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getLanguageSelectorVars">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L414">at line 414</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L443">at line 443</a></div>
         <code>                    array
     <strong>getLanguageSelectorVars</strong>(string $activeLocale)
         </code>
@@ -459,7 +600,7 @@ language survives form submission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_resolveActiveLocale">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L440">at line 440</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/PageRenderer.php#L469">at line 469</a></div>
         <code>                    string
     <strong>resolveActiveLocale</strong>()
         </code>
@@ -495,7 +636,7 @@ and the page's lang metadata always agree.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ca8a14a" rel="noreferrer" target="_blank">commit ca8a14a,</a> built 2026-09-21 14:36 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
     </div>
     </body>
 

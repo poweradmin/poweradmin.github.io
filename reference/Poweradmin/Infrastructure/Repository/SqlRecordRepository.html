@@ -93,7 +93,7 @@
     </div>
 
     
-    <p>        class
+    <p>final         class
     <strong>SqlRecordRepository</strong>        implements        <a href="../../../Poweradmin/Domain/Repository/RecordRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordRepositoryInterface">RecordRepositoryInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php">View source</a>)
 </p>
 
@@ -167,7 +167,7 @@
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getRecordsFromDomainId">getRecordsFromDomainId</a>(string $db_type, int $id, int $rowstart = 0, int $rowamount = Constants::DEFAULT_MAX_ROWS, string $sortby = &#039;name&#039;, string $sortDirection = &#039;ASC&#039;, bool $fetchComments = false)
+                    <a href="#method_getRecordsFromDomainId">getRecordsFromDomainId</a>(int $id, int $rowstart = 0, int $rowamount = Constants::DEFAULT_MAX_ROWS, string $sortby = &#039;name&#039;, string $sortDirection = &#039;ASC&#039;, bool $fetchComments = false)
         
                                             <p><p>Get all records from a domain id.</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -320,7 +320,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L42">at line 42</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L43">at line 43</a></div>
         <code>                    
     <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
         </code>
@@ -360,7 +360,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneIdFromRecordId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L48">at line 48</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L50">at line 50</a></div>
         <code>                    int
     <strong>getZoneIdFromRecordId</strong>(int|string $rid)
         </code>
@@ -403,7 +403,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_countZoneRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L57">at line 57</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L59">at line 59</a></div>
         <code>                    int
     <strong>countZoneRecords</strong>(int $zone_id)
         </code>
@@ -446,7 +446,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordDetailsFromRecordId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L66">at line 66</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L68">at line 68</a></div>
         <code>                    array
     <strong>getRecordDetailsFromRecordId</strong>(int|string $rid)
         </code>
@@ -489,7 +489,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordFromId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L75">at line 75</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L78">at line 78</a></div>
         <code>                    array|null
     <strong>getRecordFromId</strong>(int|string $id)
         </code>
@@ -532,9 +532,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsFromDomainId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L104">at line 104</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L107">at line 107</a></div>
         <code>                    array
-    <strong>getRecordsFromDomainId</strong>(string $db_type, int $id, int $rowstart = 0, int $rowamount = Constants::DEFAULT_MAX_ROWS, string $sortby = &#039;name&#039;, string $sortDirection = &#039;ASC&#039;, bool $fetchComments = false)
+    <strong>getRecordsFromDomainId</strong>(int $id, int $rowstart = 0, int $rowamount = Constants::DEFAULT_MAX_ROWS, string $sortby = &#039;name&#039;, string $sortDirection = &#039;ASC&#039;, bool $fetchComments = false)
         </code>
     </h3>
     <div class="details">    
@@ -549,11 +549,6 @@
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$db_type</td>
-                <td><p>Database type</p></td>
-            </tr>
                     <tr>
                 <td>int</td>
                 <td>$id</td>
@@ -592,7 +587,7 @@
                     <table class="table table-condensed">
         <tr>
             <td>array</td>
-            <td><p>array of record details (empty array if nothing found)</p></td>
+            <td><p>array of record details (empty array if nothing found); disabled and auth are bools</p></td>
         </tr>
     </table>
 
@@ -605,7 +600,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_recidToDomid">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L183">at line 183</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L198">at line 198</a></div>
         <code>                    int
     <strong>recidToDomid</strong>(int|string $id)
         </code>
@@ -648,7 +643,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_hasNonDelegationRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L193">at line 193</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L208">at line 208</a></div>
         <code>                    bool
     <strong>hasNonDelegationRecords</strong>(string $name)
         </code>
@@ -694,7 +689,7 @@ Only delegation records (NS, DS) at a name should not prevent zone creation.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_hasSimilarRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L207">at line 207</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L222">at line 222</a></div>
         <code>                    bool
     <strong>hasSimilarRecords</strong>(int $domain_id, string $name, string $type, int|string $record_id)
         </code>
@@ -752,7 +747,7 @@ Only delegation records (NS, DS) at a name should not prevent zone creation.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_recordExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L223">at line 223</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L238">at line 238</a></div>
         <code>                    bool
     <strong>recordExists</strong>(int $domain_id, string $name, string $type, string $content)
         </code>
@@ -810,7 +805,7 @@ Only delegation records (NS, DS) at a name should not prevent zone creation.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_hasPtrRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L241">at line 241</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L256">at line 256</a></div>
         <code>                    bool
     <strong>hasPtrRecord</strong>(int $domain_id, string $name)
         </code>
@@ -858,7 +853,7 @@ Only delegation records (NS, DS) at a name should not prevent zone creation.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getSerialByZid">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L256">at line 256</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L271">at line 271</a></div>
         <code>                    string
     <strong>getSerialByZid</strong>(int $zid)
         </code>
@@ -901,7 +896,7 @@ Only delegation records (NS, DS) at a name should not prevent zone creation.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getSerialsByZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L270">at line 270</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L285">at line 285</a></div>
         <code>                    array
     <strong>getSerialsByZoneIds</strong>(array $zoneIds)
         </code>
@@ -944,7 +939,7 @@ Only delegation records (NS, DS) at a name should not prevent zone creation.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsByDomainId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L297">at line 297</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L312">at line 312</a></div>
         <code>                    array
     <strong>getRecordsByDomainId</strong>(int $domainId, string|null $recordType = null)
         </code>
@@ -992,7 +987,7 @@ Only delegation records (NS, DS) at a name should not prevent zone creation.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L321">at line 321</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L336">at line 336</a></div>
         <code>                    array
     <strong>getRecordsByName</strong>(int $domainId, string $name, string|null $type = null)
         </code>
@@ -1047,7 +1042,7 @@ Names match case-insensitively, per RFC 4343.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getFilteredRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L348">at line 348</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L363">at line 363</a></div>
         <code>                    array
     <strong>getFilteredRecords</strong>(int $zone_id, int $row_start, int $row_amount, string $sort_by, string $sort_direction, bool $include_comments, string $search_term = &#039;&#039;, string $type_filter = &#039;&#039;, string $content_filter = &#039;&#039;)
         </code>
@@ -1130,7 +1125,7 @@ Names match case-insensitively, per RFC 4343.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getFilteredRecordCount">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L453">at line 453</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L468">at line 468</a></div>
         <code>                    int
     <strong>getFilteredRecordCount</strong>(int $zone_id, bool $include_comments, string $search_term = &#039;&#039;, string $type_filter = &#039;&#039;, string $content_filter = &#039;&#039;)
         </code>
@@ -1193,7 +1188,7 @@ Names match case-insensitively, per RFC 4343.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getNewRecordId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L498">at line 498</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L513">at line 513</a></div>
         <code>                    int|string|null
     <strong>getNewRecordId</strong>(int $domainId, string $name, string $type, string $content)
         </code>
@@ -1251,7 +1246,7 @@ Names match case-insensitively, per RFC 4343.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L521">at line 521</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L536">at line 536</a></div>
         <code>                    array|null
     <strong>getRecordById</strong>(int|string $recordId)
         </code>
@@ -1294,7 +1289,7 @@ Names match case-insensitively, per RFC 4343.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRRSetRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L536">at line 536</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/SqlRecordRepository.php#L551">at line 551</a></div>
         <code>                    array
     <strong>getRRSetRecords</strong>(int $domainId, string $name, string $type)
         </code>
@@ -1349,7 +1344,7 @@ Names match case-insensitively, per RFC 4343.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ca8a14a" rel="noreferrer" target="_blank">commit ca8a14a,</a> built 2026-09-21 14:36 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
     </div>
     </body>
 

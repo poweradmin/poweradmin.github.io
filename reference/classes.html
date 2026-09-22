@@ -88,13 +88,22 @@
     <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Boot/AppInitializer.html"><abbr title="Poweradmin\Application\Boot\AppInitializer">AppInitializer</abbr></a>    </div>
-                <div class="col-md-6"><p>Boots a request: checks dependencies, loads config and locale, connects the database, optionally authenticates.</p></div>
+                    <a href="Poweradmin/Application/Boot/AppManager.html"><abbr title="Poweradmin\Application\Boot\AppManager">AppManager</abbr></a>    </div>
+                <div class="col-md-6"><p>Builds the Twig environment with theme, translator and extensions, and renders templates for web controllers.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Boot/AppManager.html"><abbr title="Poweradmin\Application\Boot\AppManager">AppManager</abbr></a>    </div>
-                <div class="col-md-6"><p>Builds the Twig environment with theme, translator and extensions, and renders templates for web controllers.</p></div>
+                    <a href="Poweradmin/Application/Boot/BootContext.html"><abbr title="Poweradmin\Application\Boot\BootContext">BootContext</abbr></a>    </div>
+                <div class="col-md-6"><p>What Kernel::boot() built for this process: the configuration, the logger,
+the loaded module registry and, once something asks for it, the database.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Boot/Kernel.html"><abbr title="Poweradmin\Application\Boot\Kernel">Kernel</abbr></a>    </div>
+                <div class="col-md-6"><p>The one place a process is booted: index.php, dynamic_update.php,
+install/index.php and bin/poweradmin all call boot() and work from the
+BootContext it returns. Nothing below the entry points reaches for the
+configuration singleton.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -104,7 +113,31 @@
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Application/Bootstrap.html"><abbr title="Poweradmin\Application\Bootstrap">Bootstrap</abbr></a>    </div>
-                <div class="col-md-6"><p>Process-level setup the entry points run before routing: timezone and session cookie.</p></div>
+                <div class="col-md-6"><p>Process-level setup Kernel::boot() runs before routing: timezone and session cookie.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Console/Arguments.html"><abbr title="Poweradmin\Application\Console\Arguments">Arguments</abbr></a>    </div>
+                <div class="col-md-6"><p>The parsed command line: one command word, &quot;--name=value&quot; options and the
+remaining positional words. Options may appear before or after the command.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Console/CommandLineActor.html"><abbr title="Poweradmin\Application\Console\CommandLineActor">CommandLineActor</abbr></a>    </div>
+                <div class="col-md-6"><p>The actor of a console run: nobody (the system itself) unless the caller
+named a user with --as-user, in which case that user's permissions apply.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Console/Command/ZoneListCommand.html"><abbr title="Poweradmin\Application\Console\Command\ZoneListCommand">ZoneListCommand</abbr></a>    </div>
+                <div class="col-md-6"><p>zone:list - the zones the actor may view, one tab-separated row per zone.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Console/ConsoleApplication.html"><abbr title="Poweradmin\Application\Console\ConsoleApplication">ConsoleApplication</abbr></a>    </div>
+                <div class="col-md-6"><p>The bin/poweradmin entry point: parses the command line, boots the same
+service graph the web controllers use (without a session) and runs one
+command as an explicitly named actor.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -206,6 +239,19 @@ docs generator scans this directory and picks the attributes up from here.</p></
                 <div class="col-md-6">
                     <a href="Poweradmin/Application/Controller/Api/V2/PermissionsController.html"><abbr title="Poweradmin\Application\Controller\Api\V2\PermissionsController">PermissionsController</abbr></a>    </div>
                 <div class="col-md-6"><p>/api/v2/permissions: read-only listing of the permission catalogue and single permissions.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Controller/Api/V2/Resource/RecordResource.html"><abbr title="Poweradmin\Application\Controller\Api\V2\Resource\RecordResource">RecordResource</abbr></a>    </div>
+                <div class="col-md-6"><p>The JSON shape of a record on /api/v2. The list endpoints report the fully
+qualified name, the single-record endpoints the name relative to the zone;
+both are contract and neither may drift without the other being reviewed.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Controller/Api/V2/Resource/ZoneResource.html"><abbr title="Poweradmin\Application\Controller\Api\V2\Resource\ZoneResource">ZoneResource</abbr></a>    </div>
+                <div class="col-md-6"><p>The JSON shape of a zone on /api/v2: the listing carries a summary, the
+single-zone endpoints the full detail.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -456,6 +502,12 @@ filter parsing, pagination with last-page clamping, and CSV/JSON export.</p></di
                 <div class="col-md-6"><p>Admin UI for managing per-record-type default TTLs. The repository drives
 ReverseTtlResolver::resolveTtlForType(), so values entered here take effect
 for every record-creation path (UI + API).</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Controller/RequestHalted.html"><abbr title="Poweradmin\Application\Controller\RequestHalted">RequestHalted</abbr></a>    </div>
+                <div class="col-md-6"><p>Ends a controller run whose response is already written: the error page,
+the redirect header or the JSON body went out, and nothing may follow it.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -759,6 +811,12 @@ and handed to everything that logs, throttles or audits by client.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Application/Http/RefusalStatus.html"><abbr title="Poweradmin\Application\Http\RefusalStatus">RefusalStatus</abbr></a>    </div>
+                <div class="col-md-6"><p>The one place a Domain refusal becomes an HTTP status. API controllers call
+this where they used to read a status number off the result.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Application/Http/Request.html"><abbr title="Poweradmin\Application\Http\Request">Request</abbr></a>    </div>
                 <div class="col-md-6"><p>Snapshot of the $_GET, $_POST and $_SERVER superglobals with typed accessors for controllers.</p></div>
             </div>
@@ -772,6 +830,18 @@ API route detection and JSON response negotiation.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Application/Module/ModuleManifest.html"><abbr title="Poweradmin\Application\Module\ModuleManifest">ModuleManifest</abbr></a>    </div>
                 <div class="col-md-6"><p>The bundled modules, keyed by the name used under modules.<name> in the configuration.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Module/ModuleRegistry.html"><abbr title="Poweradmin\Application\Module\ModuleRegistry">ModuleRegistry</abbr></a>    </div>
+                <div class="col-md-6"><p>Loads the modules listed in the manifest and answers which are enabled for the current user.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Application/Module/ModuleServices.html"><abbr title="Poweradmin\Application\Module\ModuleServices">ModuleServices</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>The module-facing service surface: the collaborators a module controller may
+obtain from the core through BaseController::moduleServices().</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -803,7 +873,12 @@ permission layer and passed in.</p></div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Application/Presenter/PaginationPresenter.html"><abbr title="Poweradmin\Application\Presenter\PaginationPresenter">PaginationPresenter</abbr></a>    </div>
-                <div class="col-md-6"><p>Renders the Bootstrap page-number list for a Pagination object, with ellipses around the current page.</p></div>
+                <div class="col-md-6"><p>Describes the page-number list for a Pagination object, with ellipses around the current page.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Presenter/RecordFormFieldPresenter.html"><abbr title="Poweradmin\Application\Presenter\RecordFormFieldPresenter">RecordFormFieldPresenter</abbr></a>    </div>
+                <div class="col-md-6"><p>Maps a refused record write to the record form input it should highlight.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -813,8 +888,20 @@ expects, and with whether each row may be edited.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Application/Presenter/RejectedZoneEditPresenter.html"><abbr title="Poweradmin\Application\Presenter\RejectedZoneEditPresenter">RejectedZoneEditPresenter</abbr></a>    </div>
+                <div class="col-md-6"><p>Puts a zone-editor submission that was refused as stale back into the freshly
+read record listing, so the warning does not also cost the operator their edits.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Presenter/SearchResultPresenter.html"><abbr title="Poweradmin\Application\Presenter\SearchResultPresenter">SearchResultPresenter</abbr></a>    </div>
+                <div class="col-md-6"><p>Labels the record search rows for the search page. The gateways return
+<code>disabled</code> as a bool; the translated Yes/No goes into <code>disabled_label</code>.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Application/Presenter/ZoneStartingLettersPresenter.html"><abbr title="Poweradmin\Application\Presenter\ZoneStartingLettersPresenter">ZoneStartingLettersPresenter</abbr></a>    </div>
-                <div class="col-md-6"><p>Renders the 0-9 and a-z letter filter links on the forward zone list page.</p></div>
+                <div class="col-md-6"><p>Describes the 0-9, a-z and &quot;Show all&quot; filter links on the forward zone list page.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -829,15 +916,20 @@ is false, leaving an API-only (headless) surface.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/AuditService.html"><abbr title="Poweradmin\Application\Service\AuditService">AuditService</abbr></a>    </div>
-                <div class="col-md-6"><p>Writes the &quot;client_ip:.. user:.. operation:..&quot; audit lines. Every line
-starts with the same actor context; one method per event keeps the field
-names in one place.</p></div>
+                    <a href="Poweradmin/Application/Service/Auth/ApiKeyActor.html"><abbr title="Poweradmin\Application\Service\Auth\ApiKeyActor">ApiKeyActor</abbr></a>    </div>
+                <div class="col-md-6"><p>The actor of an API request: the owner of the key (or the Basic auth user)
+that authenticated it. Built once per request after authentication succeeds.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Application/Service/Auth/ApiKeyAuthenticationMiddleware.html"><abbr title="Poweradmin\Application\Service\Auth\ApiKeyAuthenticationMiddleware">ApiKeyAuthenticationMiddleware</abbr></a>    </div>
                 <div class="col-md-6"><p>Authenticates API requests by the X-API-Key header and loads the key's user.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Auth/AuthOutcome.html"><abbr title="Poweradmin\Application\Service\Auth\AuthOutcome">AuthOutcome</abbr></a>    </div>
+                <div class="col-md-6"><p>Result of an authenticator run: the decision, the login message on failure, and the
+application path the caller should redirect to when the request was a login post.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -851,40 +943,127 @@ names in one place.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Auth/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\Auth\CsrfTokenService">CsrfTokenService</abbr></a>    </div>
+                <div class="col-md-6"><p>Generates, stores and validates the per-session CSRF token carried by the _token form field.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Auth/LdapAuthenticator.html"><abbr title="Poweradmin\Application\Service\Auth\LdapAuthenticator">LdapAuthenticator</abbr></a>    </div>
+                <div class="col-md-6"><p>Session login against an LDAP directory, with lockout tracking, a cached bind result and MFA hand-off.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Auth/LoginAttemptService.html"><abbr title="Poweradmin\Application\Service\Auth\LoginAttemptService">LoginAttemptService</abbr></a>    </div>
+                <div class="col-md-6"><p>Records attempts in login_attempts and enforces the password- and MFA-stage lockouts per user and IP.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Auth/LoginCredentials.html"><abbr title="Poweradmin\Application\Service\Auth\LoginCredentials">LoginCredentials</abbr></a>    </div>
+                <div class="col-md-6"><p>What the login form posted: the fields SessionAuthenticator reads before handing the attempt to an authenticator.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Auth/MfaVerificationMailer.html"><abbr title="Poweradmin\Application\Service\Auth\MfaVerificationMailer">MfaVerificationMailer</abbr></a>    </div>
+                <div class="col-md-6"><p>Renders the MFA verification email through Twig and sends it with MailService.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Auth/OidcConfigurationService.html"><abbr title="Poweradmin\Application\Service\Auth\OidcConfigurationService">OidcConfigurationService</abbr></a>    </div>
+                <div class="col-md-6"><p>Reads the oidc provider settings, discovers endpoints and validates the permission template mapping.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Auth/OidcService.html"><abbr title="Poweradmin\Application\Service\Auth\OidcService">OidcService</abbr></a>    </div>
+                <div class="col-md-6"><p>Runs the OIDC login flow: builds the authorization redirect and turns the callback into a session.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Auth/RecaptchaService.html"><abbr title="Poweradmin\Application\Service\Auth\RecaptchaService">RecaptchaService</abbr></a>    </div>
+                <div class="col-md-6"><p>Verifies reCAPTCHA v2/v3 responses with Google for the login form.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Auth/RequestActor.html"><abbr title="Poweradmin\Application\Service\Auth\RequestActor">RequestActor</abbr></a>    </div>
+                <div class="col-md-6"><p>The actor every service of one request shares. It starts as whatever the
+bootstrap knows (the session user); an API controller rebinds it to the key
+owner once authentication succeeds, so services built before and after that
+point agree on who is acting.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Auth/SamlConfigurationService.html"><abbr title="Poweradmin\Application\Service\Auth\SamlConfigurationService">SamlConfigurationService</abbr></a>    </div>
+                <div class="col-md-6"><p>Reads the saml provider and SP settings and builds the OneLogin toolkit settings array.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Auth/SamlService.html"><abbr title="Poweradmin\Application\Service\Auth\SamlService">SamlService</abbr></a>    </div>
+                <div class="col-md-6"><p>Runs the SAML login flow: builds the IdP redirect, consumes the assertion and handles single logout.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Application/Service/Auth/SessionAuthenticator.html"><abbr title="Poweradmin\Application\Service\Auth\SessionAuthenticator">SessionAuthenticator</abbr></a>    </div>
                 <div class="col-md-6"><p>Per-request login pipeline: CSRF and reCAPTCHA on the form, session expiry, then the SQL or LDAP authenticator.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/AvatarService.html"><abbr title="Poweradmin\Application\Service\AvatarService">AvatarService</abbr></a>    </div>
-                <div class="col-md-6"><p>Resolves a user's avatar URL from an OAuth profile picture or Gravatar, per the interface.avatar_* settings.</p></div>
+                    <a href="Poweradmin/Application/Service/Auth/SqlAuthenticator.html"><abbr title="Poweradmin\Application\Service\Auth\SqlAuthenticator">SqlAuthenticator</abbr></a>    </div>
+                <div class="col-md-6"><p>Session login against the users table with lockout checks, hash upgrades and MFA hand-off.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ChangeApprovalContext.html"><abbr title="Poweradmin\Application\Service\ChangeApprovalContext">ChangeApprovalContext</abbr></a>    </div>
-                <div class="col-md-6"><p>Answers what the change-approval feature means for one user: whether it is on,
-how their edits to a zone are handled, which zones they review, and how many
-requests are waiting.</p></div>
+                    <a href="Poweradmin/Application/Service/Auth/UserAuthenticationService.html"><abbr title="Poweradmin\Application\Service\Auth\UserAuthenticationService">UserAuthenticationService</abbr></a>    </div>
+                <div class="col-md-6"><p>Hashes and verifies user passwords across bcrypt, argon2 and the legacy md5 formats.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ChangeRequestMessages.html"><abbr title="Poweradmin\Application\Service\ChangeRequestMessages">ChangeRequestMessages</abbr></a>    </div>
-                <div class="col-md-6"><p>Words a ZoneChangeRequestService outcome for the web flash messages.</p></div>
+                    <a href="Poweradmin/Application/Service/Auth/UserProvisioningService.html"><abbr title="Poweradmin\Application\Service\Auth\UserProvisioningService">UserProvisioningService</abbr></a>    </div>
+                <div class="col-md-6"><p>Creates or updates the local user for an LDAP, OIDC or SAML login and maps their groups to a permission template.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ChangeRequestNotificationService.html"><abbr title="Poweradmin\Application\Service\ChangeRequestNotificationService">ChangeRequestNotificationService</abbr></a>    </div>
-                <div class="col-md-6"><p>Writes the zone audit line for each change request event, then emails the
-reviewers of the zone when a request is filed and the requester when it is
-decided. Mail failures are logged and reported as false; nothing here throws
-to the caller, so a mail problem never blocks a request.</p></div>
+                    <a href="Poweradmin/Application/Service/Backend/DatabaseService.html"><abbr title="Poweradmin\Application\Service\Backend\DatabaseService">DatabaseService</abbr></a>    </div>
+                <div class="col-md-6"><p>Opens the PDO connection from the configured credentials, wrapping failures in a readable error.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Backend/DnsBackendProviderFactory.html"><abbr title="Poweradmin\Application\Service\Backend\DnsBackendProviderFactory">DnsBackendProviderFactory</abbr></a>    </div>
+                <div class="col-md-6"><p>Factory for creating DNS backend provider instances.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Backend/DnsDataService.html"><abbr title="Poweradmin\Application\Service\Backend\DnsDataService">DnsDataService</abbr></a>    </div>
+                <div class="col-md-6"><p>Orchestration service for DNS data reads.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Backend/DnssecProviderFactory.html"><abbr title="Poweradmin\Application\Service\Backend\DnssecProviderFactory">DnssecProviderFactory</abbr></a>    </div>
+                <div class="col-md-6"><p>Builds the DNSSEC provider for the configured PowerDNS API, or a null provider when the API is not set up.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Backend/PdnsVersionService.html"><abbr title="Poweradmin\Application\Service\Backend\PdnsVersionService">PdnsVersionService</abbr></a>    </div>
+                <div class="col-md-6"><p>Detects and caches the connected PowerDNS server version so admins can see
+it in the UI and so error reports include it without a manual lookup.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Backend/PowerdnsStatusService.html"><abbr title="Poweradmin\Application\Service\Backend\PowerdnsStatusService">PowerdnsStatusService</abbr></a>    </div>
+                <div class="col-md-6"><p>Reads server info and metrics from the PowerDNS API and probes secondary servers for the status page.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Backend/RepositoryFactory.html"><abbr title="Poweradmin\Application\Service\Backend\RepositoryFactory">RepositoryFactory</abbr></a>    </div>
+                <div class="col-md-6"><p>Centralized factory for creating repository instances.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Application/Service/ControllerEnvironment.html"><abbr title="Poweradmin\Application\Service\ControllerEnvironment">ControllerEnvironment</abbr></a>    </div>
-                <div class="col-md-6"><p>Pre-built collaborators for a controller, bypassing the eager bootstrap
-(config file, database connection, session authentication) that
-BaseController::__construct() otherwise performs.</p></div>
+                <div class="col-md-6"><p>The collaborators a controller is built from. In production
+Kernel::controllerEnvironment() derives one from the booted context (config
+file check, database connection, session authentication); a test passes one
+straight to the constructor with stubbed services, most usefully a stub
+ControllerServiceFactory, which the create*() accessors on BaseController
+all route through. Both paths construct the controller the same way.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -892,52 +1071,6 @@ BaseController::__construct() otherwise performs.</p></div>
                 <div class="col-md-6"><p>The services controllers ask for, split by concern into five factories that
 each memoize their per-request instances. The flat accessors below delegate
 to them so call sites and test doubles keep one entry point.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\CsrfTokenService">CsrfTokenService</abbr></a>    </div>
-                <div class="col-md-6"><p>Generates, stores and validates the per-session CSRF token carried by the _token form field.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/DashboardStatsService.html"><abbr title="Poweradmin\Application\Service\DashboardStatsService">DashboardStatsService</abbr></a>    </div>
-                <div class="col-md-6"><p>The totals on the admin dashboard. Zone and record counts are null when
-they cannot be read, so the page still renders.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/DatabaseService.html"><abbr title="Poweradmin\Application\Service\DatabaseService">DatabaseService</abbr></a>    </div>
-                <div class="col-md-6"><p>Opens the PDO connection from the configured credentials, wrapping failures in a readable error.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/DnsBackendProviderFactory.html"><abbr title="Poweradmin\Application\Service\DnsBackendProviderFactory">DnsBackendProviderFactory</abbr></a>    </div>
-                <div class="col-md-6"><p>Factory for creating DNS backend provider instances.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/DnsDataService.html"><abbr title="Poweradmin\Application\Service\DnsDataService">DnsDataService</abbr></a>    </div>
-                <div class="col-md-6"><p>Orchestration service for DNS data reads.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/DnsServiceFactory.html"><abbr title="Poweradmin\Application\Service\DnsServiceFactory">DnsServiceFactory</abbr></a>    </div>
-                <div class="col-md-6"><p>Builds the DNS manager services with their backend provider and repositories.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/DnssecProviderFactory.html"><abbr title="Poweradmin\Application\Service\DnssecProviderFactory">DnssecProviderFactory</abbr></a>    </div>
-                <div class="col-md-6"><p>Builds the DNSSEC provider for the configured PowerDNS API, or a null provider when the API is not set up.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/DynamicDnsRequestFactory.html"><abbr title="Poweradmin\Application\Service\DynamicDnsRequestFactory">DynamicDnsRequestFactory</abbr></a>    </div>
-                <div class="col-md-6"><p>Builds the dyndns2 request value object and the update service that handles it.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/EmailTemplateService.html"><abbr title="Poweradmin\Application\Service\EmailTemplateService">EmailTemplateService</abbr></a>    </div>
-                <div class="col-md-6"><p>Renders the transactional email templates under templates/emails, with custom overrides, through Twig.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -972,115 +1105,39 @@ zone lists.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/GroupMembershipService.html"><abbr title="Poweradmin\Application\Service\GroupMembershipService">GroupMembershipService</abbr></a>    </div>
-                <div class="col-md-6"><p>Adds and removes users from groups and lists a group's members.</p></div>
+                    <a href="Poweradmin/Application/Service/Mail/EmailTemplateService.html"><abbr title="Poweradmin\Application\Service\Mail\EmailTemplateService">EmailTemplateService</abbr></a>    </div>
+                <div class="col-md-6"><p>Renders the transactional email templates under templates/emails, with custom overrides, through Twig.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/GroupService.html"><abbr title="Poweradmin\Application\Service\GroupService">GroupService</abbr></a>    </div>
-                <div class="col-md-6"><p>Creates, updates, deletes and lists user groups, with the view checks the group pages need.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/LdapAuthenticator.html"><abbr title="Poweradmin\Application\Service\LdapAuthenticator">LdapAuthenticator</abbr></a>    </div>
-                <div class="col-md-6"><p>Session login against an LDAP directory, with lockout tracking, a cached bind result and MFA hand-off.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/LocaleResolver.html"><abbr title="Poweradmin\Application\Service\LocaleResolver">LocaleResolver</abbr></a>    </div>
-                <div class="col-md-6"><p>Resolves the interface language for the current request.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/LoginAttemptService.html"><abbr title="Poweradmin\Application\Service\LoginAttemptService">LoginAttemptService</abbr></a>    </div>
-                <div class="col-md-6"><p>Records attempts in login_attempts and enforces the password- and MFA-stage lockouts per user and IP.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/MailService.html"><abbr title="Poweradmin\Application\Service\MailService">MailService</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Mail/MailService.html"><abbr title="Poweradmin\Application\Service\Mail\MailService">MailService</abbr></a>    </div>
                 <div class="col-md-6"><p>Sends application email over the configured transport: PHP mail(), sendmail, SMTP or the log.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/MfaVerificationMailer.html"><abbr title="Poweradmin\Application\Service\MfaVerificationMailer">MfaVerificationMailer</abbr></a>    </div>
-                <div class="col-md-6"><p>Renders the MFA verification email through Twig and sends it with MailService.</p></div>
+                    <a href="Poweradmin/Application/Service/Record/DynamicDnsRequestFactory.html"><abbr title="Poweradmin\Application\Service\Record\DynamicDnsRequestFactory">DynamicDnsRequestFactory</abbr></a>    </div>
+                <div class="col-md-6"><p>Builds the dyndns2 request value object and the update service that handles it.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/OidcConfigurationService.html"><abbr title="Poweradmin\Application\Service\OidcConfigurationService">OidcConfigurationService</abbr></a>    </div>
-                <div class="col-md-6"><p>Reads the oidc provider settings, discovers endpoints and validates the permission template mapping.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/OidcService.html"><abbr title="Poweradmin\Application\Service\OidcService">OidcService</abbr></a>    </div>
-                <div class="col-md-6"><p>Runs the OIDC login flow: builds the authorization redirect and turns the callback into a session.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/PaginationService.html"><abbr title="Poweradmin\Application\Service\PaginationService">PaginationService</abbr></a>    </div>
-                <div class="col-md-6"><p>Builds Pagination objects and resolves the rows-per-page value within the allowed bounds.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/PasswordChangeService.html"><abbr title="Poweradmin\Application\Service\PasswordChangeService">PasswordChangeService</abbr></a>    </div>
-                <div class="col-md-6"><p>Changes the logged-in user's own password after verifying the current one; LDAP users are refused.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/PasswordGenerationService.html"><abbr title="Poweradmin\Application\Service\PasswordGenerationService">PasswordGenerationService</abbr></a>    </div>
-                <div class="col-md-6"><p>Generates random passwords that satisfy the configured password policy.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/PasswordPolicyService.html"><abbr title="Poweradmin\Application\Service\PasswordPolicyService">PasswordPolicyService</abbr></a>    </div>
-                <div class="col-md-6"><p>Checks a password against the security.password_policy rules and reports the ones it fails.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/PasswordResetService.html"><abbr title="Poweradmin\Application\Service\PasswordResetService">PasswordResetService</abbr></a>    </div>
-                <div class="col-md-6"><p>Password reset by email: issues and rate-limits tokens, validates them and stores the new password.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/PdnsVersionService.html"><abbr title="Poweradmin\Application\Service\PdnsVersionService">PdnsVersionService</abbr></a>    </div>
-                <div class="col-md-6"><p>Detects and caches the connected PowerDNS server version so admins can see
-it in the UI and so error reports include it without a manual lookup.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/PermissionTemplateWriteService.html"><abbr title="Poweradmin\Application\Service\PermissionTemplateWriteService">PermissionTemplateWriteService</abbr></a>    </div>
-                <div class="col-md-6"><p>The single guarded entry point for permission template writes.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/PowerdnsStatusService.html"><abbr title="Poweradmin\Application\Service\PowerdnsStatusService">PowerdnsStatusService</abbr></a>    </div>
-                <div class="col-md-6"><p>Reads server info and metrics from the PowerDNS API and probes secondary servers for the status page.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/RecaptchaService.html"><abbr title="Poweradmin\Application\Service\RecaptchaService">RecaptchaService</abbr></a>    </div>
-                <div class="col-md-6"><p>Verifies reCAPTCHA v2/v3 responses with Google for the login form.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/RecordAddAccess.html"><abbr title="Poweradmin\Application\Service\RecordAddAccess">RecordAddAccess</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Record/RecordAddAccess.html"><abbr title="Poweradmin\Application\Service\Record\RecordAddAccess">RecordAddAccess</abbr></a>    </div>
                 <div class="col-md-6"><p>Whether a user may add records to a zone directly, as RecordAddService::open()
 answers it. Each add-record entry point words the refusal codes itself.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/RecordAddMessages.html"><abbr title="Poweradmin\Application\Service\RecordAddMessages">RecordAddMessages</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Record/RecordAddMessages.html"><abbr title="Poweradmin\Application\Service\Record\RecordAddMessages">RecordAddMessages</abbr></a>    </div>
                 <div class="col-md-6"><p>Words a successful RecordAddResult for the add-record page and the zone editor.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/RecordAddResult.html"><abbr title="Poweradmin\Application\Service\RecordAddResult">RecordAddResult</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Record/RecordAddResult.html"><abbr title="Poweradmin\Application\Service\Record\RecordAddResult">RecordAddResult</abbr></a>    </div>
                 <div class="col-md-6"><p>Outcome of adding one record from a form, with the companion PTR or A record
 the operator asked for alongside it.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/RecordAddService.html"><abbr title="Poweradmin\Application\Service\RecordAddService">RecordAddService</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Record/RecordAddService.html"><abbr title="Poweradmin\Application\Service\Record\RecordAddService">RecordAddService</abbr></a>    </div>
                 <div class="col-md-6"><p>The add-record flow shared by the add-record page, the inline form on the
 zone editor and the record wizards: open() applies the same gates in the
 same order, and add() normalises name, content and TTL the same way and
@@ -1088,118 +1145,199 @@ follows the same rules for the companion PTR or A record.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/RecordCommentService.html"><abbr title="Poweradmin\Application\Service\RecordCommentService">RecordCommentService</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Record/RecordCommentService.html"><abbr title="Poweradmin\Application\Service\Record\RecordCommentService">RecordCommentService</abbr></a>    </div>
                 <div class="col-md-6"><p>Reads and writes the comment attached to a record.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/RecordCommentSyncService.html"><abbr title="Poweradmin\Application\Service\RecordCommentSyncService">RecordCommentSyncService</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Record/RecordCommentSyncService.html"><abbr title="Poweradmin\Application\Service\Record\RecordCommentSyncService">RecordCommentSyncService</abbr></a>    </div>
                 <div class="col-md-6"><p>Keeps the comment on an A/AAAA record and its PTR counterpart in sync when either is created or edited.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/RecordManagerService.html"><abbr title="Poweradmin\Application\Service\RecordManagerService">RecordManagerService</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Record/RecordEditRequest.html"><abbr title="Poweradmin\Application\Service\Record\RecordEditRequest">RecordEditRequest</abbr></a>    </div>
+                <div class="col-md-6"><p>One record edit as the edit-record form or an API PUT submits it. The caller
+has already found and authorised the stored row; the service normalises the
+submitted values and writes.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Record/RecordEditResult.html"><abbr title="Poweradmin\Application\Service\Record\RecordEditResult">RecordEditResult</abbr></a>    </div>
+                <div class="col-md-6"><p>Outcome of editing one record: the write itself, the row as it is stored
+afterwards, and how the PTR sync went when one was asked for.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Record/RecordEditService.html"><abbr title="Poweradmin\Application\Service\Record\RecordEditService">RecordEditService</abbr></a>    </div>
+                <div class="col-md-6"><p>The single-record edit flow shared by the edit-record page and the API PUT:
+name and content are stored as punycode with the zone suffix, the write goes
+through the record manager, an SOA edit is bumped by the same rule, the PTR
+follows when asked, the edit is audited and the record comment is stored or
+carried along with a rename.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Record/RecordManagerService.html"><abbr title="Poweradmin\Application\Service\Record\RecordManagerService">RecordManagerService</abbr></a>    </div>
                 <div class="col-md-6"><p>Creates a record through RecordManager, then logs it, stores its comment and syncs the PTR comment.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/RejectedZoneEditPresenter.html"><abbr title="Poweradmin\Application\Service\RejectedZoneEditPresenter">RejectedZoneEditPresenter</abbr></a>    </div>
-                <div class="col-md-6"><p>Puts a zone-editor submission that was refused as stale back into the freshly
-read record listing, so the warning does not also cost the operator their edits.</p></div>
+                    <a href="Poweradmin/Application/Service/User/AvatarService.html"><abbr title="Poweradmin\Application\Service\User\AvatarService">AvatarService</abbr></a>    </div>
+                <div class="col-md-6"><p>Resolves a user's avatar URL from an OAuth profile picture or Gravatar, per the interface.avatar_* settings.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/RepositoryFactory.html"><abbr title="Poweradmin\Application\Service\RepositoryFactory">RepositoryFactory</abbr></a>    </div>
-                <div class="col-md-6"><p>Centralized factory for creating repository instances.</p></div>
+                    <a href="Poweradmin/Application/Service/User/GroupMembershipService.html"><abbr title="Poweradmin\Application\Service\User\GroupMembershipService">GroupMembershipService</abbr></a>    </div>
+                <div class="col-md-6"><p>Adds and removes users from groups and lists a group's members.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/RequestValidator.html"><abbr title="Poweradmin\Application\Service\RequestValidator">RequestValidator</abbr></a>    </div>
-                <div class="col-md-6"><p>Validates controller request data against Symfony constraints.</p></div>
+                    <a href="Poweradmin/Application/Service/User/GroupService.html"><abbr title="Poweradmin\Application\Service\User\GroupService">GroupService</abbr></a>    </div>
+                <div class="col-md-6"><p>Creates, updates, deletes and lists user groups, with the view checks the group pages need.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/SamlConfigurationService.html"><abbr title="Poweradmin\Application\Service\SamlConfigurationService">SamlConfigurationService</abbr></a>    </div>
-                <div class="col-md-6"><p>Reads the saml provider and SP settings and builds the OneLogin toolkit settings array.</p></div>
+                    <a href="Poweradmin/Application/Service/User/PasswordChangeService.html"><abbr title="Poweradmin\Application\Service\User\PasswordChangeService">PasswordChangeService</abbr></a>    </div>
+                <div class="col-md-6"><p>Changes the logged-in user's own password after verifying the current one; LDAP users are refused.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/SamlService.html"><abbr title="Poweradmin\Application\Service\SamlService">SamlService</abbr></a>    </div>
-                <div class="col-md-6"><p>Runs the SAML login flow: builds the IdP redirect, consumes the assertion and handles single logout.</p></div>
+                    <a href="Poweradmin/Application/Service/User/PasswordGenerationService.html"><abbr title="Poweradmin\Application\Service\User\PasswordGenerationService">PasswordGenerationService</abbr></a>    </div>
+                <div class="col-md-6"><p>Generates random passwords that satisfy the configured password policy.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/SearchCriteria.html"><abbr title="Poweradmin\Application\Service\SearchCriteria">SearchCriteria</abbr></a>    </div>
-                <div class="col-md-6"><p>Value object holding the search parameters the search page works with.</p></div>
+                    <a href="Poweradmin/Application/Service/User/PasswordPolicyService.html"><abbr title="Poweradmin\Application\Service\User\PasswordPolicyService">PasswordPolicyService</abbr></a>    </div>
+                <div class="col-md-6"><p>Checks a password against the security.password_policy rules and reports the ones it fails.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/SqlAuthenticator.html"><abbr title="Poweradmin\Application\Service\SqlAuthenticator">SqlAuthenticator</abbr></a>    </div>
-                <div class="col-md-6"><p>Session login against the users table with lockout checks, hash upgrades and MFA hand-off.</p></div>
+                    <a href="Poweradmin/Application/Service/User/PasswordResetService.html"><abbr title="Poweradmin\Application\Service\User\PasswordResetService">PasswordResetService</abbr></a>    </div>
+                <div class="col-md-6"><p>Password reset by email: issues and rate-limits tokens, validates them and stores the new password.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/StatsDisplayService.html"><abbr title="Poweradmin\Application\Service\StatsDisplayService">StatsDisplayService</abbr></a>    </div>
-                <div class="col-md-6"><p>Renders the memory usage and elapsed time footer shown when misc.display_stats is on.</p></div>
+                    <a href="Poweradmin/Application/Service/User/PermissionTemplateMessages.html"><abbr title="Poweradmin\Application\Service\User\PermissionTemplateMessages">PermissionTemplateMessages</abbr></a>    </div>
+                <div class="col-md-6"><p>Words a permission template delete outcome for the web flash messages.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/UrlService.html"><abbr title="Poweradmin\Application\Service\UrlService">UrlService</abbr></a>    </div>
-                <div class="col-md-6"><p>Builds absolute URLs for emails and redirects from the configured base URL.</p></div>
+                    <a href="Poweradmin/Application/Service/User/PermissionTemplateWriteService.html"><abbr title="Poweradmin\Application\Service\User\PermissionTemplateWriteService">PermissionTemplateWriteService</abbr></a>    </div>
+                <div class="col-md-6"><p>The single guarded entry point for permission template writes.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/UserAuthenticationService.html"><abbr title="Poweradmin\Application\Service\UserAuthenticationService">UserAuthenticationService</abbr></a>    </div>
-                <div class="col-md-6"><p>Hashes and verifies user passwords across bcrypt, argon2 and the legacy md5 formats.</p></div>
+                    <a href="Poweradmin/Application/Service/User/UserCommandFactory.html"><abbr title="Poweradmin\Application\Service\User\UserCommandFactory">UserCommandFactory</abbr></a>    </div>
+                <div class="col-md-6"><p>Turns a user create or update request, keyed by the API field names, into
+the typed command UserManagementService takes. A value of the wrong shape
+is refused here with the same wording and refusal the service used to give.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/UserFormMessages.html"><abbr title="Poweradmin\Application\Service\UserFormMessages">UserFormMessages</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/User/UserFormMessages.html"><abbr title="Poweradmin\Application\Service\User\UserFormMessages">UserFormMessages</abbr></a>    </div>
                 <div class="col-md-6"><p>Words a refused UserManagementService write for the user forms. The
 service's own message is the API wording; password policy, field length and
 external-auth password messages are the same on both sides and pass through.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/UserProvisioningService.html"><abbr title="Poweradmin\Application\Service\UserProvisioningService">UserProvisioningService</abbr></a>    </div>
-                <div class="col-md-6"><p>Creates or updates the local user for an LDAP, OIDC or SAML login and maps their groups to a permission template.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/UsernameRecoveryService.html"><abbr title="Poweradmin\Application\Service\UsernameRecoveryService">UsernameRecoveryService</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/User/UsernameRecoveryService.html"><abbr title="Poweradmin\Application\Service\User\UsernameRecoveryService">UsernameRecoveryService</abbr></a>    </div>
                 <div class="col-md-6"><p>Username recovery by email: rate-limits requests and mails the usernames registered to an address.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ZoneAccessNotificationService.html"><abbr title="Poweradmin\Application\Service\ZoneAccessNotificationService">ZoneAccessNotificationService</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Web/AuditService.html"><abbr title="Poweradmin\Application\Service\Web\AuditService">AuditService</abbr></a>    </div>
+                <div class="col-md-6"><p>Writes the &quot;client_ip:.. user:.. operation:..&quot; audit lines. Every line
+starts with the same actor context; one method per event keeps the field
+names in one place.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Web/DashboardStatsService.html"><abbr title="Poweradmin\Application\Service\Web\DashboardStatsService">DashboardStatsService</abbr></a>    </div>
+                <div class="col-md-6"><p>The totals on the admin dashboard. Zone and record counts are null when
+they cannot be read, so the page still renders.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Web/LocaleResolver.html"><abbr title="Poweradmin\Application\Service\Web\LocaleResolver">LocaleResolver</abbr></a>    </div>
+                <div class="col-md-6"><p>Resolves the interface language for the current request.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Web/PaginationService.html"><abbr title="Poweradmin\Application\Service\Web\PaginationService">PaginationService</abbr></a>    </div>
+                <div class="col-md-6"><p>Builds Pagination objects and resolves the rows-per-page value within the allowed bounds.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Web/RequestValidator.html"><abbr title="Poweradmin\Application\Service\Web\RequestValidator">RequestValidator</abbr></a>    </div>
+                <div class="col-md-6"><p>Validates controller request data against Symfony constraints.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Web/SearchCriteria.html"><abbr title="Poweradmin\Application\Service\Web\SearchCriteria">SearchCriteria</abbr></a>    </div>
+                <div class="col-md-6"><p>Value object holding the search parameters the search page works with.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Web/StatsDisplayService.html"><abbr title="Poweradmin\Application\Service\Web\StatsDisplayService">StatsDisplayService</abbr></a>    </div>
+                <div class="col-md-6"><p>Renders the memory usage and elapsed time footer shown when misc.display_stats is on.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Web/UrlService.html"><abbr title="Poweradmin\Application\Service\Web\UrlService">UrlService</abbr></a>    </div>
+                <div class="col-md-6"><p>Builds absolute URLs for emails and redirects from the configured base URL.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Zone/ChangeApprovalContext.html"><abbr title="Poweradmin\Application\Service\Zone\ChangeApprovalContext">ChangeApprovalContext</abbr></a>    </div>
+                <div class="col-md-6"><p>Answers what the change-approval feature means for one user: whether it is on,
+how their edits to a zone are handled, which zones they review, and how many
+requests are waiting.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Zone/ChangeRequestMessages.html"><abbr title="Poweradmin\Application\Service\Zone\ChangeRequestMessages">ChangeRequestMessages</abbr></a>    </div>
+                <div class="col-md-6"><p>Words a ZoneChangeRequestService outcome for the web flash messages.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Zone/ChangeRequestNotificationService.html"><abbr title="Poweradmin\Application\Service\Zone\ChangeRequestNotificationService">ChangeRequestNotificationService</abbr></a>    </div>
+                <div class="col-md-6"><p>Writes the zone audit line for each change request event, then emails the
+reviewers of the zone when a request is filed and the requester when it is
+decided. Mail failures are logged and reported as false; nothing here throws
+to the caller, so a mail problem never blocks a request.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Zone/ZoneAccessNotificationService.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneAccessNotificationService">ZoneAccessNotificationService</abbr></a>    </div>
                 <div class="col-md-6"><p>Emails a user when they gain or lose access to a zone.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ZoneBatchCreateOutcome.html"><abbr title="Poweradmin\Application\Service\ZoneBatchCreateOutcome">ZoneBatchCreateOutcome</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Zone/ZoneBatchCreateOutcome.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneBatchCreateOutcome">ZoneBatchCreateOutcome</abbr></a>    </div>
                 <div class="col-md-6"><p>What ZoneCreateService made of a batch: either a refusal that stopped the
 batch before any zone was tried, or one outcome per submitted name.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ZoneCreateFormMessages.html"><abbr title="Poweradmin\Application\Service\ZoneCreateFormMessages">ZoneCreateFormMessages</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Zone/ZoneCreateFormMessages.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneCreateFormMessages">ZoneCreateFormMessages</abbr></a>    </div>
                 <div class="col-md-6"><p>Words a refused ZoneManagementService::createZone() for the add-zone forms.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ZoneCreateOutcome.html"><abbr title="Poweradmin\Application\Service\ZoneCreateOutcome">ZoneCreateOutcome</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Zone/ZoneCreateOutcome.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneCreateOutcome">ZoneCreateOutcome</abbr></a>    </div>
                 <div class="col-md-6"><p>What ZoneCreateService made of one request: the created zone, or the
 refusal worded for the form.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ZoneCreateRequest.html"><abbr title="Poweradmin\Application\Service\ZoneCreateRequest">ZoneCreateRequest</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Zone/ZoneCreateRequest.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneCreateRequest">ZoneCreateRequest</abbr></a>    </div>
                 <div class="col-md-6"><p>What a zone creation form submitted, as ZoneCreateService takes it: the
 name as typed, the owner controls as posted, and the kind-specific options.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ZoneCreateService.html"><abbr title="Poweradmin\Application\Service\ZoneCreateService">ZoneCreateService</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Zone/ZoneCreateService.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneCreateService">ZoneCreateService</abbr></a>    </div>
                 <div class="col-md-6"><p>The zone creation flow shared by the add-zone forms, bulk registration and
 the secondary zone import: the name is normalised the same way, the owner
 controls are resolved by the same rules, the zone is created and audited
@@ -1207,31 +1345,48 @@ the same way, and every refusal is worded for the form.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ZoneGroupService.html"><abbr title="Poweradmin\Application\Service\ZoneGroupService">ZoneGroupService</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Zone/ZoneGroupService.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneGroupService">ZoneGroupService</abbr></a>    </div>
                 <div class="col-md-6"><p>Assigns zones to groups and removes them; the group-based half of zone ownership.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ZoneMetadataFormMessages.html"><abbr title="Poweradmin\Application\Service\ZoneMetadataFormMessages">ZoneMetadataFormMessages</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Zone/ZoneMetadataFormMessages.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneMetadataFormMessages">ZoneMetadataFormMessages</abbr></a>    </div>
                 <div class="col-md-6"><p>Words a refused ZoneMetadataService write for the metadata editor.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ZoneOwnershipFormResolver.html"><abbr title="Poweradmin\Application\Service\ZoneOwnershipFormResolver">ZoneOwnershipFormResolver</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Zone/ZoneOwnershipFormResolver.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneOwnershipFormResolver">ZoneOwnershipFormResolver</abbr></a>    </div>
                 <div class="col-md-6"><p>Reads the owner and group fields of the add-zone forms and applies the
 shared ownership rules. The forms drop what the ownership mode disallows
 instead of rejecting it, and word the refusals in the user's language.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ZoneSaveMessages.html"><abbr title="Poweradmin\Application\Service\ZoneSaveMessages">ZoneSaveMessages</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Zone/ZoneOwnershipInputFactory.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneOwnershipInputFactory">ZoneOwnershipInputFactory</abbr></a>    </div>
+                <div class="col-md-6"><p>Reads the owner fields of a decoded zone creation body into the typed input
+ZoneCreateOwnershipResolver takes; a value of the wrong shape is refused
+with the same wording and status the resolver used to give.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Zone/ZoneOwnershipMessages.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneOwnershipMessages">ZoneOwnershipMessages</abbr></a>    </div>
+                <div class="col-md-6"><p>Words a ZoneOwnershipGuard refusal for the zone ownership page.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Zone/ZoneSaveMessages.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneSaveMessages">ZoneSaveMessages</abbr></a>    </div>
                 <div class="col-md-6"><p>Words a ZoneEditService save for the zone editor's flash message.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Application/Service/ZoneSigningMessages.html"><abbr title="Poweradmin\Application\Service\ZoneSigningMessages">ZoneSigningMessages</abbr></a>    </div>
+                    <a href="Poweradmin/Application/Service/Zone/ZoneSigningMessages.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneSigningMessages">ZoneSigningMessages</abbr></a>    </div>
                 <div class="col-md-6"><p>Words a ZoneSigningService outcome for the web pages that sign or unsign
 an existing zone.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Service/Zone/ZoneSortingService.html"><abbr title="Poweradmin\Application\Service\Zone\ZoneSortingService">ZoneSortingService</abbr></a>    </div>
+                <div class="col-md-6"><p>Resolves the zone list's sort column, direction and reverse-zone filter from submitted values and the session.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1241,9 +1396,24 @@ the two theme headers and the dashboard share one rule per entry.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Application/Web/PageOutputInterface.html"><abbr title="Poweradmin\Application\Web\PageOutputInterface">PageOutputInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Where a controller's pages go: the themed chrome and body in production
+(PageRenderer), a recorder in tests. A controller hands over the template
+and the parameters exactly as it built them.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Application/Web/PageRenderer.html"><abbr title="Poweradmin\Application\Web\PageRenderer">PageRenderer</abbr></a>    </div>
                 <div class="col-md-6"><p>Renders the shared page chrome (header, footer, Twig globals) around
 controller-rendered templates.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Application/Web/ZoneEditFormParser.html"><abbr title="Poweradmin\Application\Web\ZoneEditFormParser">ZoneEditFormParser</abbr></a>    </div>
+                <div class="col-md-6"><p>Decodes the zone editor's POST: the record[] rows with their trailing
+_complete marker, the checkbox encoding of &quot;disabled&quot;, the form_complete
+marker at the end of the form, and the fields around the table.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1347,6 +1517,14 @@ used by the UI to show, hide, or default behaviour appropriately.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Model/PermissionCatalogue.html"><abbr title="Poweradmin\Domain\Model\PermissionCatalogue">PermissionCatalogue</abbr></a>    </div>
+                <div class="col-md-6"><p>The seed data every fresh installation starts from: the perm_items table, the
+default permission templates, and the default user groups. The installer and
+the sql/poweradmin-*-db-structure.sql files (via composer sql:seed) both read
+it, so a new permission or template is added here only.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Model/RecordComment.html"><abbr title="Poweradmin\Domain\Model\RecordComment">RecordComment</abbr></a>    </div>
                 <div class="col-md-6"><p>A comment on a record set (zone, name, type) with its author account, text and modification timestamp.</p></div>
             </div>
@@ -1359,11 +1537,6 @@ used by the UI to show, hide, or default behaviour appropriately.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Model/ReverseNetwork.html"><abbr title="Poweradmin\Domain\Model\ReverseNetwork">ReverseNetwork</abbr></a>    </div>
                 <div class="col-md-6"><p>A parsed network for batch PTR creation: the address range to walk and the reverse name used to probe for its zone.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Domain/Model/SessionEntity.html"><abbr title="Poweradmin\Domain\Model\SessionEntity">SessionEntity</abbr></a>    </div>
-                <div class="col-md-6"><p>A flash message (text plus Bootstrap alert type) kept in the session across a redirect.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1403,6 +1576,18 @@ who filed it, and how a reviewer decided it.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Model/ZoneChangeRequestRowCodec.html"><abbr title="Poweradmin\Domain\Model\ZoneChangeRequestRowCodec">ZoneChangeRequestRowCodec</abbr></a>    </div>
+                <div class="col-md-6"><p>The row shapes stored inside a change request's actions. They are a data
+contract: requests filed by earlier versions are decoded by this class, so
+the keys and their types stay as they are.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Model/ZoneDetail.html"><abbr title="Poweradmin\Domain\Model\ZoneDetail">ZoneDetail</abbr></a>    </div>
+                <div class="col-md-6"><p>One zone with its ownership, as read by ZoneReadRepositoryInterface::getZone().</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Model/ZoneGroup.html"><abbr title="Poweradmin\Domain\Model\ZoneGroup">ZoneGroup</abbr></a>    </div>
                 <div class="col-md-6"><p>A zone-to-group ownership row from zones_groups.</p></div>
             </div>
@@ -1416,6 +1601,13 @@ who filed it, and how a reviewer decided it.</p></div>
                                             <em><a href="Poweradmin/Domain/Module/ModuleInterface.html"><abbr title="Poweradmin\Domain\Module\ModuleInterface">ModuleInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>A feature module: its routes, navigation items, capabilities and templates, enabled through configuration.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Port/ActorInterface.html"><abbr title="Poweradmin\Domain\Port\ActorInterface">ActorInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Who is acting in the current request: the session user on the web, the key
+owner on the API. Domain rules ask this instead of reading the session.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1516,6 +1708,13 @@ must not throw; a failed notification never undoes the event.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Port/RecordSearchInterface.html"><abbr title="Poweradmin\Domain\Port\RecordSearchInterface">RecordSearchInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>The search page's record half: matching records with their zone owner, paged and
+sorted, and the unpaged match count. Rows carry <code>disabled</code> as a bool.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                                             <em><a href="Poweradmin/Domain/Port/RecordWriteBackendInterface.html"><abbr title="Poweradmin\Domain\Port\RecordWriteBackendInterface">RecordWriteBackendInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Record add, edit and delete writes against the DNS backend.</p></div>
@@ -1564,6 +1763,13 @@ must not throw; a failed notification never undoes the event.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Port/ZoneSearchInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneSearchInterface">ZoneSearchInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>The search page's zone half: matching zones with their owners, paged and sorted,
+and the unpaged match count. Each backend keeps its own row shape.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                                             <em><a href="Poweradmin/Domain/Port/ZoneSigningInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneSigningInterface">ZoneSigningInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Signing state of a zone: securing, unsecuring and reading whether it is signed.</p></div>
@@ -1591,6 +1797,24 @@ must not throw; a failed notification never undoes the event.</p></div>
                                             <em><a href="Poweradmin/Domain/Repository/DynamicDnsRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DynamicDnsRepositoryInterface">DynamicDnsRepositoryInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Persistence for the dynamic DNS update endpoint.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/ExternalIdentityRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ExternalIdentityRepositoryInterface">ExternalIdentityRepositoryInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Persistence for the OIDC and SAML identity links that tie a provider subject to a local user.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/PasswordResetTokenRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\PasswordResetTokenRepositoryInterface">PasswordResetTokenRepositoryInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Persistence for password reset tokens and their rate-limit counters.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/PermissionTemplateRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\PermissionTemplateRepositoryInterface">PermissionTemplateRepositoryInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Persistence for permission templates and the permission items they bundle.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1716,6 +1940,12 @@ application of the same template can remove exactly those records.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/UsernameRecoveryRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UsernameRecoveryRepositoryInterface">UsernameRecoveryRepositoryInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Persistence for username recovery attempts and their rate-limit counters.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                                             <em><a href="Poweradmin/Domain/Repository/ZoneChangeRequestRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneChangeRequestRepositoryInterface">ZoneChangeRequestRepositoryInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Persistence for zone change requests. Lists come back newest first.</p></div>
@@ -1767,6 +1997,12 @@ and the zone -&gt; template links kept in zones.zone_templ_id.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                                            <em><a href="Poweradmin/Domain/Repository/ZoneTemplateSyncRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneTemplateSyncRepositoryInterface">ZoneTemplateSyncRepositoryInterface</abbr></a></em>
+                        </div>
+                <div class="col-md-6"><p>Tracks which zones are out of date against their template after the template changes.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                                             <em><a href="Poweradmin/Domain/Repository/ZoneWriteRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneWriteRepositoryInterface">ZoneWriteRepositoryInterface</abbr></a></em>
                         </div>
                 <div class="col-md-6"><p>Zone row, comment and metadata writes (plus the metadata read the editor pairs with them); one of the three roles ZoneRepositoryInterface combines.</p></div>
@@ -1780,13 +2016,13 @@ and the zone -&gt; template links kept in zones.zone_templ_id.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Auth/ApiKeyWriteResult.html"><abbr title="Poweradmin\Domain\Service\Auth\ApiKeyWriteResult">ApiKeyWriteResult</abbr></a>    </div>
                 <div class="col-md-6"><p>Outcome of an API key write: the saved key on success, otherwise the reason,
-its code and the HTTP status.</p></div>
+its code and the refusal.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Auth/ApiPermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\ApiPermissionService">ApiPermissionService</abbr></a>    </div>
                 <div class="col-md-6"><p>Permission gate for the public API. A facade over PermissionService so the API
-and the web UI share one oracle; only the group and visible-zone lookups query here.</p></div>
+and the web UI share one oracle; group and visible-zone lookups read the user repository.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1826,7 +2062,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Auth/SessionKeys.html"><abbr title="Poweradmin\Domain\Service\Auth\SessionKeys">SessionKeys</abbr></a>    </div>
-                <div class="col-md-6"><p>Central catalogue of $_SESSION keys.</p></div>
+                <div class="col-md-6"><p>Catalogue of the login and user identity $_SESSION keys.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1836,7 +2072,8 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>    </div>
-                <div class="col-md-6"><p>Session-backed identity of the current user (id, username, auth method), with a fallback for API requests.</p></div>
+                <div class="col-md-6"><p>Session-backed identity of the current user (id, username, auth method) and the
+session storage controllers use. Domain rules read the actor through ActorInterface instead.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -1860,16 +2097,6 @@ missing or duplicate SOAs. One implementation per DNS backend.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Consistency/ConsistencyReport.html"><abbr title="Poweradmin\Domain\Service\Consistency\ConsistencyReport">ConsistencyReport</abbr></a>    </div>
                 <div class="col-md-6"><p>Shapes check results and fix-all tallies the same way for every backend strategy.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Domain/Service/Database/DatabaseCredentialMapper.html"><abbr title="Poweradmin\Domain\Service\Database\DatabaseCredentialMapper">DatabaseCredentialMapper</abbr></a>    </div>
-                <div class="col-md-6"><p>Maps the database settings block to the PDO connection arguments.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Domain/Service/Database/DatabaseSchemaService.html"><abbr title="Poweradmin\Domain\Service\Database\DatabaseSchemaService">DatabaseSchemaService</abbr></a>    </div>
-                <div class="col-md-6"><p>Creates and drops tables, indexes and foreign keys for the installer using per-driver SQL.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2021,6 +2248,11 @@ missing or duplicate SOAs. One implementation per DNS backend.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/DnsValidation/HTTPSRecordValidator.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\HTTPSRecordValidator">HTTPSRecordValidator</abbr></a>    </div>
                 <div class="col-md-6"><p>HTTPS record validator</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Service/DnsValidation/HostnamePolicy.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\HostnamePolicy">HostnamePolicy</abbr></a>    </div>
+                <div class="col-md-6"><p>The three dns.* settings that decide how strictly a hostname's labels and TLD are checked.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2296,14 +2528,22 @@ missing or duplicate SOAs. One implementation per DNS backend.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Service/Dns/RecordBatchDeletionOutcome.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordBatchDeletionOutcome">RecordBatchDeletionOutcome</abbr></a>    </div>
+                <div class="col-md-6"><p>Outcome of deleting a selection of records: how many went, and the reason
+for each one the backend refused. Rows that no longer exist are skipped
+silently and count for neither.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Dns/RecordDeletionOutcome.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordDeletionOutcome">RecordDeletionOutcome</abbr></a>    </div>
                 <div class="col-md-6"><p>Outcome of deleting a record together with its reverse counterpart.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Dns/RecordDeletionService.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordDeletionService">RecordDeletionService</abbr></a>    </div>
-                <div class="col-md-6"><p>Deletes a record and, when asked and when interface.add_reverse_record is on,
-the PTR of an A/AAAA record or the A/AAAA of a PTR record.</p></div>
+                <div class="col-md-6"><p>Deletes a record and, when asked and when reverse handling is on, the PTR
+of an A/AAAA record or the A/AAAA of a PTR record. A selection of records
+is deleted the same way, with each affected zone finalized once.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2341,8 +2581,8 @@ Implements the Single Responsibility Principle by focusing only on display trans
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>    </div>
                 <div class="col-md-6"><p>Outcome of a record write. Replaces the bool return plus MessageService side
-channel: callers read the reason, the HTTP status and the offending form field
-from here instead of the session.</p></div>
+channel: callers read the reason, the refusal and the offending record
+part from here instead of the session.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2374,7 +2614,7 @@ from here instead of the session.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Dns/SupermasterWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\SupermasterWriteResult">SupermasterWriteResult</abbr></a>    </div>
                 <div class="col-md-6"><p>Outcome of a supermaster write. Callers read the reason, its code and the
-HTTP status from here instead of a message side channel.</p></div>
+refusal from here instead of a message side channel.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2390,8 +2630,21 @@ repoints the zone at the template and reconciles the sync state.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Service/Template/ZoneTemplateAccessPolicy.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplateAccessPolicy">ZoneTemplateAccessPolicy</abbr></a>    </div>
+                <div class="col-md-6"><p>What the acting user may do with zone templates: which template a zone may
+be created from, who owns a template, which record types may be stored in
+one, and how far the linked-zone listings reach.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Template/ZoneTemplatePlaceholders.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplatePlaceholders">ZoneTemplatePlaceholders</abbr></a>    </div>
                 <div class="col-md-6"><p>Expands the [ZONE], [NS1], [SERIAL] style placeholders of zone template records.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Service/Template/ZoneTemplateRecordService.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplateRecordService">ZoneTemplateRecordService</abbr></a>    </div>
+                <div class="col-md-6"><p>Adding, editing and deleting the records of a zone template. Writes report
+their outcome instead of flashing it.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2401,25 +2654,43 @@ repoints the zone at the template and reconciles the sync state.</p></div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Template/ZoneTemplateService.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplateService">ZoneTemplateService</abbr></a>    </div>
-                <div class="col-md-6"><p>Zone template use cases for the acting user: creating, editing and deleting
-templates and their records, the default template, and which zones a
-template is linked to. Writes report their outcome instead of flashing it.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Domain/Service/Template/ZoneTemplateSyncService.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplateSyncService">ZoneTemplateSyncService</abbr></a>    </div>
-                <div class="col-md-6"><p>Tracks which zones are out of date against their template after the template changes.</p></div>
+                <div class="col-md-6"><p>Facade over the zone template use cases, kept so existing callers keep one
+entry point: ZoneTemplateWriteService (templates and the default flag),
+ZoneTemplateRecordService (template records) and ZoneTemplateAccessPolicy
+(who may use or owns a template). Lookups and linked-zone listings read the
+repository directly. New code should depend on the specific service.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Template/ZoneTemplateWriteResult.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplateWriteResult">ZoneTemplateWriteResult</abbr></a>    </div>
-                <div class="col-md-6"><p>Outcome of a zone template write. Callers read the reason and HTTP status
+                <div class="col-md-6"><p>Outcome of a zone template write. Callers read the reason and the refusal
 from here instead of the session; a success may still carry a warning.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Service/Template/ZoneTemplateWriteService.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplateWriteService">ZoneTemplateWriteService</abbr></a>    </div>
+                <div class="col-md-6"><p>Creating, editing and deleting zone templates, saving a zone as a template,
+and the system-wide default template. Writes report their outcome instead
+of flashing it.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Service/User/CreateUserCommand.html"><abbr title="Poweradmin\Domain\Service\User\CreateUserCommand">CreateUserCommand</abbr></a>    </div>
+                <div class="col-md-6"><p>What a create-user request asks for, typed and independent of the wire
+format. The controllers build it from their own field names; the service
+hands it on to the repository with the password in its stored form.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/User/GroupReferenceResolver.html"><abbr title="Poweradmin\Domain\Service\User\GroupReferenceResolver">GroupReferenceResolver</abbr></a>    </div>
                 <div class="col-md-6"><p>Turns a submitted list of group references into distinct group entities</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Service/User/UpdateUserCommand.html"><abbr title="Poweradmin\Domain\Service\User\UpdateUserCommand">UpdateUserCommand</abbr></a>    </div>
+                <div class="col-md-6"><p>What a partial user update asks for: every field is null when the request
+left it alone. The controllers build it from their own field names; the
+service hands it on to the repository with the password in its stored form.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2497,8 +2768,15 @@ may review a request.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Zone/ZoneCreateOwnershipResolver.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneCreateOwnershipResolver">ZoneCreateOwnershipResolver</abbr></a>    </div>
                 <div class="col-md-6"><p>Resolves the user-owner and group-owner assignment for a new zone, applying
-the active zone_ownership_mode and permission rules. The API hands in its
-JSON body; the web forms hand in the owner and groups they already parsed.</p></div>
+the active zone_ownership_mode and permission rules. The API hands in the
+typed request input; the web forms hand in the owner and groups they parsed.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Service/Zone/ZoneEditRow.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditRow">ZoneEditRow</abbr></a>    </div>
+                <div class="col-md-6"><p>One row of the zone editor's record table as the caller wants it: the
+record it refers to and the values to store, already decoded from whatever
+form or request carried them.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2516,7 +2794,7 @@ serial bump that closes a save.</p></div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Zone/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditSubmission">ZoneEditSubmission</abbr></a>    </div>
-                <div class="col-md-6"><p>One submission of the zone editor's record table, as posted.</p></div>
+                <div class="col-md-6"><p>One submission of the zone editor's record table.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2543,10 +2821,23 @@ persisted and logged. Callers parse their input and word the refusals.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Service/Zone/ZoneOwnershipGuard.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipGuard">ZoneOwnershipGuard</abbr></a>    </div>
+                <div class="col-md-6"><p>The last-owner rule: a zone keeps at least one owner of a kind the ownership
+mode allows. Every writer that removes a user owner or a group asks here first.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Zone/ZoneOwnershipIndex.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipIndex">ZoneOwnershipIndex</abbr></a>    </div>
                 <div class="col-md-6"><p>Who owns which of a page of zones, resolved once so per-row controls do not
 query per zone. Ownership is direct (zones.owner) or through any group the
 user belongs to.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Service/Zone/ZoneOwnershipInput.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipInput">ZoneOwnershipInput</abbr></a>    </div>
+                <div class="col-md-6"><p>The owner choice a zone creation request made, as ZoneCreateOwnershipResolver
+reads it: the user owner may be omitted (the caller becomes owner), given as
+null (no user owner) or given as an id; the groups may be omitted or listed.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2555,9 +2846,15 @@ user belongs to.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Domain/Service/Zone/ZoneOwnershipRefusal.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipRefusal">ZoneOwnershipRefusal</abbr></a>    </div>
+                <div class="col-md-6"><p>Why ZoneOwnershipGuard refused an owner removal. Callers word the code for
+their own audience; the mode tells them what kind of replacement to suggest.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Domain/Service/Zone/ZoneOwnershipResolution.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipResolution">ZoneOwnershipResolution</abbr></a>    </div>
                 <div class="col-md-6"><p>Outcome of {ZoneCreateOwnershipResolver}: either a resolved owner/group
-assignment for the new zone, or an error with HTTP status. The error carries
+assignment for the new zone, or an error with its refusal. The error carries
 a code so the web forms can word it themselves; the message is the API text.</p></div>
             </div>
                     <div class="row">
@@ -2577,11 +2874,6 @@ for a refused stale form, the rows to put back in front of the operator.</p></di
                 <div class="col-md-6"><p>Signs and unsigns zones the one way every entry point agrees on: refuse
 presigned zones and invalid zones, bump the SOA serial so secondaries
 notice, verify what PowerDNS reports afterwards, rectify, and audit.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
-                    <a href="Poweradmin/Domain/Service/Zone/ZoneSortingService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneSortingService">ZoneSortingService</abbr></a>    </div>
-                <div class="col-md-6"><p>Resolves the zone list's sort column, direction and reverse-zone filter from submitted values and the session.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2696,6 +2988,16 @@ notice, verify what PowerDNS reports afterwards, rectify, and audit.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Database/DatabaseCredentialMapper.html"><abbr title="Poweradmin\Infrastructure\Database\DatabaseCredentialMapper">DatabaseCredentialMapper</abbr></a>    </div>
+                <div class="col-md-6"><p>Maps the database settings block to the PDO connection arguments.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Database/DatabaseSchemaService.html"><abbr title="Poweradmin\Infrastructure\Database\DatabaseSchemaService">DatabaseSchemaService</abbr></a>    </div>
+                <div class="col-md-6"><p>Creates and drops tables, indexes and foreign keys for the installer using per-driver SQL.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Database/DebugPDO.html"><abbr title="Poweradmin\Infrastructure\Database\DebugPDO">DebugPDO</abbr></a>    </div>
                 <div class="col-md-6"><p>PDO subclass that records executed queries for debug display.</p></div>
             </div>
@@ -2703,6 +3005,11 @@ notice, verify what PowerDNS reports afterwards, rectify, and audit.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Database/PDODatabaseConnection.html"><abbr title="Poweradmin\Infrastructure\Database\PDODatabaseConnection">PDODatabaseConnection</abbr></a>    </div>
                 <div class="col-md-6"><p>Opens the PDO connection from the database credentials, building the DSN and SSL options per driver.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Database/SeedRepository.html"><abbr title="Poweradmin\Infrastructure\Database\SeedRepository">SeedRepository</abbr></a>    </div>
+                <div class="col-md-6"><p>Writes the PermissionCatalogue seed data into freshly created Poweradmin tables.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2790,6 +3097,18 @@ these variables on its own, so each call site needs to opt in explicitly.</p></d
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Repository/ApiRecordSearch.html"><abbr title="Poweradmin\Infrastructure\Repository\ApiRecordSearch">ApiRecordSearch</abbr></a>    </div>
+                <div class="col-md-6"><p>Record search over the PowerDNS API, enriched with the zone owner from
+Poweradmin's zones table and filtered, sorted and paged in memory.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Repository/ApiSearchBase.html"><abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a>    </div>
+                <div class="col-md-6"><p>Shared parts of the API-mode searches: query preprocessing that mirrors
+BaseSearch, and the ownership lookups against Poweradmin's own zones table.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Repository/ApiZoneMetadataStore.html"><abbr title="Poweradmin\Infrastructure\Repository\ApiZoneMetadataStore">ApiZoneMetadataStore</abbr></a>    </div>
                 <div class="col-md-6"><p>Zone metadata behind the PowerDNS API: metadata kinds through the metadata
 endpoints, and the kinds PowerDNS exposes as zone-object properties through
@@ -2802,6 +3121,12 @@ a zone update.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Repository/ApiZoneSearch.html"><abbr title="Poweradmin\Infrastructure\Repository\ApiZoneSearch">ApiZoneSearch</abbr></a>    </div>
+                <div class="col-md-6"><p>Zone search over the PowerDNS API, enriched with owners and comments from
+Poweradmin's zones table and filtered, sorted and paged in memory.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Repository/BaseSearch.html"><abbr title="Poweradmin\Infrastructure\Repository\BaseSearch">BaseSearch</abbr></a>    </div>
                 <div class="col-md-6"><p>Shared query building for the record and zone searches: IDN matching and reverse IP search strings.</p></div>
             </div>
@@ -2809,6 +3134,11 @@ a zone update.</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Repository/DbApiKeyRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbApiKeyRepository">DbApiKeyRepository</abbr></a>    </div>
                 <div class="col-md-6"><p>SQL persistence for API keys in the api_keys table and their zone scopes in api_key_zones.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Repository/DbExternalIdentityRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbExternalIdentityRepository">DbExternalIdentityRepository</abbr></a>    </div>
+                <div class="col-md-6"><p>SQL persistence for the oidc_user_links and saml_user_links tables.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2898,6 +3228,11 @@ never prefixed and is shared by the SQL and API backends.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Repository/DbZoneTemplateSyncRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbZoneTemplateSyncRepository">DbZoneTemplateSyncRepository</abbr></a>    </div>
+                <div class="col-md-6"><p>Tracks which zones are out of date against their template in the zone_template_sync table.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Repository/RecordSearch.html"><abbr title="Poweradmin\Infrastructure\Repository\RecordSearch">RecordSearch</abbr></a>    </div>
                 <div class="col-md-6"><p>Runs the record search page query with grouping, comments, sorting and pagination.</p></div>
             </div>
@@ -2969,7 +3304,7 @@ Used when PowerDNS API is not configured or DNSSEC is disabled</p></div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Service/RedirectService.html"><abbr title="Poweradmin\Infrastructure\Service\RedirectService">RedirectService</abbr></a>    </div>
-                <div class="col-md-6"><p>Sends a Location header for the given URL and ends the request.</p></div>
+                <div class="col-md-6"><p>Sends a Location header for the given URL, or a prepared response, and ends the request.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -2998,6 +3333,17 @@ Used when PowerDNS API is not configured or DNSSEC is disabled</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Session/AuthFlowSessionKeys.html"><abbr title="Poweradmin\Infrastructure\Session\AuthFlowSessionKeys">AuthFlowSessionKeys</abbr></a>    </div>
+                <div class="col-md-6"><p>$_SESSION keys owned by the authentication flows: MFA, the OIDC and SAML
+logout round trips, and password and username recovery.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Session/FlashMessage.html"><abbr title="Poweradmin\Infrastructure\Session\FlashMessage">FlashMessage</abbr></a>    </div>
+                <div class="col-md-6"><p>A flash message (text plus Bootstrap alert type) kept in the session across a redirect.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Session/FormStateService.html"><abbr title="Poweradmin\Infrastructure\Session\FormStateService">FormStateService</abbr></a>    </div>
                 <div class="col-md-6"><p>Keeps submitted form data in the session so a failed request can refill the form.</p></div>
             </div>
@@ -3005,6 +3351,11 @@ Used when PowerDNS API is not configured or DNSSEC is disabled</p></div>
                 <div class="col-md-6">
                     <a href="Poweradmin/Infrastructure/Session/MfaSessionManager.html"><abbr title="Poweradmin\Infrastructure\Session\MfaSessionManager">MfaSessionManager</abbr></a>    </div>
                 <div class="col-md-6"><p>Static helpers that set, read and reset the MFA pending/verified state in the session.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="Poweradmin/Infrastructure/Session/SessionActor.html"><abbr title="Poweradmin\Infrastructure\Session\SessionActor">SessionActor</abbr></a>    </div>
+                <div class="col-md-6"><p>The actor of a web request: whoever the session says is logged in.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -3158,11 +3509,6 @@ Used when PowerDNS API is not configured or DNSSEC is disabled</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="Poweradmin/Module/ModuleRegistry.html"><abbr title="Poweradmin\Module\ModuleRegistry">ModuleRegistry</abbr></a>    </div>
-                <div class="col-md-6"><p>Loads the modules listed in the manifest and answers which are enabled for the current user.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
                     <a href="Poweradmin/Module/Rdap/Controller/RdapController.html"><abbr title="Poweradmin\Module\Rdap\Controller\RdapController">RdapController</abbr></a>    </div>
                 <div class="col-md-6"><p>/rdap and /zones/{id}/rdap - looks up a domain's RDAP record and shows the result.</p></div>
             </div>
@@ -3216,6 +3562,11 @@ pulling it over AXFR, and converting it to a primary once the data lands.</p></d
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="Poweradmin/Module/ZoneImportExport/ImportSessionKeys.html"><abbr title="Poweradmin\Module\ZoneImportExport\ImportSessionKeys">ImportSessionKeys</abbr></a>    </div>
+                <div class="col-md-6"><p>Session keys the zone import module keeps between its preview and confirm steps.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="Poweradmin/Module/ZoneImportExport/Service/BindZoneFileParser.html"><abbr title="Poweradmin\Module\ZoneImportExport\Service\BindZoneFileParser">BindZoneFileParser</abbr></a>    </div>
                 <div class="col-md-6"><p>Parses BIND zone file text into records, handling $ORIGIN, $TTL and multi-line values.</p></div>
             </div>
@@ -3241,7 +3592,7 @@ pulling it over AXFR, and converting it to a primary once the data lands.</p></d
             </div>
             </div>
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ca8a14a" rel="noreferrer" target="_blank">commit ca8a14a,</a> built 2026-09-21 14:36 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
     </div>
     </body>
 

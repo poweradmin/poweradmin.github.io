@@ -103,8 +103,9 @@
         
 
             <div class="description">
-            <p><p>Deletes a record and, when asked and when interface.add_reverse_record is on,
-the PTR of an A/AAAA record or the A/AAAA of a PTR record.</p></p>                    </div>
+            <p><p>Deletes a record and, when asked and when reverse handling is on, the PTR
+of an A/AAAA record or the A/AAAA of a PTR record. A selection of records
+is deleted the same way, with each affected zone finalized once.</p></p>                    </div>
             
         
     
@@ -117,7 +118,7 @@ the PTR of an A/AAAA record or the A/AAAA of a PTR record.</p></p>              
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Domain/Repository/RecordLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLookupInterface">RecordLookupInterface</abbr></a> $recordRepository, <a href="../../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a> $recordManager, <a href="../../../../Poweradmin/Domain/Service/Dns/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseRecordCreator">ReverseRecordCreator</abbr></a> $reverseRecordCreator, <a href="../../../../Poweradmin/Domain/Port/AuditLoggerInterface.html"><abbr title="Poweradmin\Domain\Port\AuditLoggerInterface">AuditLoggerInterface</abbr></a> $audit, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
+                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Domain/Repository/RecordLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLookupInterface">RecordLookupInterface</abbr></a> $recordRepository, <a href="../../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a> $recordManager, <a href="../../../../Poweradmin/Domain/Service/Dns/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseRecordCreator">ReverseRecordCreator</abbr></a> $reverseRecordCreator, <a href="../../../../Poweradmin/Domain/Port/AuditLoggerInterface.html"><abbr title="Poweradmin\Domain\Port\AuditLoggerInterface">AuditLoggerInterface</abbr></a> $audit, bool $reverseHandling)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -134,6 +135,17 @@ the PTR of an A/AAAA record or the A/AAAA of a PTR record.</p></p>              
                                     </div>
                 <div class="col-md-2"></div>
             </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordBatchDeletionOutcome.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordBatchDeletionOutcome">RecordBatchDeletionOutcome</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_deleteMany">deleteMany</a>(array $recordIds, bool $deletePtr)
+        
+                                            <p><p>Deletes a selection that may span zones, then bumps and rectifies each
+affected zone once. A refused row is reported and the rest still go.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
             </div>
 
 
@@ -142,9 +154,9 @@ the PTR of an A/AAAA record or the A/AAAA of a PTR record.</p></p>              
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordDeletionService.php#L36">at line 36</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordDeletionService.php#L39">at line 39</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Repository/RecordLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLookupInterface">RecordLookupInterface</abbr></a> $recordRepository, <a href="../../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a> $recordManager, <a href="../../../../Poweradmin/Domain/Service/Dns/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseRecordCreator">ReverseRecordCreator</abbr></a> $reverseRecordCreator, <a href="../../../../Poweradmin/Domain/Port/AuditLoggerInterface.html"><abbr title="Poweradmin\Domain\Port\AuditLoggerInterface">AuditLoggerInterface</abbr></a> $audit, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
+    <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Repository/RecordLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLookupInterface">RecordLookupInterface</abbr></a> $recordRepository, <a href="../../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a> $recordManager, <a href="../../../../Poweradmin/Domain/Service/Dns/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseRecordCreator">ReverseRecordCreator</abbr></a> $reverseRecordCreator, <a href="../../../../Poweradmin/Domain/Port/AuditLoggerInterface.html"><abbr title="Poweradmin\Domain\Port\AuditLoggerInterface">AuditLoggerInterface</abbr></a> $audit, bool $reverseHandling)
         </code>
     </h3>
     <div class="details">    
@@ -181,9 +193,9 @@ the PTR of an A/AAAA record or the A/AAAA of a PTR record.</p></p>              
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
-                <td>$config</td>
-                <td></td>
+                <td>bool</td>
+                <td>$reverseHandling</td>
+                <td><p>Whether the counterpart record is considered at all</p></td>
             </tr>
             </table>
 
@@ -197,7 +209,7 @@ the PTR of an A/AAAA record or the A/AAAA of a PTR record.</p></p>              
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteWithReverse">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordDeletionService.php#L50">at line 50</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordDeletionService.php#L53">at line 53</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordDeletionOutcome.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordDeletionOutcome">RecordDeletionOutcome</abbr></a>
     <strong>deleteWithReverse</strong>(int $zoneId, int|string $recordId, bool $deletePtr, bool $deleteForward)
         </code>
@@ -254,11 +266,60 @@ the PTR of an A/AAAA record or the A/AAAA of a PTR record.</p></p>              
     </div>
 
             </div>
+                    <div class="method-item">
+                    <h3 id="method_deleteMany">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordDeletionService.php#L93">at line 93</a></div>
+        <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordBatchDeletionOutcome.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordBatchDeletionOutcome">RecordBatchDeletionOutcome</abbr></a>
+    <strong>deleteMany</strong>(array $recordIds, bool $deletePtr)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Deletes a selection that may span zones, then bumps and rectifies each
+affected zone once. A refused row is reported and the rest still go.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$recordIds</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$deletePtr</td>
+                <td><p>Also remove the PTR of each deleted A/AAAA record</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../Poweradmin/Domain/Service/Dns/RecordBatchDeletionOutcome.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordBatchDeletionOutcome">RecordBatchDeletionOutcome</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
             </div>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ca8a14a" rel="noreferrer" target="_blank">commit ca8a14a,</a> built 2026-09-21 14:36 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
     </div>
     </body>
 

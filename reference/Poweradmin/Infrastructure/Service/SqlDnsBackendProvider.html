@@ -93,7 +93,7 @@
     </div>
 
     
-    <p>        class
+    <p>final         class
     <strong>SqlDnsBackendProvider</strong>        implements        <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php">View source</a>)
 </p>
 
@@ -619,6 +619,56 @@ findRecordsByName().</p></p>                </div>
         
                                             <p><p>Whether zone ids are allocated from the local zones table rather than the
 PowerDNS domains table.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_providesSignedSerial">providesSignedSerial</a>()
+        
+                                            <p><p>Whether the zone list can carry the serial PowerDNS serves for signed zones.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_supportsRecordCountSort">supportsRecordCountSort</a>()
+        
+                                            <p><p>Whether zone lists can be ordered by record count across every page.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_supportsGroupSort">supportsGroupSort</a>()
+        
+                                            <p><p>Whether zone lists can be ordered by owning group.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_supportsZoneRetrieve">supportsZoneRetrieve</a>()
+        
+                                            <p><p>Whether a secondary zone can be pulled from its primary on request.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_syncsZoneListFromServer">syncsZoneListFromServer</a>()
+        
+                                            <p><p>Whether the local zone list is a mirror that can be refreshed from the server.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -3014,8 +3064,180 @@ domains.id, the caller adds the zones row and a zone without a domains row is st
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_hasSoaEditApi">
+                    <h3 id="method_providesSignedSerial">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L921">at line 921</a></div>
+        <code>                    bool
+    <strong>providesSignedSerial</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the zone list can carry the serial PowerDNS serves for signed zones.</p></p>                <p><p>True for the API backend, whose zone list reports the signed serial. False
+for the SQL backend, which only sees the stored SOA serial.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_supportsRecordCountSort">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L926">at line 926</a></div>
+        <code>                    bool
+    <strong>supportsRecordCountSort</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether zone lists can be ordered by record count across every page.</p></p>                <p><p>True for the SQL backend, which counts in the query. False for the API
+backend, where counts are resolved per page and a sort would only order
+the rows already on screen.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_supportsGroupSort">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L931">at line 931</a></div>
+        <code>                    bool
+    <strong>supportsGroupSort</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether zone lists can be ordered by owning group.</p></p>                <p><p>True for the SQL backend, which joins the Poweradmin ownership tables in
+the list query. False for the API backend, whose zone list comes from
+PowerDNS and cannot join them.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_supportsZoneRetrieve">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L936">at line 936</a></div>
+        <code>                    bool
+    <strong>supportsZoneRetrieve</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether a secondary zone can be pulled from its primary on request.</p></p>                <p><p>True for the API backend, which asks PowerDNS to transfer the zone. False
+for the SQL backend, which has no way to trigger a transfer.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_syncsZoneListFromServer">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L941">at line 941</a></div>
+        <code>                    bool
+    <strong>syncsZoneListFromServer</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the local zone list is a mirror that can be refreshed from the server.</p></p>                <p><p>True for the API backend, where the zones table is synced from PowerDNS.
+False for the SQL backend, where the domains table is the source itself.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_hasSoaEditApi">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L946">at line 946</a></div>
         <code>                    bool
     <strong>hasSoaEditApi</strong>(int $domainId)
         </code>
@@ -3058,7 +3280,7 @@ domains.id, the caller adds the zones row and a zone without a domains row is st
             </div>
                     <div class="method-item">
                     <h3 id="method_setZoneSerialPolicy">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L926">at line 926</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/SqlDnsBackendProvider.php#L951">at line 951</a></div>
         <code>                    bool
     <strong>setZoneSerialPolicy</strong>(int $domainId, string $zoneName, array $properties)
         </code>
@@ -3116,7 +3338,7 @@ matching domainmetadata rows.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ca8a14a" rel="noreferrer" target="_blank">commit ca8a14a,</a> built 2026-09-21 14:36 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
     </div>
     </body>
 

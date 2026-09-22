@@ -104,7 +104,7 @@
 
             <div class="description">
             <p><p>Permission gate for the public API. A facade over PermissionService so the API
-and the web UI share one oracle; only the group and visible-zone lookups query here.</p></p>                    </div>
+and the web UI share one oracle; group and visible-zone lookups read the user repository.</p></p>                    </div>
             
         
             <h2>Constants</h2>    <table class="table table-condensed">
@@ -147,7 +147,7 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a>|null $config = null)
+                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Domain/Repository/UserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a>&<a href="../../../../Poweradmin/Domain/Repository/UserPermissionReadInterface.html"><abbr title="Poweradmin\Domain\Repository\UserPermissionReadInterface">UserPermissionReadInterface</abbr></a> $userRepository, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a>|null $config = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -181,16 +181,6 @@ and the web UI share one oracle; only the group and visible-zone lookups query h
                     <a href="#method_getUserGroupIds">getUserGroupIds</a>(int $userId)
         
                                             <p><p>Return the group IDs the user is a member of.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getExistingGroupIds">getExistingGroupIds</a>(array $groupIds)
-        
-                                            <p><p>Given a list of group IDs, return the subset that actually exists in user_groups.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -602,7 +592,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
                     <h3 id="method___construct">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L49">at line 49</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a>|null $config = null)
+    <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Repository/UserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a>&<a href="../../../../Poweradmin/Domain/Repository/UserPermissionReadInterface.html"><abbr title="Poweradmin\Domain\Repository\UserPermissionReadInterface">UserPermissionReadInterface</abbr></a> $userRepository, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a>|null $config = null)
         </code>
     </h3>
     <div class="details">    
@@ -619,8 +609,8 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
-                <td>$db</td>
+                <td><a href="../../../../Poweradmin/Domain/Repository/UserLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\UserLookupInterface">UserLookupInterface</abbr></a>&<a href="../../../../Poweradmin/Domain/Repository/UserPermissionReadInterface.html"><abbr title="Poweradmin\Domain\Repository\UserPermissionReadInterface">UserPermissionReadInterface</abbr></a></td>
+                <td>$userRepository</td>
                 <td></td>
             </tr>
                     <tr>
@@ -645,7 +635,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_permissions">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L59">at line 59</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L62">at line 62</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a>
     <strong>permissions</strong>()
         </code>
@@ -678,7 +668,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_userHasPermission">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L67">at line 67</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L70">at line 70</a></div>
         <code>                    bool
     <strong>userHasPermission</strong>(int $userId, string $permissionName)
         </code>
@@ -726,7 +716,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserGroupIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L77">at line 77</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L80">at line 80</a></div>
         <code>                    array
     <strong>getUserGroupIds</strong>(int $userId)
         </code>
@@ -768,51 +758,8 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getExistingGroupIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L94">at line 94</a></div>
-        <code>                    array
-    <strong>getExistingGroupIds</strong>(array $groupIds)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Given a list of group IDs, return the subset that actually exists in user_groups.</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>array</td>
-                <td>$groupIds</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>array</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_userOwnsZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L109">at line 109</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L88">at line 88</a></div>
         <code>                    bool
     <strong>userOwnsZone</strong>(int $userId, int $zoneId)
         </code>
@@ -860,7 +807,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canViewZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L114">at line 114</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L93">at line 93</a></div>
         <code>                    bool
     <strong>canViewZone</strong>(int $userId, int $zoneId)
         </code>
@@ -909,7 +856,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_hasZoneContentEditPermission">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L122">at line 122</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L101">at line 101</a></div>
         <code>                    bool
     <strong>hasZoneContentEditPermission</strong>(int $userId, int $zoneId)
         </code>
@@ -957,7 +904,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditZoneContent">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L127">at line 127</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L106">at line 106</a></div>
         <code>                    bool
     <strong>canEditZoneContent</strong>(int $userId, int $zoneId, string|null $zoneType = null)
         </code>
@@ -1011,7 +958,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditZoneRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L132">at line 132</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L111">at line 111</a></div>
         <code>                    bool
     <strong>canEditZoneRecord</strong>(int $userId, int $zoneId, string $recordType, string|null $zoneType = null, string|null $recordName = null, string|null $zoneName = null)
         </code>
@@ -1080,7 +1027,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canDeleteZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L137">at line 137</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L116">at line 116</a></div>
         <code>                    bool
     <strong>canDeleteZone</strong>(int $userId, int $zoneId)
         </code>
@@ -1129,7 +1076,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canCreateZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L145">at line 145</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L124">at line 124</a></div>
         <code>                    bool
     <strong>canCreateZone</strong>(int $userId, string $zoneType = &#039;MASTER&#039;)
         </code>
@@ -1177,7 +1124,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canManageDnssec">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L154">at line 154</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L133">at line 133</a></div>
         <code>                    bool
     <strong>canManageDnssec</strong>(int $userId, int $zoneId)
         </code>
@@ -1226,7 +1173,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canManageDnssecForNewZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L162">at line 162</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L141">at line 141</a></div>
         <code>                    bool
     <strong>canManageDnssecForNewZone</strong>(int $userId, int|null $ownerId, array $groupIds = [])
         </code>
@@ -1279,7 +1226,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canViewUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L184">at line 184</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L163">at line 163</a></div>
         <code>                    bool
     <strong>canViewUser</strong>(int $userId, int $targetUserId)
         </code>
@@ -1328,7 +1275,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L189">at line 189</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L168">at line 168</a></div>
         <code>                    bool
     <strong>canEditUser</strong>(int $userId, int $targetUserId)
         </code>
@@ -1377,7 +1324,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditUserPassword">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L207">at line 207</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L186">at line 186</a></div>
         <code>                    bool
     <strong>canEditUserPassword</strong>(int $userId, int $targetUserId)
         </code>
@@ -1426,7 +1373,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canCreateUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L212">at line 212</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L191">at line 191</a></div>
         <code>                    bool
     <strong>canCreateUser</strong>(int $userId)
         </code>
@@ -1470,7 +1417,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canDeleteUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L217">at line 217</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L196">at line 196</a></div>
         <code>                    bool
     <strong>canDeleteUser</strong>(int $userId, int $targetUserId)
         </code>
@@ -1519,7 +1466,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canManageGroups">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L231">at line 231</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L210">at line 210</a></div>
         <code>                    bool
     <strong>canManageGroups</strong>(int $userId)
         </code>
@@ -1563,7 +1510,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditPermissionTemplates">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L236">at line 236</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L215">at line 215</a></div>
         <code>                    bool
     <strong>canEditPermissionTemplates</strong>(int $userId)
         </code>
@@ -1607,7 +1554,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserPermissionTemplateId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L247">at line 247</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L226">at line 226</a></div>
         <code>                    int|null
     <strong>getUserPermissionTemplateId</strong>(int $userId)
         </code>
@@ -1650,7 +1597,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_templateGrantsSuperuser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L258">at line 258</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L233">at line 233</a></div>
         <code>                    bool
     <strong>templateGrantsSuperuser</strong>(int $permTemplId)
         </code>
@@ -1694,7 +1641,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_checkPermissionTemplateAssignment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L263">at line 263</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L238">at line 238</a></div>
         <code>                    string|null
     <strong>checkPermissionTemplateAssignment</strong>(int $userId, int|null $targetUserId, int $permTemplId)
         </code>
@@ -1748,7 +1695,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canListUsers">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L268">at line 268</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L243">at line 243</a></div>
         <code>                    bool
     <strong>canListUsers</strong>(int $userId)
         </code>
@@ -1792,7 +1739,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canCreateZoneTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L273">at line 273</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L248">at line 248</a></div>
         <code>                    bool
     <strong>canCreateZoneTemplate</strong>(int $userId)
         </code>
@@ -1836,7 +1783,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditZoneTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L278">at line 278</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L253">at line 253</a></div>
         <code>                    bool
     <strong>canEditZoneTemplate</strong>(int $userId)
         </code>
@@ -1880,7 +1827,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canWriteTemplateRecordType">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L286">at line 286</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L261">at line 261</a></div>
         <code>                    bool
     <strong>canWriteTemplateRecordType</strong>(int $userId, string $recordType)
         </code>
@@ -1928,7 +1875,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canViewZoneTemplates">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L291">at line 291</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L266">at line 266</a></div>
         <code>                    bool
     <strong>canViewZoneTemplates</strong>(int $userId)
         </code>
@@ -1972,7 +1919,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canEditZoneMeta">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L302">at line 302</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L277">at line 277</a></div>
         <code>                    bool
     <strong>canEditZoneMeta</strong>(int $userId, int $zoneId)
         </code>
@@ -2021,7 +1968,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canViewZoneMetadata">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L307">at line 307</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L282">at line 282</a></div>
         <code>                    bool
     <strong>canViewZoneMetadata</strong>(int $userId, int $zoneId)
         </code>
@@ -2070,7 +2017,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_canViewZoneOwnership">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L312">at line 312</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L287">at line 287</a></div>
         <code>                    bool
     <strong>canViewZoneOwnership</strong>(int $userId, int $zoneId)
         </code>
@@ -2119,7 +2066,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_getChangeRequestPermissionLevelForZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L320">at line 320</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L295">at line 295</a></div>
         <code>                    string
     <strong>getChangeRequestPermissionLevelForZone</strong>(int $userId, int $zoneId)
         </code>
@@ -2167,7 +2114,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_getChangeApprovePermissionLevelForZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L328">at line 328</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L303">at line 303</a></div>
         <code>                    string
     <strong>getChangeApprovePermissionLevelForZone</strong>(int $userId, int $zoneId)
         </code>
@@ -2215,7 +2162,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_getChangeApprovalMode">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L340">at line 340</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L315">at line 315</a></div>
         <code>                    string
     <strong>getChangeApprovalMode</strong>(int $userId, int $zoneId)
         </code>
@@ -2265,7 +2212,7 @@ edit rule.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_canReviewChangeRequests">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L354">at line 354</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L329">at line 329</a></div>
         <code>                    bool
     <strong>canReviewChangeRequests</strong>(int $userId, int $zoneId)
         </code>
@@ -2313,7 +2260,7 @@ edit rule.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getReviewableZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L369">at line 369</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L344">at line 344</a></div>
         <code>                    array|null
     <strong>getReviewableZoneIds</strong>(int $userId)
         </code>
@@ -2357,7 +2304,7 @@ otherwise the owned zones (or none) that the approve and edit levels cover.</p><
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneDeleteRequiresApproval">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L388">at line 388</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L363">at line 363</a></div>
         <code>                    bool
     <strong>zoneDeleteRequiresApproval</strong>(int $userId, int $zoneId)
         </code>
@@ -2407,7 +2354,7 @@ is reviewed.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_canRequestZoneDelete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L399">at line 399</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L374">at line 374</a></div>
         <code>                    bool
     <strong>canRequestZoneDelete</strong>(int $userId, int $zoneId)
         </code>
@@ -2456,7 +2403,7 @@ level covers it, or every change is reviewed and they could delete it.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_canRequestZoneRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L416">at line 416</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L391">at line 391</a></div>
         <code>                    bool
     <strong>canRequestZoneRecord</strong>(int $userId, int $zoneId, string $recordType, string|null $recordName = null, string|null $zoneName = null)
         </code>
@@ -2521,7 +2468,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserOwnedZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L437">at line 437</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L412">at line 412</a></div>
         <code>                    array
     <strong>getUserOwnedZoneIds</strong>(int $userId)
         </code>
@@ -2564,7 +2511,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserVisibleZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L458">at line 458</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Auth/ApiPermissionService.php#L423">at line 423</a></div>
         <code>                    array|null
     <strong>getUserVisibleZoneIds</strong>(int $userId)
         </code>
@@ -2609,7 +2556,7 @@ zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ca8a14a" rel="noreferrer" target="_blank">commit ca8a14a,</a> built 2026-09-21 14:36 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
     </div>
     </body>
 

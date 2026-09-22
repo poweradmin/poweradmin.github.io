@@ -103,12 +103,16 @@
         
 
             <div class="description">
-            <p><p>Pre-built collaborators for a controller, bypassing the eager bootstrap
-(config file, database connection, session authentication) that
-BaseController::__construct() otherwise performs.</p></p>            <p><p>This is a test seam: the router never passes one, so production behaviour is
-untouched. Tests construct a controller directly with stubbed services, most
-usefully a stub ControllerServiceFactory, which the create*() accessors on
-BaseController all route through.</p></p>        </div>
+            <p><p>The collaborators a controller is built from. In production
+Kernel::controllerEnvironment() derives one from the booted context (config
+file check, database connection, session authentication); a test passes one
+straight to the constructor with stubbed services, most usefully a stub
+ControllerServiceFactory, which the create*() accessors on BaseController
+all route through. Both paths construct the controller the same way.</p></p>            <p><p>The request carries the method and the query and post parameters the
+controller reads (isPost(), the request helpers); without one the controller
+snapshots the superglobals as it does in production. The page output receives
+every rendered template with its parameters, so a test can observe pages
+instead of subclassing render(); without one the themed PageRenderer is built.</p></p>        </div>
             
         
     
@@ -121,7 +125,7 @@ BaseController all route through.</p></p>        </div>
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger, <a href="../../../Poweradmin/Application/Service/ControllerServiceFactory.html"><abbr title="Poweradmin\Application\Service\ControllerServiceFactory">ControllerServiceFactory</abbr></a>|null $serviceFactory = null, <a href="../../../Poweradmin/Application/Http/Request.html"><abbr title="Poweradmin\Application\Http\Request">Request</abbr></a>|null $httpRequest = null, <a href="../../../Poweradmin/Application/Service/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\CsrfTokenService">CsrfTokenService</abbr></a>|null $csrfTokenService = null, <a href="../../../Poweradmin/Infrastructure/Service/MessageService.html"><abbr title="Poweradmin\Infrastructure\Service\MessageService">MessageService</abbr></a>|null $messageService = null, <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null $userContextService = null)
+                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger, <a href="../../../Poweradmin/Application/Module/ModuleRegistry.html"><abbr title="Poweradmin\Application\Module\ModuleRegistry">ModuleRegistry</abbr></a> $moduleRegistry, <a href="../../../Poweradmin/Application/Service/ControllerServiceFactory.html"><abbr title="Poweradmin\Application\Service\ControllerServiceFactory">ControllerServiceFactory</abbr></a>|null $serviceFactory = null, <a href="../../../Poweradmin/Application/Http/Request.html"><abbr title="Poweradmin\Application\Http\Request">Request</abbr></a>|null $httpRequest = null, <a href="../../../Poweradmin/Application/Service/Auth/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\Auth\CsrfTokenService">CsrfTokenService</abbr></a>|null $csrfTokenService = null, <a href="../../../Poweradmin/Infrastructure/Service/MessageService.html"><abbr title="Poweradmin\Infrastructure\Service\MessageService">MessageService</abbr></a>|null $messageService = null, <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null $userContextService = null, <a href="../../../Poweradmin/Application/Web/PageOutputInterface.html"><abbr title="Poweradmin\Application\Web\PageOutputInterface">PageOutputInterface</abbr></a>|null $pageOutput = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -135,9 +139,9 @@ BaseController all route through.</p></p>        </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerEnvironment.php#L44">at line 44</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/ControllerEnvironment.php#L51">at line 51</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger, <a href="../../../Poweradmin/Application/Service/ControllerServiceFactory.html"><abbr title="Poweradmin\Application\Service\ControllerServiceFactory">ControllerServiceFactory</abbr></a>|null $serviceFactory = null, <a href="../../../Poweradmin/Application/Http/Request.html"><abbr title="Poweradmin\Application\Http\Request">Request</abbr></a>|null $httpRequest = null, <a href="../../../Poweradmin/Application/Service/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\CsrfTokenService">CsrfTokenService</abbr></a>|null $csrfTokenService = null, <a href="../../../Poweradmin/Infrastructure/Service/MessageService.html"><abbr title="Poweradmin\Infrastructure\Service\MessageService">MessageService</abbr></a>|null $messageService = null, <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null $userContextService = null)
+    <strong>__construct</strong>(<a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger, <a href="../../../Poweradmin/Application/Module/ModuleRegistry.html"><abbr title="Poweradmin\Application\Module\ModuleRegistry">ModuleRegistry</abbr></a> $moduleRegistry, <a href="../../../Poweradmin/Application/Service/ControllerServiceFactory.html"><abbr title="Poweradmin\Application\Service\ControllerServiceFactory">ControllerServiceFactory</abbr></a>|null $serviceFactory = null, <a href="../../../Poweradmin/Application/Http/Request.html"><abbr title="Poweradmin\Application\Http\Request">Request</abbr></a>|null $httpRequest = null, <a href="../../../Poweradmin/Application/Service/Auth/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\Auth\CsrfTokenService">CsrfTokenService</abbr></a>|null $csrfTokenService = null, <a href="../../../Poweradmin/Infrastructure/Service/MessageService.html"><abbr title="Poweradmin\Infrastructure\Service\MessageService">MessageService</abbr></a>|null $messageService = null, <a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null $userContextService = null, <a href="../../../Poweradmin/Application/Web/PageOutputInterface.html"><abbr title="Poweradmin\Application\Web\PageOutputInterface">PageOutputInterface</abbr></a>|null $pageOutput = null)
         </code>
     </h3>
     <div class="details">    
@@ -169,6 +173,11 @@ BaseController all route through.</p></p>        </div>
                 <td></td>
             </tr>
                     <tr>
+                <td><a href="../../../Poweradmin/Application/Module/ModuleRegistry.html"><abbr title="Poweradmin\Application\Module\ModuleRegistry">ModuleRegistry</abbr></a></td>
+                <td>$moduleRegistry</td>
+                <td></td>
+            </tr>
+                    <tr>
                 <td><a href="../../../Poweradmin/Application/Service/ControllerServiceFactory.html"><abbr title="Poweradmin\Application\Service\ControllerServiceFactory">ControllerServiceFactory</abbr></a>|null</td>
                 <td>$serviceFactory</td>
                 <td></td>
@@ -179,7 +188,7 @@ BaseController all route through.</p></p>        </div>
                 <td></td>
             </tr>
                     <tr>
-                <td><a href="../../../Poweradmin/Application/Service/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\CsrfTokenService">CsrfTokenService</abbr></a>|null</td>
+                <td><a href="../../../Poweradmin/Application/Service/Auth/CsrfTokenService.html"><abbr title="Poweradmin\Application\Service\Auth\CsrfTokenService">CsrfTokenService</abbr></a>|null</td>
                 <td>$csrfTokenService</td>
                 <td></td>
             </tr>
@@ -191,6 +200,11 @@ BaseController all route through.</p></p>        </div>
                     <tr>
                 <td><a href="../../../Poweradmin/Domain/Service/Auth/UserContextService.html"><abbr title="Poweradmin\Domain\Service\Auth\UserContextService">UserContextService</abbr></a>|null</td>
                 <td>$userContextService</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Application/Web/PageOutputInterface.html"><abbr title="Poweradmin\Application\Web\PageOutputInterface">PageOutputInterface</abbr></a>|null</td>
+                <td>$pageOutput</td>
                 <td></td>
             </tr>
             </table>
@@ -207,7 +221,7 @@ BaseController all route through.</p></p>        </div>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ca8a14a" rel="noreferrer" target="_blank">commit ca8a14a,</a> built 2026-09-21 14:36 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
     </div>
     </body>
 

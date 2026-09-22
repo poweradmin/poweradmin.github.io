@@ -135,8 +135,15 @@ may review a request.</p></div>
                 <div class="col-md-6">
                     <a href="../../../Poweradmin/Domain/Service/Zone/ZoneCreateOwnershipResolver.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneCreateOwnershipResolver">ZoneCreateOwnershipResolver</abbr></a>    </div>
                 <div class="col-md-6"><p>Resolves the user-owner and group-owner assignment for a new zone, applying
-the active zone_ownership_mode and permission rules. The API hands in its
-JSON body; the web forms hand in the owner and groups they already parsed.</p></div>
+the active zone_ownership_mode and permission rules. The API hands in the
+typed request input; the web forms hand in the owner and groups they parsed.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneEditRow.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditRow">ZoneEditRow</abbr></a>    </div>
+                <div class="col-md-6"><p>One row of the zone editor's record table as the caller wants it: the
+record it refers to and the values to store, already decoded from whatever
+form or request carried them.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -154,7 +161,7 @@ serial bump that closes a save.</p></div>
                     <div class="row">
                 <div class="col-md-6">
                     <a href="../../../Poweradmin/Domain/Service/Zone/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditSubmission">ZoneEditSubmission</abbr></a>    </div>
-                <div class="col-md-6"><p>One submission of the zone editor's record table, as posted.</p></div>
+                <div class="col-md-6"><p>One submission of the zone editor's record table.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -181,10 +188,23 @@ persisted and logged. Callers parse their input and word the refusals.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipGuard.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipGuard">ZoneOwnershipGuard</abbr></a>    </div>
+                <div class="col-md-6"><p>The last-owner rule: a zone keeps at least one owner of a kind the ownership
+mode allows. Every writer that removes a user owner or a group asks here first.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipIndex.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipIndex">ZoneOwnershipIndex</abbr></a>    </div>
                 <div class="col-md-6"><p>Who owns which of a page of zones, resolved once so per-row controls do not
 query per zone. Ownership is direct (zones.owner) or through any group the
 user belongs to.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
+                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipInput.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipInput">ZoneOwnershipInput</abbr></a>    </div>
+                <div class="col-md-6"><p>The owner choice a zone creation request made, as ZoneCreateOwnershipResolver
+reads it: the user owner may be omitted (the caller becomes owner), given as
+null (no user owner) or given as an id; the groups may be omitted or listed.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
@@ -193,9 +213,15 @@ user belongs to.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
+                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipRefusal.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipRefusal">ZoneOwnershipRefusal</abbr></a>    </div>
+                <div class="col-md-6"><p>Why ZoneOwnershipGuard refused an owner removal. Callers word the code for
+their own audience; the mode tells them what kind of replacement to suggest.</p></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-6">
                     <a href="../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipResolution.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipResolution">ZoneOwnershipResolution</abbr></a>    </div>
                 <div class="col-md-6"><p>Outcome of {ZoneCreateOwnershipResolver}: either a resolved owner/group
-assignment for the new zone, or an error with HTTP status. The error carries
+assignment for the new zone, or an error with its refusal. The error carries
 a code so the web forms can word it themselves; the message is the API text.</p></div>
             </div>
                     <div class="row">
@@ -218,11 +244,6 @@ notice, verify what PowerDNS reports afterwards, rectify, and audit.</p></div>
             </div>
                     <div class="row">
                 <div class="col-md-6">
-                    <a href="../../../Poweradmin/Domain/Service/Zone/ZoneSortingService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneSortingService">ZoneSortingService</abbr></a>    </div>
-                <div class="col-md-6"><p>Resolves the zone list's sort column, direction and reverse-zone filter from submitted values and the session.</p></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-6">
                     <a href="../../../Poweradmin/Domain/Service/Zone/ZoneValidationService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneValidationService">ZoneValidationService</abbr></a>    </div>
                 <div class="col-md-6"><p>Checks a zone is fit for DNSSEC signing and formats the reasons when it is not.</p></div>
             </div>
@@ -231,7 +252,7 @@ notice, verify what PowerDNS reports afterwards, rectify, and audit.</p></div>
     
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ca8a14a" rel="noreferrer" target="_blank">commit ca8a14a,</a> built 2026-09-21 14:36 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/077b45f" rel="noreferrer" target="_blank">commit 077b45f,</a> built 2026-09-22 07:31 UTC.</div></div>
     </div>
     </body>
 
