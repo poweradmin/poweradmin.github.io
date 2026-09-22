@@ -1849,6 +1849,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#write-ahead-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Write-ahead logging
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Write-ahead logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-filesystems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network filesystems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serving-the-database-over-the-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serving the database over the web
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -7068,6 +7118,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#write-ahead-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Write-ahead logging
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Write-ahead logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-filesystems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network filesystems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serving-the-database-over-the-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serving the database over the web
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -7165,6 +7265,37 @@ https://github.com/poweradmin/poweradmin-scripts/blob/master/create_sqlite_db.sh
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/install-step4-database.png" data-desc-position="bottom"><img alt="Database configuration step" src="../../screenshots/install-step4-database.png"></a></p>
 <p>When the installation is complete, the installer will generate the configuration file content. Create the <code>config/settings.php</code> file with the provided content:</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/install-step7-config.png" data-desc-position="bottom"><img alt="Generated configuration file" src="../../screenshots/install-step7-config.png"></a></p>
+<h2 id="write-ahead-logging">Write-ahead logging<a class="headerlink" href="#write-ahead-logging" title="Permanent link">¶</a></h2>
+<p>From 4.6.0 Poweradmin opens SQLite in WAL mode. PowerDNS reads the same file
+Poweradmin writes, and in SQLite's default rollback journal a reader blocks a
+writer outright, so a zone save could fail with <code>database is locked</code>. WAL lets a
+reader and a writer work at the same time. Recent PowerDNS already opens its own
+connection in WAL by default, so many databases are in this mode already.</p>
+<p>The switch happens on connect and is a one-off: WAL is a property of the file,
+not of the connection. If the file or its directory is not writable, or another
+connection is mid-read at that moment, Poweradmin keeps the existing journal mode
+and carries on rather than failing to start.</p>
+<h3 id="backups">Backups<a class="headerlink" href="#backups" title="Permanent link">¶</a></h3>
+<p>WAL keeps recently written pages in a <code>poweradmin.sqlite-wal</code> file next to the
+database, and a long-lived PowerDNS connection means that file is never fully
+folded back in. Copying the <code>.sqlite</code> file alone can therefore miss the most
+recent commits. Back up with:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sqlite3<span class="w"> </span>/path/to/your/poweradmin.sqlite<span class="w"> </span><span class="s2">".backup '/path/to/backup.sqlite'"</span>
+</code></pre></div>
+<p>or stop both services and copy the <code>.sqlite</code>, <code>-wal</code> and <code>-shm</code> files together.</p>
+<h3 id="network-filesystems">Network filesystems<a class="headerlink" href="#network-filesystems" title="Permanent link">¶</a></h3>
+<p>Do not run a WAL database from NFS, SMB or any other network filesystem. WAL
+coordinates readers and writers through shared memory, which those filesystems do
+not provide reliably, and SQLite cannot detect them, so the switch appears to
+succeed. Keep the database on local storage, or force the old journal mode:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sqlite3<span class="w"> </span>/path/to/your/poweradmin.sqlite<span class="w"> </span><span class="s2">"PRAGMA journal_mode = DELETE;"</span>
+</code></pre></div>
+<h3 id="serving-the-database-over-the-web">Serving the database over the web<a class="headerlink" href="#serving-the-database-over-the-web" title="Permanent link">¶</a></h3>
+<p>Keep the database outside the web root. If it must live inside, note that the
+bundled <code>.htaccess</code>, Dockerfile and devcontainer web server configuration deny
+<code>-wal</code> and <code>-shm</code> alongside the database file itself. A custom web server
+configuration needs the same patterns, because the <code>-wal</code> file holds recently
+written rows.</p>
 
 
 

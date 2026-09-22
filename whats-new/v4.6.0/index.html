@@ -7206,6 +7206,11 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../user-guide/dns-templates/">DNS Templates</a></td>
 </tr>
 <tr>
+<td>SQLite runs in WAL mode</td>
+<td>PowerDNS reads the same file Poweradmin writes, and the old journal let a reader block a zone save with <code>database is locked</code>. SQLite now opens in write-ahead logging, which adds <code>-wal</code> and <code>-shm</code> files next to the database and changes how it must be backed up</td>
+<td><a href="../../database/sqlite/#write-ahead-logging">SQLite Configuration</a></td>
+</tr>
+<tr>
 <td>Zone type change needs the target grant</td>
 <td>Converting a zone into another kind requires the same permission as creating one of that kind: <code>zone_slave_add</code> for Secondary and Consumer, <code>zone_master_add</code> for the rest</td>
 <td><a href="../../user-guide/permissions/">Permissions</a></td>
