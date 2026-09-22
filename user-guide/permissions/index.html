@@ -3244,6 +3244,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#zones-always-keep-an-owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zones always keep an owner
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#zone_content_view_others" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7545,6 +7556,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#zones-always-keep-an-owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zones always keep an owner
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#zone_content_view_others" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8111,11 +8133,24 @@
 <ul>
 <li>Allows the user to add additional owners to their zone (if user_view_others is set to true)</li>
 <li>User can remove owners (including themselves)</li>
-<li>User cannot orphan a zone (at least one user must remain)</li>
+<li>User cannot orphan a zone (at least one owner, user or group, must remain)</li>
 <li>User can change zone type (i.e. from native to slave)</li>
 <li>User can set IP of master server for slave zone</li>
 <li>User can change used zone template (requires <code>zone_content_edit_own</code> plus either <code>zone_master_add</code> or <code>zone_slave_add</code>)</li>
 </ul>
+<h3 id="zones-always-keep-an-owner">Zones always keep an owner<a class="headerlink" href="#zones-always-keep-an-owner" title="Permanent link">¶</a></h3>
+<p>A zone is owned directly (a user) or through a group, and Poweradmin refuses any
+action that would leave it with neither. The rule is applied wherever ownership
+can be dropped, so the last owner cannot be removed by:</p>
+<ul>
+<li>removing an owner from the zone, or removing the zone from a group</li>
+<li>the quick-remove control on the group and zone pages</li>
+<li>removing several zones from a group at once</li>
+<li>deleting a group that is the last owner of a zone</li>
+</ul>
+<p>The refusal names the zone so the next step is clear: add another owner first,
+then repeat the action. The same rule applies through the v2 API, which answers
+409 with the same message.</p>
 <h3 id="zone_content_view_others">zone_content_view_others<a class="headerlink" href="#zone_content_view_others" title="Permanent link">¶</a></h3>
 <ul>
 <li>Allows the user to view the content of zones owned by other users</li>

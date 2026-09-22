@@ -7216,6 +7216,16 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../user-guide/permissions/">Permissions</a></td>
 </tr>
 <tr>
+<td>A zone always keeps an owner</td>
+<td>Removing the last owner is refused wherever it could happen: removing an owner or a group, the quick-remove control, removing several zones from a group at once, and deleting a group that is the last owner. The message names the zone, and the v2 API answers 409 with the same text</td>
+<td><a href="../../user-guide/permissions/#zones-always-keep-an-owner">Permissions</a></td>
+</tr>
+<tr>
+<td>Record counts and comments on the full zone list</td>
+<td>Asking for every zone at once reported an inflated record count on zones with comments and dropped the zone comment; both now match the paginated list</td>
+<td></td>
+</tr>
+<tr>
 <td>One permission rule for zone actions</td>
 <td>A zone action is granted when any template the user holds, directly or through a group, grants it and the user owns the zone. The stricter hybrid rule that required the grant to come from an owning group is gone</td>
 <td><a href="../../user-guide/permissions/">Permissions</a></td>
@@ -7317,7 +7327,7 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 </tr>
 <tr>
 <td><code>bin/poweradmin</code> console</td>
-<td>A first command-line entry point with <code>zone:list</code>, running the same use cases as the web interface without a session (<code>bin/poweradmin --as-user=1 zone:list</code>)</td>
+<td>A first command-line entry point with <code>zone:list</code> and <code>zone:show</code>, running the same use cases as the web interface without a session (<code>bin/poweradmin --as-user=1 zone:show example.com</code>). Output is tab separated or JSON with <code>--format=json</code></td>
 <td><a href="../../contributing/development/#project-structure">Development Setup</a></td>
 </tr>
 <tr>
