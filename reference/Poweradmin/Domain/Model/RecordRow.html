@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Poweradmin\Domain\Model\ApiKeyScope | Poweradmin class reference</title>
+    <title>Poweradmin\Domain\Model\RecordRow | Poweradmin class reference</title>
 
                 <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Poweradmin_Domain_Model_ApiKeyScope" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+    <body id="class" data-name="class:Poweradmin_Domain_Model_RecordRow" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -83,18 +83,18 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">class</span></li>
-                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Model.html">Model</a></li><li class="backslash">\</li><li>ApiKeyScope</li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Model.html">Model</a></li><li class="backslash">\</li><li>RecordRow</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>ApiKeyScope    
+        <h1>RecordRow    
             </h1>
     </div>
 
     
     <p>final         class
-    <strong>ApiKeyScope</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/ApiKeyScope.php">View source</a>)
+    <strong>RecordRow</strong>        implements        <a target="_blank" rel="noopener" href="https://www.php.net/ArrayAccess">ArrayAccess</a>, <a target="_blank" rel="noopener" href="https://www.php.net/JsonSerializable">JsonSerializable</a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/RecordRow.php">View source</a>)
 </p>
 
         
@@ -103,60 +103,15 @@
         
 
             <div class="description">
-            <p><p>Immutable description of what an API key is allowed to do.</p></p>            <p><p>A key with no restrictions ({\Poweradmin\Domain\Model\self::unrestricted()}) behaves exactly like
-a pre-scope key: every zone and every operation is permitted. Restrictions are
-additive guards layered on top of the creating user's own permissions - they can
-only narrow access, never widen it.</p></p>        </div>
+            <p><p>One record of a zone listing, as the export, template-save and console paths
+read it.</p></p>            <p><p>The two backends disagreed about the shape: the SQL repository returned
+disabled as a bool and comments under comment/comment_account, while the API
+repository returned disabled as 0/1 and comments under api_comment and
+friends unless a caller asked for them. fromRow() settles both, so a consumer
+no longer has to know which backend produced the row. Reading it as an array
+keeps the column-keyed shape the templates and exporters already use.</p></p>        </div>
             
         
-            <h2>Constants</h2>    <table class="table table-condensed">
-                    <tr>
-                <td>
-                                                                                                                        OP_VIEW
-                                    </td>
-                <td class="last">
-                    <p><em></em></p>
-                    <p></p>
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                                                                                                        OP_CREATE
-                                    </td>
-                <td class="last">
-                    <p><em></em></p>
-                    <p></p>
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                                                                                                        OP_UPDATE
-                                    </td>
-                <td class="last">
-                    <p><em></em></p>
-                    <p></p>
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                                                                                                        OP_DELETE
-                                    </td>
-                <td class="last">
-                    <p><em></em></p>
-                    <p></p>
-                </td>
-            </tr>
-                    <tr>
-                <td>
-                                                                                                                        OPERATIONS
-                                    </td>
-                <td class="last">
-                    <p><em></em></p>
-                    <p></p>
-                </td>
-            </tr>
-            </table>
-
     
     
             <h2>Methods</h2>
@@ -167,7 +122,7 @@ only narrow access, never widen it.</p></p>        </div>
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(array|null $zoneIds, array|null $operations, bool $isReadonly)
+                    <a href="#method___construct">__construct</a>(int|string $id, int $domainId, string $name, string $type, string $content, int $ttl, int $prio, bool $disabled, string|null $comment = null, string|null $commentAccount = null, int|null $commentModifiedAt = null, int|null $modifiedAt = null, int|null $changeDate = null, string|null $ordername = null, bool|null $auth = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -175,84 +130,32 @@ only narrow access, never widen it.</p></p>        </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    static&nbsp;<a href="../../../Poweradmin/Domain/Model/ApiKeyScope.html"><abbr title="Poweradmin\Domain\Model\ApiKeyScope">ApiKeyScope</abbr></a>
+                    static&nbsp;<a href="../../../Poweradmin/Domain/Model/RecordRow.html"><abbr title="Poweradmin\Domain\Model\RecordRow">RecordRow</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_unrestricted">unrestricted</a>()
+                    <a href="#method_fromRow">fromRow</a>(array $row)
         
-                                            <p><p>A scope that permits everything (the implicit scope of a key with no restrictions).</p></p>                </div>
+                                            <p><p>Build from either backend's row. Comments are read from the SQL names
+first and the API names second, so a row that carries neither yields null.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    static&nbsp;string
+                    array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_methodToOperation">methodToOperation</a>(string $method)
+                    <a href="#method_toArray">toArray</a>()
         
-                                            <p><p>Map an HTTP method to the operation it represents.</p></p>                </div>
+                                            <p><p>The column-keyed shape. Backend-specific columns appear only when the row
+carried them, the way the repositories behaved before.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    bool
+                    array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_isOperationAllowed">isOperationAllowed</a>(string $method)
-        
-                                            <p><p>Whether the operation behind the given HTTP method is allowed by this scope.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_isOperationTypeAllowed">isOperationTypeAllowed</a>(string $operation)
-        
-                                            <p><p>Whether a specific operation (view/create/update/delete) is allowed by this
-scope. Use this for endpoints where the HTTP method does not determine the
-operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_isZoneAllowed">isZoneAllowed</a>(int $zoneId)
-        
-                                            <p><p>Whether the given zone is within this scope.</p></p>                </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_hasZoneRestriction">hasZoneRestriction</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array|null
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getZoneIds">getZoneIds</a>()
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    array|null
-                </div>
-                <div class="col-md-8">
-                    <a href="#method_getOperations">getOperations</a>()
+                    <a href="#method_jsonSerialize">jsonSerialize</a>()
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -263,7 +166,40 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>            
                     bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_isReadonly">isReadonly</a>()
+                    <a href="#method_offsetExists">offsetExists</a>(mixed $offset)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_offsetGet">offsetGet</a>(mixed $offset)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_offsetSet">offsetSet</a>(mixed $offset, mixed $value)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_offsetUnset">offsetUnset</a>(mixed $offset)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -277,9 +213,9 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>            
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/ApiKeyScope.php#L47">at line 47</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/RecordRow.php#L52">at line 52</a></div>
         <code>                    
-    <strong>__construct</strong>(array|null $zoneIds, array|null $operations, bool $isReadonly)
+    <strong>__construct</strong>(int|string $id, int $domainId, string $name, string $type, string $content, int $ttl, int $prio, bool $disabled, string|null $comment = null, string|null $commentAccount = null, int|null $commentModifiedAt = null, int|null $modifiedAt = null, int|null $changeDate = null, string|null $ordername = null, bool|null $auth = null)
         </code>
     </h3>
     <div class="details">    
@@ -296,19 +232,79 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>            
 
                     <table class="table table-condensed">
                     <tr>
-                <td>array|null</td>
-                <td>$zoneIds</td>
-                <td><p>Zones the key may touch; null means no zone restriction</p></td>
+                <td>int|string</td>
+                <td>$id</td>
+                <td><p>Numeric on the SQL backend, an encoded string on the API backend</p></td>
             </tr>
                     <tr>
-                <td>array|null</td>
-                <td>$operations</td>
-                <td><p>Operations the key may perform; null means all</p></td>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$type</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$content</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$ttl</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$prio</td>
+                <td></td>
             </tr>
                     <tr>
                 <td>bool</td>
-                <td>$isReadonly</td>
-                <td><p>When true, only view (GET) requests are allowed</p></td>
+                <td>$disabled</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$comment</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$commentAccount</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$commentModifiedAt</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$modifiedAt</td>
+                <td><p>PowerDNS 4.9+ through the API backend only</p></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$changeDate</td>
+                <td><p>SQL backend only</p></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$ordername</td>
+                <td><p>SQL backend only</p></td>
+            </tr>
+                    <tr>
+                <td>bool|null</td>
+                <td>$auth</td>
+                <td><p>SQL backend only</p></td>
             </tr>
             </table>
 
@@ -321,10 +317,10 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>            
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_unrestricted">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/ApiKeyScope.php#L57">at line 57</a></div>
-        <code>        static            <a href="../../../Poweradmin/Domain/Model/ApiKeyScope.html"><abbr title="Poweradmin\Domain\Model\ApiKeyScope">ApiKeyScope</abbr></a>
-    <strong>unrestricted</strong>()
+                    <h3 id="method_fromRow">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/RecordRow.php#L77">at line 77</a></div>
+        <code>        static            <a href="../../../Poweradmin/Domain/Model/RecordRow.html"><abbr title="Poweradmin\Domain\Model\RecordRow">RecordRow</abbr></a>
+    <strong>fromRow</strong>(array $row)
         </code>
     </h3>
     <div class="details">    
@@ -333,48 +329,16 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>            
             
 
         <div class="method-description">
-                            <p><p>A scope that permits everything (the implicit scope of a key with no restrictions).</p></p>                        
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td><a href="../../../Poweradmin/Domain/Model/ApiKeyScope.html"><abbr title="Poweradmin\Domain\Model\ApiKeyScope">ApiKeyScope</abbr></a></td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_methodToOperation">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/ApiKeyScope.php#L65">at line 65</a></div>
-        <code>        static            string
-    <strong>methodToOperation</strong>(string $method)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Map an HTTP method to the operation it represents.</p></p>                        
+                            <p><p>Build from either backend's row. Comments are read from the SQL names
+first and the API names second, so a row that carries neither yields null.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
-                <td>$method</td>
+                <td>array</td>
+                <td>$row</td>
                 <td></td>
             </tr>
             </table>
@@ -384,7 +348,7 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>            
 
                     <table class="table table-condensed">
         <tr>
-            <td>string</td>
+            <td><a href="../../../Poweradmin/Domain/Model/RecordRow.html"><abbr title="Poweradmin\Domain\Model\RecordRow">RecordRow</abbr></a></td>
             <td></td>
         </tr>
     </table>
@@ -397,10 +361,10 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>            
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_isOperationAllowed">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/ApiKeyScope.php#L80">at line 80</a></div>
-        <code>                    bool
-    <strong>isOperationAllowed</strong>(string $method)
+                    <h3 id="method_toArray">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/RecordRow.php#L110">at line 110</a></div>
+        <code>                    array
+    <strong>toArray</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -409,26 +373,16 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>            
             
 
         <div class="method-description">
-                            <p><p>Whether the operation behind the given HTTP method is allowed by this scope.</p></p>                <p><p>Convenience wrapper for endpoints whose HTTP method maps directly to one
-operation; mixed-action endpoints should call {\Poweradmin\Domain\Model\self::isOperationTypeAllowed()}.</p></p>        
+                            <p><p>The column-keyed shape. Backend-specific columns appear only when the row
+carried them, the way the repositories behaved before.</p></p>                        
         </div>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$method</td>
-                <td></td>
-            </tr>
-            </table>
-
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>bool</td>
+            <td>array</td>
             <td></td>
         </tr>
     </table>
@@ -441,10 +395,10 @@ operation; mixed-action endpoints should call {\Poweradmin\Domain\Model\self::is
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_isOperationTypeAllowed">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/ApiKeyScope.php#L90">at line 90</a></div>
-        <code>                    bool
-    <strong>isOperationTypeAllowed</strong>(string $operation)
+                    <h3 id="method_jsonSerialize">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/RecordRow.php#L139">at line 139</a></div>
+        <code>                    array
+    <strong>jsonSerialize</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -453,27 +407,16 @@ operation; mixed-action endpoints should call {\Poweradmin\Domain\Model\self::is
             
 
         <div class="method-description">
-                            <p><p>Whether a specific operation (view/create/update/delete) is allowed by this
-scope. Use this for endpoints where the HTTP method does not determine the
-operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$operation</td>
-                <td></td>
-            </tr>
-            </table>
-
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>bool</td>
+            <td>array</td>
             <td></td>
         </tr>
     </table>
@@ -486,10 +429,10 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_isZoneAllowed">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/ApiKeyScope.php#L106">at line 106</a></div>
+                    <h3 id="method_offsetExists">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/RecordRow.php#L144">at line 144</a></div>
         <code>                    bool
-    <strong>isZoneAllowed</strong>(int $zoneId)
+    <strong>offsetExists</strong>(mixed $offset)
         </code>
     </h3>
     <div class="details">    
@@ -498,15 +441,16 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>
             
 
         <div class="method-description">
-                            <p><p>Whether the given zone is within this scope.</p></p>                        
+                            <p class="no-description">No description</p>
+                    
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>int</td>
-                <td>$zoneId</td>
+                <td>mixed</td>
+                <td>$offset</td>
                 <td></td>
             </tr>
             </table>
@@ -529,10 +473,10 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_hasZoneRestriction">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/ApiKeyScope.php#L115">at line 115</a></div>
-        <code>                    bool
-    <strong>hasZoneRestriction</strong>()
+                    <h3 id="method_offsetGet">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/RecordRow.php#L149">at line 149</a></div>
+        <code>                    mixed
+    <strong>offsetGet</strong>(mixed $offset)
         </code>
     </h3>
     <div class="details">    
@@ -545,12 +489,22 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>
                     
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$offset</td>
+                <td></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>bool</td>
+            <td>mixed</td>
             <td></td>
         </tr>
     </table>
@@ -563,10 +517,10 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/ApiKeyScope.php#L123">at line 123</a></div>
-        <code>                    array|null
-    <strong>getZoneIds</strong>()
+                    <h3 id="method_offsetSet">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/RecordRow.php#L154">at line 154</a></div>
+        <code>                    void
+    <strong>offsetSet</strong>(mixed $offset, mixed $value)
         </code>
     </h3>
     <div class="details">    
@@ -579,12 +533,27 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>
                     
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$offset</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$value</td>
+                <td></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>array|null</td>
+            <td>void</td>
             <td></td>
         </tr>
     </table>
@@ -597,10 +566,10 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getOperations">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/ApiKeyScope.php#L131">at line 131</a></div>
-        <code>                    array|null
-    <strong>getOperations</strong>()
+                    <h3 id="method_offsetUnset">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/RecordRow.php#L159">at line 159</a></div>
+        <code>                    void
+    <strong>offsetUnset</strong>(mixed $offset)
         </code>
     </h3>
     <div class="details">    
@@ -613,46 +582,22 @@ operation - e.g. bulk record changes or dynamic DNS upserts.</p></p>
                     
         </div>
         <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$offset</td>
+                <td></td>
+            </tr>
+            </table>
+
             
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>array|null</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_isReadonly">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Model/ApiKeyScope.php#L136">at line 136</a></div>
-        <code>                    bool
-    <strong>isReadonly</strong>()
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>bool</td>
+            <td>void</td>
             <td></td>
         </tr>
     </table>
