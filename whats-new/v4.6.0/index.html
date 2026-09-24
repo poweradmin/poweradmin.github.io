@@ -7181,6 +7181,16 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 </thead>
 <tbody>
 <tr>
+<td>NAPTR service field checked properly</td>
+<td>The service field is validated as parts joined by plus signs, each starting with a letter, so a trailing plus (<code>"E2U+"</code>) or an empty part (<code>"aaa++diameter"</code>) is refused instead of accepted</td>
+<td><a href="../../user-guide/naptr-records/">NAPTR Records</a></td>
+</tr>
+<tr>
+<td>Login page no longer loops</td>
+<td>A session holding a user id the dashboard treats as logged out made <code>/</code> and <code>/login</code> redirect to each other until the browser gave up, with no way to reach the form. Both now decide the same way</td>
+<td></td>
+</tr>
+<tr>
 <td>Zero TTL accepted in the API</td>
 <td>The v2 record create, update, bulk and RRset endpoints accept <code>ttl: 0</code> (do not cache), as the web editor does; only negative values are refused. Integer fields such as <code>ttl</code> and <code>priority</code> reject fractional strings like <code>"0.5"</code> instead of truncating them</td>
 <td><a href="../../api/overview/">API Overview</a></td>

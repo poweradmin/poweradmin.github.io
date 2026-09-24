@@ -7064,7 +7064,7 @@
 </tr>
 <tr>
 <td>service</td>
-<td>Quoted. For example <code>"SIP+D2U"</code> or <code>"E2U+sip"</code>.</td>
+<td>Quoted. For example <code>"SIP+D2U"</code> or <code>"E2U+sip"</code>. Plus signs separate the parts; each part starts with a letter and holds only letters, digits, hyphens or colons, up to 32 characters.</td>
 </tr>
 <tr>
 <td>regexp</td>
@@ -7092,6 +7092,7 @@
 <li>Leaving off the quotes around flags, service, or regexp. All three must be quoted, even when empty (<code>""</code>).</li>
 <li>Setting a Priority other than <code>0</code>. NAPTR carries its own order/preference, so the row's Priority must stay at <code>0</code>.</li>
 <li>Mixing a non-empty regexp with a domain replacement. Use <code>.</code> as the replacement when the regexp is filled in.</li>
+<li>Ending the service with a plus sign (<code>"E2U+"</code>) or leaving a part of it empty (<code>"aaa++diameter"</code>). The plus sign joins two parts, so there has to be one on each side of it.</li>
 </ul>
 <h2 id="enum-records">ENUM Records<a class="headerlink" href="#enum-records" title="Permanent link">¶</a></h2>
 <p>For ENUM (E.164 to URI mapping, RFC 6116), the zone name lives under <code>e164.arpa</code>, the service starts with <code>E2U</code>, and the flag is normally <code>"U"</code>. Poweradmin shows an informational warning whenever the record looks like ENUM at all - either the service starts with <code>E2U</code> or the name is under <code>e164.arpa</code>. The warning is a reminder of the RFC 6116 conventions, not a mismatch check, so it appears even when the record is perfectly consistent.</p>
