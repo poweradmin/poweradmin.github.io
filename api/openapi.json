@@ -1424,7 +1424,7 @@
                         "description": "Group not found"
                     },
                     "409": {
-                        "description": "Group still owns zones and confirm was not supplied"
+                        "description": "Group still owns zones and confirm was not supplied, or is the last owner of a zone"
                     }
                 },
                 "security": [
@@ -1982,6 +1982,145 @@
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            }
+        },
+        "/v2/server/status": {
+            "get": {
+                "tags": [
+                    "server"
+                ],
+                "summary": "Get PowerDNS server status",
+                "description": "Returns the status of the PowerDNS server behind Poweradmin (version, uptime and metrics). Intended for monitoring systems. Requires the server_status_view permission (administrators have it implicitly).",
+                "operationId": "v2GetServerStatus",
+                "parameters": [
+                    {
+                        "name": "metrics",
+                        "in": "query",
+                        "description": "Comma-separated list of metric names to return. Omit to return all metrics.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "uptime,udp-queries"
+                        }
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "Set to \"slaves\" to also probe the configured autoprimary (supermaster) servers. Requires supermaster_view. This is slower.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "slaves"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PowerDNS server status retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Server status retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "running": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "server_id": {
+                                                    "type": "string",
+                                                    "example": "localhost"
+                                                },
+                                                "daemon_type": {
+                                                    "type": "string",
+                                                    "example": "authoritative"
+                                                },
+                                                "version": {
+                                                    "type": "string",
+                                                    "example": "4.9.4"
+                                                },
+                                                "uptime_seconds": {
+                                                    "type": "integer",
+                                                    "example": 86400,
+                                                    "nullable": true
+                                                },
+                                                "metrics": {
+                                                    "description": "Metric name to value, as reported by PowerDNS",
+                                                    "type": "object",
+                                                    "additionalProperties": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "slaves": {
+                                                    "description": "Only present with include=slaves",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "ip": {
+                                                                "type": "string",
+                                                                "example": "192.0.2.10"
+                                                            },
+                                                            "status": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "ok",
+                                                                    "unreachable",
+                                                                    "skipped"
+                                                                ]
+                                                            },
+                                                            "last_checked": {
+                                                                "type": "string",
+                                                                "example": "2026-09-25 12:00:00",
+                                                                "nullable": true
+                                                            },
+                                                            "error": {
+                                                                "type": "string",
+                                                                "nullable": true
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden - missing server_status_view permission, include=slaves without supermaster_view, or the API key is restricted to specific zones"
+                    },
+                    "501": {
+                        "description": "The PowerDNS API is not configured"
+                    },
+                    "503": {
+                        "description": "The PowerDNS server is not reachable"
                     }
                 },
                 "security": [
@@ -6400,7 +6539,7 @@
                     "records"
                 ],
                 "summary": "List all records in a zone",
-                "description": "List all records in a zone",
+                "description": "Record names in the listing are fully qualified (www.example.com); the single-record endpoints (GET, POST, PUT /zones/{id}/records/{record_id}) report the name relative to the zone (www, or @ for the apex).",
                 "operationId": "v2ListZoneRecords",
                 "parameters": [
                     {
@@ -6455,6 +6594,7 @@
                                                                 ]
                                                             },
                                                             "name": {
+                                                                "description": "Fully qualified name, unlike the relative name of the single-record endpoints",
                                                                 "type": "string",
                                                                 "example": "www.example.com"
                                                             },
@@ -6896,6 +7036,11 @@
                                         "description": "Sync PTR record with new value (A/AAAA only). Default: false",
                                         "type": "boolean",
                                         "example": false
+                                    },
+                                    "comment": {
+                                        "description": "Record comment to store; an empty string clears it. Omit to leave the comment unchanged",
+                                        "type": "string",
+                                        "example": "Web server"
                                     }
                                 },
                                 "type": "object"
@@ -7239,6 +7384,10 @@
         {
             "name": "permissions",
             "description": "permissions"
+        },
+        {
+            "name": "server",
+            "description": "server"
         },
         {
             "name": "users",

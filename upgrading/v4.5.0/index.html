@@ -7789,7 +7789,7 @@
 </tr>
 </tbody>
 </table>
-<p>The migration also registers ten new permissions (see below) and auto-grants the four metadata/ownership view permissions to templates that already hold the matching <code>zone_content_view_*</code> permission, so nothing users could see before the upgrade disappears.</p>
+<p>The migration also registers eleven new permissions (see below) and auto-grants the four metadata/ownership view permissions to templates that already hold the matching <code>zone_content_view_*</code> permission, so nothing users could see before the upgrade disappears.</p>
 <p>The migration scripts are:</p>
 <ul>
 <li><code>sql/poweradmin-mysql-update-to-4.5.0.sql</code></li>
@@ -7866,12 +7866,13 @@
 </ul>
 <p>Existing keys are unrestricted after the upgrade - identical to their previous behavior. Restrictions are edited on the API key pages.</p>
 <h3 id="new-permissions">New Permissions<a class="headerlink" href="#new-permissions" title="Permanent link">¶</a></h3>
-<p>Ten permissions were added; except for the auto-granted view split (see Breaking Changes), none are granted automatically - admins opt in per permission template:</p>
+<p>Eleven permissions were added; except for the auto-granted view split (see Breaking Changes), none are granted automatically - admins opt in per permission template:</p>
 <ul>
 <li><code>zone_dnssec_manage_own</code> - manage DNSSEC keys for owned zones without full ueberuser rights.</li>
 <li><code>zone_logs_view_own</code> / <code>zone_logs_view_others</code> - access zone activity logs without ueberuser.</li>
 <li><code>user_logs_view</code> / <code>group_logs_view</code> - access user and group activity logs.</li>
 <li><code>zone_content_edit_ns_subzone</code> - edit delegation NS records below the zone apex while apex NS and SOA stay protected.</li>
+<li><code>server_status_view</code> - view the PowerDNS server status page and <code>GET /api/v2/server/status</code> without administrator rights.</li>
 <li><code>zone_metadata_view_own</code> / <code>zone_metadata_view_others</code> and <code>zone_ownership_view_own</code> / <code>zone_ownership_view_others</code> - split out of <code>zone_content_view_*</code> (auto-granted on upgrade).</li>
 </ul>
 <h3 id="per-record-type-default-ttls">Per-Record-Type Default TTLs<a class="headerlink" href="#per-record-type-default-ttls" title="Permanent link">¶</a></h3>
