@@ -171,10 +171,20 @@
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getServerStatus">getServerStatus</a>(bool $includePrometheusMetrics = true)
+                    <a href="#method_getServerStatus">getServerStatus</a>()
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>Server info and the PowerDNS API statistics, without the Prometheus endpoint.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getDetailedServerStatus">getDetailedServerStatus</a>()
+        
+                                            <p><p>Server status plus a description per metric, taken from the Prometheus endpoint's
+HELP lines, for the status page tooltips.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -197,6 +207,17 @@
         
                                             <p><p>An autoprimary has to serve AXFR, which is TCP-only, so a TCP connect is a
 fair liveness proxy here even though it would not be for a resolver.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|false
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_fetchMetricsWithAuth">fetchMetricsWithAuth</a>(string $url)
+        
+                                            <p><p>Fetch metrics from URL with optional Basic Authentication
+Validates URL to prevent SSRF and path traversal attacks</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -281,9 +302,9 @@ fair liveness proxy here even though it would not be for a resolver.</p></p>    
             </div>
                     <div class="method-item">
                     <h3 id="method_getServerStatus">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/PowerdnsStatusService.php#L84">at line 84</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/PowerdnsStatusService.php#L81">at line 81</a></div>
         <code>                    array
-    <strong>getServerStatus</strong>(bool $includePrometheusMetrics = true)
+    <strong>getServerStatus</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -292,23 +313,43 @@ fair liveness proxy here even though it would not be for a resolver.</p></p>    
             
 
         <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
+                            <p><p>Server info and the PowerDNS API statistics, without the Prometheus endpoint.</p></p>                        
         </div>
         <div class="tags">
-                            <h4>Parameters</h4>
+            
+                            <h4>Return Value</h4>
 
                     <table class="table table-condensed">
-                    <tr>
-                <td>bool</td>
-                <td>$includePrometheusMetrics</td>
-                <td><p>Also fetch the Prometheus endpoint and merge its
-metrics. The web UI wants them for its categories;
-API clients get the plain statistics only, because
-the Prometheus names duplicate them under a prefix.</p></td>
-            </tr>
-            </table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
 
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getDetailedServerStatus">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/PowerdnsStatusService.php#L90">at line 90</a></div>
+        <code>                    array
+    <strong>getDetailedServerStatus</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Server status plus a description per metric, taken from the Prometheus endpoint's
+HELP lines, for the status page tooltips.</p></p>                        
+        </div>
+        <div class="tags">
             
                             <h4>Return Value</h4>
 
@@ -328,7 +369,7 @@ the Prometheus names duplicate them under a prefix.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_checkSlaveServerStatus">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/PowerdnsStatusService.php#L189">at line 189</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/PowerdnsStatusService.php#L194">at line 194</a></div>
         <code>                    array
     <strong>checkSlaveServerStatus</strong>(array $slaveServers)
         </code>
@@ -372,7 +413,7 @@ the Prometheus names duplicate them under a prefix.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_probeHost">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/PowerdnsStatusService.php#L229">at line 229</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/PowerdnsStatusService.php#L234">at line 234</a></div>
         <code>            protected        string|null
     <strong>probeHost</strong>(string $host)
         </code>
@@ -414,11 +455,55 @@ fair liveness proxy here even though it would not be for a resolver.</p></p>
     </div>
 
             </div>
+                    <div class="method-item">
+                    <h3 id="method_fetchMetricsWithAuth">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/PowerdnsStatusService.php#L532">at line 532</a></div>
+        <code>            protected        string|false
+    <strong>fetchMetricsWithAuth</strong>(string $url)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Fetch metrics from URL with optional Basic Authentication
+Validates URL to prevent SSRF and path traversal attacks</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$url</td>
+                <td><p>The metrics URL to fetch</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|false</td>
+            <td><p>The metrics content or false on failure</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
             </div>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/b43caf1" rel="noreferrer" target="_blank">commit b43caf1,</a> built 2026-09-26 19:50 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/e0aca85" rel="noreferrer" target="_blank">commit e0aca85,</a> built 2026-09-27 07:47 UTC.</div></div>
     </div>
     </body>
 
