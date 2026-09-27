@@ -3402,6 +3402,526 @@
                 ]
             }
         },
+        "/v2/zones/{id}/dnssec/keys": {
+            "get": {
+                "tags": [
+                    "zones"
+                ],
+                "summary": "List zone DNSSEC keys",
+                "description": "Lists the DNSSEC keys of a zone",
+                "operationId": "v2ListZoneDnssecKeys",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Zone ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "DNSSEC keys retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "DNSSEC keys retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/DnssecKey"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Zone not found"
+                    },
+                    "501": {
+                        "description": "DNSSEC key management requires the PowerDNS API"
+                    },
+                    "502": {
+                        "description": "The request to PowerDNS failed"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "zones"
+                ],
+                "summary": "Add a zone DNSSEC key",
+                "description": "Adds a new DNSSEC key to a zone. Each algorithm has fixed key sizes: RSA algorithms take 1024 or 2048 bits, ecdsa256 and ed25519 256, ecdsa384 384 and ed448 456.",
+                "operationId": "v2AddZoneDnssecKey",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Zone ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "type",
+                                    "algorithm",
+                                    "bits"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "example": "csk",
+                                        "enum": [
+                                            "ksk",
+                                            "zsk",
+                                            "csk"
+                                        ]
+                                    },
+                                    "algorithm": {
+                                        "type": "string",
+                                        "example": "ecdsa256"
+                                    },
+                                    "bits": {
+                                        "type": "integer",
+                                        "example": 256
+                                    },
+                                    "active": {
+                                        "description": "Create the key active; defaults to false, as in the web UI",
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "DNSSEC key added successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "DNSSEC key added successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/DnssecKey"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input or DNSSEC not enabled on the server"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Zone not found"
+                    },
+                    "409": {
+                        "description": "Zone is presigned; DNSSEC is managed at the primary server"
+                    },
+                    "500": {
+                        "description": "Failed to add DNSSEC key"
+                    },
+                    "501": {
+                        "description": "DNSSEC key management requires the PowerDNS API"
+                    },
+                    "502": {
+                        "description": "The request to PowerDNS failed"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            }
+        },
+        "/v2/zones/{id}/dnssec/keys/{key_id}": {
+            "get": {
+                "tags": [
+                    "zones"
+                ],
+                "summary": "Get a zone DNSSEC key",
+                "description": "Returns a single DNSSEC key of a zone",
+                "operationId": "v2GetZoneDnssecKey",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Zone ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "key_id",
+                        "in": "path",
+                        "description": "Key ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "DNSSEC key retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "DNSSEC key retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/DnssecKey"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Zone or key not found"
+                    },
+                    "501": {
+                        "description": "DNSSEC key management requires the PowerDNS API"
+                    },
+                    "502": {
+                        "description": "The request to PowerDNS failed"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "zones"
+                ],
+                "summary": "Delete a zone DNSSEC key",
+                "description": "Deletes a DNSSEC key from a zone",
+                "operationId": "v2DeleteZoneDnssecKey",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Zone ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "key_id",
+                        "in": "path",
+                        "description": "Key ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "DNSSEC key deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "DNSSEC key deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "DNSSEC not enabled on the server"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Zone or key not found"
+                    },
+                    "409": {
+                        "description": "Zone is presigned; DNSSEC is managed at the primary server"
+                    },
+                    "500": {
+                        "description": "Failed to delete DNSSEC key"
+                    },
+                    "501": {
+                        "description": "DNSSEC key management requires the PowerDNS API"
+                    },
+                    "502": {
+                        "description": "The request to PowerDNS failed"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "zones"
+                ],
+                "summary": "Activate or deactivate a zone DNSSEC key",
+                "description": "Activates or deactivates a DNSSEC key",
+                "operationId": "v2UpdateZoneDnssecKey",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Zone ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "key_id",
+                        "in": "path",
+                        "description": "Key ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "active"
+                                ],
+                                "properties": {
+                                    "active": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "DNSSEC key updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "DNSSEC key deactivated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/DnssecKey"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input or DNSSEC not enabled on the server"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Zone or key not found"
+                    },
+                    "409": {
+                        "description": "Zone is presigned; DNSSEC is managed at the primary server"
+                    },
+                    "500": {
+                        "description": "Failed to update DNSSEC key"
+                    },
+                    "501": {
+                        "description": "DNSSEC key management requires the PowerDNS API"
+                    },
+                    "502": {
+                        "description": "The request to PowerDNS failed"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            }
+        },
+        "/v2/zones/{id}/dnssec/rectify": {
+            "post": {
+                "tags": [
+                    "zones"
+                ],
+                "summary": "Rectify a DNSSEC signed zone",
+                "description": "Rectifies a DNSSEC signed zone (recalculates ordername and auth fields). Only works for signed primary zones.",
+                "operationId": "v2RectifyZone",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Zone ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Zone rectified successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Zone rectified successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Zone not found"
+                    },
+                    "409": {
+                        "description": "Zone is not DNSSEC signed, is presigned or is a secondary zone"
+                    },
+                    "500": {
+                        "description": "Failed to rectify zone"
+                    },
+                    "501": {
+                        "description": "Rectifying requires the PowerDNS API"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            }
+        },
         "/v2/zones/{id}/metadata": {
             "get": {
                 "tags": [
@@ -7551,6 +8071,60 @@
                     "message": {
                         "type": "string",
                         "example": "Change request approved and applied."
+                    }
+                },
+                "type": "object"
+            },
+            "DnssecKey": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "csk",
+                        "enum": [
+                            "ksk",
+                            "zsk",
+                            "csk"
+                        ]
+                    },
+                    "keytag": {
+                        "type": "integer",
+                        "example": 12345
+                    },
+                    "algorithm": {
+                        "type": "string",
+                        "example": "ecdsa256",
+                        "nullable": true
+                    },
+                    "algorithm_id": {
+                        "type": "integer",
+                        "example": 13
+                    },
+                    "bits": {
+                        "type": "integer",
+                        "example": 256
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "dnskey": {
+                        "type": "string",
+                        "example": "257 3 13 mdsswUyr3DPW132mOi8V9xESWE8jTo0dxCjjnopKl+GqJxpVXckHAeF+KkxLbxILfDLUT0rAK9iUzy1L53eKGQ==",
+                        "nullable": true
+                    },
+                    "ds": {
+                        "description": "DS records; empty for a ZSK",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "12345 13 2 3dd8ee7d9ab0c6d8e4b2fd8a7e1cb3a2b7b0d4e5f6a7b8c9d0e1f2a3b4c5d6e7"
+                        ]
                     }
                 },
                 "type": "object"

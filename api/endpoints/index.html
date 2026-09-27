@@ -7512,8 +7512,42 @@ applied.</p>
 <td><code>/zones/{id}/dnssec</code></td>
 <td>Sign or unsign the zone (v4.5.0+)</td>
 </tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/zones/{id}/dnssec/keys</code></td>
+<td>List the zone's keys with their DNSKEY and DS (v4.5.0+)</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/zones/{id}/dnssec/keys</code></td>
+<td>Add a key (<code>type</code>, <code>algorithm</code>, <code>bits</code>, optional <code>active</code>) (v4.5.0+)</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/zones/{id}/dnssec/keys/{key_id}</code></td>
+<td>Get one key (v4.5.0+)</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td><code>/zones/{id}/dnssec/keys/{key_id}</code></td>
+<td>Activate or deactivate a key (v4.5.0+)</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/zones/{id}/dnssec/keys/{key_id}</code></td>
+<td>Delete a key (v4.5.0+)</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/zones/{id}/dnssec/rectify</code></td>
+<td>Rectify a signed primary zone (v4.5.0+)</td>
+</tr>
 </tbody>
 </table>
+<p>Reading keys needs view access to the zone; the other key endpoints need <code>zone_dnssec_manage_own</code>
+on the zone (or administrator rights) and the PowerDNS API. For API key scopes, adding a key is a
+<code>create</code> operation and rectifying is an <code>update</code>. New keys are created inactive unless <code>active</code> is
+<code>true</code>, as in the web UI.</p>
 <h3 id="server-status-v450">Server status (v4.5.0+)<a class="headerlink" href="#server-status-v450" title="Permanent link">¶</a></h3>
 <table>
 <thead>
