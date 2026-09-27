@@ -2364,6 +2364,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#rest-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REST API
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#more-information" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7204,6 +7215,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#rest-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REST API
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#more-information" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7377,7 +7399,8 @@ Poweradmin.</p>
   along with every other DNSSEC action.</li>
 <li>Changes made outside Poweradmin - direct SQL, another tool - are not rectified by Poweradmin.
   Set the <a href="https://doc.powerdns.com/authoritative/domainmetadata.html#metadata-api-rectify"><code>API-RECTIFY</code></a>
-  metadata on the zone so PowerDNS rectifies after its own API edits, or rectify manually.</li>
+  metadata on the zone so PowerDNS rectifies after its own API edits, or rectify manually, for
+  example with <code>POST /api/v2/zones/{id}/dnssec/rectify</code> (4.5.0+).</li>
 </ul>
 <h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">¶</a></h2>
 <p>Check DNSSEC status using:</p>
@@ -7406,6 +7429,12 @@ Poweradmin.</p>
 <li>The CSK guidance alert that used to sit on top of every DNSSEC page only appears on legacy pre-4.0 PowerDNS servers now. On 4.x+ the standard split-key advice no longer applies, and the alert was just adding noise.</li>
 <li>Sign and unsign actions are both recorded in the zone activity feed (sign was missing before 4.4.0).</li>
 </ul>
+<h2 id="rest-api">REST API<a class="headerlink" href="#rest-api" title="Permanent link">¶</a></h2>
+<p>From 4.5.0 the v2 API covers the key management of the web pages: signing status, listing keys
+with their DNSKEY and DS records, adding keys, activating and deactivating them, deleting them,
+and rectifying a signed zone. Changes need <code>zone_dnssec_manage_own</code> on the zone, or administrator
+rights. Key import and export are still web-only. See
+<a href="../../api/endpoints/#zone-metadata-and-dnssec">API endpoints</a>.</p>
 <h2 id="more-information">More Information<a class="headerlink" href="#more-information" title="Permanent link">¶</a></h2>
 <p>For more details on DNSSEC and PowerDNS:</p>
 <ul>
