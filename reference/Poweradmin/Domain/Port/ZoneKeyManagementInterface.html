@@ -171,17 +171,6 @@
                     bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_addZoneKey">addZoneKey</a>(string $zoneName, string $keyType, int $keySize, string $algorithm)
-        
-                                            <p class="no-description">No description</p>
-                                    </div>
-                <div class="col-md-2"></div>
-            </div>
-                    <div class="row">
-                <div class="col-md-2 type">
-                    bool
-                </div>
-                <div class="col-md-8">
                     <a href="#method_removeZoneKey">removeZoneKey</a>(string $zoneName, int $keyId)
         
                                             <p class="no-description">No description</p>
@@ -190,23 +179,22 @@
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    bool
+                    array|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_keyExists">keyExists</a>(string $zoneName, int $keyId)
+                    <a href="#method_fetchZoneKeys">fetchZoneKeys</a>(string $zoneName)
         
-                                            <p><p>Asks the server each time; a key can vanish between two calls, so the result is not remembered.</p></p>                </div>
+                                            <p><p>The zone's keys, telling a server that could not be asked apart from a zone without keys.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    <a href="../../../Poweradmin/Domain/Model/CryptoKey.html"><abbr title="Poweradmin\Domain\Model\CryptoKey">CryptoKey</abbr></a>|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getZoneKey">getZoneKey</a>(string $zoneName, int $keyId)
+                    <a href="#method_createZoneKey">createZoneKey</a>(string $zoneName, string $keyType, int $keySize, string $algorithm, bool $active)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>Create a key and return it as the server created it, or null when it was refused or could not be asked.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -241,7 +229,7 @@ cannot be read.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_getDsRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L30">at line 30</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L32">at line 32</a></div>
         <code>                    array
     <strong>getDsRecords</strong>(string $zoneName)
         </code>
@@ -285,7 +273,7 @@ cannot be read.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getDnsKeyRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L31">at line 31</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L33">at line 33</a></div>
         <code>                    array
     <strong>getDnsKeyRecords</strong>(string $zoneName)
         </code>
@@ -329,7 +317,7 @@ cannot be read.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_activateZoneKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L32">at line 32</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L34">at line 34</a></div>
         <code>                    bool
     <strong>activateZoneKey</strong>(string $zoneName, int $keyId)
         </code>
@@ -378,7 +366,7 @@ cannot be read.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_deactivateZoneKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L33">at line 33</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L35">at line 35</a></div>
         <code>                    bool
     <strong>deactivateZoneKey</strong>(string $zoneName, int $keyId)
         </code>
@@ -427,7 +415,7 @@ cannot be read.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_getKeys">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L34">at line 34</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L36">at line 36</a></div>
         <code>                    array
     <strong>getKeys</strong>(string $zoneName)
         </code>
@@ -470,67 +458,8 @@ cannot be read.</p></p>                </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_addZoneKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L35">at line 35</a></div>
-        <code>                    bool
-    <strong>addZoneKey</strong>(string $zoneName, string $keyType, int $keySize, string $algorithm)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>string</td>
-                <td>$zoneName</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>string</td>
-                <td>$keyType</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>int</td>
-                <td>$keySize</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>string</td>
-                <td>$algorithm</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>bool</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
                     <h3 id="method_removeZoneKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L36">at line 36</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L37">at line 37</a></div>
         <code>                    bool
     <strong>removeZoneKey</strong>(string $zoneName, int $keyId)
         </code>
@@ -578,10 +507,10 @@ cannot be read.</p></p>                </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_keyExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L42">at line 42</a></div>
-        <code>                    bool
-    <strong>keyExists</strong>(string $zoneName, int $keyId)
+                    <h3 id="method_fetchZoneKeys">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L45">at line 45</a></div>
+        <code>                    array|null
+    <strong>fetchZoneKeys</strong>(string $zoneName)
         </code>
     </h3>
     <div class="details">    
@@ -590,7 +519,7 @@ cannot be read.</p></p>                </div>
             
 
         <div class="method-description">
-                            <p><p>Asks the server each time; a key can vanish between two calls, so the result is not remembered.</p></p>                        
+                            <p><p>The zone's keys, telling a server that could not be asked apart from a zone without keys.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -601,11 +530,6 @@ cannot be read.</p></p>                </div>
                 <td>$zoneName</td>
                 <td></td>
             </tr>
-                    <tr>
-                <td>int</td>
-                <td>$keyId</td>
-                <td></td>
-            </tr>
             </table>
 
             
@@ -613,8 +537,8 @@ cannot be read.</p></p>                </div>
 
                     <table class="table table-condensed">
         <tr>
-            <td>bool</td>
-            <td></td>
+            <td>array|null</td>
+            <td><p>Null when the server could not be asked</p></td>
         </tr>
     </table>
 
@@ -626,10 +550,10 @@ cannot be read.</p></p>                </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getZoneKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L43">at line 43</a></div>
-        <code>                    array
-    <strong>getZoneKey</strong>(string $zoneName, int $keyId)
+                    <h3 id="method_createZoneKey">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L50">at line 50</a></div>
+        <code>                    <a href="../../../Poweradmin/Domain/Model/CryptoKey.html"><abbr title="Poweradmin\Domain\Model\CryptoKey">CryptoKey</abbr></a>|null
+    <strong>createZoneKey</strong>(string $zoneName, string $keyType, int $keySize, string $algorithm, bool $active)
         </code>
     </h3>
     <div class="details">    
@@ -638,8 +562,7 @@ cannot be read.</p></p>                </div>
             
 
         <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
+                            <p><p>Create a key and return it as the server created it, or null when it was refused or could not be asked.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -651,8 +574,23 @@ cannot be read.</p></p>                </div>
                 <td></td>
             </tr>
                     <tr>
+                <td>string</td>
+                <td>$keyType</td>
+                <td></td>
+            </tr>
+                    <tr>
                 <td>int</td>
-                <td>$keyId</td>
+                <td>$keySize</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$algorithm</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$active</td>
                 <td></td>
             </tr>
             </table>
@@ -662,7 +600,7 @@ cannot be read.</p></p>                </div>
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td><a href="../../../Poweradmin/Domain/Model/CryptoKey.html"><abbr title="Poweradmin\Domain\Model\CryptoKey">CryptoKey</abbr></a>|null</td>
             <td></td>
         </tr>
     </table>
@@ -676,7 +614,7 @@ cannot be read.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_importZoneKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L50">at line 50</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L57">at line 57</a></div>
         <code>                    bool
     <strong>importZoneKey</strong>(string $zoneName, string $keyType, string $algorithm, string $privateKeyPem)
         </code>
@@ -736,7 +674,7 @@ back onto the PowerDNS API may also return false.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_exportZoneKeyPem">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L57">at line 57</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/ZoneKeyManagementInterface.php#L64">at line 64</a></div>
         <code>                    string|null
     <strong>exportZoneKeyPem</strong>(string $zoneName, int $keyId)
         </code>
@@ -788,7 +726,7 @@ cannot be read.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ca349f1" rel="noreferrer" target="_blank">commit ca349f1,</a> built 2026-09-27 09:58 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/a7ae646" rel="noreferrer" target="_blank">commit a7ae646,</a> built 2026-09-27 11:11 UTC.</div></div>
     </div>
     </body>
 
