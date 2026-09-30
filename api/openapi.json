@@ -492,7 +492,7 @@
                         "description": "Invalid hostname or IP payload"
                     },
                     "403": {
-                        "description": "User lacks DDNS permission, the API key cannot access the zone, or the zone is read-only"
+                        "description": "User lacks DDNS permission, the API key cannot access the zone or lacks the delete operation for a sync that removes records, or the zone is read-only"
                     },
                     "404": {
                         "description": "No owned zone contains this hostname"
@@ -3853,6 +3853,119 @@
                 ]
             }
         },
+        "/v2/zones/{id}/dnssec/keys/import": {
+            "post": {
+                "tags": [
+                    "zones"
+                ],
+                "summary": "Import a zone DNSSEC key",
+                "description": "Imports a DNSSEC key from an existing private key in the ISC/BIND format (\"Private-key-format: v1.x\", as written by dnssec-keygen or pdnsutil export-zone-key). PowerDNS derives algorithm and size from the key. PEM keys are not accepted by the PowerDNS HTTP API; import them with pdnsutil import-zone-key-pem or convert them first. The private key is never returned, logged or audited.",
+                "operationId": "v2ImportZoneDnssecKey",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Zone ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "type",
+                                    "privatekey"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "example": "csk",
+                                        "enum": [
+                                            "ksk",
+                                            "zsk",
+                                            "csk"
+                                        ]
+                                    },
+                                    "privatekey": {
+                                        "description": "Private key in the ISC/BIND format",
+                                        "type": "string",
+                                        "example": "Private-key-format: v1.2\nAlgorithm: 13 (ECDSAP256SHA256)\nPrivateKey: Lt0v0Gol5Q6tsaPsYv6dcdeFk5yKzKjWMrhhm3E8wqU=\n"
+                                    },
+                                    "active": {
+                                        "description": "Create the key active; defaults to false",
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "DNSSEC key imported successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "DNSSEC key imported successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/DnssecKey"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input, a private key PowerDNS rejected, or DNSSEC not enabled on the server"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Zone not found"
+                    },
+                    "409": {
+                        "description": "Zone is presigned; DNSSEC is managed at the primary server"
+                    },
+                    "500": {
+                        "description": "Failed to import DNSSEC key"
+                    },
+                    "501": {
+                        "description": "DNSSEC key management requires the PowerDNS API"
+                    },
+                    "502": {
+                        "description": "The request to PowerDNS failed"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    },
+                    {
+                        "apiKeyHeader": []
+                    }
+                ]
+            }
+        },
         "/v2/zones/{id}/dnssec/rectify": {
             "post": {
                 "tags": [
@@ -6382,9 +6495,64 @@
                             "type": "string",
                             "example": "A"
                         }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the RRSet name",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "www"
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter: keeps RRSets with at least one record whose content matches",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "192.0.2."
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: name, type, ttl. Default: backend order",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "name,type"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number, starting at 1 (only used together with per_page)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page, capped at 10000. Omit or set to 0 to return all items without a pagination object",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "minimum": 0
+                        }
                     }
                 ],
                 "responses": {
+                    "400": {
+                        "description": "Invalid sort parameter"
+                    },
                     "200": {
                         "description": "RRSets retrieved successfully",
                         "content": {
@@ -6398,6 +6566,28 @@
                                         "message": {
                                             "type": "string",
                                             "example": "RRSets retrieved successfully"
+                                        },
+                                        "pagination": {
+                                            "description": "Only present when per_page is given",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 250
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "data": {
                                             "properties": {
@@ -6473,7 +6663,7 @@
                     "rrsets"
                 ],
                 "summary": "Replace or create an RRSet",
-                "description": "Replaces all records with the specified name and type. If the RRSet doesn't exist, it will be created.",
+                "description": "Replaces all records with the specified name and type. If the RRSet doesn't exist, it will be created. An API key needs create and update, plus delete when the new set has fewer records than the current one.",
                 "operationId": "v2ReplaceZoneRRSet",
                 "parameters": [
                     {
@@ -6600,6 +6790,9 @@
                                 }
                             }
                         }
+                    },
+                    "403": {
+                        "description": "Not permitted to edit this RRSet, or the API key lacks the delete operation for a replace that removes records"
                     }
                 },
                 "security": [
@@ -6743,6 +6936,9 @@
                                 }
                             }
                         }
+                    },
+                    "403": {
+                        "description": "Not permitted to edit this RRSet, or the API key lacks the delete operation for a replace that removes records"
                     }
                 },
                 "security": [
@@ -6886,6 +7082,9 @@
                                 }
                             }
                         }
+                    },
+                    "403": {
+                        "description": "Not permitted to edit this RRSet, or the API key lacks the delete operation for a replace that removes records"
                     }
                 },
                 "security": [
@@ -7268,9 +7467,64 @@
                             "type": "string",
                             "example": "A"
                         }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the record name",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "www"
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the record content",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "192.0.2."
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: name, type, content, ttl, priority. Default: backend order",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "type,name"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number, starting at 1 (only used together with per_page)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page, capped at 10000. Omit or set to 0 to return all items without a pagination object",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "minimum": 0
+                        }
                     }
                 ],
                 "responses": {
+                    "400": {
+                        "description": "Invalid sort parameter"
+                    },
                     "200": {
                         "description": "Records retrieved successfully",
                         "content": {
@@ -7284,6 +7538,28 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Records retrieved successfully"
+                                        },
+                                        "pagination": {
+                                            "description": "Only present when per_page is given",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 250
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "data": {
                                             "properties": {

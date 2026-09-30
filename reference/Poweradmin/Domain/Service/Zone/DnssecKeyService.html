@@ -109,6 +109,19 @@ against what the server offers, refuse changes when PowerDNS cannot be
 asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></p>                    </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                            private
+                                                                                MAX_PRIVATE_KEY_BYTES
+                                    </td>
+                <td class="last">
+                    <p><em><p>Generous upper bound for an ISC private key; an RSA-4096 key is about 3.3 KB</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -170,6 +183,29 @@ asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></p> 
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    static&nbsp;bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isIscPrivateKey">isIscPrivateKey</a>(string $privateKey)
+        
+                                            <p><p>Check that a private key looks like the ISC/BIND format PowerDNS imports
+(&quot;Private-key-format: v1.x&quot; and an &quot;Algorithm:&quot; line), without asking
+PowerDNS. PEM keys are refused: the PowerDNS HTTP API does not take them.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_importKey">importKey</a>(int $zoneId, string $zoneName, string $type, string $privateKey, bool $active)
+        
+                                            <p><p>Import a key from an existing ISC/BIND private key. PowerDNS derives the
+algorithm and size from the key; the created key carries them.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
                 </div>
                 <div class="col-md-8">
@@ -208,7 +244,7 @@ asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></p> 
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L41">at line 41</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L44">at line 44</a></div>
         <code>                    
     <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Port/ZoneKeyManagementInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneKeyManagementInterface">ZoneKeyManagementInterface</abbr></a>&<a href="../../../../Poweradmin/Domain/Port/ZoneSigningInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneSigningInterface">ZoneSigningInterface</abbr></a> $dnssec, <a href="../../../../Poweradmin/Domain/Port/AuditLoggerInterface.html"><abbr title="Poweradmin\Domain\Port\AuditLoggerInterface">AuditLoggerInterface</abbr></a> $audit)
         </code>
@@ -248,7 +284,7 @@ asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></p> 
             </div>
                     <div class="method-item">
                     <h3 id="method_listKeys">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L47">at line 47</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L50">at line 50</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
     <strong>listKeys</strong>(string $zoneName)
         </code>
@@ -292,7 +328,7 @@ asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></p> 
             </div>
                     <div class="method-item">
                     <h3 id="method_findKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L57">at line 57</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L60">at line 60</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
     <strong>findKey</strong>(string $zoneName, int $keyId)
         </code>
@@ -341,7 +377,7 @@ asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></p> 
             </div>
                     <div class="method-item">
                     <h3 id="method_validateNewKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L74">at line 74</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L77">at line 77</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>|null
     <strong>validateNewKey</strong>(string $type, string $algorithm, int|null $bits, <a href="../../../../Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a>|null $capabilities)
         </code>
@@ -399,7 +435,7 @@ asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></p> 
             </div>
                     <div class="method-item">
                     <h3 id="method_addKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L93">at line 93</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L96">at line 96</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
     <strong>addKey</strong>(int $zoneId, string $zoneName, string $type, string $algorithm, int $bits, bool $active, <a href="../../../../Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a>|null $capabilities)
         </code>
@@ -472,8 +508,118 @@ asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></p> 
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_isIscPrivateKey">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L130">at line 130</a></div>
+        <code>        static            bool
+    <strong>isIscPrivateKey</strong>(string $privateKey)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check that a private key looks like the ISC/BIND format PowerDNS imports
+(&quot;Private-key-format: v1.x&quot; and an &quot;Algorithm:&quot; line), without asking
+PowerDNS. PEM keys are refused: the PowerDNS HTTP API does not take them.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$privateKey</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_importKey">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L148">at line 148</a></div>
+        <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
+    <strong>importKey</strong>(int $zoneId, string $zoneName, string $type, string $privateKey, bool $active)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Import a key from an existing ISC/BIND private key. PowerDNS derives the
+algorithm and size from the key; the created key carries them.</p></p>                <p><p>The private key is only passed on to PowerDNS: it is not audited, logged
+or part of the result.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$zoneName</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$type</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$privateKey</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$active</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_setKeyActive">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L122">at line 122</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L184">at line 184</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
     <strong>setKeyActive</strong>(int $zoneId, string $zoneName, int $keyId, bool $active)
         </code>
@@ -532,7 +678,7 @@ asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></p> 
             </div>
                     <div class="method-item">
                     <h3 id="method_toggleKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L130">at line 130</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L192">at line 192</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
     <strong>toggleKey</strong>(int $zoneId, string $zoneName, int $keyId)
         </code>
@@ -585,7 +731,7 @@ asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></p> 
             </div>
                     <div class="method-item">
                     <h3 id="method_removeKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L135">at line 135</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L197">at line 197</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
     <strong>removeKey</strong>(int $zoneId, string $zoneName, int $keyId)
         </code>
@@ -641,7 +787,7 @@ asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></p> 
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/a5c245c" rel="noreferrer" target="_blank">commit a5c245c,</a> built 2026-09-29 04:49 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/033ff55" rel="noreferrer" target="_blank">commit 033ff55,</a> built 2026-09-30 17:39 UTC.</div></div>
     </div>
     </body>
 

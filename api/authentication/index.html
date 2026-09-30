@@ -7203,6 +7203,12 @@ zones, return only the zones in scope rather than refusing the whole request.</p
 <code>DELETE</code> is delete, and everything else is view. Endpoints that do more than one
 thing in a single request, such as a dynamic DNS upsert or a bulk record change,
 must satisfy every operation they perform.</p>
+<p>Replacing an RRset and dynamic DNS updates need <code>create</code> and <code>update</code>. When the
+new set has fewer records than the current one, records are removed, so the key
+also needs <code>delete</code>. Replacing two A records with one needs it, and so does a
+dual-stack dynamic DNS update that sends only an IPv4 address and would clear the
+AAAA records. Replacing records with the same number of new ones, or changing the
+TTL, only needs <code>create</code> and <code>update</code>.</p>
 <p>Restrictions only narrow access - they never widen it. A read-only key belonging to
 a user with no zone permissions still cannot read anything.</p>
 <p>Existing keys are unrestricted after an upgrade, so nothing changes until you
