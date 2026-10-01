@@ -7316,9 +7316,11 @@
 <ul>
 <li>A zone save that changes no record leaves the serial untouched and reports that nothing changed.</li>
 <li>Editing a single record and submitting it unchanged leaves the serial untouched. With the PowerDNS API backend the write itself is skipped, because PowerDNS would otherwise bump the serial through <code>SOA-EDIT-API</code>.</li>
+<li>A zone save, or an approved change request, whose only change is a record comment leaves the serial untouched. A changed zone comment still bumps it.</li>
+<li>The API v2 record, RRset and bulk endpoints leave the serial untouched for a write that changes nothing.</li>
 <li>A save that does change a record still bumps the serial once, as before.</li>
 </ul>
-<p>DNSSEC signing, and the public API record and RRset endpoints, keep bumping the serial regardless of this setting.</p>
+<p>DNSSEC signing keeps bumping the serial regardless of this setting.</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="x">'dns' =&gt; [</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="x">    'bump_serial_on_unchanged_save' =&gt; false,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="x">],</span>
