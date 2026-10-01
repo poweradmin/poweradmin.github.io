@@ -2314,15 +2314,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#importing-and-exporting-pem-keys" class="md-nav__link">
+  <a href="#importing-and-exporting-keys" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Importing and Exporting PEM Keys
+        Importing and Exporting Keys
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Importing and Exporting PEM Keys">
+    <nav class="md-nav" aria-label="Importing and Exporting Keys">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -7165,15 +7165,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#importing-and-exporting-pem-keys" class="md-nav__link">
+  <a href="#importing-and-exporting-keys" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Importing and Exporting PEM Keys
+        Importing and Exporting Keys
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Importing and Exporting PEM Keys">
+    <nav class="md-nav" aria-label="Importing and Exporting Keys">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -7411,22 +7411,21 @@ Poweradmin.</p>
 <p>Check DNSSEC status using:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>dig<span class="w"> </span>+dnssec<span class="w"> </span>example.com<span class="w"> </span>SOA
 </code></pre></div>
-<h2 id="importing-and-exporting-pem-keys">Importing and Exporting PEM Keys<a class="headerlink" href="#importing-and-exporting-pem-keys" title="Permanent link">¶</a></h2>
-<p>PowerDNS 4.7 and newer expose endpoints for importing PEM-encoded private keys into a zone and exporting the active ones back out. Poweradmin wires both into the zone's DNSSEC page so you can move signed zones between servers without dropping out to <code>pdnsutil</code>.</p>
-<p>The buttons only appear when the connected PowerDNS reports version 4.7 or newer. On older servers (or when capability detection couldn't reach the API), they stay hidden - you can still sign and unsign zones, but not import or export key material.</p>
+<h2 id="importing-and-exporting-keys">Importing and Exporting Keys<a class="headerlink" href="#importing-and-exporting-keys" title="Permanent link">¶</a></h2>
+<p>From 4.5.0 the zone's DNSSEC page imports private keys into a zone and exports them back out, so you can move signed zones between servers without dropping out to <code>pdnsutil</code>. Both need PowerDNS 4.1 or newer; on older servers, or when version detection could not reach the API, the import form stays hidden.</p>
+<p>In 4.4.x the import form took only PEM keys, which the PowerDNS API does not accept, so imports there always failed. Upgrade to 4.5.0 to import keys.</p>
 <h3 id="importing-a-key">Importing a Key<a class="headerlink" href="#importing-a-key" title="Permanent link">¶</a></h3>
 <p>Open the zone's DNSSEC page and use the <strong>Import key</strong> form:</p>
 <ol>
 <li>Pick the key type - <strong>KSK</strong>, <strong>ZSK</strong>, or <strong>CSK</strong>.</li>
-<li>Pick the algorithm. The dropdown only shows algorithms the connected PowerDNS supports, so what you see is what will actually work. Common picks are <code>ecdsa256</code> and <code>ed25519</code>; legacy zones often use <code>rsasha256</code>.</li>
-<li>Paste the full PEM block, including the <code>-----BEGIN PRIVATE KEY-----</code> and <code>-----END PRIVATE KEY-----</code> lines.</li>
+<li>Pick the algorithm the key was made for. For RSA keys the hash (SHA1, SHA256 or SHA512) cannot be read from the key, so the selection decides it; for ECDSA and EdDSA keys a selection that does not match the key is refused.</li>
+<li>Paste the private key, either in BIND format (<code>Private-key-format: v1.x</code>, as exported here or written by <code>dnssec-keygen</code>) or as an unencrypted PEM key: RSA, ECDSA P-256 or P-384, Ed25519 or Ed448, in PKCS#8, PKCS#1 or SEC1 form. A PEM key is converted to the BIND format before it is sent, because that is the only format the PowerDNS API reads. Encrypted PEM keys are refused.</li>
 <li>Submit.</li>
 </ol>
-<p>If PowerDNS rejects the format (wrong algorithm for the key, malformed PEM, etc.) the error from the API is shown above the form. Successful imports are recorded in the zone activity log as a key-add event.</p>
+<p>Imported keys start inactive; activate them from the key list. If PowerDNS rejects the key, an error is shown above the form. Successful imports are recorded in the zone activity log as a key-add event.</p>
 <p>Importing requires the <code>zone_dnssec_manage_own</code> permission on the zone (ueberusers always pass). This is a separate permission from zone editing: full zone-edit rights without it are refused, and content-edit rights with it are accepted. The same gate applies to export.</p>
 <h3 id="exporting-a-key">Exporting a Key<a class="headerlink" href="#exporting-a-key" title="Permanent link">¶</a></h3>
-<p>Each key row on the DNSSEC page now has an <strong>Export</strong> action. Clicking it returns the PEM block for the active private key so you can copy it into another server or store it offline. Treat the export the same way you would treat any private key - whoever holds it can sign records for the zone.</p>
-<p>The export is always delivered as a file download (<code>Content-Type: application/x-pem-file</code>), named <code>&lt;zone&gt;-key-&lt;id&gt;.pem</code>. The PEM is never rendered inline in the page.</p>
+<p>Each key row on the DNSSEC page has an <strong>Export</strong> action. It downloads the private key in BIND format as <code>&lt;zone&gt;-key-&lt;id&gt;.private</code> (<code>Content-Type: text/plain</code>), the same format <code>dnssec-keygen</code> writes and the import form takes, so you can copy it into another server or store it offline. The key is never rendered inline in the page. Treat the export the same way you would treat any private key - whoever holds it can sign records for the zone.</p>
 <h3 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">¶</a></h3>
 <ul>
 <li>Imports and exports go through the PowerDNS API, so a working <code>pdns_api.url</code> and <code>pdns_api.key</code> are required.</li>

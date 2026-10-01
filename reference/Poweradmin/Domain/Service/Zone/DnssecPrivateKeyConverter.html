@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Poweradmin\Application\Service\Zone\ZoneMetadataFormMessages | Poweradmin class reference</title>
+    <title>Poweradmin\Domain\Service\Zone\DnssecPrivateKeyConverter | Poweradmin class reference</title>
 
                 <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../../css/bootstrap-theme.min.css">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Poweradmin_Application_Service_Zone_ZoneMetadataFormMessages" data-root-path="../../../../" data-search-index-url="../../../../doctum-search.json">
+    <body id="class" data-name="class:Poweradmin_Domain_Service_Zone_DnssecPrivateKeyConverter" data-root-path="../../../../" data-search-index-url="../../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -83,18 +83,18 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">class</span></li>
-                        <li><a href="../../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../../Poweradmin/Application.html">Application</a></li><li class="backslash">\</li><li><a href="../../../../Poweradmin/Application/Service.html">Service</a></li><li class="backslash">\</li><li><a href="../../../../Poweradmin/Application/Service/Zone.html">Zone</a></li><li class="backslash">\</li><li>ZoneMetadataFormMessages</li>
+                        <li><a href="../../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../../Poweradmin/Domain/Service.html">Service</a></li><li class="backslash">\</li><li><a href="../../../../Poweradmin/Domain/Service/Zone.html">Zone</a></li><li class="backslash">\</li><li>DnssecPrivateKeyConverter</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>ZoneMetadataFormMessages    
+        <h1>DnssecPrivateKeyConverter    
             </h1>
     </div>
 
     
     <p>final         class
-    <strong>ZoneMetadataFormMessages</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneMetadataFormMessages.php">View source</a>)
+    <strong>DnssecPrivateKeyConverter</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecPrivateKeyConverter.php">View source</a>)
 </p>
 
         
@@ -103,9 +103,52 @@
         
 
             <div class="description">
-            <p><p>Words a refused ZoneMetadataService write for the metadata editor.</p></p>                    </div>
+            <p><p>Turns a DNSSEC private key into the ISC (BIND &quot;Private-key-format&quot;) text the
+PowerDNS API takes. The API reads no PEM; only pdnsutil import-zone-key-pem does.</p></p>                    </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                                                                                        MAX_INPUT_BYTES
+                                    </td>
+                <td class="last">
+                    <p><em><p>Far above an RSA-4096 key; refused before any parsing</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                            private
+                                                                                EDDSA_PKCS8
+                                    </td>
+                <td class="last">
+                    <p><em><p>PKCS#8 v1 prefixes written by <code>openssl genpkey</code>, each followed by the raw seed</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                            private
+                                                                                ECDSA_CURVES
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                            private
+                                                                                RSA_ALGORITHMS
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -113,13 +156,15 @@
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    static&nbsp;string
+                    static&nbsp;string|<abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyOutcome">DnssecKeyOutcome</abbr>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_errorMessage">errorMessage</a>(<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneMetadataResult.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneMetadataResult">ZoneMetadataResult</abbr></a> $result)
+                    <a href="#method_toIsc">toIsc</a>(string $privateKey, string $algorithmName)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>Returns the key as ISC text for the given algorithm (a DnssecAlgorithmName
+value), or why it cannot be used. Accepts ISC text or an unencrypted RSA,
+ECDSA, Ed25519 or Ed448 PEM key; nothing derived from the key is returned
+on refusal.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -129,10 +174,10 @@
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_errorMessage">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Zone/ZoneMetadataFormMessages.php#L34">at line 34</a></div>
-        <code>        static            string
-    <strong>errorMessage</strong>(<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneMetadataResult.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneMetadataResult">ZoneMetadataResult</abbr></a> $result)
+                    <h3 id="method_toIsc">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecPrivateKeyConverter.php#L61">at line 61</a></div>
+        <code>        static            string|<abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyOutcome">DnssecKeyOutcome</abbr>
+    <strong>toIsc</strong>(string $privateKey, string $algorithmName)
         </code>
     </h3>
     <div class="details">    
@@ -141,16 +186,23 @@
             
 
         <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
+                            <p><p>Returns the key as ISC text for the given algorithm (a DnssecAlgorithmName
+value), or why it cannot be used. Accepts ISC text or an unencrypted RSA,
+ECDSA, Ed25519 or Ed448 PEM key; nothing derived from the key is returned
+on refusal.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../../Poweradmin/Domain/Service/Zone/ZoneMetadataResult.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneMetadataResult">ZoneMetadataResult</abbr></a></td>
-                <td>$result</td>
+                <td>string</td>
+                <td>$privateKey</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$algorithmName</td>
                 <td></td>
             </tr>
             </table>
@@ -160,7 +212,7 @@
 
                     <table class="table table-condensed">
         <tr>
-            <td>string</td>
+            <td>string|<abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyOutcome">DnssecKeyOutcome</abbr></td>
             <td></td>
         </tr>
     </table>

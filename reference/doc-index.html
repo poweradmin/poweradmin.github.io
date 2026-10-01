@@ -1457,9 +1457,10 @@ description read as null.</p></dd><dt>$<a href="Poweradmin/Application/Controlle
                     <dd><p>Renders the DS and DNSKEY records page for a zone.</p></dd><dt><a href="Poweradmin/Application/Controller/Dnssec/DnssecEditKeyController.html"><abbr title="Poweradmin\Application\Controller\Dnssec\DnssecEditKeyController">DnssecEditKeyController</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Application/Controller/Dnssec.html">Poweradmin\Application\Controller\Dnssec</a></em></dt>
                     <dd><p>Renders the DNSSEC key detail page that confirms activating or deactivating a key.</p></dd><dt><a href="Poweradmin/Application/Controller/Dnssec/DnssecKeyController.html"><abbr title="Poweradmin\Application\Controller\Dnssec\DnssecKeyController">DnssecKeyController</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Application/Controller/Dnssec.html">Poweradmin\Application\Controller\Dnssec</a></em></dt>
                     <dd><p>Base for the pages that add, edit, toggle, delete, import and export DNSSEC keys: one shared gate.</p></dd><dt><a href="Poweradmin/Application/Controller/Dnssec/DnssecKeyExportController.html"><abbr title="Poweradmin\Application\Controller\Dnssec\DnssecKeyExportController">DnssecKeyExportController</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Application/Controller/Dnssec.html">Poweradmin\Application\Controller\Dnssec</a></em></dt>
-                    <dd><p>Streams a DNSSEC private key as a PEM file download. Requires PowerDNS
-4.7+ which exposes the <code>privatekey</code> field on per-key GETs of /cryptokeys.</p></dd><dt><a href="Poweradmin/Application/Controller/Dnssec/DnssecKeyImportController.html"><abbr title="Poweradmin\Application\Controller\Dnssec\DnssecKeyImportController">DnssecKeyImportController</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Application/Controller/Dnssec.html">Poweradmin\Application\Controller\Dnssec</a></em></dt>
-                    <dd><p>Imports a PEM-encoded DNSSEC private key into a zone via the PowerDNS API.</p></dd><dt><a href="Poweradmin/Application/Controller/Dnssec/DnssecToggleKeyController.html"><abbr title="Poweradmin\Application\Controller\Dnssec\DnssecToggleKeyController">DnssecToggleKeyController</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Application/Controller/Dnssec.html">Poweradmin\Application\Controller\Dnssec</a></em></dt>
+                    <dd><p>Streams a DNSSEC private key as an ISC (BIND &quot;Private-key-format&quot;) file,
+the format PowerDNS returns on per-key GETs of /cryptokeys.</p></dd><dt><a href="Poweradmin/Application/Controller/Dnssec/DnssecKeyImportController.html"><abbr title="Poweradmin\Application\Controller\Dnssec\DnssecKeyImportController">DnssecKeyImportController</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Application/Controller/Dnssec.html">Poweradmin\Application\Controller\Dnssec</a></em></dt>
+                    <dd><p>Imports a DNSSEC private key into a zone via the PowerDNS API. Takes ISC
+(BIND) text or an RSA, ECDSA or EdDSA PEM key, which is converted to ISC.</p></dd><dt><a href="Poweradmin/Application/Controller/Dnssec/DnssecToggleKeyController.html"><abbr title="Poweradmin\Application\Controller\Dnssec\DnssecToggleKeyController">DnssecToggleKeyController</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Application/Controller/Dnssec.html">Poweradmin\Application\Controller\Dnssec</a></em></dt>
                     <dd><p>Handles the POST that activates or deactivates a DNSSEC key, then returns to the zone's DNSSEC page.</p></dd><dt><a href="Poweradmin/Application/Controller/Record/DeleteRecordController.html"><abbr title="Poweradmin\Application\Controller\Record\DeleteRecordController">DeleteRecordController</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Application/Controller/Record.html">Poweradmin\Application\Controller\Record</a></em></dt>
                     <dd><p>Handles the delete-record confirmation page and removes the record, plus its PTR counterpart when ticked.</p></dd><dt><a href="Poweradmin/Application/Controller/Record/DeleteRecordsController.html"><abbr title="Poweradmin\Application\Controller\Record\DeleteRecordsController">DeleteRecordsController</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Application/Controller/Record.html">Poweradmin\Application\Controller\Record</a></em></dt>
                     <dd><p>Handles bulk record deletion from search results: shows the selected records and deletes them on confirmation.</p></dd><dt><a href="Poweradmin/Application/Controller/Record/DeleteRecordsController.html#method_deleteRecords">
@@ -1722,7 +1723,9 @@ accepted values when a new key was refused as invalid.</p></dd><dt><a href="Powe
                     <dd><p>Lists, adds, activates, deactivates and removes the DNSSEC keys of a zone
 the one way the web key pages and the API agree on: validate a new key
 against what the server offers, refuse changes when PowerDNS cannot be
-asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></dd><dt><a href="Poweradmin/Domain/Service/Zone/ZoneEditService.html#method_diffRow">
+asked, has DNSSEC off or the zone is presigned, and audit what changed.</p></dd><dt><a href="Poweradmin/Domain/Service/Zone/DnssecPrivateKeyConverter.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecPrivateKeyConverter">DnssecPrivateKeyConverter</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Domain/Service/Zone.html">Poweradmin\Domain\Service\Zone</a></em></dt>
+                    <dd><p>Turns a DNSSEC private key into the ISC (BIND &quot;Private-key-format&quot;) text the
+PowerDNS API takes. The API reads no PEM; only pdnsutil import-zone-key-pem does.</p></dd><dt><a href="Poweradmin/Domain/Service/Zone/ZoneEditService.html#method_diffRow">
 <abbr title="Poweradmin\Domain\Service\Zone\ZoneEditService">ZoneEditService</abbr>::diffRow</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Zone/ZoneEditService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditService">ZoneEditService</abbr></a></em></dt>
                     <dd><p>Normalises one row and compares it with the zone, writing nothing.</p></dd><dt><a href="Poweradmin/Domain/Service/Zone/ZoneManagementService.html#method_deleteZone">
 <abbr title="Poweradmin\Domain\Service\Zone\ZoneManagementService">ZoneManagementService</abbr>::deleteZone</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Zone/ZoneManagementService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneManagementService">ZoneManagementService</abbr></a></em></dt>
@@ -1985,11 +1988,10 @@ returned value for the intended wildcard positions.</p></dd><dt><a href="Powerad
                     <dd><p>Renders the account emails a preview tool can show; the Application layer
 owns the templates and their custom overrides.</p></dd><dt><a href="Poweradmin/Domain/Port/RecordWriteBackendInterface.html#method_editRecord">
 <abbr title="Poweradmin\Domain\Port\RecordWriteBackendInterface">RecordWriteBackendInterface</abbr>::editRecord</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Port/RecordWriteBackendInterface.html"><abbr title="Poweradmin\Domain\Port\RecordWriteBackendInterface">RecordWriteBackendInterface</abbr></a></em></dt>
-                    <dd><p>Edit an existing DNS record.</p></dd><dt><a href="Poweradmin/Domain/Port/ZoneKeyManagementInterface.html#method_exportZoneKeyPem">
-<abbr title="Poweradmin\Domain\Port\ZoneKeyManagementInterface">ZoneKeyManagementInterface</abbr>::exportZoneKeyPem</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Port/ZoneKeyManagementInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneKeyManagementInterface">ZoneKeyManagementInterface</abbr></a></em></dt>
-                    <dd><p>Export the PEM-encoded private key for an existing cryptokey, or null
-when the server does not support PEM export (pre-4.7) or the key
-cannot be read.</p></dd><dt><a href="Poweradmin/Domain/Repository/ApiKeyRepositoryInterface.html#method_enable">
+                    <dd><p>Edit an existing DNS record.</p></dd><dt><a href="Poweradmin/Domain/Port/ZoneKeyManagementInterface.html#method_exportZonePrivateKey">
+<abbr title="Poweradmin\Domain\Port\ZoneKeyManagementInterface">ZoneKeyManagementInterface</abbr>::exportZonePrivateKey</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Port/ZoneKeyManagementInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneKeyManagementInterface">ZoneKeyManagementInterface</abbr></a></em></dt>
+                    <dd><p>Export the private key of an existing cryptokey in the ISC/BIND format
+PowerDNS stores it in, or null when the key cannot be read.</p></dd><dt><a href="Poweradmin/Domain/Repository/ApiKeyRepositoryInterface.html#method_enable">
 <abbr title="Poweradmin\Domain\Repository\ApiKeyRepositoryInterface">ApiKeyRepositoryInterface</abbr>::enable</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Repository/ApiKeyRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ApiKeyRepositoryInterface">ApiKeyRepositoryInterface</abbr></a></em></dt>
                     <dd><p>Enable an API key</p></dd><dt><a href="Poweradmin/Domain/Repository/ExternalIdentityRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ExternalIdentityRepositoryInterface">ExternalIdentityRepositoryInterface</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Domain/Repository.html">Poweradmin\Domain\Repository</a></em></dt>
                     <dd><p>Persistence for the OIDC and SAML identity links that tie a provider subject to a local user.</p></dd><dt><a href="Poweradmin/Domain/Repository/UserGroupMemberRepositoryInterface.html#method_exists">
@@ -2048,15 +2050,13 @@ services that take the proxy as a dependency.</p></dd><dt><a href="Poweradmin/In
 <abbr title="Poweradmin\Infrastructure\Repository\DbZoneGroupRepository">DbZoneGroupRepository</abbr>::exists</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Repository/DbZoneGroupRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbZoneGroupRepository">DbZoneGroupRepository</abbr></a></em></dt>
                     <dd><p>Check if a group owns a zone</p></dd><dt><a href="Poweradmin/Infrastructure/Service/ApiDnsBackendProvider.html#method_editRecord">
 <abbr title="Poweradmin\Infrastructure\Service\ApiDnsBackendProvider">ApiDnsBackendProvider</abbr>::editRecord</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/ApiDnsBackendProvider.html"><abbr title="Poweradmin\Infrastructure\Service\ApiDnsBackendProvider">ApiDnsBackendProvider</abbr></a></em></dt>
-                    <dd><p>Edit an existing DNS record.</p></dd><dt><a href="Poweradmin/Infrastructure/Service/DnsSecApiProvider.html#method_exportZoneKeyPem">
-<abbr title="Poweradmin\Infrastructure\Service\DnsSecApiProvider">DnsSecApiProvider</abbr>::exportZoneKeyPem</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/DnsSecApiProvider.html"><abbr title="Poweradmin\Infrastructure\Service\DnsSecApiProvider">DnsSecApiProvider</abbr></a></em></dt>
-                    <dd><p>Export the PEM-encoded private key for an existing cryptokey, or null
-when the server does not support PEM export (pre-4.7) or the key
-cannot be read.</p></dd><dt><a href="Poweradmin/Infrastructure/Service/NullDnssecProvider.html#method_exportZoneKeyPem">
-<abbr title="Poweradmin\Infrastructure\Service\NullDnssecProvider">NullDnssecProvider</abbr>::exportZoneKeyPem</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/NullDnssecProvider.html"><abbr title="Poweradmin\Infrastructure\Service\NullDnssecProvider">NullDnssecProvider</abbr></a></em></dt>
-                    <dd><p>Export the PEM-encoded private key for an existing cryptokey, or null
-when the server does not support PEM export (pre-4.7) or the key
-cannot be read.</p></dd><dt><a href="Poweradmin/Infrastructure/Service/SqlDnsBackendProvider.html#method_editRecord">
+                    <dd><p>Edit an existing DNS record.</p></dd><dt><a href="Poweradmin/Infrastructure/Service/DnsSecApiProvider.html#method_exportZonePrivateKey">
+<abbr title="Poweradmin\Infrastructure\Service\DnsSecApiProvider">DnsSecApiProvider</abbr>::exportZonePrivateKey</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/DnsSecApiProvider.html"><abbr title="Poweradmin\Infrastructure\Service\DnsSecApiProvider">DnsSecApiProvider</abbr></a></em></dt>
+                    <dd><p>Export the private key of an existing cryptokey in the ISC/BIND format
+PowerDNS stores it in, or null when the key cannot be read.</p></dd><dt><a href="Poweradmin/Infrastructure/Service/NullDnssecProvider.html#method_exportZonePrivateKey">
+<abbr title="Poweradmin\Infrastructure\Service\NullDnssecProvider">NullDnssecProvider</abbr>::exportZonePrivateKey</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/NullDnssecProvider.html"><abbr title="Poweradmin\Infrastructure\Service\NullDnssecProvider">NullDnssecProvider</abbr></a></em></dt>
+                    <dd><p>Export the private key of an existing cryptokey in the ISC/BIND format
+PowerDNS stores it in, or null when the key cannot be read.</p></dd><dt><a href="Poweradmin/Infrastructure/Service/SqlDnsBackendProvider.html#method_editRecord">
 <abbr title="Poweradmin\Infrastructure\Service\SqlDnsBackendProvider">SqlDnsBackendProvider</abbr>::editRecord</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/SqlDnsBackendProvider.html"><abbr title="Poweradmin\Infrastructure\Service\SqlDnsBackendProvider">SqlDnsBackendProvider</abbr></a></em></dt>
                     <dd><p>Edit an existing DNS record.</p></dd><dt><a href="Poweradmin/Infrastructure/Session/SessionService.html#method_endSession">
 <abbr title="Poweradmin\Infrastructure\Session\SessionService">SessionService</abbr>::endSession</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Session/SessionService.html"><abbr title="Poweradmin\Infrastructure\Session\SessionService">SessionService</abbr></a></em></dt>
@@ -4691,11 +4691,7 @@ primary, so Poweradmin blocks record edits for them regardless of permissions.</
 <abbr title="Poweradmin\Domain\Port\ZoneKeyManagementInterface">ZoneKeyManagementInterface</abbr>::importZoneKeyFromPrivateKey</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Port/ZoneKeyManagementInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneKeyManagementInterface">ZoneKeyManagementInterface</abbr></a></em></dt>
                     <dd><p>Create a key from an existing ISC/BIND private key (&quot;Private-key-format: v1.x&quot;)
 and return it as the server created it. The server derives algorithm and
-size from the key.</p></dd><dt><a href="Poweradmin/Domain/Port/ZoneKeyManagementInterface.html#method_importZoneKey">
-<abbr title="Poweradmin\Domain\Port\ZoneKeyManagementInterface">ZoneKeyManagementInterface</abbr>::importZoneKey</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Port/ZoneKeyManagementInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneKeyManagementInterface">ZoneKeyManagementInterface</abbr></a></em></dt>
-                    <dd><p>Import a DNSSEC key from a PEM-encoded private key. Requires PowerDNS
-4.7+; older servers should return false. Implementations that do not
-back onto the PowerDNS API may also return false.</p></dd><dt><a href="Poweradmin/Domain/Port/ZoneSigningInterface.html#method_isZoneSecured">
+size from the key.</p></dd><dt><a href="Poweradmin/Domain/Port/ZoneSigningInterface.html#method_isZoneSecured">
 <abbr title="Poweradmin\Domain\Port\ZoneSigningInterface">ZoneSigningInterface</abbr>::isZoneSecured</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Port/ZoneSigningInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneSigningInterface">ZoneSigningInterface</abbr></a></em></dt>
                     <dd></dd><dt><a href="Poweradmin/Domain/Port/ZoneSigningInterface.html#method_isZonePresigned">
 <abbr title="Poweradmin\Domain\Port\ZoneSigningInterface">ZoneSigningInterface</abbr>::isZonePresigned</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Port/ZoneSigningInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneSigningInterface">ZoneSigningInterface</abbr></a></em></dt>
@@ -4816,12 +4812,7 @@ boundary, so &quot;testexample.com&quot; is not treated as inside &quot;example.
 <abbr title="Poweradmin\Domain\ValueObject\SamlUserInfo">SamlUserInfo</abbr>::isValid</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/ValueObject/SamlUserInfo.html"><abbr title="Poweradmin\Domain\ValueObject\SamlUserInfo">SamlUserInfo</abbr></a></em></dt>
                     <dd></dd><dt><a href="Poweradmin/Domain/ValueObject/UserInfoInterface.html#method_isValid">
 <abbr title="Poweradmin\Domain\ValueObject\UserInfoInterface">UserInfoInterface</abbr>::isValid</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/ValueObject/UserInfoInterface.html"><abbr title="Poweradmin\Domain\ValueObject\UserInfoInterface">UserInfoInterface</abbr></a></em></dt>
-                    <dd></dd><dt><a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html#method_importZoneKey">
-<abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr>::importZoneKey</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a></em></dt>
-                    <dd><p>Import a DNSSEC key from a PEM-encoded private key. Requires PowerDNS
-4.7+ which accepts the <code>privatekey</code> field on POST /cryptokeys
-(per docs/changelog/4.7.rst PR #11590). The server derives bits and
-picks the right algorithm slot from the PEM contents.</p></dd><dt><a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html#method_isZoneSecured">
+                    <dd></dd><dt><a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html#method_isZoneSecured">
 <abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr>::isZoneSecured</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a></em></dt>
                     <dd><p>Check if a zone is secured with DNSSEC</p></dd><dt><a href="Poweradmin/Infrastructure/Configuration/ConfigurationManager.html#method_initialize">
 <abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr>::initialize</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Configuration/ConfigurationManager.html"><abbr title="Poweradmin\Infrastructure\Configuration\ConfigurationManager">ConfigurationManager</abbr></a></em></dt>
@@ -4871,11 +4862,7 @@ at the primary server and DNSSEC cannot be managed locally.</p></dd><dt><a href=
 <abbr title="Poweradmin\Infrastructure\Service\DnsSecApiProvider">DnsSecApiProvider</abbr>::importZoneKeyFromPrivateKey</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/DnsSecApiProvider.html"><abbr title="Poweradmin\Infrastructure\Service\DnsSecApiProvider">DnsSecApiProvider</abbr></a></em></dt>
                     <dd><p>Create a key from an existing ISC/BIND private key (&quot;Private-key-format: v1.x&quot;)
 and return it as the server created it. The server derives algorithm and
-size from the key.</p></dd><dt><a href="Poweradmin/Infrastructure/Service/DnsSecApiProvider.html#method_importZoneKey">
-<abbr title="Poweradmin\Infrastructure\Service\DnsSecApiProvider">DnsSecApiProvider</abbr>::importZoneKey</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/DnsSecApiProvider.html"><abbr title="Poweradmin\Infrastructure\Service\DnsSecApiProvider">DnsSecApiProvider</abbr></a></em></dt>
-                    <dd><p>Import a DNSSEC key from a PEM-encoded private key. Requires PowerDNS
-4.7+; older servers should return false. Implementations that do not
-back onto the PowerDNS API may also return false.</p></dd><dt><a href="Poweradmin/Infrastructure/Service/NullDnssecProvider.html#method_isZoneSecured">
+size from the key.</p></dd><dt><a href="Poweradmin/Infrastructure/Service/NullDnssecProvider.html#method_isZoneSecured">
 <abbr title="Poweradmin\Infrastructure\Service\NullDnssecProvider">NullDnssecProvider</abbr>::isZoneSecured</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/NullDnssecProvider.html"><abbr title="Poweradmin\Infrastructure\Service\NullDnssecProvider">NullDnssecProvider</abbr></a></em></dt>
                     <dd></dd><dt><a href="Poweradmin/Infrastructure/Service/NullDnssecProvider.html#method_isZonePresigned">
 <abbr title="Poweradmin\Infrastructure\Service\NullDnssecProvider">NullDnssecProvider</abbr>::isZonePresigned</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/NullDnssecProvider.html"><abbr title="Poweradmin\Infrastructure\Service\NullDnssecProvider">NullDnssecProvider</abbr></a></em></dt>
@@ -4886,11 +4873,7 @@ at the primary server and DNSSEC cannot be managed locally.</p></dd><dt><a href=
 <abbr title="Poweradmin\Infrastructure\Service\NullDnssecProvider">NullDnssecProvider</abbr>::importZoneKeyFromPrivateKey</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/NullDnssecProvider.html"><abbr title="Poweradmin\Infrastructure\Service\NullDnssecProvider">NullDnssecProvider</abbr></a></em></dt>
                     <dd><p>Create a key from an existing ISC/BIND private key (&quot;Private-key-format: v1.x&quot;)
 and return it as the server created it. The server derives algorithm and
-size from the key.</p></dd><dt><a href="Poweradmin/Infrastructure/Service/NullDnssecProvider.html#method_importZoneKey">
-<abbr title="Poweradmin\Infrastructure\Service\NullDnssecProvider">NullDnssecProvider</abbr>::importZoneKey</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/NullDnssecProvider.html"><abbr title="Poweradmin\Infrastructure\Service\NullDnssecProvider">NullDnssecProvider</abbr></a></em></dt>
-                    <dd><p>Import a DNSSEC key from a PEM-encoded private key. Requires PowerDNS
-4.7+; older servers should return false. Implementations that do not
-back onto the PowerDNS API may also return false.</p></dd><dt><a href="Poweradmin/Infrastructure/Service/SqlDnsBackendProvider.html#method_isApiBackend">
+size from the key.</p></dd><dt><a href="Poweradmin/Infrastructure/Service/SqlDnsBackendProvider.html#method_isApiBackend">
 <abbr title="Poweradmin\Infrastructure\Service\SqlDnsBackendProvider">SqlDnsBackendProvider</abbr>::isApiBackend</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Service/SqlDnsBackendProvider.html"><abbr title="Poweradmin\Infrastructure\Service\SqlDnsBackendProvider">SqlDnsBackendProvider</abbr></a></em></dt>
                     <dd><p>Check if this is the API backend.</p></dd><dt><a href="Poweradmin/Infrastructure/Session/ArraySession.html#method_isActive">
 <abbr title="Poweradmin\Infrastructure\Session\ArraySession">ArraySession</abbr>::isActive</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Session/ArraySession.html"><abbr title="Poweradmin\Infrastructure\Session\ArraySession">ArraySession</abbr></a></em></dt>
@@ -7101,9 +7084,9 @@ otherwise only the caller.</p></dd><dt><a href="Poweradmin/Domain/Database/Canon
                     <dd><p>Per-record last-modified timestamps in API responses added in 4.9.</p></dd><dt><a href="Poweradmin/Domain/Model/PdnsCapabilities.html#method_supportsDefaultCsk">
 <abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr>::supportsDefaultCsk</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a></em></dt>
                     <dd><p>PowerDNS 4.0+ uses CSK (Combined Signing Key) by default. Older servers
-default to KSK+ZSK and the UI should reflect that.</p></dd><dt><a href="Poweradmin/Domain/Model/PdnsCapabilities.html#method_supportsPemKeyImportExport">
-<abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr>::supportsPemKeyImportExport</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a></em></dt>
-                    <dd><p>PEM import/export of DNSSEC keys added in 4.7.</p></dd><dt><a href="Poweradmin/Domain/Model/PdnsCapabilities.html#method_supportsRfc9615Bootstrap">
+default to KSK+ZSK and the UI should reflect that.</p></dd><dt><a href="Poweradmin/Domain/Model/PdnsCapabilities.html#method_supportsPrivateKeyImport">
+<abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr>::supportsPrivateKeyImport</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a></em></dt>
+                    <dd><p>Creating a DNSSEC key from a private key (POST /cryptokeys with privatekey) added in 4.1.</p></dd><dt><a href="Poweradmin/Domain/Model/PdnsCapabilities.html#method_supportsRfc9615Bootstrap">
 <abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr>::supportsRfc9615Bootstrap</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a></em></dt>
                     <dd><p>RFC 9615 authenticated DNSSEC bootstrapping added in 5.0.</p></dd><dt><a href="Poweradmin/Domain/Model/PdnsCapabilities.html#method_supportsMetadataKind">
 <abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr>::supportsMetadataKind</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a></em></dt>
@@ -7470,7 +7453,12 @@ $partialFormat with both counts (a warning) otherwise.</p></dd><dt><a href="Powe
                     <dd><p>The same map as resolveTtlsForTypes(), computed from already-read values
 so a presenter can build it without the repository.</p></dd><dt><a href="Poweradmin/Domain/Service/Zone/DnssecKeyService.html#method_toggleKey">
 <abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyService">DnssecKeyService</abbr>::toggleKey</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Zone/DnssecKeyService.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyService">DnssecKeyService</abbr></a></em></dt>
-                    <dd><p>Activate an inactive key or deactivate an active one; the result's key tells which.</p></dd><dt><a href="Poweradmin/Domain/Utility/DnsIdnService.html#method_toDisplay">
+                    <dd><p>Activate an inactive key or deactivate an active one; the result's key tells which.</p></dd><dt><a href="Poweradmin/Domain/Service/Zone/DnssecPrivateKeyConverter.html#method_toIsc">
+<abbr title="Poweradmin\Domain\Service\Zone\DnssecPrivateKeyConverter">DnssecPrivateKeyConverter</abbr>::toIsc</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Zone/DnssecPrivateKeyConverter.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecPrivateKeyConverter">DnssecPrivateKeyConverter</abbr></a></em></dt>
+                    <dd><p>Returns the key as ISC text for the given algorithm (a DnssecAlgorithmName
+value), or why it cannot be used. Accepts ISC text or an unencrypted RSA,
+ECDSA, Ed25519 or Ed448 PEM key; nothing derived from the key is returned
+on refusal.</p></dd><dt><a href="Poweradmin/Domain/Utility/DnsIdnService.html#method_toDisplay">
 <abbr title="Poweradmin\Domain\Utility\DnsIdnService">DnsIdnService</abbr>::toDisplay</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Utility/DnsIdnService.html"><abbr title="Poweradmin\Domain\Utility\DnsIdnService">DnsIdnService</abbr></a></em></dt>
                     <dd><p>Human-readable form of a zone name: punycode decoded, anything else unchanged.</p></dd><dt><a href="Poweradmin/Domain/Utility/DnsIdnService.html#method_toIdnAlias">
 <abbr title="Poweradmin\Domain\Utility\DnsIdnService">DnsIdnService</abbr>::toIdnAlias</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Utility/DnsIdnService.html"><abbr title="Poweradmin\Domain\Utility\DnsIdnService">DnsIdnService</abbr></a></em></dt>
@@ -9241,7 +9229,7 @@ open a repository for an answer it will not use.</p></dd><dt><a href="Poweradmin
                     <dd></dd><dt><a href="Poweradmin/Module/ZoneImportExport/Service/ParsedZoneFile.html#method___construct">
 <abbr title="Poweradmin\Module\ZoneImportExport\Service\ParsedZoneFile">ParsedZoneFile</abbr>::__construct</a>() &mdash; <em>Method in class <a href="Poweradmin/Module/ZoneImportExport/Service/ParsedZoneFile.html"><abbr title="Poweradmin\Module\ZoneImportExport\Service\ParsedZoneFile">ParsedZoneFile</abbr></a></em></dt>
                     <dd></dd>        </dl></div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/41eb5f9" rel="noreferrer" target="_blank">commit 41eb5f9,</a> built 2026-10-01 15:05 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/5ed8997" rel="noreferrer" target="_blank">commit 5ed8997,</a> built 2026-10-01 15:47 UTC.</div></div>
     </div>
     </body>
 
