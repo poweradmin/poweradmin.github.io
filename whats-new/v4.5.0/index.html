@@ -7261,7 +7261,11 @@ deprecated in <a href="../v4.3.0/">4.3.0</a> with a published sunset date. Migra
 before upgrading.</p>
 <p>The v2 API gained DNSSEC endpoints (<code>GET</code> and <code>POST /api/v2/zones/{id}/dnssec</code>), key
 management and rectify endpoints under <code>/api/v2/zones/{id}/dnssec/keys</code> and <code>/dnssec/rectify</code>,
-a dynamic DNS endpoint, and richer user objects that expose permission templates and groups.</p>
+a dynamic DNS endpoint, and richer user objects that expose permission templates and groups.
+The DNSSEC endpoints answer <code>502</code> whenever PowerDNS cannot report a zone's signing state, rather
+than calling the zone unsigned. That includes a zone PowerDNS does not know yet, such as one created
+moments ago. When PowerDNS accepts a sign or unsign request but the new state cannot be read back,
+the change is still rectified or serial-bumped and audited, and the <code>502</code> says it was not confirmed.</p>
 <p>See <a href="../../api/overview/">API Overview</a>.</p>
 <h3 id="secondary-zone-import-over-axfr">Secondary zone import over AXFR<a class="headerlink" href="#secondary-zone-import-over-axfr" title="Permanent link">¶</a></h3>
 <p>Pull a zone from a live primary server, watch the transfer land, then convert it to a primary
