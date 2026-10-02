@@ -7251,7 +7251,7 @@
 <h1 id="database-consistency-check">Database Consistency Check<a class="headerlink" href="#database-consistency-check" title="Permanent link">¶</a></h1>
 <p>The consistency check looks for zones and records that are structurally broken - a zone nobody
 owns, a slave zone with no master, records left behind by a deleted zone - and offers a one-click
-fix for each. It is reached from <strong>Tools → Database Consistency Check</strong> (<code>/tools/database-consistency</code>).</p>
+fix for most of them. It is reached from <strong>Tools → Database Consistency Check</strong> (<code>/tools/database-consistency</code>).</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/database-consistency.png" data-desc-position="bottom"><img alt="Database Consistency Check" src="../../screenshots/database-consistency.png"></a></p>
 <h2 id="enabling-it">Enabling it<a class="headerlink" href="#enabling-it" title="Permanent link">¶</a></h2>
 <p>The page is disabled by default. Turn it on in <code>config/settings.php</code>:</p>
@@ -7306,19 +7306,30 @@ total issues, errors and warnings.</p>
 <td>Zones missing an SOA record entirely</td>
 <td><strong>Fix</strong> creates a default SOA</td>
 </tr>
+<tr>
+<td>Zone IDs shared by two zones (4.6.0+)</td>
+<td>Warning</td>
+<td>Zone ids two zones share in API backend mode, with both zone names and the number of ignored owners and group grants</td>
+<td>None - report only</td>
+</tr>
 </tbody>
 </table>
 <p>Every fix is a POST protected by a CSRF token, and destructive actions ask for confirmation first.</p>
 <h2 id="behaviour-in-api-backend-mode">Behaviour in API backend mode<a class="headerlink" href="#behaviour-in-api-backend-mode" title="Permanent link">¶</a></h2>
 <p>The checks run against whichever backend is configured, so they work in
 <a href="../../configuration/powerdns-api/">API backend mode</a> as well as against the database.</p>
-<p>Two differences apply there:</p>
+<p>Three differences apply there:</p>
 <ul>
 <li>The orphaned-records check is skipped and always reports success. PowerDNS owns the
   zone-to-record relationship in API mode, so the condition cannot arise.</li>
 <li>If the PowerDNS API is unreachable, or any zone read fails partway through, the page reports a
   single error instead of results. This is deliberate: a partial read could otherwise make a
   healthy zone look like it was missing its SOA.</li>
+<li>The shared zone id check can only find something here. A zone created in API mode and a zone
+  migrated from SQL mode can get the same id; extra owners and group grants on that id are
+  ignored until an administrator separates the zones. See
+  <a href="../../configuration/powerdns-api/#zone-ids-shared-by-two-zones">Zone IDs Shared by Two Zones</a>.
+  In SQL mode every zone has its own id, so the check always reports none.</li>
 </ul>
 <h2 id="when-to-run-it">When to run it<a class="headerlink" href="#when-to-run-it" title="Permanent link">¶</a></h2>
 <p>Consistency problems are usually the result of something interrupted - a failed bulk delete, a

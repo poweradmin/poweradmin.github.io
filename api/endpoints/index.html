@@ -7666,6 +7666,9 @@ instance for exploration.</p>
 <code>zone_meta_edit_others</code>), the same gate as the web edit form; record content permissions alone
 return <code>403</code>. A value that matches what is stored is not treated as a change, so clients that
 resend every field on update keep working.</p>
+<p>In API backend mode, <code>POST /zones/{id}/owners</code> answers <code>409</code> with "Owners cannot be added to this
+zone: its ID is shared with another zone" when the id belongs to two zones. See
+<a href="../../configuration/powerdns-api/#zone-ids-shared-by-two-zones">Zone IDs Shared by Two Zones</a>.</p>
 <h4 id="setting-the-serial-policy-on-create-v450">Setting the serial policy on create (v4.5.0+)<a class="headerlink" href="#setting-the-serial-policy-on-create-v450" title="Permanent link">¶</a></h4>
 <p><code>POST /zones</code> accepts an optional <code>soa_edit_api</code> string that sets the zone's
 SOA-EDIT-API serial policy:</p>
@@ -7739,6 +7742,11 @@ applied.</p>
 <td>Add a key (<code>type</code>, <code>algorithm</code>, <code>bits</code>, optional <code>active</code>) (v4.5.0+)</td>
 </tr>
 <tr>
+<td><code>POST</code></td>
+<td><code>/zones/{id}/dnssec/keys/import</code></td>
+<td>Import a key from a BIND-format private key (<code>type</code>, <code>privatekey</code>, optional <code>active</code>) (v4.6.0+)</td>
+</tr>
+<tr>
 <td><code>GET</code></td>
 <td><code>/zones/{id}/dnssec/keys/{key_id}</code></td>
 <td>Get one key (v4.5.0+)</td>
@@ -7761,7 +7769,9 @@ applied.</p>
 </tbody>
 </table>
 <p>Reading keys needs view access to the zone; the other key endpoints need <code>zone_dnssec_manage_own</code>
-on the zone (or administrator rights) and the PowerDNS API. For API key scopes, adding a key is a
+on the zone (or administrator rights) and the PowerDNS API. From 4.6.0, adding, importing,
+updating and deleting keys also needs view access to the zone, as on the web DNSSEC pages, and
+answers <code>403</code> without it. For API key scopes, adding a key is a
 <code>create</code> operation and rectifying is an <code>update</code>. New keys are created inactive unless <code>active</code> is
 <code>true</code>, as in the web UI. A key's <code>type</code> is the role PowerDNS derives on every read (<code>ksk</code> or
 <code>zsk</code> only while an active SEP and an active non-SEP key share an algorithm, otherwise <code>csk</code>); from
@@ -7769,6 +7779,9 @@ on the zone (or administrator rights) and the PowerDNS API. For API key scopes, 
 and Consumer zones. When PowerDNS
 cannot be reached, the status, sign/unsign, key and rectify endpoints answer <code>502</code> rather than
 reporting the zone as unsigned.</p>
+<p>An imported key must use an algorithm offered for new keys on the connected PowerDNS version.
+Any other algorithm answers <code>400</code> with "The private key uses an unsupported algorithm (one of:
+...)", listing the accepted ones.</p>
 <h3 id="server-status-v450">Server status (v4.5.0+)<a class="headerlink" href="#server-status-v450" title="Permanent link">¶</a></h3>
 <table>
 <thead>
@@ -8261,6 +8274,9 @@ given, and <code>per_page</code> is capped at 10000.</p>
 parameter is ignored rather than rejected, so <code>?limit=50</code> silently returns
 every row.</p>
 </blockquote>
+<p>From 4.6.0, a query parameter sent as an array, such as <code>?type[]=A</code>, answers <code>400</code> with
+"Query parameter 'type' must be a single value". This applies to every v2 endpoint and to the
+internal API.</p>
 <p>Paginated responses include a <code>pagination</code> block alongside <code>data</code>:</p>
 <div class="language-json highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"per_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="nt">"last_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">}</span>

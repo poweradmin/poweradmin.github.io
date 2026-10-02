@@ -2370,6 +2370,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#zone-ids-shared-by-two-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone IDs Shared by Two Zones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#zone-sync-service" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7499,6 +7510,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#zone-ids-shared-by-two-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone IDs Shared by Two Zones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#zone-sync-service" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7792,13 +7814,28 @@ RRset can be fetched instead of a whole zone. See
 <li>Change <code>dns.backend</code> from <code>sql</code> to <code>api</code></li>
 <li>Load any page - the zone sync service automatically populates cached zone metadata</li>
 </ol>
-<p>All existing zone ownership, group assignments, and permissions are preserved. The migration is reversible by changing <code>dns.backend</code> back to <code>sql</code>.</p>
+<p>All existing zone ownership, group assignments, and permissions are preserved, except on a zone id two zones share (see <a href="#zone-ids-shared-by-two-zones">Zone IDs Shared by Two Zones</a>). The migration is reversible by changing <code>dns.backend</code> back to <code>sql</code>.</p>
 <p><strong>What changes at runtime:</strong></p>
 <ul>
 <li>All zone and record writes go through the PowerDNS API, so cache flush and DNSSEC rectify/signing are triggered automatically. In SQL mode these required manual <code>pdns_control cache-flush</code> calls.</li>
 <li>NOTIFY is <em>not</em> sent as a side effect of an API write. PowerDNS only sends one from the explicit <code>PUT /zones/{id}/notify</code> endpoint, which Poweradmin does not call, or from the primary's periodic serial-check loop - which needs <code>primary=yes</code> (formerly <code>master=yes</code>) in <code>pdns.conf</code> and behaves the same way in SQL mode.</li>
 <li>The Poweradmin app no longer needs credentials for the PowerDNS database. You can remove <code>pdns_db_*</code> settings and revoke the corresponding database grants.</li>
 </ul>
+<h3 id="zone-ids-shared-by-two-zones">Zone IDs Shared by Two Zones<a class="headerlink" href="#zone-ids-shared-by-two-zones" title="Permanent link">¶</a></h3>
+<p>A zone created in API backend mode and a zone migrated from SQL mode can end up with the same
+zone id. From 4.6.0 Poweradmin handles this as follows:</p>
+<ul>
+<li>The id opens one of the two zones.</li>
+<li>Extra owners and group grants keyed by the shared id are ignored. Only the direct owner of the
+  zone the id opens keeps access; administrators are not affected.</li>
+<li>Adding owners or groups to a shared id is refused. The web forms say so, and the API v2
+  <code>POST /zones/{id}/owners</code> answers <code>409</code> with "Owners cannot be added to this zone: its ID is
+  shared with another zone".</li>
+<li>Deleting either zone also removes the owner and group grants keyed by the shared id.</li>
+</ul>
+<p>The <a href="../../maintenance/consistency-check/">Database Consistency Check</a> lists every shared id with
+both zone names, so an administrator can separate them. Poweradmin does not separate them
+automatically.</p>
 <h3 id="zone-sync-service">Zone Sync Service<a class="headerlink" href="#zone-sync-service" title="Permanent link">¶</a></h3>
 <p>In API backend mode, a sync service keeps the local <code>zones</code> table in sync with PowerDNS:</p>
 <ul>

@@ -7576,6 +7576,26 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td>The add-zone forms list other users only for callers who may assign them, and an owner id that does not exist is refused instead of creating a zone nobody owns (#1558)</td>
 <td><a href="../../user-guide/zones/#zone-ownership">Zone Management</a></td>
 </tr>
+<tr>
+<td>Array query parameters refused</td>
+<td>A query parameter sent as an array, such as <code>?type[]=A</code>, answers 400 with "Query parameter 'type' must be a single value" instead of 500, on API v2 and the internal API (#1609)</td>
+<td><a href="../../api/endpoints/#pagination">API Endpoints</a></td>
+</tr>
+<tr>
+<td>DNSSEC key changes need zone view access</td>
+<td>Adding, importing, updating and deleting keys through the API needs view access to the zone as well as the DNSSEC manage permission, as on the web pages. An imported key whose algorithm is not offered for new keys on the connected PowerDNS version is refused, on the import form and with a 400 in the API</td>
+<td><a href="../../api/endpoints/#zone-metadata-and-dnssec">API Endpoints</a></td>
+</tr>
+<tr>
+<td>Zone ids shared by two zones</td>
+<td>In API backend mode, a zone created there and a zone migrated from SQL mode can end up with the same zone id. The id opens one of them, extra owners and group grants keyed by it are ignored, and adding owners or groups to it is refused (409 in the API). Deleting either zone also removes those grants</td>
+<td><a href="../../configuration/powerdns-api/#zone-ids-shared-by-two-zones">PowerDNS API</a></td>
+</tr>
+<tr>
+<td>Shared zone ids in the consistency check</td>
+<td>The database consistency check lists each zone id two zones share, with both zone names and the number of ignored owners and group grants. It reports only; there is no automatic fix</td>
+<td><a href="../../maintenance/consistency-check/">Database Consistency Check</a></td>
+</tr>
 </tbody>
 </table>
 <h2 id="next">Next<a class="headerlink" href="#next" title="Permanent link">¶</a></h2>

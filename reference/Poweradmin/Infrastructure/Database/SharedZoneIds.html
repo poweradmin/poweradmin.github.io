@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Poweradmin\Domain\Database\TableNameService | Poweradmin class reference</title>
+    <title>Poweradmin\Infrastructure\Database\SharedZoneIds | Poweradmin class reference</title>
 
                 <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Poweradmin_Domain_Database_TableNameService" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+    <body id="class" data-name="class:Poweradmin_Infrastructure_Database_SharedZoneIds" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -83,18 +83,18 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">class</span></li>
-                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Database.html">Database</a></li><li class="backslash">\</li><li>TableNameService</li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure.html">Infrastructure</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure/Database.html">Database</a></li><li class="backslash">\</li><li>SharedZoneIds</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>TableNameService    
+        <h1>SharedZoneIds    
             </h1>
     </div>
 
     
-    <p>        class
-    <strong>TableNameService</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Database/TableNameService.php">View source</a>)
+    <p>final         class
+    <strong>SharedZoneIds</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/SharedZoneIds.php">View source</a>)
 </p>
 
         
@@ -103,7 +103,11 @@
         
 
             <div class="description">
-            <p><p>Applies the pdns_db_name prefix to PowerDNS table names and validates ORDER BY, LIMIT and OFFSET inputs.</p></p>                    </div>
+            <p><p>Ownership under a zone id collision in API backend mode.</p></p>            <p><p>A zone this application created and a zone migrated from SQL mode can share a canonical
+id. The id then resolves to one of them (see CanonicalZoneSql::selectByZoneId()), but the
+extra-owner rows and group grants keyed by that id belong to both, so they would let the
+other zone's owners act on it. For a shared id only the direct owner of the row it
+resolves to counts.</p></p>        </div>
             
         
     
@@ -113,76 +117,72 @@
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    
+                    static&nbsp;bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
+                    <a href="#method_isShared">isShared</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, int $zoneId)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>Whether more than one named zone has this canonical id.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    string
+                    static&nbsp;int|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getTable">getTable</a>(<abbr title="Poweradmin\Domain\Database\PdnsTable">PdnsTable</abbr> $table)
+                    <a href="#method_resolvedOwner">resolvedOwner</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, int $zoneId)
         
-                                            <p><p>Get table name with prefix using enum (preferred method)</p></p>                </div>
+                                            <p><p>The direct owner of the zone a shared id resolves to, or null when it has none.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    static&nbsp;bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getTables">getTables</a>(<abbr title="Poweradmin\Domain\Database\PdnsTable">PdnsTable</abbr> ...$tables)
+                    <a href="#method_ownsResolvedZone">ownsResolvedZone</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, int $userId, int $zoneId)
         
-                                            <p><p>Get multiple table names at once using enums</p></p>                </div>
+                                            <p><p>Whether the user is the direct owner of the zone a shared id resolves to.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    string
+                    static&nbsp;array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_validateOrderBy">validateOrderBy</a>(string $column, array $allowedColumns)
+                    <a href="#method_all">all</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
         
-                                            <p><p>Only ever returns a value present in $allowedColumns, so the result is safe
-to interpolate into ORDER BY.</p></p>                </div>
+                                            <p><p>Every shared canonical id.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    string
+                    static&nbsp;string
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_validateDirection">validateDirection</a>(string $direction)
+                    <a href="#method_sharedIdsSql">sharedIdsSql</a>()
         
-                                            <p><p>Only ever returns 'ASC' or 'DESC', so the result is safe to interpolate.</p></p>                </div>
+                                            <p><p>SQL selecting every shared canonical id, for queries that filter in SQL.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    int
+                    static&nbsp;array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_validateLimit">validateLimit</a>(int $limit, int $maxLimit = 10000)
+                    <a href="#method_sharedAmong">sharedAmong</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, array $zoneIds)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>The ids among $zoneIds that more than one named zone shares.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    int
+                    static&nbsp;array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_validateOffset">validateOffset</a>(int $offset)
+                    <a href="#method_filterOwned">filterOwned</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, int $userId, array $zoneIds)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>The user's owned zone ids without the shared ones whose resolved zone they do not own directly.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -192,10 +192,10 @@ to interpolate into ORDER BY.</p></p>                </div>
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Database/TableNameService.php#L36">at line 36</a></div>
-        <code>                    
-    <strong>__construct</strong>(<a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
+                    <h3 id="method_isShared">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/SharedZoneIds.php#L42">at line 42</a></div>
+        <code>        static            bool
+    <strong>isShared</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, int $zoneId)
         </code>
     </h3>
     <div class="details">    
@@ -204,51 +204,21 @@ to interpolate into ORDER BY.</p></p>                </div>
             
 
         <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
+                            <p><p>Whether more than one named zone has this canonical id.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
-                <td>$config</td>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
+                <td>$db</td>
                 <td></td>
             </tr>
-            </table>
-
-            
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_getTable">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Database/TableNameService.php#L47">at line 47</a></div>
-        <code>                    string
-    <strong>getTable</strong>(<abbr title="Poweradmin\Domain\Database\PdnsTable">PdnsTable</abbr> $table)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p><p>Get table name with prefix using enum (preferred method)</p></p>                        
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Poweradmin\Domain\Database\PdnsTable">PdnsTable</abbr></td>
-                <td>$table</td>
-                <td><p>Table enum</p></td>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
             </tr>
             </table>
 
@@ -257,8 +227,8 @@ to interpolate into ORDER BY.</p></p>                </div>
 
                     <table class="table table-condensed">
         <tr>
-            <td>string</td>
-            <td><p>Full table name with prefix if configured</p></td>
+            <td>bool</td>
+            <td></td>
         </tr>
     </table>
 
@@ -270,10 +240,10 @@ to interpolate into ORDER BY.</p></p>                </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getTables">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Database/TableNameService.php#L58">at line 58</a></div>
-        <code>                    array
-    <strong>getTables</strong>(<abbr title="Poweradmin\Domain\Database\PdnsTable">PdnsTable</abbr> ...$tables)
+                    <h3 id="method_resolvedOwner">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/SharedZoneIds.php#L60">at line 60</a></div>
+        <code>        static            int|null
+    <strong>resolvedOwner</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, int $zoneId)
         </code>
     </h3>
     <div class="details">    
@@ -282,16 +252,117 @@ to interpolate into ORDER BY.</p></p>                </div>
             
 
         <div class="method-description">
-                            <p><p>Get multiple table names at once using enums</p></p>                        
+                            <p><p>The direct owner of the zone a shared id resolves to, or null when it has none.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td><abbr title="Poweradmin\Domain\Database\PdnsTable">PdnsTable</abbr></td>
-                <td>...$tables</td>
-                <td><p>Variable number of table enums</p></td>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
+                <td>$db</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_ownsResolvedZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/SharedZoneIds.php#L73">at line 73</a></div>
+        <code>        static            bool
+    <strong>ownsResolvedZone</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, int $userId, int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the user is the direct owner of the zone a shared id resolves to.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
+                <td>$db</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_all">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/SharedZoneIds.php#L83">at line 83</a></div>
+        <code>        static            array
+    <strong>all</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Every shared canonical id.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
+                <td>$db</td>
+                <td></td>
             </tr>
             </table>
 
@@ -301,7 +372,7 @@ to interpolate into ORDER BY.</p></p>                </div>
                     <table class="table table-condensed">
         <tr>
             <td>array</td>
-            <td><p>Array of full table names</p></td>
+            <td></td>
         </tr>
     </table>
 
@@ -313,10 +384,10 @@ to interpolate into ORDER BY.</p></p>                </div>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_validateOrderBy">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Database/TableNameService.php#L72">at line 72</a></div>
-        <code>                    string
-    <strong>validateOrderBy</strong>(string $column, array $allowedColumns)
+                    <h3 id="method_sharedIdsSql">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/SharedZoneIds.php#L94">at line 94</a></div>
+        <code>        static            string
+    <strong>sharedIdsSql</strong>()
         </code>
     </h3>
     <div class="details">    
@@ -325,21 +396,53 @@ to interpolate into ORDER BY.</p></p>                </div>
             
 
         <div class="method-description">
-                            <p><p>Only ever returns a value present in $allowedColumns, so the result is safe
-to interpolate into ORDER BY.</p></p>                        
+                            <p><p>SQL selecting every shared canonical id, for queries that filter in SQL.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_sharedAmong">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/SharedZoneIds.php#L109">at line 109</a></div>
+        <code>        static            array
+    <strong>sharedAmong</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, array $zoneIds)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The ids among $zoneIds that more than one named zone shares.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
-                <td>$column</td>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
+                <td>$db</td>
                 <td></td>
             </tr>
                     <tr>
                 <td>array</td>
-                <td>$allowedColumns</td>
+                <td>$zoneIds</td>
                 <td></td>
             </tr>
             </table>
@@ -349,7 +452,7 @@ to interpolate into ORDER BY.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td>string</td>
+            <td>array</td>
             <td></td>
         </tr>
     </table>
@@ -362,10 +465,10 @@ to interpolate into ORDER BY.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_validateDirection">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Database/TableNameService.php#L86">at line 86</a></div>
-        <code>                    string
-    <strong>validateDirection</strong>(string $direction)
+                    <h3 id="method_filterOwned">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/SharedZoneIds.php#L133">at line 133</a></div>
+        <code>        static            array
+    <strong>filterOwned</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, int $userId, array $zoneIds)
         </code>
     </h3>
     <div class="details">    
@@ -374,15 +477,25 @@ to interpolate into ORDER BY.</p></p>
             
 
         <div class="method-description">
-                            <p><p>Only ever returns 'ASC' or 'DESC', so the result is safe to interpolate.</p></p>                        
+                            <p><p>The user's owned zone ids without the shared ones whose resolved zone they do not own directly.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
-                <td>$direction</td>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
+                <td>$db</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$zoneIds</td>
                 <td></td>
             </tr>
             </table>
@@ -392,100 +505,7 @@ to interpolate into ORDER BY.</p></p>
 
                     <table class="table table-condensed">
         <tr>
-            <td>string</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_validateLimit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Database/TableNameService.php#L97">at line 97</a></div>
-        <code>                    int
-    <strong>validateLimit</strong>(int $limit, int $maxLimit = 10000)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>int</td>
-                <td>$limit</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>int</td>
-                <td>$maxLimit</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>int</td>
-            <td></td>
-        </tr>
-    </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
-            </div>
-                    <div class="method-item">
-                    <h3 id="method_validateOffset">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Database/TableNameService.php#L110">at line 110</a></div>
-        <code>                    int
-    <strong>validateOffset</strong>(int $offset)
-        </code>
-    </h3>
-    <div class="details">    
-            
-    
-            
-
-        <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
-        </div>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table class="table table-condensed">
-                    <tr>
-                <td>int</td>
-                <td>$offset</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-                            <h4>Return Value</h4>
-
-                    <table class="table table-condensed">
-        <tr>
-            <td>int</td>
+            <td>array</td>
             <td></td>
         </tr>
     </table>

@@ -198,10 +198,11 @@ PowerDNS. PEM keys are refused: the PowerDNS HTTP API does not take them.</p></p
                     <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_importKey">importKey</a>(int $zoneId, string $zoneName, string $type, string $privateKey, bool $active)
+                    <a href="#method_importKey">importKey</a>(int $zoneId, string $zoneName, string $type, string $privateKey, bool $active, <a href="../../../../Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a>|null $capabilities = null)
         
                                             <p><p>Import a key from an existing ISC/BIND private key. PowerDNS derives the
-algorithm and size from the key; the created key carries them.</p></p>                </div>
+algorithm and size from the key; the created key carries them. The key's
+algorithm must be one offered for new keys.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -554,9 +555,9 @@ PowerDNS. PEM keys are refused: the PowerDNS HTTP API does not take them.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_importKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L148">at line 148</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L151">at line 151</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
-    <strong>importKey</strong>(int $zoneId, string $zoneName, string $type, string $privateKey, bool $active)
+    <strong>importKey</strong>(int $zoneId, string $zoneName, string $type, string $privateKey, bool $active, <a href="../../../../Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a>|null $capabilities = null)
         </code>
     </h3>
     <div class="details">    
@@ -566,7 +567,8 @@ PowerDNS. PEM keys are refused: the PowerDNS HTTP API does not take them.</p></p
 
         <div class="method-description">
                             <p><p>Import a key from an existing ISC/BIND private key. PowerDNS derives the
-algorithm and size from the key; the created key carries them.</p></p>                <p><p>The private key is only passed on to PowerDNS: it is not audited, logged
+algorithm and size from the key; the created key carries them. The key's
+algorithm must be one offered for new keys.</p></p>                <p><p>The private key is only passed on to PowerDNS: it is not audited, logged
 or part of the result.</p></p>        
         </div>
         <div class="tags">
@@ -598,6 +600,11 @@ or part of the result.</p></p>
                 <td>$active</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a>|null</td>
+                <td>$capabilities</td>
+                <td><p>The connected server, which decides the algorithms accepted</p></td>
+            </tr>
             </table>
 
             
@@ -619,7 +626,7 @@ or part of the result.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_setKeyActive">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L184">at line 184</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L196">at line 196</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
     <strong>setKeyActive</strong>(int $zoneId, string $zoneName, int $keyId, bool $active)
         </code>
@@ -678,7 +685,7 @@ or part of the result.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_toggleKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L192">at line 192</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L204">at line 204</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
     <strong>toggleKey</strong>(int $zoneId, string $zoneName, int $keyId)
         </code>
@@ -731,7 +738,7 @@ or part of the result.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_removeKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L197">at line 197</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/DnssecKeyService.php#L209">at line 209</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/DnssecKeyResult.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyResult">DnssecKeyResult</abbr></a>
     <strong>removeKey</strong>(int $zoneId, string $zoneName, int $keyId)
         </code>
@@ -787,7 +794,7 @@ or part of the result.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/8869233" rel="noreferrer" target="_blank">commit 8869233,</a> built 2026-10-02 12:38 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/dfccdae" rel="noreferrer" target="_blank">commit dfccdae,</a> built 2026-10-02 19:26 UTC.</div></div>
     </div>
     </body>
 
