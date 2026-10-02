@@ -7130,15 +7130,25 @@ the dashboard, which appear only if you hold the relevant permission.</p>
 </tr>
 <tr>
 <td>Account</td>
-<td>A Poweradmin username. Zones auto-created from this supermaster are assigned to that user</td>
+<td>A Poweradmin username. PowerDNS copies it into the <code>account</code> field of every zone it creates from this entry</td>
 </tr>
 </tbody>
 </table>
 <p>The IP address and hostname together form the primary key, so the same IP can appear more than
 once with different nameserver hostnames. Editing and deleting identify an entry by both values.</p>
-<p>Setting <strong>Account</strong> matters in practice: without it, auto-created zones arrive with no owner and
-are invisible to non-administrator users. Those show up under "zones without owners" in the
+<p>PowerDNS creates these zones itself, so Poweradmin does not give them an owner by default. They
+are invisible to non-administrator users and show up under "zones without owners" in the
 <a href="../../maintenance/consistency-check/">Database Consistency Check</a>.</p>
+<p>Since v4.6.0, set <code>dns.adopt_zone_owner_from_account</code> to <code>true</code> (Docker:
+<code>PA_DNS_ADOPT_ZONE_OWNER_FROM_ACCOUNT=true</code>) to give such a zone to the user named in <strong>Account</strong>:</p>
+<ul>
+<li>With the API backend, the zone sync does it as soon as it finds the new zone.</li>
+<li>With either backend, the "zones without owners" repair in the consistency check assigns the
+  zone to that user instead of the administrator who runs the repair. This also covers zones
+  that arrived before the setting was turned on.</li>
+</ul>
+<p>The account must match the username exactly, including case. A zone that already has an owner
+or a group is never changed.</p>
 <h2 id="adding-an-entry">Adding an entry<a class="headerlink" href="#adding-an-entry" title="Permanent link">¶</a></h2>
 <ol>
 <li>

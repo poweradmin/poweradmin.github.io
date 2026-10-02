@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Poweradmin\Domain\Port\RecordSearchInterface | Poweradmin class reference</title>
+    <title>Poweradmin\Infrastructure\Repository\AccountOwnerLookup | Poweradmin class reference</title>
 
                 <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Poweradmin_Domain_Port_RecordSearchInterface" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+    <body id="class" data-name="class:Poweradmin_Infrastructure_Repository_AccountOwnerLookup" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -82,19 +82,19 @@
 
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
-                <li><span class="label label-default">interface</span></li>
-                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Port.html">Port</a></li><li class="backslash">\</li><li>RecordSearchInterface</li>
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure.html">Infrastructure</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure/Repository.html">Repository</a></li><li class="backslash">\</li><li>AccountOwnerLookup</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>RecordSearchInterface    
+        <h1>AccountOwnerLookup    
             </h1>
     </div>
 
     
-    <p>        interface
-    <strong>RecordSearchInterface</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/RecordSearchInterface.php">View source</a>)
+    <p>final         class
+    <strong>AccountOwnerLookup</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php">View source</a>)
 </p>
 
         
@@ -103,8 +103,8 @@
         
 
             <div class="description">
-            <p><p>The search page's record half: matching records with their zone owner, paged and
-sorted, and the unpaged match count. Rows carry <code>disabled</code> as a bool.</p></p>                    </div>
+            <p><p>Finds the Poweradmin user a PowerDNS account value names, for zones that arrive
+without an owner (an autoprimary sets the account from its own configuration).</p></p>                    </div>
             
         
     
@@ -114,10 +114,10 @@ sorted, and the unpaged match count. Rows carry <code>disabled</code> as a bool.
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_searchRecords">searchRecords</a>(array $parameters, string $permissionView, int|null $userId, string $sortBy, string $sortDirection, bool $groupRecords, int $rowAmount, bool $includeComments, int $page)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -125,13 +125,22 @@ sorted, and the unpaged match count. Rows carry <code>disabled</code> as a bool.
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
-                    int
+                    static&nbsp;<a href="../../../Poweradmin/Infrastructure/Repository/AccountOwnerLookup.html"><abbr title="Poweradmin\Infrastructure\Repository\AccountOwnerLookup">AccountOwnerLookup</abbr></a>|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getTotalRecords">getTotalRecords</a>(array $parameters, string $permissionView, int|null $userId, bool $groupRecords)
+                    <a href="#method_forConfig">forConfig</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
         
-                                            <p class="no-description">No description</p>
-                                    </div>
+                                            <p><p>A lookup when dns.adopt_zone_owner_from_account is on, null otherwise.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_userIdFor">userIdFor</a>(string $account)
+        
+                                            <p><p>The id of the user whose username is exactly $account, or null when none is.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -141,10 +150,10 @@ sorted, and the unpaged match count. Rows carry <code>disabled</code> as a bool.
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_searchRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/RecordSearchInterface.php#L38">at line 38</a></div>
-        <code>                    array
-    <strong>searchRecords</strong>(array $parameters, string $permissionView, int|null $userId, string $sortBy, string $sortDirection, bool $groupRecords, int $rowAmount, bool $includeComments, int $page)
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L37">at line 37</a></div>
+        <code>                    
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
         </code>
     </h3>
     <div class="details">    
@@ -161,48 +170,47 @@ sorted, and the unpaged match count. Rows carry <code>disabled</code> as a bool.
 
                     <table class="table table-condensed">
                     <tr>
-                <td>array</td>
-                <td>$parameters</td>
-                <td><p>query, zones, records, comments, wildcard, reverse, type_filter, content_filter</p></td>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
+                <td>$db</td>
+                <td></td>
             </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_forConfig">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L44">at line 44</a></div>
+        <code>        static            <a href="../../../Poweradmin/Infrastructure/Repository/AccountOwnerLookup.html"><abbr title="Poweradmin\Infrastructure\Repository\AccountOwnerLookup">AccountOwnerLookup</abbr></a>|null
+    <strong>forConfig</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>A lookup when dns.adopt_zone_owner_from_account is on, null otherwise.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
                     <tr>
-                <td>string</td>
-                <td>$permissionView</td>
-                <td><p>'all', or 'own' to limit to zones $userId owns</p></td>
-            </tr>
-                    <tr>
-                <td>int|null</td>
-                <td>$userId</td>
-                <td><p>The user an 'own' view is limited to; null matches nothing</p></td>
-            </tr>
-                    <tr>
-                <td>string</td>
-                <td>$sortBy</td>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
+                <td>$db</td>
                 <td></td>
             </tr>
                     <tr>
-                <td>string</td>
-                <td>$sortDirection</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>bool</td>
-                <td>$groupRecords</td>
-                <td><p>Collapse rows with the same name and content</p></td>
-            </tr>
-                    <tr>
-                <td>int</td>
-                <td>$rowAmount</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>bool</td>
-                <td>$includeComments</td>
-                <td><p>Add the record comment to each row</p></td>
-            </tr>
-                    <tr>
-                <td>int</td>
-                <td>$page</td>
+                <td><a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
+                <td>$config</td>
                 <td></td>
             </tr>
             </table>
@@ -212,7 +220,7 @@ sorted, and the unpaged match count. Rows carry <code>disabled</code> as a bool.
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td><a href="../../../Poweradmin/Infrastructure/Repository/AccountOwnerLookup.html"><abbr title="Poweradmin\Infrastructure\Repository\AccountOwnerLookup">AccountOwnerLookup</abbr></a>|null</td>
             <td></td>
         </tr>
     </table>
@@ -225,10 +233,10 @@ sorted, and the unpaged match count. Rows carry <code>disabled</code> as a bool.
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_getTotalRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/RecordSearchInterface.php#L50">at line 50</a></div>
-        <code>                    int
-    <strong>getTotalRecords</strong>(array $parameters, string $permissionView, int|null $userId, bool $groupRecords)
+                    <h3 id="method_userIdFor">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L52">at line 52</a></div>
+        <code>                    int|null
+    <strong>userIdFor</strong>(string $account)
         </code>
     </h3>
     <div class="details">    
@@ -237,31 +245,15 @@ sorted, and the unpaged match count. Rows carry <code>disabled</code> as a bool.
             
 
         <div class="method-description">
-                            <p class="no-description">No description</p>
-                    
+                            <p><p>The id of the user whose username is exactly $account, or null when none is.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>array</td>
-                <td>$parameters</td>
-                <td></td>
-            </tr>
-                    <tr>
                 <td>string</td>
-                <td>$permissionView</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>int|null</td>
-                <td>$userId</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td>bool</td>
-                <td>$groupRecords</td>
+                <td>$account</td>
                 <td></td>
             </tr>
             </table>
@@ -271,7 +263,7 @@ sorted, and the unpaged match count. Rows carry <code>disabled</code> as a bool.
 
                     <table class="table table-condensed">
         <tr>
-            <td>int</td>
+            <td>int|null</td>
             <td></td>
         </tr>
     </table>

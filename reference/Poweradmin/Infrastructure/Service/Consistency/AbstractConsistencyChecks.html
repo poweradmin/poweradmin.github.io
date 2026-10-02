@@ -118,7 +118,7 @@ consistency page posts map onto the same repairs whichever backend runs them.</p
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Infrastructure/Service/Consistency/ZoneOwnerRepair.html"><abbr title="Poweradmin\Infrastructure\Service\Consistency\ZoneOwnerRepair">ZoneOwnerRepair</abbr></a> $ownerRepair)
+                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Infrastructure/Service/Consistency/ZoneOwnerRepair.html"><abbr title="Poweradmin\Infrastructure\Service\Consistency\ZoneOwnerRepair">ZoneOwnerRepair</abbr></a> $ownerRepair, <a href="../../../../Poweradmin/Infrastructure/Repository/AccountOwnerLookup.html"><abbr title="Poweradmin\Infrastructure\Repository\AccountOwnerLookup">AccountOwnerLookup</abbr></a>|null $accountOwners = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -132,6 +132,16 @@ consistency page posts map onto the same repairs whichever backend runs them.</p
                     <a href="#method_fixZoneWithoutOwner">fixZoneWithoutOwner</a>(int $zoneId, int $currentUserId)
         
                                             <p><p>Assign $currentUserId as the owner of a zone that has none.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneAccount">zoneAccount</a>(int $zoneId)
+        
+                                            <p><p>The zone's PowerDNS account, or null where this backend does not read it.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -176,9 +186,9 @@ offer one.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L35">at line 35</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L39">at line 39</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../../Poweradmin/Infrastructure/Service/Consistency/ZoneOwnerRepair.html"><abbr title="Poweradmin\Infrastructure\Service\Consistency\ZoneOwnerRepair">ZoneOwnerRepair</abbr></a> $ownerRepair)
+    <strong>__construct</strong>(<a href="../../../../Poweradmin/Infrastructure/Service/Consistency/ZoneOwnerRepair.html"><abbr title="Poweradmin\Infrastructure\Service\Consistency\ZoneOwnerRepair">ZoneOwnerRepair</abbr></a> $ownerRepair, <a href="../../../../Poweradmin/Infrastructure/Repository/AccountOwnerLookup.html"><abbr title="Poweradmin\Infrastructure\Repository\AccountOwnerLookup">AccountOwnerLookup</abbr></a>|null $accountOwners = null)
         </code>
     </h3>
     <div class="details">    
@@ -199,6 +209,11 @@ offer one.</p></p>                </div>
                 <td>$ownerRepair</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Infrastructure/Repository/AccountOwnerLookup.html"><abbr title="Poweradmin\Infrastructure\Repository\AccountOwnerLookup">AccountOwnerLookup</abbr></a>|null</td>
+                <td>$accountOwners</td>
+                <td><p>Prefers the user a zone's PowerDNS account names (dns.adopt_zone_owner_from_account)</p></td>
+            </tr>
             </table>
 
             
@@ -211,7 +226,7 @@ offer one.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_fixZoneWithoutOwner">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L39">at line 39</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L45">at line 45</a></div>
         <code>                    bool
     <strong>fixZoneWithoutOwner</strong>(int $zoneId, int $currentUserId)
         </code>
@@ -258,8 +273,51 @@ offer one.</p></p>                </div>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_zoneAccount">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L55">at line 55</a></div>
+        <code>            protected        string|null
+    <strong>zoneAccount</strong>(int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The zone's PowerDNS account, or null where this backend does not read it.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_fixAllZonesWithoutOwner">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L44">at line 44</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L60">at line 60</a></div>
         <code>                    array
     <strong>fixAllZonesWithoutOwner</strong>(int $currentUserId)
         </code>
@@ -303,7 +361,7 @@ offer one.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_fixOne">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L53">at line 53</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L69">at line 69</a></div>
         <code>                    array
     <strong>fixOne</strong>(string $type, int $id, int $currentUserId)
         </code>
@@ -358,7 +416,7 @@ orphaned_records, duplicate_soa, zones_without_soa) to one finding.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_fixAll">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L68">at line 68</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L84">at line 84</a></div>
         <code>                    array
     <strong>fixAll</strong>(string $type, int $currentUserId)
         </code>
@@ -409,7 +467,7 @@ offer one.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/3b2c29d" rel="noreferrer" target="_blank">commit 3b2c29d,</a> built 2026-10-02 08:50 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/46a0fc9" rel="noreferrer" target="_blank">commit 46a0fc9,</a> built 2026-10-02 11:06 UTC.</div></div>
     </div>
     </body>
 

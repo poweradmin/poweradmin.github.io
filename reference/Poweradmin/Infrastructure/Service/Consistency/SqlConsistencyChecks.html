@@ -116,7 +116,7 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Database/TableNameService.html"><abbr title="Poweradmin\Domain\Database\TableNameService">TableNameService</abbr></a> $tableNameService, <a href="../../../../Poweradmin/Infrastructure/Service/Consistency/ZoneOwnerRepair.html"><abbr title="Poweradmin\Infrastructure\Service\Consistency\ZoneOwnerRepair">ZoneOwnerRepair</abbr></a> $ownerRepair)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Database/TableNameService.html"><abbr title="Poweradmin\Domain\Database\TableNameService">TableNameService</abbr></a> $tableNameService, <a href="../../../../Poweradmin/Infrastructure/Service/Consistency/ZoneOwnerRepair.html"><abbr title="Poweradmin\Infrastructure\Service\Consistency\ZoneOwnerRepair">ZoneOwnerRepair</abbr></a> $ownerRepair, <a href="../../../../Poweradmin/Infrastructure/Repository/AccountOwnerLookup.html"><abbr title="Poweradmin\Infrastructure\Repository\AccountOwnerLookup">AccountOwnerLookup</abbr></a>|null $accountOwners = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -132,6 +132,16 @@
                                             <p><p>Assign $currentUserId as the owner of a zone that has none.</p></p>                </div>
                 <div class="col-md-2"><small>from&nbsp;<a href="../../../../Poweradmin/Infrastructure/Service/Consistency/AbstractConsistencyChecks.html#method_fixZoneWithoutOwner">
 <abbr title="Poweradmin\Infrastructure\Service\Consistency\AbstractConsistencyChecks">AbstractConsistencyChecks</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneAccount">zoneAccount</a>(int $zoneId)
+        
+                                            <p><p>The zone's PowerDNS account, or null where this backend does not read it.</p></p>                </div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -319,9 +329,9 @@ read and no result can be trusted.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L42">at line 42</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L43">at line 43</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Database/TableNameService.html"><abbr title="Poweradmin\Domain\Database\TableNameService">TableNameService</abbr></a> $tableNameService, <a href="../../../../Poweradmin/Infrastructure/Service/Consistency/ZoneOwnerRepair.html"><abbr title="Poweradmin\Infrastructure\Service\Consistency\ZoneOwnerRepair">ZoneOwnerRepair</abbr></a> $ownerRepair)
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Database/TableNameService.html"><abbr title="Poweradmin\Domain\Database\TableNameService">TableNameService</abbr></a> $tableNameService, <a href="../../../../Poweradmin/Infrastructure/Service/Consistency/ZoneOwnerRepair.html"><abbr title="Poweradmin\Infrastructure\Service\Consistency\ZoneOwnerRepair">ZoneOwnerRepair</abbr></a> $ownerRepair, <a href="../../../../Poweradmin/Infrastructure/Repository/AccountOwnerLookup.html"><abbr title="Poweradmin\Infrastructure\Repository\AccountOwnerLookup">AccountOwnerLookup</abbr></a>|null $accountOwners = null)
         </code>
     </h3>
     <div class="details">    
@@ -352,6 +362,11 @@ read and no result can be trusted.</p></p>                </div>
                 <td>$ownerRepair</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Infrastructure/Repository/AccountOwnerLookup.html"><abbr title="Poweradmin\Infrastructure\Repository\AccountOwnerLookup">AccountOwnerLookup</abbr></a>|null</td>
+                <td>$accountOwners</td>
+                <td><p>Prefers the user a zone's PowerDNS account names (dns.adopt_zone_owner_from_account)</p></td>
+            </tr>
             </table>
 
             
@@ -365,7 +380,7 @@ read and no result can be trusted.</p></p>                </div>
                     <div class="method-item">
                     <h3 id="method_fixZoneWithoutOwner">
         <div class="location">in <a href="../../../../Poweradmin/Infrastructure/Service/Consistency/AbstractConsistencyChecks.html#method_fixZoneWithoutOwner">
-<abbr title="Poweradmin\Infrastructure\Service\Consistency\AbstractConsistencyChecks">AbstractConsistencyChecks</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L39">at line 39</a></div>
+<abbr title="Poweradmin\Infrastructure\Service\Consistency\AbstractConsistencyChecks">AbstractConsistencyChecks</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L45">at line 45</a></div>
         <code>                    bool
     <strong>fixZoneWithoutOwner</strong>(int $zoneId, int $currentUserId)
         </code>
@@ -412,9 +427,52 @@ read and no result can be trusted.</p></p>                </div>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_zoneAccount">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L54">at line 54</a></div>
+        <code>            protected        string|null
+    <strong>zoneAccount</strong>(int $zoneId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The zone's PowerDNS account, or null where this backend does not read it.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_fixAllZonesWithoutOwner">
         <div class="location">in <a href="../../../../Poweradmin/Infrastructure/Service/Consistency/AbstractConsistencyChecks.html#method_fixAllZonesWithoutOwner">
-<abbr title="Poweradmin\Infrastructure\Service\Consistency\AbstractConsistencyChecks">AbstractConsistencyChecks</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L44">at line 44</a></div>
+<abbr title="Poweradmin\Infrastructure\Service\Consistency\AbstractConsistencyChecks">AbstractConsistencyChecks</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L60">at line 60</a></div>
         <code>                    array
     <strong>fixAllZonesWithoutOwner</strong>(int $currentUserId)
         </code>
@@ -459,7 +517,7 @@ read and no result can be trusted.</p></p>                </div>
                     <div class="method-item">
                     <h3 id="method_fixOne">
         <div class="location">in <a href="../../../../Poweradmin/Infrastructure/Service/Consistency/AbstractConsistencyChecks.html#method_fixOne">
-<abbr title="Poweradmin\Infrastructure\Service\Consistency\AbstractConsistencyChecks">AbstractConsistencyChecks</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L53">at line 53</a></div>
+<abbr title="Poweradmin\Infrastructure\Service\Consistency\AbstractConsistencyChecks">AbstractConsistencyChecks</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L69">at line 69</a></div>
         <code>                    array
     <strong>fixOne</strong>(string $type, int $id, int $currentUserId)
         </code>
@@ -515,7 +573,7 @@ orphaned_records, duplicate_soa, zones_without_soa) to one finding.</p></p>
                     <div class="method-item">
                     <h3 id="method_fixAll">
         <div class="location">in <a href="../../../../Poweradmin/Infrastructure/Service/Consistency/AbstractConsistencyChecks.html#method_fixAll">
-<abbr title="Poweradmin\Infrastructure\Service\Consistency\AbstractConsistencyChecks">AbstractConsistencyChecks</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L68">at line 68</a></div>
+<abbr title="Poweradmin\Infrastructure\Service\Consistency\AbstractConsistencyChecks">AbstractConsistencyChecks</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/AbstractConsistencyChecks.php#L84">at line 84</a></div>
         <code>                    array
     <strong>fixAll</strong>(string $type, int $currentUserId)
         </code>
@@ -564,7 +622,7 @@ offer one.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_checkZonesHaveOwners">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L52">at line 52</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L64">at line 64</a></div>
         <code>                    array
     <strong>checkZonesHaveOwners</strong>()
         </code>
@@ -598,7 +656,7 @@ offer one.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_checkZonesHaveCanonicalIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L78">at line 78</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L90">at line 90</a></div>
         <code>                    array
     <strong>checkZonesHaveCanonicalIds</strong>()
         </code>
@@ -632,7 +690,7 @@ not a valid substitute, so there is nothing this check may safely report or repa
             </div>
                     <div class="method-item">
                     <h3 id="method_checkSlaveZonesHaveMasters">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L83">at line 83</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L95">at line 95</a></div>
         <code>                    array
     <strong>checkSlaveZonesHaveMasters</strong>()
         </code>
@@ -666,7 +724,7 @@ not a valid substitute, so there is nothing this check may safely report or repa
             </div>
                     <div class="method-item">
                     <h3 id="method_checkRecordsBelongToZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L105">at line 105</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L117">at line 117</a></div>
         <code>                    array
     <strong>checkRecordsBelongToZones</strong>()
         </code>
@@ -700,7 +758,7 @@ not a valid substitute, so there is nothing this check may safely report or repa
             </div>
                     <div class="method-item">
                     <h3 id="method_checkDuplicateSOARecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L128">at line 128</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L140">at line 140</a></div>
         <code>                    array
     <strong>checkDuplicateSOARecords</strong>()
         </code>
@@ -734,7 +792,7 @@ not a valid substitute, so there is nothing this check may safely report or repa
             </div>
                     <div class="method-item">
                     <h3 id="method_checkZonesWithoutSOA">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L150">at line 150</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L162">at line 162</a></div>
         <code>                    array
     <strong>checkZonesWithoutSOA</strong>()
         </code>
@@ -768,7 +826,7 @@ not a valid substitute, so there is nothing this check may safely report or repa
             </div>
                     <div class="method-item">
                     <h3 id="method_runAllChecks">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L168">at line 168</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L180">at line 180</a></div>
         <code>                    array|null
     <strong>runAllChecks</strong>()
         </code>
@@ -802,7 +860,7 @@ read and no result can be trusted.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_fixZoneCanonicalId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L180">at line 180</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L192">at line 192</a></div>
         <code>                    bool
     <strong>fixZoneCanonicalId</strong>(int $zoneId)
         </code>
@@ -845,7 +903,7 @@ read and no result can be trusted.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_fixAllZonesWithCanonicalIdIssue">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L185">at line 185</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L197">at line 197</a></div>
         <code>                    array
     <strong>fixAllZonesWithCanonicalIdIssue</strong>()
         </code>
@@ -879,7 +937,7 @@ read and no result can be trusted.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteSlaveZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L190">at line 190</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L202">at line 202</a></div>
         <code>                    bool
     <strong>deleteSlaveZone</strong>(int $zoneId)
         </code>
@@ -923,7 +981,7 @@ read and no result can be trusted.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteOrphanedRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L215">at line 215</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L227">at line 227</a></div>
         <code>                    bool
     <strong>deleteOrphanedRecord</strong>(int $recordId)
         </code>
@@ -967,7 +1025,7 @@ read and no result can be trusted.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_fixDuplicateSOA">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L221">at line 221</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L233">at line 233</a></div>
         <code>                    bool
     <strong>fixDuplicateSOA</strong>(int $zoneId)
         </code>
@@ -1010,7 +1068,7 @@ read and no result can be trusted.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_createDefaultSOA">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L247">at line 247</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/Consistency/SqlConsistencyChecks.php#L259">at line 259</a></div>
         <code>                    bool
     <strong>createDefaultSOA</strong>(int $zoneId)
         </code>
@@ -1056,7 +1114,7 @@ read and no result can be trusted.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/3b2c29d" rel="noreferrer" target="_blank">commit 3b2c29d,</a> built 2026-10-02 08:50 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/46a0fc9" rel="noreferrer" target="_blank">commit 46a0fc9,</a> built 2026-10-02 11:06 UTC.</div></div>
     </div>
     </body>
 
