@@ -108,6 +108,19 @@ repositories and record managers that read and write through it. Every
 memoized instance is shared for the request so read caches are not split.</p></p>                    </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                            private
+                                                                                ZONE_CACHE_FLUSH_TIMEOUT
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -164,6 +177,17 @@ keeps one set of per-request read caches for the whole request.</p></p>         
         
                                             <p><p>The connected PowerDNS version, from the session cache or one fetch when the
 cache is empty or expired; unknown when no PowerDNS API is configured.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../../Poweradmin/Domain/Port/ZoneCacheFlusherInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneCacheFlusherInterface">ZoneCacheFlusherInterface</abbr></a>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_zoneCacheFlusher">zoneCacheFlusher</a>()
+        
+                                            <p><p>Null in API backend mode, where PowerDNS flushes on its own writes, and when
+no PowerDNS API is configured to send the flush to.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -295,7 +319,7 @@ the same floor the automatic sync uses.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L86">at line 86</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L92">at line 92</a></div>
         <code>                    
     <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger, <a href="../../../../Poweradmin/Domain/Port/ActorInterface.html"><abbr title="Poweradmin\Domain\Port\ActorInterface">ActorInterface</abbr></a> $actor, <a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $session)
         </code>
@@ -350,7 +374,7 @@ the same floor the automatic sync uses.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_transaction">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L98">at line 98</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L104">at line 104</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Port/TransactionInterface.html"><abbr title="Poweradmin\Domain\Port\TransactionInterface">TransactionInterface</abbr></a>
     <strong>transaction</strong>()
         </code>
@@ -383,7 +407,7 @@ the same floor the automatic sync uses.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_dnsBackendProvider">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L106">at line 106</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L112">at line 112</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>
     <strong>dnsBackendProvider</strong>()
         </code>
@@ -416,7 +440,7 @@ the same floor the automatic sync uses.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_apiClient">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L115">at line 115</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L121">at line 121</a></div>
         <code>                    <a href="../../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a>|null
     <strong>apiClient</strong>()
         </code>
@@ -450,7 +474,7 @@ keeps one set of per-request read caches for the whole request.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_pdnsCapabilities">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L129">at line 129</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L135">at line 135</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Model/PdnsCapabilities.html"><abbr title="Poweradmin\Domain\Model\PdnsCapabilities">PdnsCapabilities</abbr></a>
     <strong>pdnsCapabilities</strong>()
         </code>
@@ -483,8 +507,42 @@ cache is empty or expired; unknown when no PowerDNS API is configured.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_zoneCacheFlusher">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L156">at line 156</a></div>
+        <code>                    <a href="../../../../Poweradmin/Domain/Port/ZoneCacheFlusherInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneCacheFlusherInterface">ZoneCacheFlusherInterface</abbr></a>|null
+    <strong>zoneCacheFlusher</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Null in API backend mode, where PowerDNS flushes on its own writes, and when
+no PowerDNS API is configured to send the flush to.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../Poweradmin/Domain/Port/ZoneCacheFlusherInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneCacheFlusherInterface">ZoneCacheFlusherInterface</abbr></a>|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_repositoryFactory">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L146">at line 146</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L168">at line 168</a></div>
         <code>                    <a href="../../../../Poweradmin/Application/Service/Backend/RepositoryFactory.html"><abbr title="Poweradmin\Application\Service\Backend\RepositoryFactory">RepositoryFactory</abbr></a>
     <strong>repositoryFactory</strong>(<a href="../../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null $backendProvider = null)
         </code>
@@ -528,7 +586,7 @@ cache is empty or expired; unknown when no PowerDNS API is configured.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L158">at line 158</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L180">at line 180</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a>
     <strong>zoneRepository</strong>()
         </code>
@@ -562,7 +620,7 @@ cache is empty or expired; unknown when no PowerDNS API is configured.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_domainRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L163">at line 163</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L185">at line 185</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a>
     <strong>domainRepository</strong>()
         </code>
@@ -596,7 +654,7 @@ cache is empty or expired; unknown when no PowerDNS API is configured.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_recordRepository">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L168">at line 168</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L190">at line 190</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Repository/RecordRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordRepositoryInterface">RecordRepositoryInterface</abbr></a>
     <strong>recordRepository</strong>()
         </code>
@@ -630,7 +688,7 @@ cache is empty or expired; unknown when no PowerDNS API is configured.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_soaRecordManager">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L173">at line 173</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L195">at line 195</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a>
     <strong>soaRecordManager</strong>()
         </code>
@@ -664,7 +722,7 @@ cache is empty or expired; unknown when no PowerDNS API is configured.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_dnssecProvider">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L178">at line 178</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L200">at line 200</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Port/DnssecProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnssecProviderInterface">DnssecProviderInterface</abbr></a>
     <strong>dnssecProvider</strong>()
         </code>
@@ -698,7 +756,7 @@ cache is empty or expired; unknown when no PowerDNS API is configured.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_dnsDataService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L189">at line 189</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L211">at line 211</a></div>
         <code>                    <a href="../../../../Poweradmin/Application/Service/Backend/DnsDataService.html"><abbr title="Poweradmin\Application\Service\Backend\DnsDataService">DnsDataService</abbr></a>
     <strong>dnsDataService</strong>()
         </code>
@@ -732,7 +790,7 @@ cache is empty or expired; unknown when no PowerDNS API is configured.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneMetadataStore">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L194">at line 194</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L216">at line 216</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Repository/ZoneMetadataStoreInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneMetadataStoreInterface">ZoneMetadataStoreInterface</abbr></a>
     <strong>zoneMetadataStore</strong>()
         </code>
@@ -766,7 +824,7 @@ cache is empty or expired; unknown when no PowerDNS API is configured.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_consistencyChecker">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L203">at line 203</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L225">at line 225</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Consistency/ConsistencyCheckerInterface.html"><abbr title="Poweradmin\Domain\Service\Consistency\ConsistencyCheckerInterface">ConsistencyCheckerInterface</abbr></a>
     <strong>consistencyChecker</strong>()
         </code>
@@ -800,7 +858,7 @@ cache is empty or expired; unknown when no PowerDNS API is configured.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_powerdnsStatusService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L213">at line 213</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L235">at line 235</a></div>
         <code>                    <a href="../../../../Poweradmin/Application/Service/Backend/PowerdnsStatusService.html"><abbr title="Poweradmin\Application\Service\Backend\PowerdnsStatusService">PowerdnsStatusService</abbr></a>
     <strong>powerdnsStatusService</strong>()
         </code>
@@ -834,7 +892,7 @@ cache is empty or expired; unknown when no PowerDNS API is configured.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneSyncService">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L222">at line 222</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Factory/BackendServices.php#L244">at line 244</a></div>
         <code>                    <a href="../../../../Poweradmin/Infrastructure/Service/ZoneSyncService.html"><abbr title="Poweradmin\Infrastructure\Service\ZoneSyncService">ZoneSyncService</abbr></a>
     <strong>zoneSyncService</strong>()
         </code>
@@ -870,7 +928,7 @@ the same floor the automatic sync uses.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/c80538c" rel="noreferrer" target="_blank">commit c80538c,</a> built 2026-10-02 06:31 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/3a5fc3c" rel="noreferrer" target="_blank">commit 3a5fc3c,</a> built 2026-10-02 08:44 UTC.</div></div>
     </div>
     </body>
 
