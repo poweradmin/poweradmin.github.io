@@ -116,7 +116,7 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider)
+                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $capabilities = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -148,6 +148,16 @@ or one the admin listed in dns.domain_record_types / dns.reverse_record_types.</
                     bool
                 </div>
                 <div class="col-md-8">
+                    <a href="#method_isTypeSupportedByServer">isTypeSupportedByServer</a>(string $recordType)
+        
+                                            <p><p>False only when the connected PowerDNS version is known and predates the type.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
                     <a href="#method_hasValidator">hasValidator</a>(string $recordType)
         
                                             <p><p>Check if a validator exists for a record type</p></p>                </div>
@@ -161,9 +171,9 @@ or one the admin listed in dns.domain_record_types / dns.reverse_record_types.</
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/DnsValidation/DnsValidatorRegistry.php#L39">at line 39</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/DnsValidation/DnsValidatorRegistry.php#L48">at line 48</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider)
+    <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $capabilities = null)
         </code>
     </h3>
     <div class="details">    
@@ -189,6 +199,12 @@ or one the admin listed in dns.domain_record_types / dns.reverse_record_types.</
                 <td>$backendProvider</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null</td>
+                <td>$capabilities</td>
+                <td><p>Resolves the connected PowerDNS version,
+called only when a version-dependent type or SVCB/HTTPS parameter is validated</p></td>
+            </tr>
             </table>
 
             
@@ -201,7 +217,7 @@ or one the admin listed in dns.domain_record_types / dns.reverse_record_types.</
             </div>
                     <div class="method-item">
                     <h3 id="method_getValidator">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/DnsValidation/DnsValidatorRegistry.php#L124">at line 124</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/DnsValidation/DnsValidatorRegistry.php#L134">at line 134</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/DnsValidation/DnsRecordValidatorInterface.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\DnsRecordValidatorInterface">DnsRecordValidatorInterface</abbr></a>
     <strong>getValidator</strong>(string $recordType)
         </code>
@@ -244,7 +260,7 @@ or one the admin listed in dns.domain_record_types / dns.reverse_record_types.</
             </div>
                     <div class="method-item">
                     <h3 id="method_isKnownType">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/DnsValidation/DnsValidatorRegistry.php#L135">at line 135</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/DnsValidation/DnsValidatorRegistry.php#L145">at line 145</a></div>
         <code>                    bool
     <strong>isKnownType</strong>(string $recordType)
         </code>
@@ -287,8 +303,51 @@ or one the admin listed in dns.domain_record_types / dns.reverse_record_types.</
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_isTypeSupportedByServer">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/DnsValidation/DnsValidatorRegistry.php#L164">at line 164</a></div>
+        <code>                    bool
+    <strong>isTypeSupportedByServer</strong>(string $recordType)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>False only when the connected PowerDNS version is known and predates the type.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$recordType</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_hasValidator">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/DnsValidation/DnsValidatorRegistry.php#L157">at line 157</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/DnsValidation/DnsValidatorRegistry.php#L196">at line 196</a></div>
         <code>                    bool
     <strong>hasValidator</strong>(string $recordType)
         </code>
@@ -333,7 +392,7 @@ or one the admin listed in dns.domain_record_types / dns.reverse_record_types.</
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/c4c5637" rel="noreferrer" target="_blank">commit c4c5637,</a> built 2026-10-02 05:08 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/c80538c" rel="noreferrer" target="_blank">commit c80538c,</a> built 2026-10-02 06:31 UTC.</div></div>
     </div>
     </body>
 

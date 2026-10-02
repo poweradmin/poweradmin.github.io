@@ -8402,7 +8402,7 @@
                         "nullable": true
                     },
                     "ds": {
-                        "description": "DS records; empty for a ZSK",
+                        "description": "DS records; empty for a key PowerDNS currently lists as ZSK",
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -8410,6 +8410,12 @@
                         "example": [
                             "12345 13 2 3dd8ee7d9ab0c6d8e4b2fd8a7e1cb3a2b7b0d4e5f6a7b8c9d0e1f2a3b4c5d6e7"
                         ]
+                    },
+                    "sep": {
+                        "description": "Whether the key carries the SEP flag (DNSKEY flags 257), which is what PowerDNS stores. `type` is derived on every read: a key is listed as ksk or zsk only while the zone has an active SEP and an active non-SEP key of the same algorithm, otherwise as csk. Null without a readable DNSKEY.",
+                        "type": "boolean",
+                        "example": true,
+                        "nullable": true
                     }
                 },
                 "type": "object"

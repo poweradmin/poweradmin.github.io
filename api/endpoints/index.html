@@ -7547,7 +7547,10 @@ applied.</p>
 <p>Reading keys needs view access to the zone; the other key endpoints need <code>zone_dnssec_manage_own</code>
 on the zone (or administrator rights) and the PowerDNS API. For API key scopes, adding a key is a
 <code>create</code> operation and rectifying is an <code>update</code>. New keys are created inactive unless <code>active</code> is
-<code>true</code>, as in the web UI. Rectify is refused for Secondary and Consumer zones. When PowerDNS
+<code>true</code>, as in the web UI. A key's <code>type</code> is the role PowerDNS derives on every read (<code>ksk</code> or
+<code>zsk</code> only while an active SEP and an active non-SEP key share an algorithm, otherwise <code>csk</code>); from
+4.6.0 the <code>sep</code> field reports the stored secure-entry-point flag. Rectify is refused for Secondary
+and Consumer zones. When PowerDNS
 cannot be reached, the status, sign/unsign, key and rectify endpoints answer <code>502</code> rather than
 reporting the zone as unsigned.</p>
 <h3 id="server-status-v450">Server status (v4.5.0+)<a class="headerlink" href="#server-status-v450" title="Permanent link">¶</a></h3>
