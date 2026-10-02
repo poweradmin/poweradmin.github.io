@@ -4451,15 +4451,79 @@
   
   
   
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2">
+        
+          
+          <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migrating from Other Tools
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Migrating from Other Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../upgrading/from-powerdns-admin/" class="md-nav__link">
+      <a href="../../upgrading/from-other-tools/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Migrating from PowerDNS-Admin
+    Overview
   
 
     
@@ -4468,6 +4532,126 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../upgrading/from-powerdns-admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PowerDNS-Admin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../upgrading/from-dns-ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Opera DNS UI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../upgrading/from-nsedit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    nsedit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../upgrading/from-pdnsmanager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PDNS Manager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -7206,7 +7390,7 @@
 <li><strong>Groups</strong> are collections of users that share access to a set of zones</li>
 <li>A user can belong to <strong>multiple groups</strong> simultaneously</li>
 <li>A zone can be owned by a <strong>user, one or more groups, or both</strong></li>
-<li>Each group has a <strong>permission template</strong> that defines what its members can do with the group's zones</li>
+<li>Each group has a <strong>permission template</strong> whose permissions every member receives</li>
 <li>Permissions from all sources (user template + group memberships) are <strong>combined</strong> - if any source grants access, the user has it</li>
 </ul>
 <h2 id="group-list">Group List<a class="headerlink" href="#group-list" title="Permanent link">¶</a></h2>
@@ -7218,7 +7402,7 @@
 <li>Click <strong>Add group</strong> from the group list</li>
 <li>Enter a <strong>Group Name</strong> (must be unique)</li>
 <li>Optionally add a <strong>Description</strong></li>
-<li>Select a <strong>Permission template</strong> - this determines what permissions group members have for zones owned by this group</li>
+<li>Select a <strong>Permission template</strong> - every member receives its permissions, see <a href="#how-permissions-work">How Permissions Work</a></li>
 <li>Click <strong>Create Group</strong></li>
 </ol>
 <p>After creation, you can add members and assign zones.</p>
@@ -7244,25 +7428,33 @@
 <h2 id="how-permissions-work">How Permissions Work<a class="headerlink" href="#how-permissions-work" title="Permanent link">¶</a></h2>
 <p>Poweradmin combines permissions from all sources. A user's effective permissions are the union of:</p>
 <ul>
-<li>Their <strong>personal permission template</strong> (applies globally)</li>
-<li>Permissions from <strong>each group they belong to</strong> (apply only to that group's zones)</li>
+<li>Their <strong>personal permission template</strong></li>
+<li>The permission template of <strong>each group they belong to</strong></li>
 </ul>
-<p>For example, if a user has a "Viewer" personal template but belongs to an "Editors" group that owns <code>example.com</code>, that user can edit records in <code>example.com</code> while having read-only access to everything else.</p>
+<p>Permissions are not tied to the group that granted them. An "own" permission such as
+<code>zone_content_edit_own</code> applies to every zone the user owns, whether directly or through any
+of their groups. An "others" permission applies to every zone.</p>
+<p>For example, a user with a "Viewer" personal template who belongs to an "Editors" group that
+owns <code>example.com</code> can edit records in <code>example.com</code>. If that user also owns <code>example.org</code>
+personally, or through another group, they can edit records there too, because the edit
+permission covers every zone they own.</p>
 <blockquote>
-<p><strong>Note:</strong> Zone-scoped permissions from a group template apply only to zones that group owns - they do not extend to zones the user owns personally or through other groups.</p>
-<p>This scoping is about <em>zones</em>, not about the permission set itself. Permissions that are
-not zone-scoped take effect globally for every member: a group template carrying
-<code>user_is_ueberuser</code> makes each member a full administrator everywhere, not just within
-the group's zones. The installer ships an <code>Administrators</code> group bound to exactly such a
-template. Creating and editing groups, and changing who belongs to one, is therefore
-restricted to administrators.</p>
+<p><strong>Note:</strong> A user who needs different rights on different sets of zones cannot get that
+from two groups with different templates: the user receives both templates and the broader
+one wins on all their zones. Give each such user a single level, or use the
+<a href="../change-requests/">change approval workflow</a> to route their edits through review.</p>
+<p>Permissions that are not about zones take effect the same way: a group template carrying
+<code>user_is_ueberuser</code> makes each member a full administrator everywhere. The installer ships
+an <code>Administrators</code> group bound to exactly such a template. Creating and editing groups,
+and changing who belongs to one, is therefore restricted to administrators.</p>
 </blockquote>
 <h2 id="permission-templates">Permission Templates<a class="headerlink" href="#permission-templates" title="Permanent link">¶</a></h2>
 <p>Permission templates come in two types:</p>
 <ul>
-<li><strong>User templates</strong> - assigned directly to users, apply globally</li>
-<li><strong>Group templates</strong> - assigned to groups, apply only to group-owned zones</li>
+<li><strong>User templates</strong> - assigned directly to users</li>
+<li><strong>Group templates</strong> - assigned to groups, and received by every member</li>
 </ul>
+<p>Both kinds grant permissions the same way, see <a href="#how-permissions-work">How Permissions Work</a>.</p>
 <p>You can manage permission templates under <strong>Permissions</strong> in the navigation bar. See <a href="../permissions/">Permissions</a> for details on available permissions.</p>
 <h2 id="sso-group-mapping">SSO Group Mapping<a class="headerlink" href="#sso-group-mapping" title="Permanent link">¶</a></h2>
 <p>If you use OIDC or SAML authentication, you can automatically assign users to groups based on their SSO claims. See the <a href="../../configuration/oidc/">OIDC</a> or <a href="../../configuration/saml/">SAML</a> configuration pages for setup details.</p>
