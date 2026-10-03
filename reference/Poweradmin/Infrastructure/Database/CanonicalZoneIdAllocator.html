@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Poweradmin\Application\Web\NavigationVisibility | Poweradmin class reference</title>
+    <title>Poweradmin\Infrastructure\Database\CanonicalZoneIdAllocator | Poweradmin class reference</title>
 
                 <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Poweradmin_Application_Web_NavigationVisibility" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+    <body id="class" data-name="class:Poweradmin_Infrastructure_Database_CanonicalZoneIdAllocator" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -83,18 +83,18 @@
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
                 <li><span class="label label-default">class</span></li>
-                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Application.html">Application</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Application/Web.html">Web</a></li><li class="backslash">\</li><li>NavigationVisibility</li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure.html">Infrastructure</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure/Database.html">Database</a></li><li class="backslash">\</li><li>CanonicalZoneIdAllocator</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>NavigationVisibility    
+        <h1>CanonicalZoneIdAllocator    
             </h1>
     </div>
 
     
     <p>final         class
-    <strong>NavigationVisibility</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/NavigationVisibility.php">View source</a>)
+    <strong>CanonicalZoneIdAllocator</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/CanonicalZoneIdAllocator.php">View source</a>)
 </p>
 
         
@@ -103,10 +103,26 @@
         
 
             <div class="description">
-            <p><p>Decides once per request which navigation entries the current user gets, so
-the two theme headers and the dashboard share one rule per entry.</p></p>                    </div>
+            <p><p>Picks the canonical id for zone rows this application creates in API backend mode.</p></p>            <p><p>A new row keeps its own row id as canonical id unless another row, a group assignment or
+an API key scope already uses that number as a zone id; then it gets the next number
+above all of them, so it never takes over (or inherits the grants of) another zone's id.
+The zones rows are read with a row lock, so concurrent creators wait for each other and
+each sees the ids the other committed. Build one per transaction, after it has begun.</p></p>        </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                            private
+                                                                                PGSQL_LOCK_KEY
+                                    </td>
+                <td class="last">
+                    <p><em><p>Advisory lock key for zone id allocation on PostgreSQL (the issue that introduced it).</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -114,10 +130,21 @@ the two theme headers and the dashboard share one rule per entry.</p></p>       
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    static&nbsp;array
+                    
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_build">build</a>(callable $can, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, bool $hasModuleItems)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_allocate">allocate</a>(int $rowId)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -130,10 +157,10 @@ the two theme headers and the dashboard share one rule per entry.</p></p>       
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_build">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Web/NavigationVisibility.php#L39">at line 39</a></div>
-        <code>        static            array
-    <strong>build</strong>(callable $can, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, bool $hasModuleItems)
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/CanonicalZoneIdAllocator.php#L46">at line 46</a></div>
+        <code>                    
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
         </code>
     </h3>
     <div class="details">    
@@ -150,19 +177,44 @@ the two theme headers and the dashboard share one rule per entry.</p></p>       
 
                     <table class="table table-condensed">
                     <tr>
-                <td>callable</td>
-                <td>$can</td>
-                <td><p>Permission check for the current user</p></td>
-            </tr>
-                    <tr>
-                <td><a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
-                <td>$config</td>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
+                <td>$db</td>
                 <td></td>
             </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_allocate">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/CanonicalZoneIdAllocator.php#L79">at line 79</a></div>
+        <code>                    int
+    <strong>allocate</strong>(int $rowId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
                     <tr>
-                <td>bool</td>
-                <td>$hasModuleItems</td>
-                <td><p>Whether any module contributes a Tools entry</p></td>
+                <td>int</td>
+                <td>$rowId</td>
+                <td></td>
             </tr>
             </table>
 
@@ -171,7 +223,7 @@ the two theme headers and the dashboard share one rule per entry.</p></p>       
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
+            <td>int</td>
             <td></td>
         </tr>
     </table>
