@@ -7534,6 +7534,8 @@
 <ul>
 <li><code>dns.bump_serial_on_unchanged_save</code> (default <code>true</code>) lets an installation stop bumping the SOA serial on saves that change nothing. See <a href="../../configuration/dns-settings/#serial-bump-on-unchanged-saves">DNS Settings</a>.</li>
 <li>API v2 DNSSEC key changes (add, import, update, delete) now need view access to the zone as well as <code>zone_dnssec_manage_own</code>, as the web pages do. An API key whose user holds the DNSSEC permission without view access to the zone now gets <code>403</code>. See <a href="../../api/endpoints/#zone-metadata-and-dnssec">API Endpoints</a>.</li>
+<li>API backend mode on installs migrated from SQL mode: zone ids in the API v2 zone list, <code>GET /zones/{id}</code> and the internal zone list are now the canonical id, the same value every other zone endpoint takes (<code>canonical_id</code> stays and is equal to <code>id</code>). Before, the list reported the zones table row id, which could open a different zone. Clients that stored the old ids (for example Terraform state) see them change once.</li>
+<li>On the first request after the upgrade in API backend mode, stored API key zone restrictions are moved from row ids to canonical ids. A stored value that could name two zones then matches none, so the key keeps its restriction; the log names the key, and the zone has to be selected again on it. Until the move has run, a restricted key reaches no zone and new restrictions cannot be saved.</li>
 <li><code>dnssec.debug</code> and <code>PA_DNSSEC_DEBUG</code> are removed; they had no effect since the pdnsutil provider was dropped.</li>
 </ul>
 <h2 id="rollback">Rollback<a class="headerlink" href="#rollback" title="Permanent link">¶</a></h2>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="robots" content="index, follow, all" />
-    <title>Poweradmin\Domain\Port\PublicSuffixInterface | Poweradmin class reference</title>
+    <title>Poweradmin\Infrastructure\Service\ApiKeyZoneScopeMigration | Poweradmin class reference</title>
 
                 <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body id="class" data-name="class:Poweradmin_Domain_Port_PublicSuffixInterface" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+    <body id="class" data-name="class:Poweradmin_Infrastructure_Service_ApiKeyZoneScopeMigration" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
             <div id="content">
         <div id="left-column">
                 <div id="control-panel">
@@ -82,19 +82,19 @@
 
                         <div class="namespace-breadcrumbs">
             <ol class="breadcrumb">
-                <li><span class="label label-default">interface</span></li>
-                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain.html">Domain</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Domain/Port.html">Port</a></li><li class="backslash">\</li><li>PublicSuffixInterface</li>
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../Poweradmin.html">Poweradmin</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure.html">Infrastructure</a></li><li class="backslash">\</li><li><a href="../../../Poweradmin/Infrastructure/Service.html">Service</a></li><li class="backslash">\</li><li>ApiKeyZoneScopeMigration</li>
             </ol>
         </div>
                 <div id="page-content">
     <div class="page-header">
-        <h1>PublicSuffixInterface    
+        <h1>ApiKeyZoneScopeMigration    
             </h1>
     </div>
 
     
-    <p>        interface
-    <strong>PublicSuffixInterface</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/PublicSuffixInterface.php">View source</a>)
+    <p>final         class
+    <strong>ApiKeyZoneScopeMigration</strong>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/ApiKeyZoneScopeMigration.php">View source</a>)
 </p>
 
         
@@ -103,11 +103,35 @@
         
 
             <div class="description">
-            <p><p>Splits a hostname on the public suffix boundary, so that names under a
-multi-label suffix such as co.uk or com.pl are divided where registration
-actually happens rather than on the last dot.</p></p>                    </div>
+            <p><p>Rewrites API key zone scopes from zones row ids to canonical zone ids, once.</p></p>            <p><p>Before 4.6.0 the API key form stored the row id of each zone in API backend mode, while
+every request compared the canonical id, so on installs migrated from SQL mode a scope
+named the wrong zone. The marker row in app_settings doubles as the lock: only the
+request that inserts it runs the rewrite, so the overlapping id spaces are never mapped
+twice. SQL mode stores domains.id, already canonical, and only sets the marker.</p></p>        </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                                                                                        MARKER
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                            private
+                                                                                UNREACHABLE_ZONE_ID
+                                    </td>
+                <td class="last">
+                    <p><em><p>Scope value for a stored id that could name two zones: it matches no zone.</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -115,13 +139,24 @@ actually happens rather than on the last dot.</p></p>                    </div>
             <div class="container-fluid underlined">
                     <div class="row">
                 <div class="col-md-2 type">
-                    array
+                    
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_split">split</a>(string $domain)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, bool $isApiBackend, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger)
         
                                             <p class="no-description">No description</p>
                                     </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_runOnce">runOnce</a>()
+        
+                                            <p><p>Run the rewrite unless it already ran. Returns whether stored scopes are canonical:
+always in SQL mode, and in API mode once the rewrite has committed.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -131,10 +166,10 @@ actually happens rather than on the last dot.</p></p>                    </div>
 
             <div id="method-details">
                     <div class="method-item">
-                    <h3 id="method_split">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Port/PublicSuffixInterface.php#L37">at line 37</a></div>
-        <code>                    array
-    <strong>split</strong>(string $domain)
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/ApiKeyZoneScopeMigration.php#L46">at line 46</a></div>
+        <code>                    
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, bool $isApiBackend, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr> $logger)
         </code>
     </h3>
     <div class="details">    
@@ -151,20 +186,54 @@ actually happens rather than on the last dot.</p></p>                    </div>
 
                     <table class="table table-condensed">
                     <tr>
-                <td>string</td>
-                <td>$domain</td>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
+                <td>$db</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$isApiBackend</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr></td>
+                <td>$logger</td>
                 <td></td>
             </tr>
             </table>
 
             
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_runOnce">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Service/ApiKeyZoneScopeMigration.php#L57">at line 57</a></div>
+        <code>                    bool
+    <strong>runOnce</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Run the rewrite unless it already ran. Returns whether stored scopes are canonical:
+always in SQL mode, and in API mode once the rewrite has committed.</p></p>                        
+        </div>
+        <div class="tags">
+            
                             <h4>Return Value</h4>
 
                     <table class="table table-condensed">
         <tr>
-            <td>array</td>
-            <td><p>The registrable label and the
-public suffix, both empty when the name has no known suffix.</p></td>
+            <td>bool</td>
+            <td></td>
         </tr>
     </table>
 
