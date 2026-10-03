@@ -4767,6 +4767,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#dnssec-key-management-and-zone-logs-need-the-new-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNSSEC key management and zone logs need the new permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ldap-identity-fields-become-read-only-when-sync-is-enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7821,6 +7832,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#dnssec-key-management-and-zone-logs-need-the-new-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNSSEC key management and zone logs need the new permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ldap-identity-fields-become-read-only-when-sync-is-enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8084,8 +8106,8 @@
 <h3 id="new-permissions">New Permissions<a class="headerlink" href="#new-permissions" title="Permanent link">¶</a></h3>
 <p>Eleven permissions were added; except for the auto-granted view split (see Breaking Changes), none are granted automatically - admins opt in per permission template:</p>
 <ul>
-<li><code>zone_dnssec_manage_own</code> - manage DNSSEC keys for owned zones without full ueberuser rights.</li>
-<li><code>zone_logs_view_own</code> / <code>zone_logs_view_others</code> - access zone activity logs without ueberuser.</li>
+<li><code>zone_dnssec_manage_own</code> - manage DNSSEC keys for owned zones. Before 4.5.0 zone editing included this; see Breaking Changes.</li>
+<li><code>zone_logs_view_own</code> / <code>zone_logs_view_others</code> - access zone activity logs. Before 4.5.0 zone viewing included this; see Breaking Changes.</li>
 <li><code>user_logs_view</code> / <code>group_logs_view</code> - access user and group activity logs.</li>
 <li><code>zone_content_edit_ns_subzone</code> - edit delegation NS records below the zone apex while apex NS and SOA stay protected.</li>
 <li><code>server_status_view</code> - view the PowerDNS server status page and <code>GET /api/v2/server/status</code> without administrator rights.</li>
@@ -8238,6 +8260,28 @@ affect them. Delete the installer after installing, as usual.</p>
 <p>The header warning that flags a default key now also fires when the key is missing or shorter than 32 characters. It cannot tell a weak generator from a strong one, so a full-length installer key will not be flagged - rotate it if you are unsure where yours came from. See <a href="../../configuration/security-policies/#rotating-the-session-key">Security Policies</a>.</p>
 <h3 id="metadata-and-ownership-view-permissions-are-split-out-of-content-view">Metadata and ownership view permissions are split out of content view<a class="headerlink" href="#metadata-and-ownership-view-permissions-are-split-out-of-content-view" title="Permanent link">¶</a></h3>
 <p><code>zone_content_view_own</code>/<code>zone_content_view_others</code> no longer imply seeing zone metadata or zone owners. The migration auto-grants the new <code>zone_metadata_view_*</code> and <code>zone_ownership_view_*</code> permissions to every template holding the matching content-view permission, so nothing changes visibly on upgrade - but new templates need the permissions granted explicitly, and admins can now revoke them to hide those sections.</p>
+<h3 id="dnssec-key-management-and-zone-logs-need-the-new-permissions">DNSSEC key management and zone logs need the new permissions<a class="headerlink" href="#dnssec-key-management-and-zone-logs-need-the-new-permissions" title="Permanent link">¶</a></h3>
+<p>Before 4.5.0 a user who could edit their own zones (<code>zone_content_edit_own</code>) could also manage DNSSEC keys on them, <code>zone_content_edit_others</code> covered every zone, and anyone who could view zones could open their activity logs. From 4.5.0 DNSSEC key management needs <code>zone_dnssec_manage_own</code> (plus ownership) and the zone logs need <code>zone_logs_view_own</code> or <code>zone_logs_view_others</code>. Fresh installs grant these to the default Zone Manager, Editor and Viewer templates; the upgrade does not, so after it only administrators can manage DNSSEC keys or read the zone logs. There is no <code>_others</code> DNSSEC permission: editors of other users' zones keep DNSSEC access only to zones they own.</p>
+<p>To keep what your users could do before, run this once after the update script. It works on MySQL/MariaDB, PostgreSQL and SQLite, and running it again changes nothing:</p>
+<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1">-- DNSSEC key management for templates that can edit zones</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">perm_templ_items</span><span class="w"> </span><span class="p">(</span><span class="n">templ_id</span><span class="p">,</span><span class="w"> </span><span class="n">perm_id</span><span class="p">)</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">pti</span><span class="p">.</span><span class="n">templ_id</span><span class="p">,</span><span class="w"> </span><span class="n">np</span><span class="p">.</span><span class="n">id</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="k">FROM</span><span class="w"> </span><span class="n">perm_templ_items</span><span class="w"> </span><span class="n">pti</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">perm_items</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">cp</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pti</span><span class="p">.</span><span class="n">perm_id</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">perm_items</span><span class="w"> </span><span class="n">np</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">np</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'zone_dnssec_manage_own'</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">cp</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'zone_content_edit_own'</span><span class="p">,</span><span class="w"> </span><span class="s1">'zone_content_edit_others'</span><span class="p">)</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">perm_templ_items</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">templ_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pti</span><span class="p">.</span><span class="n">templ_id</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">perm_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">np</span><span class="p">.</span><span class="n">id</span><span class="p">);</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="c1">-- Zone logs for templates that can view zones</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">perm_templ_items</span><span class="w"> </span><span class="p">(</span><span class="n">templ_id</span><span class="p">,</span><span class="w"> </span><span class="n">perm_id</span><span class="p">)</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">pti</span><span class="p">.</span><span class="n">templ_id</span><span class="p">,</span><span class="w"> </span><span class="n">np</span><span class="p">.</span><span class="n">id</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="k">FROM</span><span class="w"> </span><span class="n">perm_templ_items</span><span class="w"> </span><span class="n">pti</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">perm_items</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">cp</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pti</span><span class="p">.</span><span class="n">perm_id</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="k">JOIN</span><span class="w"> </span><span class="n">perm_items</span><span class="w"> </span><span class="n">np</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">np</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">CASE</span><span class="w"> </span><span class="n">cp</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">'zone_content_view_own'</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">'zone_logs_view_own'</span><span class="w"> </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">'zone_logs_view_others'</span><span class="w"> </span><span class="k">END</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">cp</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'zone_content_view_own'</span><span class="p">,</span><span class="w"> </span><span class="s1">'zone_content_view_others'</span><span class="p">)</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">perm_templ_items</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">templ_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pti</span><span class="p">.</span><span class="n">templ_id</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">perm_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">np</span><span class="p">.</span><span class="n">id</span><span class="p">);</span>
+</code></pre></div>
+<p>The zone logs page also needs <code>logging.database_enabled</code>, as before.</p>
 <h3 id="ldap-identity-fields-become-read-only-when-sync-is-enabled">LDAP identity fields become read-only when sync is enabled<a class="headerlink" href="#ldap-identity-fields-become-read-only-when-sync-is-enabled" title="Permanent link">¶</a></h3>
 <p>With <code>ldap.sync_user_info</code> enabled, fullname and email of LDAP accounts are managed by the directory and read-only in the user editor. With sync disabled (the default), they remain editable as before.</p>
 <h3 id="lua-enabling-zone-metadata-is-restricted-to-administrators">Lua-enabling zone metadata is restricted to administrators<a class="headerlink" href="#lua-enabling-zone-metadata-is-restricted-to-administrators" title="Permanent link">¶</a></h3>

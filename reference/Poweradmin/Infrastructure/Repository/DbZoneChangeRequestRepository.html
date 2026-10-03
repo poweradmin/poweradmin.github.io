@@ -104,7 +104,8 @@
 
             <div class="description">
             <p><p>SQL persistence for zone_change_requests, a Poweradmin-native table that is
-never prefixed and is shared by the SQL and API backends.</p></p>                    </div>
+never prefixed and is shared by the SQL and API backends. Until the 4.6.0 schema
+update creates it, reads find nothing and writes fail.</p></p>                    </div>
             
         
             <h2>Constants</h2>    <table class="table table-condensed">
@@ -130,10 +131,20 @@ never prefixed and is shared by the SQL and API backends.</p></p>               
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isAvailable">isAvailable</a>()
+        
+                                            <p><p>False until the 4.6.0 schema update has created the requests table.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -286,9 +297,9 @@ requests the user may list: those in the zones they review or their own.</p></p>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L38">at line 38</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L44">at line 44</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null)
         </code>
     </h3>
     <div class="details">    
@@ -309,6 +320,11 @@ requests the user may list: those in the zones they review or their own.</p></p>
                 <td>$db</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null</td>
+                <td>$logger</td>
+                <td></td>
+            </tr>
             </table>
 
             
@@ -320,8 +336,41 @@ requests the user may list: those in the zones they review or their own.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_isAvailable">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L48">at line 48</a></div>
+        <code>                    bool
+    <strong>isAvailable</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>False until the 4.6.0 schema update has created the requests table.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_create">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L42">at line 42</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L65">at line 65</a></div>
         <code>                    int
     <strong>create</strong>(int $zoneId, string $zoneName, string $kind, int|null $requesterId, string $requesterName, string|null $requestComment, string|null $baseSerial, array $actions, string|null $zoneComment)
         </code>
@@ -405,7 +454,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_find">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L73">at line 73</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L96">at line 96</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/ZoneChangeRequest.html"><abbr title="Poweradmin\Domain\Model\ZoneChangeRequest">ZoneChangeRequest</abbr></a>|null
     <strong>find</strong>(int $id)
         </code>
@@ -449,7 +498,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_list">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L83">at line 83</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L109">at line 109</a></div>
         <code>                    array
     <strong>list</strong>(array $filters, int $offset, int $limit)
         </code>
@@ -503,7 +552,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_count">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L88">at line 88</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L114">at line 114</a></div>
         <code>                    int
     <strong>count</strong>(array $filters)
         </code>
@@ -547,7 +596,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_listPending">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L102">at line 102</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L128">at line 128</a></div>
         <code>                    array
     <strong>listPending</strong>(array|null $zoneIds, int $offset, int $limit)
         </code>
@@ -601,7 +650,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_listPendingForZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L107">at line 107</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L133">at line 133</a></div>
         <code>                    array
     <strong>listPendingForZone</strong>(int $zoneId)
         </code>
@@ -645,7 +694,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_countPending">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L112">at line 112</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L138">at line 138</a></div>
         <code>                    int
     <strong>countPending</strong>(array|null $zoneIds)
         </code>
@@ -689,7 +738,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_storeSnapshot">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L117">at line 117</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L143">at line 143</a></div>
         <code>                    void
     <strong>storeSnapshot</strong>(int $id, string $snapshot)
         </code>
@@ -737,7 +786,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_countPendingByZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L125">at line 125</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L151">at line 151</a></div>
         <code>                    array
     <strong>countPendingByZone</strong>(array $zoneIds, array|null $reviewableZoneIds, int $requesterId)
         </code>
@@ -791,7 +840,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_markReviewed">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L151">at line 151</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L177">at line 177</a></div>
         <code>                    bool
     <strong>markReviewed</strong>(int $id, string $status, int $reviewerId, string $reviewerName, string|null $comment, array $fromStatuses = [ZoneChangeRequest::STATUS_PENDING])
         </code>
@@ -860,7 +909,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_markApplied">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L177">at line 177</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L203">at line 203</a></div>
         <code>                    void
     <strong>markApplied</strong>(int $id)
         </code>
@@ -904,7 +953,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_markFailed">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L187">at line 187</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L213">at line 213</a></div>
         <code>                    void
     <strong>markFailed</strong>(int $id, string $error)
         </code>
@@ -953,7 +1002,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_cancel">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L196">at line 196</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbZoneChangeRequestRepository.php#L222">at line 222</a></div>
         <code>                    bool
     <strong>cancel</strong>(int $id)
         </code>
@@ -999,7 +1048,7 @@ requests the user may list: those in the zones they review or their own.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/42d5a79" rel="noreferrer" target="_blank">commit 42d5a79,</a> built 2026-10-03 14:09 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/1744a45" rel="noreferrer" target="_blank">commit 1744a45,</a> built 2026-10-03 20:42 UTC.</div></div>
     </div>
     </body>
 

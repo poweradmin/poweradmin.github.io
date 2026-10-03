@@ -7463,6 +7463,13 @@
 </tbody>
 </table>
 <p>The permissions are not granted to any permission template automatically. Grant them in the template editor once <code>approval.enabled</code> is on - see <a href="../../user-guide/change-requests/#permissions">Change Requests</a>.</p>
+<p>The scripts also repair databases that earlier updates left incomplete. Each step does nothing on a database that is already correct:</p>
+<ul>
+<li>PostgreSQL: the 4.1.0 update added permissions with fixed ids without moving the id sequence on, so later updates failed to add <code>user_enforce_mfa</code>, <code>zone_logs_view_own</code>, <code>zone_logs_view_others</code> and, on databases installed before 4.0.5, more of the 4.5.0 permissions. The 4.6.0 script resyncs the sequences and adds any of them that are missing, with the metadata and ownership view grants 4.5.0 gave alongside them. Grant the restored permissions in the template editor as needed.</li>
+<li>Databases upgraded from 4.0.0-4.0.4 straight to 4.1.0 or later never ran the 4.0.5 update: <code>records_zone_templ</code> gets its <code>id</code> primary key now, on MySQL and PostgreSQL the <code>zones</code> table also gets the <code>idx_zones_domain_id</code> and <code>idx_zones_owner</code> indexes fresh installs have had since 4.1.0.</li>
+<li>MySQL/MariaDB: <code>zone_change_requests</code> is created with the <code>utf8mb4_unicode_ci</code> collation fresh installs use, instead of the server default.</li>
+</ul>
+<p>The SQLite 4.1.0, 4.2.0 and 4.3.0 update scripts rebuild tables. Run them once only: a second run drops the columns later updates added, and on an API backend database can empty the <code>zones</code> table.</p>
 <p>The migration scripts are:</p>
 <ul>
 <li><code>sql/poweradmin-mysql-update-to-4.6.0.sql</code></li>
@@ -7539,6 +7546,11 @@
 <li>In API backend mode a new zone no longer takes a zone id that a migrated zone, a group assignment or an API key restriction already uses; it gets the next free id instead. Before, it could take over a migrated zone's id and hide that zone.</li>
 <li>Group assignments made through the API before 4.6.0 hold the zone list's row id. The database consistency check lists those whose id now names no zone, so they can be assigned again.</li>
 <li><code>dnssec.debug</code> and <code>PA_DNSSEC_DEBUG</code> are removed; they had no effect since the pdnsutil provider was dropped.</li>
+<li>Switching from the API backend back to the SQL backend is refused once the API backend has written zones to the database: zone ids written in API mode would point at other zones. The web pages show the error, the API answers <code>503</code>, and the command line and dynamic DNS updates stop. See <a href="../../configuration/powerdns-api/#migrating-from-sql-to-api-backend">Migrating from SQL to API Backend</a>.</li>
+<li>The SQL backend now stores the zone name whenever it writes a zone row, and the <a href="../../maintenance/consistency-check/">Database Consistency Check</a> lists zones that still lack one, so a later switch to the API backend keeps every zone's owners.</li>
+<li>In API backend mode the automatic zone sync changes nothing when PowerDNS no longer lists more than half of the known zones, which usually means <code>pdns_api.url</code> points at the wrong server; the manual sync on the Forward Zones page still applies the changes.</li>
+<li>With <code>approval.enabled</code> on before the 4.6.0 update script has run, the Change requests entry and the pending counts are hidden and an error is logged, instead of every page failing. Filing a request still fails until the script has run.</li>
+<li>A <code>security.password_encryption</code> of <code>md5</code> or <code>md5salt</code> (removed in 4.3.0) now stops Poweradmin at startup with a message naming the setting. Before, every login of a bcrypt user failed. Set it to <code>bcrypt</code>, <code>argon2i</code> or <code>argon2id</code>; existing md5 password hashes still verify and are rehashed at the next login.</li>
 </ul>
 <h2 id="rollback">Rollback<a class="headerlink" href="#rollback" title="Permanent link">¶</a></h2>
 <p>To roll back to v4.5.0:</p>
