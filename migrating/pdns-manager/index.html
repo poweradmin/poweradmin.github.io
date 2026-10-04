@@ -7568,8 +7568,8 @@ user its <code>account</code> names; the rest go to you.</p>
 </code></pre></div>
 <h3 id="6-fix-zones-without-soa">6. Fix Zones Without SOA<a class="headerlink" href="#6-fix-zones-without-soa" title="Permanent link">¶</a></h3>
 <p>The <a href="../../maintenance/consistency-check/">Database Consistency Check</a> lists zones with no SOA record under "Zones
-without SOA". <strong>Fix</strong> creates a placeholder SOA, <code>ns1.&lt;zone&gt; hostmaster.&lt;zone&gt;</code> with a serial from today's date.
-It does not use the <code>dns.*</code> settings, so edit each SOA afterwards to name your real primary nameserver and contact.
+without SOA". <strong>Fix</strong> creates the same default SOA a new zone gets, from <code>dns.ns1</code>, <code>dns.hostmaster</code>, the SOA timer
+settings and <code>dns.ttl</code> (before 4.6.0 it wrote a placeholder <code>ns1.&lt;zone&gt; hostmaster.&lt;zone&gt;</code> SOA).
 For many zones it is quicker to insert the SOA records with SQL.</p>
 <h3 id="7-move-dynamic-dns-clients">7. Move Dynamic DNS Clients<a class="headerlink" href="#7-move-dynamic-dns-clients" title="Permanent link">¶</a></h3>
 <p>PDNS Manager updates one record by its numeric ID, through its <code>remote/updatepw</code> endpoint with a per-record

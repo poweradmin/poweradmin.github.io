@@ -7690,9 +7690,14 @@ be reviewed before it goes live.</p>
 <td><code>false</code></td>
 <td>Every zone change becomes a change request, even for editors and administrators</td>
 </tr>
+<tr>
+<td><code>approval.allow_self_approval</code></td>
+<td><code>true</code></td>
+<td>Whether the requester may approve their own request; <code>false</code> needs a second reviewer (v4.6.0+)</td>
+</tr>
 </tbody>
 </table>
-<p>Docker deployments set <code>PA_APPROVAL_ENABLED</code> and <code>PA_APPROVAL_REQUIRE_REVIEW_FOR_ALL</code>.
+<p>Docker deployments set <code>PA_APPROVAL_ENABLED</code>, <code>PA_APPROVAL_REQUIRE_REVIEW_FOR_ALL</code> and <code>PA_APPROVAL_ALLOW_SELF_APPROVAL</code>.
 Email notifications are a separate toggle, see <a href="#notifications">Notifications</a>.</p>
 <p>The 4.6.0 update script creates the <code>zone_change_requests</code> table and registers the four
 permissions. Run it before enabling the workflow - see
@@ -7765,8 +7770,12 @@ permission and the request permission together:</p>
 <code>zone_content_edit_own</code> and <code>zone_change_request_others</code> edits their own zones directly and
 files requests for everyone else's.</p>
 <p><code>require_review_for_all</code> turns every save into a request, for editors and administrators
-too. The reviewer may be the requester: self-approval is allowed, so an administrator who
-files a request under this mode can approve it right away.</p>
+too. By default the reviewer may be the requester, so an administrator who files a request
+under this mode can approve it right away. Set <code>approval.allow_self_approval</code> to <code>false</code> for a
+four-eyes rule: the requester can then still reject or cancel their request, but approving it
+(or retrying a failed one) needs another reviewer, through the web page and the API alike
+(<code>403</code> "You cannot approve your own change request."). The request list marks requests that
+nobody but the requester could approve with <strong>No reviewer other than the requester</strong>.</p>
 <p>Request-only users still need <code>zone_content_view_own</code> or <code>zone_content_view_others</code> to open
 the zone at all.</p>
 <h3 id="who-reviews">Who reviews<a class="headerlink" href="#who-reviews" title="Permanent link">¶</a></h3>
@@ -8127,8 +8136,7 @@ keep <code>require_review_for_all</code> off for installations that rely on DDNS
   companion options are not offered in request mode. File the reverse record separately.</li>
 <li>Zone creation is not reviewed.</li>
 <li>Deleting several zones at once from the zone list is not reviewed and keeps no snapshot.</li>
-<li>Self-approval is allowed; there is no rule that the reviewer must differ from the
-  requester.</li>
+<li>Self-approval is allowed unless <code>approval.allow_self_approval</code> is <code>false</code>.</li>
 <li>Stale requests warn but can still be approved.</li>
 <li>Requests are kept indefinitely. Prune the <code>zone_change_requests</code> table on your own
   schedule.</li>
