@@ -3477,6 +3477,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#editing-the-soa-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editing the SOA Record
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#adding-records" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7525,6 +7536,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#editing-the-soa-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editing the SOA Record
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#adding-records" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7784,6 +7806,28 @@ and template, and every change is written to the audit log.</p>
 <li>Click <strong>Save changes</strong> to apply, or <strong>Reset</strong> to discard</li>
 </ul>
 <p>Enabling <code>interface.show_record_edit_button</code> adds an <strong>Actions</strong> column with a per-record edit button that opens the record on its own page. It is off by default, as is <code>interface.show_record_delete_button</code>, so a default install has no Actions column.</p>
+<h3 id="editing-the-soa-record">Editing the SOA Record<a class="headerlink" href="#editing-the-soa-record" title="Permanent link">¶</a></h3>
+<p>From 4.6.0 the SOA record has its own editor. Tick the SOA row and click <strong>Edit selected</strong>,
+or use its edit button when the Actions column is on. The record page then shows the SOA
+fields separately instead of one content string:</p>
+<ul>
+<li><strong>Primary nameserver</strong> and <strong>Hostmaster</strong>. The hostmaster can be typed as an email address
+  (<code>hostmaster@example.com</code>) or in DNS form (<code>hostmaster.example.com</code>); Poweradmin converts
+  the address and escapes dots in the part before the <code>@</code>.</li>
+<li><strong>Serial</strong> is read-only. Poweradmin increments it on every change to the zone.</li>
+<li><strong>Refresh</strong>, <strong>Retry</strong>, <strong>Expire</strong> and <strong>Minimum TTL</strong> are in seconds. The box next to each
+  value shows it as a duration, such as <code>3h</code> or <code>1w</code>, while you type.</li>
+<li><strong>Use defaults</strong> fills the four timers from <code>dns.soa_refresh</code>, <code>dns.soa_retry</code>,
+  <code>dns.soa_expire</code> and <code>dns.soa_minimum</code>.</li>
+<li><strong>Edit as text</strong> switches to the raw content string, for a custom serial or a serial
+  placeholder (<code>[SERIAL]</code>, <code>[UNIXTIME]</code>, <code>[COUNTER]</code>). <strong>Edit as fields</strong> switches back once
+  the string has seven fields again.</li>
+</ul>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/soa-editor.png" data-desc-position="bottom"><img alt="SOA record editor" src="../../screenshots/soa-editor.png"></a></p>
+<p>An SOA record that does not have seven fields, or a browser with JavaScript off, gets the
+plain content field.</p>
+<p>In the record list the SOA row keeps its single content field. Its <strong>Details</strong> toggle shows the
+seven fields with labels, and each timer with its duration.</p>
 <h3 id="adding-records">Adding Records<a class="headerlink" href="#adding-records" title="Permanent link">¶</a></h3>
 <p>By default the zone editor shows an <strong>Add record</strong> button that opens a separate page (<code>/zones/{id}/records/add</code>). Set <code>interface.show_add_record_form</code> to <code>true</code> to get an input row in the record table instead. Either way:</p>
 <ol>
