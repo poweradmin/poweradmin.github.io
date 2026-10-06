@@ -1068,6 +1068,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#sign-in-through-the-web-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sign in through the web server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#four-eyes-change-approval" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2142,6 +2153,8 @@
       
         
       
+        
+      
     
     
     
@@ -2502,6 +2515,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../configuration/remote-user/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Server Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../configuration/mail/" class="md-nav__link">
         
   
@@ -2581,10 +2622,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_14">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_15">
         
           
-          <label class="md-nav__link" for="__nav_5_14" id="__nav_5_14_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_15" id="__nav_5_15_label" tabindex="0">
             
   
   
@@ -2602,8 +2643,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_14_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_14">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_15">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7302,6 +7343,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#sign-in-through-the-web-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sign in through the web server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#four-eyes-change-approval" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7473,6 +7525,24 @@ back to the raw content string when you need a custom serial or a <code>[SERIAL]
 shows the same fields with labels and durations.</p>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/soa-record-details.png" data-desc-position="bottom"><img alt="SOA details in the record list" src="../../screenshots/soa-record-details.png"></a></p>
 <p>See <a href="../../user-guide/zones/#editing-the-soa-record">Zone Management</a>.</p>
+<h3 id="sign-in-through-the-web-server">Sign in through the web server<a class="headerlink" href="#sign-in-through-the-web-server" title="Permanent link">¶</a></h3>
+<p>With <code>remote_user.enabled</code>, Poweradmin signs users in as the user the web server or an
+authenticating proxy has already verified: <code>REMOTE_USER</code> from Apache basic auth,
+<code>mod_auth_mellon</code> or nginx <code>auth_basic</code>, or a header such as <code>Remote-User</code> from Authelia or
+oauth2-proxy, accepted only from addresses listed in <code>remote_user.trusted_proxies</code>. Email,
+name and groups can come from the same source, and groups map to permission templates and
+groups as for SAML.</p>
+<p>Only accounts whose sign-in method is "web server" are signed in this way. An administrator
+switches an account over with the <strong>Web server authentication</strong> checkbox on the user form,
+and new accounts can be created on first sign-in. Enable it only when PHP cannot be reached
+except through the authenticating server.</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="x">'remote_user' =&gt; [</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="x">    'header' =&gt; 'Remote-User',</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="x">    'trusted_proxies' =&gt; ['172.20.0.5'],</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="x">],</span>
+</code></pre></div>
+<p>See <a href="../../configuration/remote-user/">Web Server Authentication</a>.</p>
 <h3 id="four-eyes-change-approval">Four-eyes change approval<a class="headerlink" href="#four-eyes-change-approval" title="Permanent link">¶</a></h3>
 <p><code>approval.allow_self_approval</code> (default <code>true</code>) can be set to <code>false</code> so a requester cannot
 approve their own change request, on the web page or through the API. The request list flags
@@ -7515,6 +7585,11 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>Disabled accounts refused at OIDC and SAML sign-in</td>
+<td>A disabled account can no longer sign in through OIDC or SAML, and its open sessions end</td>
+<td><a href="../../configuration/oidc/">OIDC Authentication</a></td>
+</tr>
 <tr>
 <td>NAPTR service field checked properly</td>
 <td>The service field is validated as parts joined by plus signs, each starting with a letter, so a trailing plus (<code>"E2U+"</code>) or an empty part (<code>"aaa++diameter"</code>) is refused instead of accepted</td>

@@ -1691,6 +1691,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#web-server-authentication-remote_user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Web server authentication (REMOTE_USER)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#custom-ca-certificate" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2574,6 +2585,8 @@
       
         
       
+        
+      
     
     
     
@@ -2934,6 +2947,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../configuration/remote-user/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Server Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../configuration/mail/" class="md-nav__link">
         
   
@@ -3013,10 +3054,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_14">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_15">
         
           
-          <label class="md-nav__link" for="__nav_5_14" id="__nav_5_14_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_15" id="__nav_5_15_label" tabindex="0">
             
   
   
@@ -3034,8 +3075,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_14_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_14">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_15">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7978,6 +8019,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#web-server-authentication-remote_user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Web server authentication (REMOTE_USER)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#custom-ca-certificate" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9182,9 +9234,130 @@ entrypoint generates the configuration - if you mount your own <code>settings.ph
 variables are ignored and the check is skipped.</p>
 <p>The LDAP rows above are enough for a working LDAP setup. OIDC and SAML are not - each provider
 needs its own block of variables (<code>PA_OIDC_AZURE_*</code>, <code>PA_SAML_OKTA_*</code> and so on), and there are
-137 authentication variables in total across LDAP, OIDC and SAML. They are listed in
+137 authentication variables in total across LDAP, OIDC and SAML (web server authentication is listed below). They are listed in
 <a href="https://github.com/poweradmin/poweradmin/blob/master/DOCKER.md">DOCKER.md</a>; the settings behind
 them are explained in <a href="../../configuration/oidc/">OIDC</a> and <a href="../../configuration/saml/">SAML</a>.</p>
+<h3 id="web-server-authentication-remote_user">Web server authentication (REMOTE_USER)<a class="headerlink" href="#web-server-authentication-remote_user" title="Permanent link">¶</a></h3>
+<p>Signs users in as the user name an authenticating web server or reverse proxy supplies. Added in 4.6.0. See <a href="../../configuration/remote-user/">Web Server Authentication</a> for how it works and the security requirements.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA_REMOTE_USER_ENABLED</code></td>
+<td>false</td>
+<td>Enable web server authentication</td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_SERVER_VARIABLE</code></td>
+<td>REMOTE_USER</td>
+<td>Server variable that holds the user name</td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_HEADER</code></td>
+<td><em>(empty)</em></td>
+<td>Read the user name from this request header instead (header mode), e.g. <code>Remote-User</code></td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_TRUSTED_PROXIES</code></td>
+<td><em>(empty)</em></td>
+<td>Comma-separated proxy IPs or CIDRs allowed to send the header. Empty means the header is ignored. Required in header mode</td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_STRIP_REALM</code></td>
+<td>false</td>
+<td>Turn <code>user@REALM</code> and <code>DOMAIN\user</code> into <code>user</code></td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_EMAIL_ATTRIBUTE</code></td>
+<td><em>(empty)</em></td>
+<td>Variable or header holding the email address, e.g. <code>Remote-Email</code></td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_NAME_ATTRIBUTE</code></td>
+<td><em>(empty)</em></td>
+<td>Variable or header holding the full name, e.g. <code>Remote-Name</code></td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_GROUPS_ATTRIBUTE</code></td>
+<td><em>(empty)</em></td>
+<td>Variable or header holding the groups, e.g. <code>Remote-Groups</code></td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_GROUPS_SEPARATOR</code></td>
+<td><code>,</code></td>
+<td>Separator between groups in the groups attribute</td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_LOGOUT_URL</code></td>
+<td><em>(empty)</em></td>
+<td>Where to send users after logout, to end the proxy's own session</td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_HIDE_LOGIN_FORM</code></td>
+<td>false</td>
+<td>Hide the password form while the web server signs users in</td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_AUTO_PROVISION</code></td>
+<td>true</td>
+<td>Create an account on first sign-in</td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_ALLOW_SUPERUSER_PROVISIONING</code></td>
+<td>false</td>
+<td>Let group mappings grant the superuser flag</td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_SYNC_USER_INFO</code></td>
+<td>true</td>
+<td>Update name and email from the attributes on each sign-in</td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_DEFAULT_PERMISSION_TEMPLATE</code></td>
+<td>Guest</td>
+<td>Permission template for new accounts when no mapping matches</td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_PERMISSION_TEMPLATE_MAPPING</code></td>
+<td><em>(empty)</em></td>
+<td>Map groups to permission templates (format: <code>group1=Template1,group2=Template2</code>)</td>
+</tr>
+<tr>
+<td><code>PA_REMOTE_USER_GROUP_MAPPING</code></td>
+<td><em>(empty)</em></td>
+<td>Map groups to Poweradmin groups (format: <code>group1=PaGroup1,group2=PaGroup2</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ul>
+<li>The image's Caddy server does not authenticate users itself. In Docker this is normally used in header mode, behind an authenticating proxy (Authelia, oauth2-proxy, Authentik outpost) that sets <code>Remote-User</code>.</li>
+<li><code>PA_REMOTE_USER_TRUSTED_PROXIES</code> must list the proxy's address as Poweradmin sees it. It is not taken from <code>TRUSTED_PROXIES</code>. With a header set but no trusted proxies the header is ignored, and the container logs a warning at startup.</li>
+<li>The container must not be reachable except through that proxy, and the proxy must overwrite or strip any <code>Remote-User</code> header the client sends.</li>
+</ul>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">poweradmin</span><span class="p">:</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">poweradmin/poweradmin:latest</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">      </span><span class="nt">PA_REMOTE_USER_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">      </span><span class="nt">PA_REMOTE_USER_HEADER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Remote-User</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">      </span><span class="nt">PA_REMOTE_USER_TRUSTED_PROXIES</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">172.20.0.5</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">      </span><span class="nt">PA_REMOTE_USER_EMAIL_ATTRIBUTE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Remote-Email</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="nt">PA_REMOTE_USER_NAME_ATTRIBUTE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Remote-Name</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">      </span><span class="nt">PA_REMOTE_USER_GROUPS_ATTRIBUTE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Remote-Groups</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">      </span><span class="nt">PA_REMOTE_USER_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dns-admins=Administrators</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">      </span><span class="nt">PA_REMOTE_USER_PERMISSION_TEMPLATE_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dns-admins=Administrator</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">      </span><span class="nt">PA_REMOTE_USER_LOGOUT_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://auth.example.com/logout</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">      </span><span class="nt">app</span><span class="p">:</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">        </span><span class="nt">ipv4_address</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">172.20.0.10</span><span class="w">   </span><span class="c1"># reachable only from the proxy network, no published ports</span>
+</code></pre></div>
 <h3 id="custom-ca-certificate">Custom CA Certificate<a class="headerlink" href="#custom-ca-certificate" title="Permanent link">¶</a></h3>
 <table>
 <thead>
@@ -9203,10 +9376,10 @@ them are explained in <a href="../../configuration/oidc/">OIDC</a> and <a href="
 </tbody>
 </table>
 <p>Use this when connecting to services (OIDC, SAML, LDAP, PowerDNS API) that use self-signed or internal CA certificates:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>poweradmin<span class="w"> </span>-p<span class="w"> </span><span class="m">80</span>:80<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">TRUSTED_CA_FILE</span><span class="o">=</span>/certs/my-ca.crt<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span>-v<span class="w"> </span>/path/to/my-ca.crt:/certs/my-ca.crt:ro<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span>poweradmin/poweradmin
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>poweradmin<span class="w"> </span>-p<span class="w"> </span><span class="m">80</span>:80<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">TRUSTED_CA_FILE</span><span class="o">=</span>/certs/my-ca.crt<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span>-v<span class="w"> </span>/path/to/my-ca.crt:/certs/my-ca.crt:ro<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span>poweradmin/poweradmin
 </code></pre></div>
 <h3 id="interface-and-miscellaneous">Interface and miscellaneous<a class="headerlink" href="#interface-and-miscellaneous" title="Permanent link">¶</a></h3>
 <table>
@@ -9458,10 +9631,10 @@ ways that are hard to trace, for example saving records failing with a PHP <code
 warning.</p>
 <p><a href="../../configuration/ui/custom-css/">Custom CSS</a> files are not shipped with the image, so mount
 them one by one:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>poweradmin<span class="w"> </span>-p<span class="w"> </span><span class="m">80</span>:80<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span>-v<span class="w"> </span>./custom_light.css:/app/templates/default/style/custom_light.css:ro<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span>-v<span class="w"> </span>./custom_dark.css:/app/templates/default/style/custom_dark.css:ro<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span>poweradmin/poweradmin
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>poweradmin<span class="w"> </span>-p<span class="w"> </span><span class="m">80</span>:80<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>-v<span class="w"> </span>./custom_light.css:/app/templates/default/style/custom_light.css:ro<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span>-v<span class="w"> </span>./custom_dark.css:/app/templates/default/style/custom_dark.css:ro<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span>poweradmin/poweradmin
 </code></pre></div>
 <p>Use <code>modern</code> instead of <code>default</code> in the path when <code>PA_THEME</code> is <code>modern</code>. Do not mount the
 whole <code>style/</code> directory: it hides the theme's own <code>light.css</code> and <code>dark.css</code>.</p>
@@ -9470,16 +9643,16 @@ starts as a copy of the theme's own file, so compare it with the new version aft
 upgrade.</p>
 <h2 id="secrets">Secrets<a class="headerlink" href="#secrets" title="Permanent link">¶</a></h2>
 <p>For production, use Docker secrets instead of environment variables for sensitive data. See <a href="../docker-secrets/">Docker Secrets</a> for details.</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">secrets</span><span class="p">:</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">db_password</span><span class="p">:</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./secrets/db_password.txt</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="nt">services</span><span class="p">:</span>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">  </span><span class="nt">poweradmin</span><span class="p">:</span>
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">      </span><span class="nt">DB_PASS__FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/db_password</span>
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">    </span><span class="nt">secrets</span><span class="p">:</span>
-<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db_password</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">secrets</span><span class="p">:</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">db_password</span><span class="p">:</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./secrets/db_password.txt</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">  </span><span class="nt">poweradmin</span><span class="p">:</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">      </span><span class="nt">DB_PASS__FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/db_password</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span><span class="nt">secrets</span><span class="p">:</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db_password</span>
 </code></pre></div>
 <h2 id="non-root-rootless-deployment">Non-Root / Rootless Deployment<a class="headerlink" href="#non-root-rootless-deployment" title="Permanent link">¶</a></h2>
 <p>The Poweradmin image supports running as a non-root user for restricted Kubernetes clusters and OpenShift. No separate image variant is needed - the entrypoint adapts automatically.</p>
@@ -9509,34 +9682,34 @@ upgrade.</p>
 </tbody>
 </table>
 <h3 id="docker-non-root">Docker (Non-Root)<a class="headerlink" href="#docker-non-root" title="Permanent link">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--user<span class="w"> </span><span class="m">82</span>:82<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DB_TYPE</span><span class="o">=</span>sqlite<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span>poweradmin/poweradmin:stable
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>--user<span class="w"> </span><span class="m">82</span>:82<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DB_TYPE</span><span class="o">=</span>sqlite<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span>poweradmin/poweradmin:stable
 </code></pre></div>
 <h3 id="kubernetes-restricted">Kubernetes (Restricted)<a class="headerlink" href="#kubernetes-restricted" title="Permanent link">¶</a></h3>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="nt">securityContext</span><span class="p">:</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="nt">runAsNonRoot</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">82</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="nt">runAsGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">82</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">    </span><span class="nt">fsGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">82</span>
-<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
-<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">poweradmin</span>
-<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">poweradmin/poweradmin:stable</span>
-<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">      </span><span class="nt">ports</span><span class="p">:</span>
-<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
-<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">      </span><span class="nt">securityContext</span><span class="p">:</span>
-<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">        </span><span class="nt">allowPrivilegeEscalation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">        </span><span class="nt">capabilities</span><span class="p">:</span>
-<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">          </span><span class="nt">drop</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"ALL"</span><span class="p p-Indicator">]</span>
-<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="w">      </span><span class="nt">env</span><span class="p">:</span>
-<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DB_TYPE</span>
-<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqlite</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">securityContext</span><span class="p">:</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="nt">runAsNonRoot</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">82</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="nt">runAsGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">82</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="nt">fsGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">82</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">poweradmin</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">poweradmin/poweradmin:stable</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">      </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">      </span><span class="nt">securityContext</span><span class="p">:</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">        </span><span class="nt">allowPrivilegeEscalation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">        </span><span class="nt">capabilities</span><span class="p">:</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w">          </span><span class="nt">drop</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"ALL"</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">      </span><span class="nt">env</span><span class="p">:</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DB_TYPE</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqlite</span>
 </code></pre></div>
 <p><code>fsGroup: 82</code> ensures volumes are group-writable for <code>www-data</code> (GID 82).</p>
 <h3 id="custom-port">Custom Port<a class="headerlink" href="#custom-port" title="Permanent link">¶</a></h3>
 <p>Override the auto-detected port with <code>SERVER_PORT</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">SERVER_PORT</span><span class="o">=</span><span class="m">9090</span><span class="w"> </span>-p<span class="w"> </span><span class="m">9090</span>:9090<span class="w"> </span>poweradmin/poweradmin
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">SERVER_PORT</span><span class="o">=</span><span class="m">9090</span><span class="w"> </span>-p<span class="w"> </span><span class="m">9090</span>:9090<span class="w"> </span>poweradmin/poweradmin
 </code></pre></div>
 <h3 id="limitations-non-root">Limitations (Non-Root)<a class="headerlink" href="#limitations-non-root" title="Permanent link">¶</a></h3>
 <ul>
@@ -9545,10 +9718,10 @@ upgrade.</p>
 </ul>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
 <h3 id="check-container-logs">Check container logs<a class="headerlink" href="#check-container-logs" title="Permanent link">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>docker<span class="w"> </span>logs<span class="w"> </span>poweradmin
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>docker<span class="w"> </span>logs<span class="w"> </span>poweradmin
 </code></pre></div>
 <h3 id="access-container-shell">Access container shell<a class="headerlink" href="#access-container-shell" title="Permanent link">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>poweradmin<span class="w"> </span>/bin/sh
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>poweradmin<span class="w"> </span>/bin/sh
 </code></pre></div>
 <h3 id="database-connection-issues">Database connection issues<a class="headerlink" href="#database-connection-issues" title="Permanent link">¶</a></h3>
 <ol>
@@ -9557,9 +9730,9 @@ upgrade.</p>
 <li>Ensure database exists and user has permissions</li>
 </ol>
 <h3 id="permission-issues-with-volumes">Permission issues with volumes<a class="headerlink" href="#permission-issues-with-volumes" title="Permanent link">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--user<span class="w"> </span>root<span class="w"> </span>...
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="c1"># or fix permissions on host</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span><span class="m">1000</span>:1000<span class="w"> </span>/path/to/volume
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--user<span class="w"> </span>root<span class="w"> </span>...
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="c1"># or fix permissions on host</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span><span class="m">1000</span>:1000<span class="w"> </span>/path/to/volume
 </code></pre></div>
 <h2 id="related-documentation">Related Documentation<a class="headerlink" href="#related-documentation" title="Permanent link">¶</a></h2>
 <ul>

@@ -1954,6 +1954,8 @@
       
         
       
+        
+      
     
     
     
@@ -2273,6 +2275,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#remote_user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote_user
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#saml" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2573,6 +2586,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../remote-user/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Server Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../mail/" class="md-nav__link">
         
   
@@ -2655,10 +2696,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_14">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_15">
         
           
-          <label class="md-nav__link" for="__nav_5_14" id="__nav_5_14_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5_15" id="__nav_5_15_label" tabindex="">
             
   
   
@@ -2676,8 +2717,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_14_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_14">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_15">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7496,6 +7537,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#remote_user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        remote_user
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#saml" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -9013,6 +9065,121 @@ describe what these settings actually do and when to change them.</p>
 <td><code>true</code></td>
 <td>Show group-based permission template management</td>
 <td>4.3.0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="remote_user">remote_user<a class="headerlink" href="#remote_user" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Description</th>
+<th>Added in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td id="setting-remote-user-enabled"><code>remote_user.enabled</code></td>
+<td><code>false</code></td>
+<td>Sign users in from the web server's authenticated user</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-server-variable"><code>remote_user.server_variable</code></td>
+<td><code>'REMOTE_USER'</code></td>
+<td>Server variable the web server sets to the user name (client-settable HTTP_<em> and PHP_AUTH_</em> names are refused)</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-header"><code>remote_user.header</code></td>
+<td><code>''</code></td>
+<td>Read the user from this proxy header instead (e.g. 'Remote-User'), which the proxy must overwrite, not append to; empty = use server_variable</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-trusted-proxies"><code>remote_user.trusted_proxies</code></td>
+<td><code>[]</code></td>
+<td>Proxy IPs/CIDRs allowed to send 'header', as PHP sees them (::ffff:10.0.0.5 is not 10.0.0.5); empty = header ignored</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-strip-realm"><code>remote_user.strip_realm</code></td>
+<td><code>false</code></td>
+<td>Turn user@REALM and DOMAIN\user into user (one realm only: alice@A and alice@B become the same account)</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-email-attribute"><code>remote_user.email_attribute</code></td>
+<td><code>''</code></td>
+<td>Variable (or header, in header mode) holding the email address, e.g. 'Remote-Email'</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-name-attribute"><code>remote_user.name_attribute</code></td>
+<td><code>''</code></td>
+<td>Variable (or header) holding the full name, e.g. 'Remote-Name'</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-groups-attribute"><code>remote_user.groups_attribute</code></td>
+<td><code>''</code></td>
+<td>Variable (or header) holding the groups, e.g. 'Remote-Groups'</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-groups-separator"><code>remote_user.groups_separator</code></td>
+<td><code>','</code></td>
+<td>Separator between groups in groups_attribute</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-logout-url"><code>remote_user.logout_url</code></td>
+<td><code>''</code></td>
+<td>Where to send users after logout to end the web server's own session; empty = Poweradmin login page</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-hide-login-form"><code>remote_user.hide_login_form</code></td>
+<td><code>false</code></td>
+<td>Hide the password form while the web server signs someone in (posted passwords still work)</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-auto-provision"><code>remote_user.auto_provision</code></td>
+<td><code>true</code></td>
+<td>Create an account on first sign-in</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-allow-superuser-provisioning"><code>remote_user.allow_superuser_provisioning</code></td>
+<td><code>false</code></td>
+<td>Let mappings grant user_is_ueberuser</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-sync-user-info"><code>remote_user.sync_user_info</code></td>
+<td><code>true</code></td>
+<td>Update name and email from the attributes on each sign-in</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-default-permission-template"><code>remote_user.default_permission_template</code></td>
+<td><code>'Guest'</code></td>
+<td>Permission template for new accounts (no permissions until an admin assigns a role)</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-permission-template-mapping"><code>remote_user.permission_template_mapping</code></td>
+<td><code>[]</code></td>
+<td>Group =&gt; permission template name, as for 'saml'</td>
+<td>4.6.0</td>
+</tr>
+<tr>
+<td id="setting-remote-user-group-mapping"><code>remote_user.group_mapping</code></td>
+<td><code>[]</code></td>
+<td>Group =&gt; Poweradmin group name or list of names, as for 'saml'</td>
+<td>4.6.0</td>
 </tr>
 </tbody>
 </table>
