@@ -2338,6 +2338,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#docker-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -7284,6 +7295,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#docker-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -7424,6 +7446,72 @@ blank page after login with an <code>openlog()</code> type error.</p>
 <p>Upgrading from v3.x? The equivalent flat variables were <code>$logger_type</code>, <code>$logger_level</code>,
 <code>$syslog_use</code>, <code>$syslog_ident</code>, <code>$syslog_facility</code> and <code>$dblog_use</code>. That format was removed in
 4.1.0 - see <a href="../legacy-configuration/">Legacy Configuration</a>.</p>
+<h2 id="docker-configuration">Docker Configuration<a class="headerlink" href="#docker-configuration" title="Permanent link">¶</a></h2>
+<p>In the Docker image each setting has an environment variable, so logging can be turned on
+without a configuration file or a volume:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Setting</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA_LOGGING_TYPE</code></td>
+<td><code>logging.type</code></td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td><code>PA_LOGGING_LEVEL</code></td>
+<td><code>logging.level</code></td>
+<td><code>info</code></td>
+</tr>
+<tr>
+<td><code>PA_LOGGING_DATABASE_ENABLED</code></td>
+<td><code>logging.database_enabled</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>PA_LOGGING_API_REQUEST_LOGGING</code></td>
+<td><code>logging.api_request_logging</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>PA_LOGGING_API_LOG_RETENTION_DAYS</code></td>
+<td><code>logging.api_log_retention_days</code></td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><code>PA_LOGGING_SYSLOG_ENABLED</code></td>
+<td><code>logging.syslog_enabled</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>PA_LOGGING_SYSLOG_IDENTITY</code></td>
+<td><code>logging.syslog_identity</code></td>
+<td><code>poweradmin</code></td>
+</tr>
+<tr>
+<td><code>PA_LOGGING_SYSLOG_FACILITY</code></td>
+<td><code>logging.syslog_facility</code></td>
+<td><code>LOG_USER</code></td>
+</tr>
+</tbody>
+</table>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">PA_LOGGING_TYPE</span><span class="p">:</span><span class="w"> </span><span class="s">"native"</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">PA_LOGGING_LEVEL</span><span class="p">:</span><span class="w"> </span><span class="s">"warning"</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">PA_LOGGING_DATABASE_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+</code></pre></div>
+<p>With <code>PA_LOGGING_TYPE=native</code> the diagnostic messages go to the container output, so
+<code>docker logs</code> or <code>podman logs</code> shows them.</p>
+<p>If you mount your own directory over <code>/app/config</code> to supply a <code>settings.php</code>, the container
+copies <code>settings.defaults.php</code> back into that directory at startup. A <code>settings.php</code> that holds
+only a <code>logging</code> block is enough; everything else keeps its default.</p>
+<p>The full variable list is in
+<a href="https://github.com/poweradmin/poweradmin/blob/master/DOCKER.md#logging-configuration">DOCKER.md</a>.</p>
 <p>For more advanced logging configuration, environment-specific examples, and best practices, see:</p>
 <ul>
 <li><a href="../../advanced/logging-config/">Advanced Logging Configuration</a></li>
