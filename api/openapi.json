@@ -265,7 +265,7 @@
                     "change-requests"
                 ],
                 "summary": "Approve and apply a change request",
-                "description": "Applies the stored actions to the zone as the caller. Needs the change approve permission for the zone together with the edit permission. A refused or failed write leaves the request in the failed state and answers with the failure. Approving a failed request applies it again; actions that already landed are skipped.",
+                "description": "Applies the stored actions to the zone as the caller. Needs the change approve permission for the zone together with the edit permission. A refused or failed write leaves the request in the failed state and answers with the failure. Approving a failed request applies it again; actions that already landed are skipped. Answers 403 when the caller filed the request and approval.allow_self_approval is off.",
                 "operationId": "v2ApproveChangeRequest",
                 "parameters": [
                     {
@@ -3938,7 +3938,7 @@
                         }
                     },
                     "400": {
-                        "description": "Invalid input, a private key PowerDNS rejected, or DNSSEC not enabled on the server"
+                        "description": "Invalid input, a private key PowerDNS rejected, a key algorithm not offered for new keys, or DNSSEC not enabled on the server"
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -4592,7 +4592,7 @@
                         "description": "Zone not found"
                     },
                     "409": {
-                        "description": "User is already an owner of this zone (single mode only)"
+                        "description": "User is already an owner of this zone (single mode only), or the zone ID is shared with another zone"
                     },
                     "500": {
                         "description": "Failed to add owner due to a server error"
@@ -5851,7 +5851,7 @@
                                                                 "example": 1
                                                             },
                                                             "canonical_id": {
-                                                                "description": "Zone id accepted by the other zone endpoints; equals id except for API-backend zones migrated from SQL mode",
+                                                                "description": "Same as id since 4.6.0, kept for clients that read it",
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
@@ -6187,6 +6187,11 @@
                                                 "zone": {
                                                     "properties": {
                                                         "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "canonical_id": {
+                                                            "description": "Same as id, kept for clients that read it",
                                                             "type": "integer",
                                                             "example": 1
                                                         },
