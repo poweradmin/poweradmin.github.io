@@ -7385,18 +7385,21 @@ example, if a user owns zones but lacks the <code>zone_content_view_own</code> p
 empty to use the default from <code>dns.default_max_zones_per_user</code> or <code>dns.default_max_zones_per_group</code>
 (unlimited unless configured). <code>0</code> means the user or group may not own any zone. Only superusers
 see and change the field, on the web and in the API (<code>max_zones</code>).</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/user-zone-limit.png" data-desc-position="bottom"><img alt="Zone limit on the user form" src="../../screenshots/user-zone-limit.png"></a></p>
 <p>The limit applies to the owner, whoever makes the change. Creating a zone, adding an owner or a
 group, and moving zones to another user when a user is deleted are refused once the receiving
 owner would go past the limit; the message names the owner and the numbers, for example
 "Zone limit reached: alice owns 10 of 10 zones." The API answers 409 with the same text.
-Zones that the background sync adopts (autoprimary, <code>dns.adopt_zone_owner_from_account</code>) are not
-refused.</p>
+Concurrent requests are checked one at a time per owner, so two requests at the same moment cannot
+both take the last free slot.</p>
+<p>With <code>dns.adopt_zone_owner_from_account</code>, a zone is only adopted by a user who has room under their
+limit. Otherwise the zone sync leaves it without an owner and logs a warning, and the "zones without
+owners" repair in the consistency check gives it to the administrator running the repair instead.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/add-zone-limit-note.png" data-desc-position="bottom"><img alt="Remaining zones on the add-zone page" src="../../screenshots/add-zone-limit-note.png"></a></p>
 <p>Lowering a limit never removes zones. The user or group keeps what they own and cannot take on
 new zones until they are below the limit again; the form warns when you save a limit below the
 current count. The add-zone pages show how many more zones the signed-in user may own, and
 <code>interface.show_zone_limit_column</code> adds the owned count and limit to the users and groups lists.</p>
-<p>Two requests at the same moment can both pass the check, so a user can end up one zone over the
-limit; the next request is refused.</p>
 <h2 id="edit-access-and-zone-integrity">Edit Access and Zone Integrity<a class="headerlink" href="#edit-access-and-zone-integrity" title="Permanent link">¶</a></h2>
 <p>Poweradmin assumes that users with edit permissions for a zone can be trusted with full access to that zone's contents,
 because even partial edit access would allow a user to break the zone's functionality.</p>

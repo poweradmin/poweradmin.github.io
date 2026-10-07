@@ -117,7 +117,7 @@ without an owner (an autoprimary sets the account from its own configuration).</
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipLimit.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipLimit">ZoneOwnershipLimit</abbr></a>|null $limits = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -131,6 +131,61 @@ without an owner (an autoprimary sets the account from its own configuration).</
                     <a href="#method_forConfig">forConfig</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
         
                                             <p><p>A lookup when dns.adopt_zone_owner_from_account is on, null otherwise.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_limitedAdopters">limitedAdopters</a>(array $accounts)
+        
+                                            <p><p>The users these accounts name who have a zone limit, for lockAdopters() once the
+caller's transaction is open. Resets the per-run counts. Read before the transaction,
+so on MySQL the lock is taken before the snapshot the counts read from.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_lockAdopters">lockAdopters</a>(array $userIds)
+        
+                                            <p><p>Locks the adopting users' rows in the open transaction, so a grant to the same user
+waits for the adoption and counts what it added.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_assignWithinLimit">assignWithinLimit</a>(int $userId, callable $write, int|null $zoneId = null)
+        
+                                            <p><p>Gives one zone to the user through $write, deciding under the user's lock like any
+other grant. Null when the user is at the limit and nothing was written.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_adopterFor">adopterFor</a>(string $account)
+        
+                                            <p><p>The user a zone with this account should go to: userIdFor(), unless that user
+has no zones left under their limit, in which case the zone stays ownerless.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_heldBack">heldBack</a>()
+        
+                                            <p><p>Zones adopterFor() left ownerless because their user was at the zone limit.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -151,9 +206,9 @@ without an owner (an autoprimary sets the account from its own configuration).</
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L37">at line 37</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L50">at line 50</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipLimit.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipLimit">ZoneOwnershipLimit</abbr></a>|null $limits = null)
         </code>
     </h3>
     <div class="details">    
@@ -174,6 +229,11 @@ without an owner (an autoprimary sets the account from its own configuration).</
                 <td>$db</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Service/Zone/ZoneOwnershipLimit.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneOwnershipLimit">ZoneOwnershipLimit</abbr></a>|null</td>
+                <td>$limits</td>
+                <td><p>Zone limits adoption respects; null adopts without limit</p></td>
+            </tr>
             </table>
 
             
@@ -186,7 +246,7 @@ without an owner (an autoprimary sets the account from its own configuration).</
             </div>
                     <div class="method-item">
                     <h3 id="method_forConfig">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L44">at line 44</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L57">at line 57</a></div>
         <code>        static            <a href="../../../Poweradmin/Infrastructure/Repository/AccountOwnerLookup.html"><abbr title="Poweradmin\Infrastructure\Repository\AccountOwnerLookup">AccountOwnerLookup</abbr></a>|null
     <strong>forConfig</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
         </code>
@@ -233,8 +293,228 @@ without an owner (an autoprimary sets the account from its own configuration).</
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_limitedAdopters">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L85">at line 85</a></div>
+        <code>                    array
+    <strong>limitedAdopters</strong>(array $accounts)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The users these accounts name who have a zone limit, for lockAdopters() once the
+caller's transaction is open. Resets the per-run counts. Read before the transaction,
+so on MySQL the lock is taken before the snapshot the counts read from.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$accounts</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_lockAdopters">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L110">at line 110</a></div>
+        <code>                    void
+    <strong>lockAdopters</strong>(array $userIds)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Locks the adopting users' rows in the open transaction, so a grant to the same user
+waits for the adoption and counts what it added.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$userIds</td>
+                <td><p>From limitedAdopters()</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_assignWithinLimit">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L121">at line 121</a></div>
+        <code>                    bool|null
+    <strong>assignWithinLimit</strong>(int $userId, callable $write, int|null $zoneId = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Gives one zone to the user through $write, deciding under the user's lock like any
+other grant. Null when the user is at the limit and nothing was written.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>callable</td>
+                <td>$write</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_adopterFor">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L141">at line 141</a></div>
+        <code>                    int|null
+    <strong>adopterFor</strong>(string $account)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The user a zone with this account should go to: userIdFor(), unless that user
+has no zones left under their limit, in which case the zone stays ownerless.</p></p>                <p><p>Each call takes one zone from the user's remaining count.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$account</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_heldBack">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L168">at line 168</a></div>
+        <code>                    int
+    <strong>heldBack</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Zones adopterFor() left ownerless because their user was at the zone limit.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_userIdFor">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L52">at line 52</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/AccountOwnerLookup.php#L176">at line 176</a></div>
         <code>                    int|null
     <strong>userIdFor</strong>(string $account)
         </code>
@@ -279,7 +559,7 @@ without an owner (an autoprimary sets the account from its own configuration).</
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/e9baa1a" rel="noreferrer" target="_blank">commit e9baa1a,</a> built 2026-10-07 03:30 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/d65ee67" rel="noreferrer" target="_blank">commit d65ee67,</a> built 2026-10-07 05:41 UTC.</div></div>
     </div>
     </body>
 

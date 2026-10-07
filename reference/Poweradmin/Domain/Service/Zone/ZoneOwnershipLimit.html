@@ -105,7 +105,8 @@
             <div class="description">
             <p><p>How many zones a user or group may own, and whether a change would exceed it.</p></p>            <p><p>A user counts the zones they own directly, a group the zones granted to it; group
 grants never count toward the members. The limit binds the owner, whoever acts, and
-a superuser owner is never limited. Lowering a limit keeps existing zones.</p></p>        </div>
+a superuser owner is never limited. Lowering a limit keeps existing zones. Grants
+decide and write under a lock on the limited owners' rows.</p></p>        </div>
             
         
             <h2>Constants</h2>    <table class="table table-condensed">
@@ -157,10 +158,74 @@ a superuser owner is never limited. Lowering a limit keeps existing zones.</p></
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Domain/Repository/UserRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserRepositoryInterface">UserRepositoryInterface</abbr></a> $users, <a href="../../../../Poweradmin/Domain/Repository/UserGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserGroupRepositoryInterface">UserGroupRepositoryInterface</abbr></a> $groups, <a href="../../../../Poweradmin/Domain/Repository/ZoneGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneGroupRepositoryInterface">ZoneGroupRepositoryInterface</abbr></a> $zoneGroups, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
+                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Domain/Repository/UserRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserRepositoryInterface">UserRepositoryInterface</abbr></a> $users, <a href="../../../../Poweradmin/Domain/Repository/UserGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserGroupRepositoryInterface">UserGroupRepositoryInterface</abbr></a> $groups, <a href="../../../../Poweradmin/Domain/Repository/ZoneGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneGroupRepositoryInterface">ZoneGroupRepositoryInterface</abbr></a> $zoneGroups, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Port/TransactionInterface.html"><abbr title="Poweradmin\Domain\Port\TransactionInterface">TransactionInterface</abbr></a>|null $transaction = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_addUserOwner">addUserOwner</a>(int $userId, callable $write, int|null $zoneId = null)
+        
+                                            <p><p>Makes the user an owner through $write unless that takes them past their limit.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_addGroupOwner">addGroupOwner</a>(int $groupId, callable $write, int|null $zoneId = null)
+        
+                                            <p><p>Grants the group a zone through $write unless that takes it past its limit. With
+$zoneId, a group that already holds the zone gains nothing and is never refused for it.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_transferZones">transferZones</a>(int $fromUserId, int $toUserId, callable $write)
+        
+                                            <p><p>Moves every zone of one user to another through $write unless that takes the
+receiver past their limit. The receiver is counted again after the move and the move
+rolled back if it went over, since a zone granted to the sender meanwhile moves too.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_reassignZones">reassignZones</a>(array $zonesByUser, callable $write)
+        
+                                            <p><p>Gives each user the listed zones through $write, all or nothing: every limited user's
+row is locked, each one's total re-checked, and $write returning false rolls back.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_lockedNewZoneBreach">lockedNewZoneBreach</a>(int|null $ownerUserId, array $groupIds)
+        
+                                            <p><p>The breach a new zone would cause, decided under a lock on the owners' rows.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_lockUsers">lockUsers</a>(array $userIds)
+        
+                                            <p><p>Locks these users' rows in the open transaction, in the order every grant takes them.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -314,9 +379,9 @@ administrator cannot lift the limits of the users they manage.</p></p>          
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L47">at line 47</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L50">at line 50</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Repository/UserRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserRepositoryInterface">UserRepositoryInterface</abbr></a> $users, <a href="../../../../Poweradmin/Domain/Repository/UserGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserGroupRepositoryInterface">UserGroupRepositoryInterface</abbr></a> $groups, <a href="../../../../Poweradmin/Domain/Repository/ZoneGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneGroupRepositoryInterface">ZoneGroupRepositoryInterface</abbr></a> $zoneGroups, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
+    <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Repository/UserRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserRepositoryInterface">UserRepositoryInterface</abbr></a> $users, <a href="../../../../Poweradmin/Domain/Repository/UserGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\UserGroupRepositoryInterface">UserGroupRepositoryInterface</abbr></a> $groups, <a href="../../../../Poweradmin/Domain/Repository/ZoneGroupRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneGroupRepositoryInterface">ZoneGroupRepositoryInterface</abbr></a> $zoneGroups, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Port/TransactionInterface.html"><abbr title="Poweradmin\Domain\Port\TransactionInterface">TransactionInterface</abbr></a>|null $transaction = null)
         </code>
     </h3>
     <div class="details">    
@@ -357,6 +422,11 @@ administrator cannot lift the limits of the users they manage.</p></p>          
                 <td>$config</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Port/TransactionInterface.html"><abbr title="Poweradmin\Domain\Port\TransactionInterface">TransactionInterface</abbr></a>|null</td>
+                <td>$transaction</td>
+                <td></td>
+            </tr>
             </table>
 
             
@@ -368,8 +438,312 @@ administrator cannot lift the limits of the users they manage.</p></p>          
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_addUserOwner">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L69">at line 69</a></div>
+        <code>                    mixed
+    <strong>addUserOwner</strong>(int $userId, callable $write, int|null $zoneId = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Makes the user an owner through $write unless that takes them past their limit.</p></p>                <p><p>With $zoneId, a user who already owns that zone (say, through a concurrent request)
+gains nothing, so the grant is never refused for it; $write should skip the insert then.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>callable</td>
+                <td>$write</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_addGroupOwner">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L86">at line 86</a></div>
+        <code>                    mixed
+    <strong>addGroupOwner</strong>(int $groupId, callable $write, int|null $zoneId = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Grants the group a zone through $write unless that takes it past its limit. With
+$zoneId, a group that already holds the zone gains nothing and is never refused for it.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$groupId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>callable</td>
+                <td>$write</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_transferZones">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L102">at line 102</a></div>
+        <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|bool
+    <strong>transferZones</strong>(int $fromUserId, int $toUserId, callable $write)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Moves every zone of one user to another through $write unless that takes the
+receiver past their limit. The receiver is counted again after the move and the move
+rolled back if it went over, since a zone granted to the sender meanwhile moves too.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$fromUserId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$toUserId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>callable</td>
+                <td>$write</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_reassignZones">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L125">at line 125</a></div>
+        <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|bool
+    <strong>reassignZones</strong>(array $zonesByUser, callable $write)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Gives each user the listed zones through $write, all or nothing: every limited user's
+row is locked, each one's total re-checked, and $write returning false rolls back.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$zonesByUser</td>
+                <td><p>Canonical zone ids keyed by the new owner</p></td>
+            </tr>
+                    <tr>
+                <td>callable</td>
+                <td>$write</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_lockedNewZoneBreach">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L149">at line 149</a></div>
+        <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|null
+    <strong>lockedNewZoneBreach</strong>(int|null $ownerUserId, array $groupIds)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The breach a new zone would cause, decided under a lock on the owners' rows.</p></p>                <p><p>For a caller that has just opened the transaction its write runs in: the lock
+comes first, so the count that follows sees every grant committed before it.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int|null</td>
+                <td>$ownerUserId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$groupIds</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_lockUsers">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L163">at line 163</a></div>
+        <code>                    void
+    <strong>lockUsers</strong>(array $userIds)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Locks these users' rows in the open transaction, in the order every grant takes them.</p></p>                <p><p>For a writer that decides itself, such as the zone sync adopting zones.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$userIds</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_userLimit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L59">at line 59</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L245">at line 245</a></div>
         <code>                    int|null
     <strong>userLimit</strong>(int $userId)
         </code>
@@ -412,7 +786,7 @@ administrator cannot lift the limits of the users they manage.</p></p>          
             </div>
                     <div class="method-item">
                     <h3 id="method_groupLimit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L71">at line 71</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L257">at line 257</a></div>
         <code>                    int|null
     <strong>groupLimit</strong>(int $groupId)
         </code>
@@ -455,7 +829,7 @@ administrator cannot lift the limits of the users they manage.</p></p>          
             </div>
                     <div class="method-item">
                     <h3 id="method_userUsage">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L82">at line 82</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L268">at line 268</a></div>
         <code>                    array
     <strong>userUsage</strong>(array $userIds)
         </code>
@@ -498,7 +872,7 @@ administrator cannot lift the limits of the users they manage.</p></p>          
             </div>
                     <div class="method-item">
                     <h3 id="method_userZoneCount">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L99">at line 99</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L285">at line 285</a></div>
         <code>                    int
     <strong>userZoneCount</strong>(int $userId)
         </code>
@@ -542,7 +916,7 @@ administrator cannot lift the limits of the users they manage.</p></p>          
             </div>
                     <div class="method-item">
                     <h3 id="method_groupZoneCount">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L104">at line 104</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L290">at line 290</a></div>
         <code>                    int
     <strong>groupZoneCount</strong>(int $groupId)
         </code>
@@ -586,7 +960,7 @@ administrator cannot lift the limits of the users they manage.</p></p>          
             </div>
                     <div class="method-item">
                     <h3 id="method_userRemaining">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L112">at line 112</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L298">at line 298</a></div>
         <code>                    int|null
     <strong>userRemaining</strong>(int $userId)
         </code>
@@ -629,7 +1003,7 @@ administrator cannot lift the limits of the users they manage.</p></p>          
             </div>
                     <div class="method-item">
                     <h3 id="method_userBreach">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L122">at line 122</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L308">at line 308</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|null
     <strong>userBreach</strong>(int $userId, int $adding = 1)
         </code>
@@ -677,7 +1051,7 @@ administrator cannot lift the limits of the users they manage.</p></p>          
             </div>
                     <div class="method-item">
                     <h3 id="method_groupBreach">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L142">at line 142</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L328">at line 328</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|null
     <strong>groupBreach</strong>(int $groupId, int $adding = 1)
         </code>
@@ -725,7 +1099,7 @@ administrator cannot lift the limits of the users they manage.</p></p>          
             </div>
                     <div class="method-item">
                     <h3 id="method_newZoneBreach">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L164">at line 164</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L350">at line 350</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|null
     <strong>newZoneBreach</strong>(int|null $ownerUserId, array $groupIds)
         </code>
@@ -773,7 +1147,7 @@ administrator cannot lift the limits of the users they manage.</p></p>          
             </div>
                     <div class="method-item">
                     <h3 id="method_transferBreach">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L183">at line 183</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L369">at line 369</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|null
     <strong>transferBreach</strong>(int $fromUserId, int $toUserId)
         </code>
@@ -821,7 +1195,7 @@ administrator cannot lift the limits of the users they manage.</p></p>          
             </div>
                     <div class="method-item">
                     <h3 id="method_zonesBreach">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L194">at line 194</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L380">at line 380</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneLimitBreach.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneLimitBreach">ZoneLimitBreach</abbr></a>|null
     <strong>zonesBreach</strong>(int $userId, array $zoneIds)
         </code>
@@ -869,7 +1243,7 @@ administrator cannot lift the limits of the users they manage.</p></p>          
             </div>
                     <div class="method-item">
                     <h3 id="method_setUserLimit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L211">at line 211</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L397">at line 397</a></div>
         <code>                    array
     <strong>setUserLimit</strong>(int $actingUserId, int $userId, int|null $limit)
         </code>
@@ -923,7 +1297,7 @@ administrator cannot lift the limits of the users they manage.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_setGroupLimit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L230">at line 230</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L416">at line 416</a></div>
         <code>                    array
     <strong>setGroupLimit</strong>(int $actingUserId, int $groupId, int|null $limit)
         </code>
@@ -976,7 +1350,7 @@ administrator cannot lift the limits of the users they manage.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_maySetLimits">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L247">at line 247</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Zone/ZoneOwnershipLimit.php#L433">at line 433</a></div>
         <code>                    bool
     <strong>maySetLimits</strong>(int $actingUserId)
         </code>
@@ -1021,7 +1395,7 @@ administrator cannot lift the limits of the users they manage.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/e9baa1a" rel="noreferrer" target="_blank">commit e9baa1a,</a> built 2026-10-07 03:30 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/d65ee67" rel="noreferrer" target="_blank">commit d65ee67,</a> built 2026-10-07 05:41 UTC.</div></div>
     </div>
     </body>
 
