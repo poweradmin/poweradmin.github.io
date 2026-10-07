@@ -904,6 +904,9 @@
                     },
                     "404": {
                         "description": "Zone not found"
+                    },
+                    "409": {
+                        "description": "The group has reached its zone limit"
                     }
                 },
                 "security": [
@@ -1031,6 +1034,11 @@
                                                                 "type": "integer",
                                                                 "example": 1
                                                             },
+                                                            "max_zones": {
+                                                                "type": "integer",
+                                                                "example": 50,
+                                                                "nullable": true
+                                                            },
                                                             "member_count": {
                                                                 "type": "integer",
                                                                 "example": 5
@@ -1098,6 +1106,12 @@
                                         "description": "ID of a group-type permission template (user-type templates are not accepted)",
                                         "type": "integer",
                                         "example": 1
+                                    },
+                                    "max_zones": {
+                                        "description": "How many zones the group may own; null uses dns.default_max_zones_per_group",
+                                        "type": "integer",
+                                        "example": 50,
+                                        "nullable": true
                                     }
                                 },
                                 "type": "object"
@@ -1131,6 +1145,11 @@
                                                         "name": {
                                                             "type": "string",
                                                             "example": "DNS Admins"
+                                                        },
+                                                        "max_zones": {
+                                                            "type": "integer",
+                                                            "example": 50,
+                                                            "nullable": true
                                                         }
                                                     },
                                                     "type": "object"
@@ -1211,6 +1230,11 @@
                                                         "perm_templ_id": {
                                                             "type": "integer",
                                                             "example": 1
+                                                        },
+                                                        "max_zones": {
+                                                            "type": "integer",
+                                                            "example": 50,
+                                                            "nullable": true
                                                         },
                                                         "member_count": {
                                                             "type": "integer",
@@ -1316,6 +1340,12 @@
                                     "perm_templ_id": {
                                         "type": "integer",
                                         "example": 1
+                                    },
+                                    "max_zones": {
+                                        "description": "How many zones the group may own; null uses dns.default_max_zones_per_group",
+                                        "type": "integer",
+                                        "example": 50,
+                                        "nullable": true
                                     }
                                 },
                                 "type": "object"
@@ -1358,6 +1388,11 @@
                                                         "perm_templ_id": {
                                                             "type": "integer",
                                                             "example": 1
+                                                        },
+                                                        "max_zones": {
+                                                            "type": "integer",
+                                                            "example": 50,
+                                                            "nullable": true
                                                         },
                                                         "created_at": {
                                                             "type": "string",
@@ -2296,6 +2331,12 @@
                                                             "example": "Zone Manager",
                                                             "nullable": true
                                                         },
+                                                        "max_zones": {
+                                                            "description": "Own zone limit; null means the configured default applies",
+                                                            "type": "integer",
+                                                            "example": 10,
+                                                            "nullable": true
+                                                        },
                                                         "groups": {
                                                             "type": "array",
                                                             "items": {
@@ -2434,6 +2475,12 @@
                                         "type": "integer",
                                         "example": 2
                                     },
+                                    "max_zones": {
+                                        "description": "How many zones the user may own directly; null uses dns.default_max_zones_per_user. Superusers only.",
+                                        "type": "integer",
+                                        "example": 10,
+                                        "nullable": true
+                                    },
                                     "use_ldap": {
                                         "description": "Whether the user should use LDAP authentication. Must be explicitly included when setting to false - omitting leaves the current value unchanged.",
                                         "type": "boolean",
@@ -2497,6 +2544,29 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Invalid JSON in request body"
+                                        },
+                                        "data": {
+                                            "type": "null"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden - no permission to edit this user, or max_zones was supplied without user_is_ueberuser",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Only superusers may change zone limits"
                                         },
                                         "data": {
                                             "type": "null"
@@ -2949,6 +3019,12 @@
                                                                 "example": "Zone Manager",
                                                                 "nullable": true
                                                             },
+                                                            "max_zones": {
+                                                                "description": "Own zone limit; null means the configured default applies",
+                                                                "type": "integer",
+                                                                "example": 10,
+                                                                "nullable": true
+                                                            },
                                                             "groups": {
                                                                 "type": "array",
                                                                 "items": {
@@ -3057,6 +3133,12 @@
                                         "description": "Permission template ID to assign to the user",
                                         "type": "integer",
                                         "example": 1
+                                    },
+                                    "max_zones": {
+                                        "description": "How many zones the user may own directly; null uses dns.default_max_zones_per_user. Superusers only.",
+                                        "type": "integer",
+                                        "example": 10,
+                                        "nullable": true
                                     },
                                     "use_ldap": {
                                         "description": "Whether the user should use LDAP authentication. Requires LDAP to be enabled; no local password is stored.",
@@ -3168,7 +3250,7 @@
                         }
                     },
                     "403": {
-                        "description": "Forbidden - no permission to create users, or groups was supplied without user_is_ueberuser",
+                        "description": "Forbidden - no permission to create users, or groups or max_zones was supplied without user_is_ueberuser",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4568,6 +4650,14 @@
                                                         "type": "integer"
                                                     },
                                                     "example": []
+                                                },
+                                                "over_limit": {
+                                                    "description": "Users not added because they own as many zones as their zone limit allows",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "integer"
+                                                    },
+                                                    "example": []
                                                 }
                                             },
                                             "type": "object",
@@ -4592,7 +4682,7 @@
                         "description": "Zone not found"
                     },
                     "409": {
-                        "description": "User is already an owner of this zone (single mode only), or the zone ID is shared with another zone"
+                        "description": "User is already an owner of this zone or has reached their zone limit (single mode only), or the zone ID is shared with another zone"
                     },
                     "500": {
                         "description": "Failed to add owner due to a server error"

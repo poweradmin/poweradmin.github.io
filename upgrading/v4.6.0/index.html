@@ -7469,7 +7469,7 @@
 <p>Version 4.6.0 adds an opt-in change approval workflow: users with a change request permission file their zone edits for review instead of writing them, and reviewers approve or reject from a new <strong>Change requests</strong> page or through the API. Alongside it, secondary zones can be retrieved from their primary on demand, the SOA serial bump on unchanged saves can be turned off, and every setting is reachable from a Docker environment variable.</p>
 <p>Nothing changes unless you turn the workflow on. See <a href="../../whats-new/v4.6.0/">What's New in 4.6.0</a> for the full list.</p>
 <h2 id="database-schema-update">Database Schema Update<a class="headerlink" href="#database-schema-update" title="Permanent link">¶</a></h2>
-<p>The 4.6.0 migration adds one table and four permissions:</p>
+<p>The 4.6.0 migration adds one table, four permissions and two columns:</p>
 <table>
 <thead>
 <tr>
@@ -7489,6 +7489,10 @@
 <tr>
 <td>Permissions <code>zone_change_approve_own</code>, <code>zone_change_approve_others</code></td>
 <td>Review change requests for owned zones, or for any zone</td>
+</tr>
+<tr>
+<td>Columns <code>users.max_zones</code>, <code>user_groups.max_zones</code></td>
+<td>The zone limit of a user or group; <code>NULL</code> uses the <code>dns.default_max_zones_*</code> setting (unlimited by default). See <a href="../../user-guide/users-roles/#zone-limits">Zone Limits</a></td>
 </tr>
 </tbody>
 </table>

@@ -3189,6 +3189,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#zone-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone Limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#edit-access-and-zone-integrity" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7269,6 +7280,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#zone-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone Limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#edit-access-and-zone-integrity" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7352,6 +7374,29 @@ administrators.</p>
 <p>Ownership is a designation that marks users as "owners" for specific zones. However, ownership alone doesn't grant any
 privileges for these zones. The actual abilities are determined by the permissions in the user's assigned template. For
 example, if a user owns zones but lacks the <code>zone_content_view_own</code> permission, they won't be able to see those zones.</p>
+<h2 id="zone-limits">Zone Limits<a class="headerlink" href="#zone-limits" title="Permanent link">¶</a></h2>
+<p>Since version 4.6.0 a superuser can cap how many zones a user or a group may own.</p>
+<ul>
+<li>A <strong>user</strong> counts the zones they own directly. Zones that reach them through a group do not count.</li>
+<li>A <strong>group</strong> counts the zones assigned to it.</li>
+<li>Superusers are never limited, whatever their limit says.</li>
+</ul>
+<p>Set the limit in the <strong>Zone limit</strong> field on the add and edit forms for users and groups. Leave it
+empty to use the default from <code>dns.default_max_zones_per_user</code> or <code>dns.default_max_zones_per_group</code>
+(unlimited unless configured). <code>0</code> means the user or group may not own any zone. Only superusers
+see and change the field, on the web and in the API (<code>max_zones</code>).</p>
+<p>The limit applies to the owner, whoever makes the change. Creating a zone, adding an owner or a
+group, and moving zones to another user when a user is deleted are refused once the receiving
+owner would go past the limit; the message names the owner and the numbers, for example
+"Zone limit reached: alice owns 10 of 10 zones." The API answers 409 with the same text.
+Zones that the background sync adopts (autoprimary, <code>dns.adopt_zone_owner_from_account</code>) are not
+refused.</p>
+<p>Lowering a limit never removes zones. The user or group keeps what they own and cannot take on
+new zones until they are below the limit again; the form warns when you save a limit below the
+current count. The add-zone pages show how many more zones the signed-in user may own, and
+<code>interface.show_zone_limit_column</code> adds the owned count and limit to the users and groups lists.</p>
+<p>Two requests at the same moment can both pass the check, so a user can end up one zone over the
+limit; the next request is refused.</p>
 <h2 id="edit-access-and-zone-integrity">Edit Access and Zone Integrity<a class="headerlink" href="#edit-access-and-zone-integrity" title="Permanent link">¶</a></h2>
 <p>Poweradmin assumes that users with edit permissions for a zone can be trusted with full access to that zone's contents,
 because even partial edit access would allow a user to break the zone's functionality.</p>

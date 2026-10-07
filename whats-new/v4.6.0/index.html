@@ -1079,6 +1079,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#zone-limits-for-users-and-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone limits for users and groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#four-eyes-change-approval" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7354,6 +7365,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#zone-limits-for-users-and-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone limits for users and groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#four-eyes-change-approval" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7543,6 +7565,23 @@ except through the authenticating server.</p>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="x">],</span>
 </code></pre></div>
 <p>See <a href="../../configuration/remote-user/">Web Server Authentication</a>.</p>
+<h3 id="zone-limits-for-users-and-groups">Zone limits for users and groups<a class="headerlink" href="#zone-limits-for-users-and-groups" title="Permanent link">¶</a></h3>
+<p>A superuser can now cap how many zones a user or group may own (#72). The <strong>Zone limit</strong> field
+on the user and group forms takes a number, or stays empty to use <code>dns.default_max_zones_per_user</code>
+or <code>dns.default_max_zones_per_group</code>; both defaults are unlimited unless set. A user counts the
+zones they own directly and a group the zones assigned to it, and superusers are never limited.</p>
+<p>Creating a zone, adding an owner or group and the zone transfer when a user is deleted are
+refused past the limit, on the web and in the API (409). Lowering a limit keeps existing zones.
+The add-zone pages show how many zones are left, and <code>interface.show_zone_limit_column</code> adds the
+counts to the users and groups lists. API v2 reads and sets <code>max_zones</code> on users and groups;
+only superusers may set it.</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="x">'dns' =&gt; [</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="x">    'default_max_zones_per_user' =&gt; 25,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="x">    'default_max_zones_per_group' =&gt; 100,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="x">],</span>
+</code></pre></div>
+<p>In Docker: <code>PA_DNS_DEFAULT_MAX_ZONES_PER_USER</code>, <code>PA_DNS_DEFAULT_MAX_ZONES_PER_GROUP</code> and
+<code>PA_SHOW_ZONE_LIMIT_COLUMN</code>. See <a href="../../user-guide/users-roles/#zone-limits">Zone Limits</a>.</p>
 <h3 id="four-eyes-change-approval">Four-eyes change approval<a class="headerlink" href="#four-eyes-change-approval" title="Permanent link">¶</a></h3>
 <p><code>approval.allow_self_approval</code> (default <code>true</code>) can be set to <code>false</code> so a requester cannot
 approve their own change request, on the web page or through the API. The request list flags
