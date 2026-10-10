@@ -2476,6 +2476,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#large-installations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Large Installations
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7674,6 +7685,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#large-installations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Large Installations
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7989,6 +8011,15 @@ automatically.</p>
 <li>Admin pages show an API-error banner with the HTTP status and a short hint at what to check next (network, credentials, capabilities endpoint).</li>
 <li>Sync retries are not throttled during outages - once the API comes back, the next page load reconciles normally.</li>
 </ul>
+<h4 id="large-installations">Large Installations<a class="headerlink" href="#large-installations" title="Permanent link">¶</a></h4>
+<p>With the SQL backend there is no sync: pages read the PowerDNS tables directly, so nothing has to run or finish
+before a zone shows up.</p>
+<p>In API backend mode the sync makes one <code>GET /zones</code> request. It reads only the zone list (names, kinds and
+primaries), never the records of each zone, and runs at most once per 5 minutes per session. With <code>dnssec.enabled</code>
+(or the signed serial column) turned on, the same request also asks PowerDNS for each zone's DNSSEC state, which
+PowerDNS works out zone by zone and which makes the response slower on large servers. New zones are added in a single
+transaction. The zone list page reads the same response, so on servers with tens of thousands of zones, raise
+<code>pdns_api.timeout</code> (default 10 seconds) if the list or the sync times out.</p>
 <h3 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">¶</a></h3>
 <p>For Docker deployments, set the backend via environment variable:</p>
 <div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">environment</span><span class="p">:</span>

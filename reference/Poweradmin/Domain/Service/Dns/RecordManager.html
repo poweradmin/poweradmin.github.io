@@ -106,6 +106,19 @@
             <p><p>Creates, updates and deletes records for the web UI, with validation, logging and serial updates.</p></p>                    </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                            private
+                                                                                MAX_BACKEND_REASON_LENGTH
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -139,6 +152,18 @@
                     <a href="#method_addRecordGetId">addRecordGetId</a>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null)
         
                                             <p><p>Add a record and return its ID</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_backendFailureMessage">backendFailureMessage</a>(string $message, string|null $reason)
+        
+                                            <p><p>The failure text with the backend's own reason appended: &quot;Failed to add record to
+DNS backend: <reason>&quot;. The reason is untranslated text from PowerDNS, stripped of
+control characters and capped; the caller escapes it on output like any message.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -203,7 +228,7 @@ rectifies from committed rows.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L91">at line 91</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L94">at line 94</a></div>
         <code>                    
     <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Port/TransactionInterface.html"><abbr title="Poweradmin\Domain\Port\TransactionInterface">TransactionInterface</abbr></a> $transaction, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Service/Dns/DnsRecordValidationServiceInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\DnsRecordValidationServiceInterface">DnsRecordValidationServiceInterface</abbr></a> $validationService, <a href="../../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a> $soaRecordManager, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domainRepository, <a href="../../../../Poweradmin/Domain/Repository/RepositoryFactoryInterface.html"><abbr title="Poweradmin\Domain\Repository\RepositoryFactoryInterface">RepositoryFactoryInterface</abbr></a> $repositoryFactory, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a> $dnssecProvider, <a href="../../../../Poweradmin/Domain/Port/RecordWriteBackendInterface.html"><abbr title="Poweradmin\Domain\Port\RecordWriteBackendInterface">RecordWriteBackendInterface</abbr></a>&<a href="../../../../Poweradmin/Domain/Port/BackendCapabilitiesInterface.html"><abbr title="Poweradmin\Domain\Port\BackendCapabilitiesInterface">BackendCapabilitiesInterface</abbr></a> $backendProvider, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissionService, <a href="../../../../Poweradmin/Domain/Port/RecordChangeWriterInterface.html"><abbr title="Poweradmin\Domain\Port\RecordChangeWriterInterface">RecordChangeWriterInterface</abbr></a> $changeLogger, <a href="../../../../Poweradmin/Domain/Repository/TemplateRecordLinkRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\TemplateRecordLinkRepositoryInterface">TemplateRecordLinkRepositoryInterface</abbr></a> $templateLinks, <a href="../../../../Poweradmin/Domain/Port/ActorInterface.html"><abbr title="Poweradmin\Domain\Port\ActorInterface">ActorInterface</abbr></a> $actor, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, <a href="../../../../Poweradmin/Domain/Port/ZoneCacheFlusherInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneCacheFlusherInterface">ZoneCacheFlusherInterface</abbr></a>|null $zoneCacheFlusher = null)
         </code>
@@ -302,7 +327,7 @@ rectifies from committed rows.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_addRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L225">at line 225</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L228">at line 228</a></div>
         <code>                    bool
     <strong>addRecord</strong>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio)
         </code>
@@ -370,7 +395,7 @@ rectifies from committed rows.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_addRecordGetId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L249">at line 249</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L252">at line 252</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>addRecordGetId</strong>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null)
         </code>
@@ -454,8 +479,58 @@ backend writes it in the same PATCH as the record, SQL ignores it</p></td>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_backendFailureMessage">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L367">at line 367</a></div>
+        <code>        static            string
+    <strong>backendFailureMessage</strong>(string $message, string|null $reason)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The failure text with the backend's own reason appended: &quot;Failed to add record to
+DNS backend: <reason>&quot;. The reason is untranslated text from PowerDNS, stripped of
+control characters and capped; the caller escapes it on output like any message.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$message</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$reason</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_recordFieldsDiffer">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L360">at line 360</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L390">at line 390</a></div>
         <code>        static            bool
     <strong>recordFieldsDiffer</strong>(array $before, array $after)
         </code>
@@ -503,7 +578,7 @@ backend writes it in the same PATCH as the record, SQL ignores it</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_editRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L378">at line 378</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L408">at line 408</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>editRecord</strong>(array $record, bool $finalizeZone = true, array|null $comment = null)
         </code>
@@ -557,7 +632,7 @@ store with the record where the backend keeps them together</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L506">at line 506</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L536">at line 536</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>deleteRecord</strong>(int|string $rid, bool $finalizeZone = true)
         </code>
@@ -605,7 +680,7 @@ store with the record where the backend keeps them together</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_finalizeZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L561">at line 561</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L591">at line 591</a></div>
         <code>                    void
     <strong>finalizeZone</strong>(int $zoneId, bool $bumpSerial = true)
         </code>
@@ -657,7 +732,7 @@ rectifies from committed rows.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_editZoneComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L602">at line 602</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Service/Dns/RecordManager.php#L632">at line 632</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>editZoneComment</strong>(int $zone_id, string $comment)
         </code>
@@ -707,7 +782,7 @@ rectifies from committed rows.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/d4db9c0" rel="noreferrer" target="_blank">commit d4db9c0,</a> built 2026-10-10 08:57 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/2918ca1" rel="noreferrer" target="_blank">commit 2918ca1,</a> built 2026-10-10 13:48 UTC.</div></div>
     </div>
     </body>
 
