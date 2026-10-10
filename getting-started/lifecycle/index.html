@@ -24,7 +24,7 @@
     
     
       
-        <title>Platform Lifecycle - Poweradmin Documentation</title>
+        <title>Version Support - Poweradmin Documentation</title>
       
     
     
@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#platform-lifecycle" class="md-skip">
+        <a href="#version-support" class="md-skip">
           Skip to content
         </a>
       
@@ -120,7 +120,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Platform Lifecycle
+              Version Support
             
           </span>
         </div>
@@ -887,7 +887,7 @@
   <span class="md-ellipsis">
     
   
-    Platform Lifecycle
+    Version Support
   
 
     
@@ -905,7 +905,7 @@
   <span class="md-ellipsis">
     
   
-    Platform Lifecycle
+    Version Support
   
 
     
@@ -931,10 +931,32 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#timeline" class="md-nav__link">
+  <a href="#which-version-should-i-use" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Timeline
+        Which version should I use?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#poweradmin-release-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Poweradmin Release Lines
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platform Timeline
       
     </span>
   </a>
@@ -978,7 +1000,7 @@
   <a href="#what-to-plan-for" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to plan for
+        What to Plan For
       
     </span>
   </a>
@@ -7286,10 +7308,32 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#timeline" class="md-nav__link">
+  <a href="#which-version-should-i-use" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Timeline
+        Which version should I use?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#poweradmin-release-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Poweradmin Release Lines
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platform Timeline
       
     </span>
   </a>
@@ -7333,7 +7377,7 @@
   <a href="#what-to-plan-for" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What to plan for
+        What to Plan For
       
     </span>
   </a>
@@ -7365,16 +7409,103 @@
   
 
 
-<h1 id="platform-lifecycle">Platform Lifecycle<a class="headerlink" href="#platform-lifecycle" title="Permanent link">¶</a></h1>
-<p>This page shows when PHP, PowerDNS and the common Linux distributions stop getting updates, and
-what that means for Poweradmin. Use it to plan upgrades. Dates come from
+<h1 id="version-support">Version Support<a class="headerlink" href="#version-support" title="Permanent link">¶</a></h1>
+<p>This page shows how long each Poweradmin release line gets fixes, and when PHP, PowerDNS and the
+common Linux distributions stop getting updates. Use it to plan upgrades. Platform dates come from
 <a href="https://www.php.net/supported-versions.php">php.net</a>, the
 <a href="https://doc.powerdns.com/authoritative/appendices/EOL.html">PowerDNS EOL page</a> and
 <a href="https://endoflife.date/">endoflife.date</a>. They were checked in October 2026 and move as projects
 publish new plans.</p>
-<p>For the Poweradmin release lines themselves, see
-<a href="https://github.com/poweradmin/poweradmin#version-support">Version Support</a> in the README.</p>
-<h2 id="timeline">Timeline<a class="headerlink" href="#timeline" title="Permanent link">¶</a></h2>
+<h2 id="which-version-should-i-use">Which version should I use?<a class="headerlink" href="#which-version-should-i-use" title="Permanent link">¶</a></h2>
+<ul>
+<li><strong>Production</strong>: 4.4.x. It is the 4.x LTS line and gets fixes until December 2027. In Docker, pin
+  a version tag such as <code>4.4</code>.</li>
+<li><strong>Newest features</strong>: the latest release. It gets fixes until three months after the next minor
+  release.</li>
+<li><strong>Still on 3.x</strong>: 3.9.x is LTS until December 2027. Plan the move to 4.4.x before then.</li>
+</ul>
+<h2 id="poweradmin-release-lines">Poweradmin Release Lines<a class="headerlink" href="#poweradmin-release-lines" title="Permanent link">¶</a></h2>
+<p>The rules:</p>
+<ul>
+<li>The newest release line gets bug and security fixes.</li>
+<li>When a new minor release ships, the previous line gets three more months of fixes, then reaches
+  end of life.</li>
+<li>One 4.x line at a time is Long-Term Support (LTS). LTS lines get bug and security fixes first,
+  and security fixes only later in the period.</li>
+<li>3.9.x is the last 3.x line and is LTS until December 2027.</li>
+</ul>
+<pre class="mermaid"><code>gantt
+    dateFormat YYYY-MM-DD
+    axisFormat %b %Y
+    tickInterval 6month
+    todayMarker on
+
+    section 3.x
+    3.9.x LTS              :crit, 2025-01-14, 2027-12-31
+
+    section 4.x
+    4.0.x                  :done, 2025-07-31, 2026-07-23
+    4.1.x                  :done, 2026-02-08, 2026-07-23
+    4.2.x (end estimated)  :2026-03-19, 2027-01-31
+    4.3.x (end estimated)  :2026-04-23, 2027-01-31
+    4.4.x LTS              :crit, 2026-07-23, 2027-12-31</code></pre>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Status</th>
+<th>Fixes until</th>
+<th>PHP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4.5.x</td>
+<td>Next release (4.5.0)</td>
+<td>three months after 4.6.0</td>
+<td>8.2 - 8.5</td>
+</tr>
+<tr>
+<td>4.4.x</td>
+<td><strong>LTS</strong>, recommended for production</td>
+<td>December 2027</td>
+<td>8.2 - 8.5</td>
+</tr>
+<tr>
+<td>4.3.x</td>
+<td>Last fixes only</td>
+<td>three months after 4.5.0</td>
+<td>8.2 - 8.5</td>
+</tr>
+<tr>
+<td>4.2.x</td>
+<td>Last fixes only</td>
+<td>three months after 4.5.0</td>
+<td>8.2 - 8.5</td>
+</tr>
+<tr>
+<td>4.1.x, 4.0.x</td>
+<td>End of life</td>
+<td>-</td>
+<td>8.1 - 8.5</td>
+</tr>
+<tr>
+<td>3.9.x</td>
+<td><strong>LTS</strong></td>
+<td>December 2027</td>
+<td>8.1 - 8.5</td>
+</tr>
+<tr>
+<td>3.8.x and older</td>
+<td>End of life</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>4.4.x is the last line with API v1, which 4.5.0 removes. For how to move between versions, see
+<a href="../../upgrading/">Upgrading</a>.</p>
+<h2 id="platform-timeline">Platform Timeline<a class="headerlink" href="#platform-timeline" title="Permanent link">¶</a></h2>
 <pre class="mermaid"><code>gantt
     dateFormat YYYY-MM-DD
     axisFormat %Y
@@ -7401,8 +7532,9 @@ publish new plans.</p>
     EL 9 (PDNS 5.0)          :2022-05-18, 2032-05-31
     EL 10 (PDNS 5.0)         :2025-05-20, 2035-05-31</code></pre>
 <h2 id="php">PHP<a class="headerlink" href="#php" title="Permanent link">¶</a></h2>
-<p>Poweradmin follows the PHP release calendar. When a PHP version reaches end of life, the next
-Poweradmin minor release drops it.</p>
+<p>Poweradmin follows the PHP release calendar. PHP versions that get security fixes are supported.
+When a PHP version reaches end of life, the next Poweradmin minor release drops it. New PHP
+versions are added to compatibility testing soon after their release.</p>
 <table>
 <thead>
 <tr>
@@ -7435,7 +7567,7 @@ Poweradmin minor release drops it.</p>
 <tr>
 <td>8.1</td>
 <td>31 December 2025</td>
-<td>Not supported since 4.2.0</td>
+<td>3.9.x only</td>
 </tr>
 </tbody>
 </table>
@@ -7555,23 +7687,29 @@ normal or LTS security support, without paid extended support.</p>
 </tr>
 </tbody>
 </table>
+<p>No longer supported by their vendors: Debian 11 (August 2026), Ubuntu 20.04 (May 2025) and
+openSUSE Leap 15.6 (April 2026).</p>
 <p>On Ubuntu, PowerDNS is in the <code>universe</code> component, which gets security fixes from the community
 or through Ubuntu Pro rather than standard Canonical support.</p>
 <p>If your distribution ships an older PHP or PowerDNS than you need:</p>
 <ul>
-<li><strong>PHP</strong>: <a href="https://deb.sury.org/">sury.org</a> for Debian, the
-  <a href="https://launchpad.net/~ondrej/+archive/ubuntu/php">ondrej/php PPA</a> for Ubuntu,
-  <a href="https://rpms.remirepo.net/">Remi</a> for RHEL-based systems.</li>
+<li><strong>PHP on Debian and Ubuntu</strong>: <a href="https://deb.sury.org/">sury.org</a> for Debian, the
+  <a href="https://launchpad.net/~ondrej/+archive/ubuntu/php">ondrej/php PPA</a> for Ubuntu.</li>
+<li><strong>PHP on RHEL-based systems</strong>: enable a newer module stream with
+  <code>dnf module reset php &amp;&amp; dnf module enable php:8.2</code> (or <code>php:8.3</code> on EL 9), or use
+  <a href="https://rpms.remirepo.net/">Remi</a>.</li>
 <li><strong>PowerDNS</strong>: the official <a href="https://repo.powerdns.com/">PowerDNS repositories</a> provide 5.1 for
   Debian 11-13, Ubuntu 22.04-26.04 and EL 8-10.</li>
 <li><strong>Docker</strong>: the Poweradmin image ships its own PHP, and PowerDNS publishes official images.</li>
 </ul>
-<h2 id="what-to-plan-for">What to plan for<a class="headerlink" href="#what-to-plan-for" title="Permanent link">¶</a></h2>
+<h2 id="what-to-plan-for">What to Plan For<a class="headerlink" href="#what-to-plan-for" title="Permanent link">¶</a></h2>
 <ul>
+<li><strong>About three months after 4.5.0</strong>: 4.2.x and 4.3.x reach end of life. Move to 4.4.x or newer.</li>
 <li><strong>End of 2026</strong>: PHP 8.2 reaches end of life. Poweradmin 4.7.0 needs PHP 8.3. This affects
-  Debian 12 and RHEL 8 users on the default PHP.</li>
+  Debian 12 and RHEL 8 users on PHP 8.2.</li>
 <li><strong>June 2027</strong>: Ubuntu 22.04 standard support ends. It is the last supported distribution that
   ships PowerDNS older than 4.7.</li>
+<li><strong>December 2027</strong>: 4.4.x and 3.9.x LTS end, and PHP 8.3 reaches end of life.</li>
 <li><strong>June 2028</strong>: Debian 12 LTS ends. After that, every supported major distribution ships
   PowerDNS 4.8 or newer.</li>
 </ul>
