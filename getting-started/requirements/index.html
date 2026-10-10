@@ -13,7 +13,7 @@
         <link rel="prev" href="../first-steps/">
       
       
-        <link rel="next" href="../history/">
+        <link rel="next" href="../lifecycle/">
       
       
         
@@ -577,6 +577,8 @@
       
         
       
+        
+      
     
     
     
@@ -1103,6 +1105,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lifecycle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Lifecycle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -7650,7 +7680,7 @@ exceeds the recommended requirements.</p>
 </ul>
 </li>
 <li><strong>Database</strong>: MariaDB 10.6+, MySQL 8.x, PostgreSQL, or SQLite</li>
-<li><strong>PowerDNS</strong>: PowerDNS authoritative server 4.0.0+ (including 4.x and 5.x series)</li>
+<li><strong>PowerDNS</strong>: PowerDNS Authoritative Server 4.x or 5.x, tested from 4.5</li>
 <li><strong>Web Server</strong>: Apache or NGINX</li>
 <li><strong>Operating System</strong>: Linux or BSD</li>
 </ul>
@@ -7950,11 +7980,9 @@ for the package names, paths and service commands, which differ from the Linux g
 <h2 id="powerdns-compatibility">PowerDNS Compatibility<a class="headerlink" href="#powerdns-compatibility" title="Permanent link">¶</a></h2>
 <h3 id="supported-powerdns-versions">Supported PowerDNS Versions<a class="headerlink" href="#supported-powerdns-versions" title="Permanent link">¶</a></h3>
 <p>Poweradmin manages the PowerDNS Authoritative Server only; the PowerDNS Recursor is not managed.</p>
-<p>Poweradmin officially supports <strong>PowerDNS Authoritative Server 4.0.0 and newer</strong>, including:</p>
-<ul>
-<li><strong>PowerDNS 4.x series</strong> (4.0, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9)</li>
-<li><strong>PowerDNS 5.x series</strong> (5.0 and newer)</li>
-</ul>
+<p>Poweradmin supports <strong>PowerDNS Authoritative Server 4.x and 5.x</strong>. It is tested from 4.5 onward.
+Versions 4.0-4.4 are expected to work but are not tested, and all of them are end of life upstream.
+See <a href="../lifecycle/">Platform Lifecycle</a> for PowerDNS and distribution support dates.</p>
 <h3 id="tested-powerdns-versions">Tested PowerDNS Versions<a class="headerlink" href="#tested-powerdns-versions" title="Permanent link">¶</a></h3>
 <p>The development environment of 4.5.x and newer runs PowerDNS 5.1 by default and can switch to
 4.5, 4.6, 4.7, 4.8, 4.9 or 5.0. Versions older than 4.5 are not tested. See
@@ -8077,7 +8105,7 @@ support. Everything else works on any supported version.</p>
 <p>API backend mode (<code>dns.backend = api</code>) works on any supported version, but it is
 noticeably faster from <strong>PowerDNS 5.0</strong> onward:</p>
 <ul>
-<li><strong>5.0+</strong>: zone lists and record edits fetch only the records they need, for example the SOA record when drawing zone health badges. Older servers leave disabled records out of these narrowed reads, so Poweradmin fetches the whole zone instead, and listing pages transfer far more data.</li>
+<li><strong>5.0+</strong>: record edits and comment reads fetch only the RRset they need, and zone lists with the record count column hidden fetch only the SOA record. Older servers leave disabled records out of these narrowed reads, so Poweradmin fetches the whole zone instead.</li>
 <li><strong>4.3+</strong>: zone lists skip the per-zone DNSSEC lookup when no column needs it.</li>
 </ul>
 <p>Nothing breaks on older versions, so this is a performance recommendation, not a requirement.</p>
