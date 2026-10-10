@@ -2493,6 +2493,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#known-issue-backslash-escapes-on-powerdns-auth-51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Issue: Backslash Escapes on PowerDNS Auth 5.1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#docker" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7702,6 +7713,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#known-issue-backslash-escapes-on-powerdns-auth-51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Issue: Backslash Escapes on PowerDNS Auth 5.1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#docker" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8020,12 +8042,47 @@ primaries), never the records of each zone, and runs at most once per 5 minutes 
 PowerDNS works out zone by zone and which makes the response slower on large servers. New zones are added in a single
 transaction. The zone list page reads the same response, so on servers with tens of thousands of zones, raise
 <code>pdns_api.timeout</code> (default 10 seconds) if the list or the sync times out.</p>
+<h3 id="known-issue-backslash-escapes-on-powerdns-auth-51">Known Issue: Backslash Escapes on PowerDNS Auth 5.1<a class="headerlink" href="#known-issue-backslash-escapes-on-powerdns-auth-51" title="Permanent link">¶</a></h3>
+<p>PowerDNS Auth 5.1.x removes one level of backslash escaping from record content written through
+its REST API (PowerDNS issue 18159). This affects API backend mode on every Poweradmin version
+that has it (4.3.0 and later). The SQL backend writes to the database directly and is not affected.</p>
+<table>
+<thead>
+<tr>
+<th>Content sent</th>
+<th>PowerDNS 5.1.x stores</th>
+<th>Served as</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"a\\b"</code></td>
+<td><code>"a\b"</code></td>
+<td><code>"ab"</code></td>
+</tr>
+<tr>
+<td><code>"a\"b"</code></td>
+<td>refused with <code>422</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>Poweradmin saves a record by sending back every record with the same name and type, so saving
+any of them also rewrites the others. A TXT record holding <code>\\</code> loses a backslash even when you
+only add, edit or delete its neighbour. One holding <code>\"</code> makes every save at that name and type
+fail.</p>
+<p>From 4.5.0, the zone, add record, bulk add and edit record pages warn in API backend
+mode. They list the affected records and flag content you type that contains a backslash. The
+save still goes ahead.</p>
+<p>Until PowerDNS fixes this, edit these records with <code>pdnsutil</code>, for example:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>pdnsutil<span class="w"> </span>rrset<span class="w"> </span>replace<span class="w"> </span>example.com.<span class="w"> </span>txt.example.com.<span class="w"> </span>TXT<span class="w"> </span><span class="m">3600</span><span class="w"> </span><span class="s1">'"a\\b"'</span>
+</code></pre></div>
 <h3 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">¶</a></h3>
 <p>For Docker deployments, set the backend via environment variable:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">PA_DNS_BACKEND</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">PA_PDNS_API_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://powerdns:8081</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">PA_PDNS_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">your-api-key</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">PA_DNS_BACKEND</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">PA_PDNS_API_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://powerdns:8081</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">PA_PDNS_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">your-api-key</span>
 </code></pre></div>
 <h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">¶</a></h2>
 <ul>
