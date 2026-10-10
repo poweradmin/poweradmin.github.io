@@ -152,6 +152,18 @@ one form SQLite will wait for, so a competing writer queues than fails.</p></p> 
                     void
                 </div>
                 <div class="col-md-8">
+                    <a href="#method_afterCommit">afterCommit</a>(string $key, callable $work)
+        
+                                            <p><p>Runs $work once the open transaction commits, and never if it rolls back; at once when
+none is open. A repeated $key replaces the earlier work, so a zone is pushed once however
+many writes touched it. For calls that must not run while locks are held, such as HTTP.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
                     <a href="#method_rollBack">rollBack</a>()
         
                                             <p class="no-description">No description</p>
@@ -178,7 +190,7 @@ must ask this rather than PDO directly.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/PdoTransaction.php#L43">at line 43</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/PdoTransaction.php#L51">at line 51</a></div>
         <code>                    
     <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db)
         </code>
@@ -213,7 +225,7 @@ must ask this rather than PDO directly.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_begin">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/PdoTransaction.php#L54">at line 54</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/PdoTransaction.php#L62">at line 62</a></div>
         <code>                    void
     <strong>begin</strong>()
         </code>
@@ -250,7 +262,7 @@ one form SQLite will wait for, so a competing writer queues than fails.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_commit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/PdoTransaction.php#L66">at line 66</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/PdoTransaction.php#L79">at line 79</a></div>
         <code>                    void
     <strong>commit</strong>()
         </code>
@@ -283,8 +295,58 @@ one form SQLite will wait for, so a competing writer queues than fails.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_afterCommit">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/PdoTransaction.php#L98">at line 98</a></div>
+        <code>                    void
+    <strong>afterCommit</strong>(string $key, callable $work)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Runs $work once the open transaction commits, and never if it rolls back; at once when
+none is open. A repeated $key replaces the earlier work, so a zone is pushed once however
+many writes touched it. For calls that must not run while locks are held, such as HTTP.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$key</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>callable</td>
+                <td>$work</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_rollBack">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/PdoTransaction.php#L78">at line 78</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/PdoTransaction.php#L111">at line 111</a></div>
         <code>                    void
     <strong>rollBack</strong>()
         </code>
@@ -318,7 +380,7 @@ one form SQLite will wait for, so a competing writer queues than fails.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_inTransaction">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/PdoTransaction.php#L95">at line 95</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Database/PdoTransaction.php#L128">at line 128</a></div>
         <code>                    bool
     <strong>inTransaction</strong>()
         </code>
@@ -355,7 +417,7 @@ must ask this rather than PDO directly.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/fa4693b" rel="noreferrer" target="_blank">commit fa4693b,</a> built 2026-10-10 14:49 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/6eaaf96" rel="noreferrer" target="_blank">commit 6eaaf96,</a> built 2026-10-10 14:58 UTC.</div></div>
     </div>
     </body>
 

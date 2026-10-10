@@ -508,7 +508,11 @@ top-level label: sub.example.com gives example.com, then com.</p></dd><dt><a hre
                     <dd><p>Add an autoprimary</p></dd><dt><a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html#method_addZoneToView">
 <abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr>::addZoneToView</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a></em></dt>
                     <dd><p>Add a zone (in &quot;zone..variant&quot; form) to a view. Creates the view if it
-doesn't exist yet, per upstream behaviour.</p></dd><dt><a href="Poweradmin/Infrastructure/Database/SharedZoneIds.html#method_all">
+doesn't exist yet, per upstream behaviour.</p></dd><dt><a href="Poweradmin/Infrastructure/Database/PdoTransaction.html#method_afterCommit">
+<abbr title="Poweradmin\Infrastructure\Database\PdoTransaction">PdoTransaction</abbr>::afterCommit</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Database/PdoTransaction.html"><abbr title="Poweradmin\Infrastructure\Database\PdoTransaction">PdoTransaction</abbr></a></em></dt>
+                    <dd><p>Runs $work once the open transaction commits, and never if it rolls back; at once when
+none is open. A repeated $key replaces the earlier work, so a zone is pushed once however
+many writes touched it. For calls that must not run while locks are held, such as HTTP.</p></dd><dt><a href="Poweradmin/Infrastructure/Database/SharedZoneIds.html#method_all">
 <abbr title="Poweradmin\Infrastructure\Database\SharedZoneIds">SharedZoneIds</abbr>::all</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Database/SharedZoneIds.html"><abbr title="Poweradmin\Infrastructure\Database\SharedZoneIds">SharedZoneIds</abbr></a></em></dt>
                     <dd><p>Every shared canonical id.</p></dd><dt><a href="Poweradmin/Infrastructure/Logger/AuditLogWriter.html"><abbr title="Poweradmin\Infrastructure\Logger\AuditLogWriter">AuditLogWriter</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Infrastructure/Logger.html">Poweradmin\Infrastructure\Logger</a></em></dt>
                     <dd><p>Sink for audit lines: hands each one to the syslog logger and, when database
@@ -3893,7 +3897,9 @@ omits it). Returns null when the key cannot be retrieved.</p></dd><dt><a href="P
                     <dd><p>Get PowerDNS server metrics</p></dd><dt><a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html#method_getZoneRrset">
 <abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr>::getZoneRrset</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a></em></dt>
                     <dd><p>Fetch the RRsets at one name instead of the whole zone body. Leaving the
-type out returns every type at that name.</p></dd><dt><a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html#method_getZone">
+type out returns every type at that name.</p></dd><dt><a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html#method_getZoneCatalogName">
+<abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr>::getZoneCatalogName</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a></em></dt>
+                    <dd><p>A zone's catalog from a single zone read, canonicalised like getAllZoneKinds().</p></dd><dt><a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html#method_getZone">
 <abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr>::getZone</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a></em></dt>
                     <dd><p>Get a single zone with its RRsets</p></dd><dt><a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html#method_getLastWriteRejection">
 <abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr>::getLastWriteRejection</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a></em></dt>
@@ -8986,7 +8992,10 @@ for a refused stale form, the rows to put back in front of the operator.</p></dd
                     <dd><p>Signs and unsigns zones the one way every entry point agrees on: refuse
 presigned zones and invalid zones, bump the SOA serial so secondaries
 notice, verify what PowerDNS reports afterwards, rectify, and audit.</p></dd><dt><a href="Poweradmin/Domain/Service/Zone/ZoneValidationService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneValidationService">ZoneValidationService</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Domain/Service/Zone.html">Poweradmin\Domain\Service\Zone</a></em></dt>
-                    <dd><p>Checks a zone is fit for DNSSEC signing and formats the reasons when it is not.</p></dd><dt><a href="Poweradmin/Infrastructure/Repository/ApiDomainRepository.html#method_zoneIdExists">
+                    <dd><p>Checks a zone is fit for DNSSEC signing and formats the reasons when it is not.</p></dd><dt><a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html#method_zoneListOmitsCatalog">
+<abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr>::zoneListOmitsCatalog</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a></em></dt>
+                    <dd><p>PowerDNS 4.7 and 4.8 have catalog zones but leave the catalog field of the
+zone list empty; only a single zone read reports it.</p></dd><dt><a href="Poweradmin/Infrastructure/Repository/ApiDomainRepository.html#method_zoneIdExists">
 <abbr title="Poweradmin\Infrastructure\Repository\ApiDomainRepository">ApiDomainRepository</abbr>::zoneIdExists</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Repository/ApiDomainRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\ApiDomainRepository">ApiDomainRepository</abbr></a></em></dt>
                     <dd><p>Check if Zone ID exists. Answered from the local database only (the
 domains table, or the zones table in API backend mode); PowerDNS is not asked.</p></dd><dt><a href="Poweradmin/Infrastructure/Repository/DbApiKeyRepository.html#method_zoneScopesReady">
@@ -9803,7 +9812,7 @@ open a repository for an answer it will not use.</p></dd><dt><a href="Poweradmin
                     <dd></dd><dt><a href="Poweradmin/Module/ZoneImportExport/Service/ParsedZoneFile.html#method___construct">
 <abbr title="Poweradmin\Module\ZoneImportExport\Service\ParsedZoneFile">ParsedZoneFile</abbr>::__construct</a>() &mdash; <em>Method in class <a href="Poweradmin/Module/ZoneImportExport/Service/ParsedZoneFile.html"><abbr title="Poweradmin\Module\ZoneImportExport\Service\ParsedZoneFile">ParsedZoneFile</abbr></a></em></dt>
                     <dd></dd>        </dl></div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/fa4693b" rel="noreferrer" target="_blank">commit fa4693b,</a> built 2026-10-10 14:49 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/6eaaf96" rel="noreferrer" target="_blank">commit 6eaaf96,</a> built 2026-10-10 14:58 UTC.</div></div>
     </div>
     </body>
 
