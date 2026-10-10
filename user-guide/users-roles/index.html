@@ -7430,6 +7430,10 @@ access rights.</p>
 <p>The <code>user_is_ueberuser</code> permission overrules any other permission the user may or may not have been assigned. It grants
 full access to all features that would otherwise require specific permissions. This is typically reserved for
 administrators.</p>
+<p>The last remaining super admin cannot be deleted or disabled, and the API <code>PATCH</code> that changes a user's template
+refuses to take super admin away from them. The user edit form and API <code>PUT</code> apply the same rule when
+<code>security.protect_last_admin_on_edit</code> is <code>true</code> (added in 4.6.0, off by default). See
+<a href="../../configuration/security-policies/#opt-in-hardening-v460">Opt-in Hardening</a>.</p>
 <h2 id="zone-ownership">Zone Ownership<a class="headerlink" href="#zone-ownership" title="Permanent link">¶</a></h2>
 <p>Ownership is a designation that marks users as "owners" for specific zones. However, ownership alone doesn't grant any
 privileges for these zones. The actual abilities are determined by the permissions in the user's assigned template. For

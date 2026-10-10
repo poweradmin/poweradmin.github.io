@@ -7445,6 +7445,7 @@
 <li><strong>Group permission templates</strong> - add the <code>user_enforce_mfa</code> permission to a group's permission template, which enforces MFA for all group members</li>
 </ul>
 <p>When MFA is enforced, users who have not yet set up MFA will be redirected to the MFA setup page after their next login. They cannot use Poweradmin until MFA is configured.</p>
+<p>By default the redirect applies to web pages only, and any path containing <code>/api/</code> is left alone. Set <code>security.strict_session_gates</code> to <code>true</code> (added in 4.6.0) to also refuse internal API calls with a 403 until setup is done, and to redirect web pages such as <code>/settings/api/logs</code>. API v1 and v2 use API keys, not the session, and are not affected. See <a href="../../configuration/security-policies/#opt-in-hardening-v460">Opt-in Hardening</a>.</p>
 <blockquote>
 <p><strong>Note:</strong> MFA enforcement requires both the global <code>mfa.enabled</code> and <code>mfa.enforced</code> settings to be set to <code>true</code> in your configuration. See <a href="#configuration">Configuration</a> below.</p>
 </blockquote>

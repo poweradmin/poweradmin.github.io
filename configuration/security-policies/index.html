@@ -2811,6 +2811,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#opt-in-hardening-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opt-in Hardening (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#security-best-practices" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7433,6 +7444,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#opt-in-hardening-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opt-in Hardening (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#security-best-practices" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7544,6 +7566,8 @@
 <li><strong>password_cost</strong>: Cost factor for bcrypt algorithm. Default: <code>12</code></li>
 <li><strong>login_token_validation</strong>: Enable token validation for login form. Default: <code>true</code></li>
 <li><strong>global_token_validation</strong>: Enable token validation for all forms. Default: <code>true</code></li>
+<li><strong>protect_last_admin_on_edit</strong>: Refuse a user edit that moves the last super admin to a template without super admin. Default: <code>false</code> (added in 4.6.0). See <a href="#opt-in-hardening-v460">Opt-in Hardening</a></li>
+<li><strong>strict_session_gates</strong>: Apply required MFA setup and the user agreement to internal API calls and to pages with <code>api</code> in their path. Default: <code>false</code> (added in 4.6.0). See <a href="#opt-in-hardening-v460">Opt-in Hardening</a></li>
 <li><strong>trusted_proxies</strong>: Reverse proxy addresses allowed to set forwarded client-IP headers (<code>X-Forwarded-For</code>, <code>X-Real-IP</code>, <code>Client-IP</code>). Supports IPs, CIDRs (IPv4/IPv6), and IPv4 wildcards. Private and loopback peers are always trusted; add public proxy addresses here so their forwarded headers are honored. Default: <code>[]</code> (added in 4.5.0)</li>
 </ul>
 <h2 id="rotating-the-session-key">Rotating the Session Key<a class="headerlink" href="#rotating-the-session-key" title="Permanent link">¶</a></h2>
@@ -7644,6 +7668,45 @@
 <a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="x">    ],</span>
 <a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="x">];</span>
 </code></pre></div>
+<h2 id="opt-in-hardening-v460">Opt-in Hardening (v4.6.0+)<a class="headerlink" href="#opt-in-hardening-v460" title="Permanent link">¶</a></h2>
+<p>These settings tighten behaviour that earlier releases allowed. They are off by default so an upgrade changes
+nothing; turn them on after checking the notes below.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it changes</th>
+<th>Check before enabling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>security.protect_last_admin_on_edit</code></td>
+<td>The user edit form and API <code>PUT /users/{id}</code> refuse to give the last super admin a template without <code>user_is_ueberuser</code>. Delete, disable and <code>PATCH</code> always refuse this</td>
+<td>Super admin rights held only through a group are not counted, so with that setup a valid change can be refused; give the remaining admin a super admin template directly</td>
+</tr>
+<tr>
+<td><code>security.strict_session_gates</code></td>
+<td>While a user still has to set up enforced MFA or accept the user agreement, internal API calls answer 403 instead of being let through, and pages such as <code>/settings/api/logs</code> redirect to the setup or agreement page. Reading user preferences stays allowed so the setup pages render</td>
+<td>Nothing for normal use; scripts that drive the internal API with a browser session of such a user stop working until the user completes setup</td>
+</tr>
+<tr>
+<td><code>security.password_reset.single_use_claim</code></td>
+<td>A reset link is marked as used before the new password is saved</td>
+<td>If saving the password fails, the link is spent and the user requests a new one</td>
+</tr>
+</tbody>
+</table>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">return [</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    'security' =&gt; [</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">        'protect_last_admin_on_edit' =&gt; true,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="x">        'strict_session_gates' =&gt; true,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="x">        'password_reset' =&gt; [</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="x">            'single_use_claim' =&gt; true,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="x">        ],</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="x">    ],</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="x">];</span>
+</code></pre></div>
 <h2 id="security-best-practices">Security Best Practices<a class="headerlink" href="#security-best-practices" title="Permanent link">¶</a></h2>
 <ol>
 <li><strong>Always change the default session key</strong> to a unique, random string</li>
@@ -7671,14 +7734,16 @@
 <li><strong>rate_limit_attempts</strong>: Maximum reset attempts per time window. Default: <code>5</code></li>
 <li><strong>rate_limit_window</strong>: Rate limit window in seconds. Default: <code>3600</code> (1 hour)</li>
 <li><strong>min_time_between_requests</strong>: Minimum seconds between requests. Default: <code>60</code> (1 minute)</li>
+<li><strong>single_use_claim</strong>: Mark the link as used before the new password is saved, so one link sets one password even when it is submitted twice at the same moment. Default: <code>false</code> (added in 4.6.0)</li>
 </ul>
+<p>The reset token never appears in the application log: since 4.6.0 log lines carry a short fingerprint of it instead, so entries about the same link can still be matched.</p>
 <h3 id="interfaceapplication_url-is-required"><code>interface.application_url</code> is required<a class="headerlink" href="#interfaceapplication_url-is-required" title="Permanent link">¶</a></h3>
 <p>When password reset is enabled, <code>interface.application_url</code> must be set to the full public URL of the Poweradmin install, e.g. <code>https://dns.example.com/poweradmin</code>. The reset link in the email is built from this value only - request headers such as <code>Host</code> are never used. If <code>application_url</code> is empty, the password-reset endpoint accepts requests but does not send mail and logs an error: <code>Password reset email NOT sent: interface.application_url must be configured to build a trustworthy reset link</code>. Because that failure is otherwise invisible to the user requesting the reset, from 4.2.6, 4.3.5, 4.4.1 and 4.5.0 superusers also see a warning on the dashboard whenever password reset is enabled and <code>application_url</code> is empty.</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">return [</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    'interface' =&gt; [</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">        'application_url' =&gt; 'https://dns.example.com/poweradmin',</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="x">    ],</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="x">];</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="x">return [</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="x">    'interface' =&gt; [</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="x">        'application_url' =&gt; 'https://dns.example.com/poweradmin',</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="x">    ],</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="x">];</span>
 </code></pre></div>
 <p>The same setting is required for <a href="../oidc/#interfaceapplication_url-must-be-set">OIDC</a> and <a href="../saml/#interfaceapplication_url-must-be-set">SAML</a>, which refuse to build the provider-bound redirect and metadata URLs without it. Poweradmin never derives these from the request: the web server takes <code>SERVER_NAME</code> from the client <code>Host</code> header under the official Docker image and under Apache's default <code>UseCanonicalName Off</code>.</p>
 <h2 id="google-recaptcha">Google reCAPTCHA<a class="headerlink" href="#google-recaptcha" title="Permanent link">¶</a></h2>
@@ -7696,15 +7761,15 @@
 <li>Create a new site and get your site key and secret key</li>
 <li>
 <p>Configure the keys in your settings:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="x">'security' =&gt; [</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="x">    'recaptcha' =&gt; [</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="x">        'enabled' =&gt; true,</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="x">        'site_key' =&gt; 'your_site_key_here',</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="x">        'secret_key' =&gt; 'your_secret_key_here',</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="x">        'version' =&gt; 'v3',</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="x">        'v3_threshold' =&gt; 0.5,</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="x">    ],</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="x">'security' =&gt; [</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="x">    'recaptcha' =&gt; [</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="x">        'enabled' =&gt; true,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="x">        'site_key' =&gt; 'your_site_key_here',</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="x">        'secret_key' =&gt; 'your_secret_key_here',</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="x">        'version' =&gt; 'v3',</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="x">        'v3_threshold' =&gt; 0.5,</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="x">    ],</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="x">],</span>
 </code></pre></div>
 </li>
 </ol>
