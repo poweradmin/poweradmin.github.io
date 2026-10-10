@@ -107,6 +107,29 @@
 Poweradmin's zones table and filtered, sorted and paged in memory.</p></p>                    </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                            private
+                                                                                SEARCH_LIMIT
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                            private
+                                                                                MAX_COMMENT_ZONES
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -117,12 +140,11 @@ Poweradmin's zones table and filtered, sorted and paged in memory.</p></p>      
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, <a href="../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a> $zoneRepository)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, <a href="../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a> $zoneRepository, bool $recordCommentsEnabled = false, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
-                <div class="col-md-2"><small>from&nbsp;<a href="../../../Poweradmin/Infrastructure/Repository/ApiSearchBase.html#method___construct">
-<abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a></small></div>
+                <div class="col-md-2"></div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
@@ -190,10 +212,9 @@ BaseSearch::buildSearchString() does for the SQL search.</p></p>                
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/ApiSearchBase.html#method___construct">
-<abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiSearchBase.php#L38">at line 38</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiRecordSearch.php#L46">at line 46</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, <a href="../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a> $zoneRepository)
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, <a href="../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a> $zoneRepository, bool $recordCommentsEnabled = false, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null)
         </code>
     </h3>
     <div class="details">    
@@ -222,6 +243,16 @@ BaseSearch::buildSearchString() does for the SQL search.</p></p>                
                     <tr>
                 <td><a href="../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a></td>
                 <td>$zoneRepository</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$recordCommentsEnabled</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null</td>
+                <td>$logger</td>
                 <td></td>
             </tr>
             </table>
@@ -371,7 +402,7 @@ BaseSearch::buildSearchString() does for the SQL search.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_searchRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiRecordSearch.php#L37">at line 37</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiRecordSearch.php#L56">at line 56</a></div>
         <code>                    array
     <strong>searchRecords</strong>(array $parameters, string $permissionView, int|null $userId, string $sortBy, string $sortDirection, bool $groupRecords, int $rowAmount, bool $includeComments, int $page)
         </code>
@@ -455,7 +486,7 @@ BaseSearch::buildSearchString() does for the SQL search.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getTotalRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiRecordSearch.php#L161">at line 161</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiRecordSearch.php#L183">at line 183</a></div>
         <code>                    int
     <strong>getTotalRecords</strong>(array $parameters, string $permissionView, int|null $userId, bool $groupRecords)
         </code>
@@ -516,7 +547,7 @@ BaseSearch::buildSearchString() does for the SQL search.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/fd2acd8" rel="noreferrer" target="_blank">commit fd2acd8,</a> built 2026-10-10 04:57 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/b503aec" rel="noreferrer" target="_blank">commit b503aec,</a> built 2026-10-10 08:14 UTC.</div></div>
     </div>
     </body>
 
