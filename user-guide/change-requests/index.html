@@ -8209,7 +8209,8 @@ record-type rule as direct edits.</p>
 <h3 id="listing">Listing<a class="headerlink" href="#listing" title="Permanent link">¶</a></h3>
 <p><code>status</code> defaults to <code>pending</code>; pass <code>approved</code>, <code>rejected</code>, <code>cancelled</code>, <code>failed</code> or
 <code>all</code>. <code>zone_id</code> narrows to one zone. <code>per_page</code> and <code>page</code> paginate; without <code>per_page</code> the
-call returns every match up to the API page limit and no <code>pagination</code> block.</p>
+call returns up to 10000 matches, newest first, and adds a <code>pagination</code> block only when more
+match, so you can fetch the rest with <code>per_page</code> and <code>page</code>.</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>curl<span class="w"> </span><span class="s2">"https://dns.example.com/api/v2/change-requests?status=pending&amp;per_page=25"</span><span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key"</span>
 </code></pre></div>

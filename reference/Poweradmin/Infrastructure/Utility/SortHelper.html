@@ -103,7 +103,8 @@
         
 
             <div class="description">
-            <p><p>Per-database ORDER BY clauses that sort zone and record names naturally instead of lexically.</p></p>                    </div>
+            <p><p>Per-database ORDER BY clauses that sort zone and record names naturally instead of
+lexically, and the ORDER BY of API lists sorted in SQL.</p></p>                    </div>
             
         
     
@@ -121,6 +122,27 @@
                                             <p><p>ORDER BY clause that sorts the name column naturally for the given driver.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_naturalSortOrder">naturalSortOrder</a>(string $nameField, string $dbType, string $direction = &#039;ASC&#039;)
+        
+                                            <p><p>ORDER BY clause that sorts any name column naturally, for tables whose
+name column is not called name (e.g. zones.zone_name in API mode).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_orderBy">orderBy</a>(array $sort, array $columns, string $tiebreaker, string $default)
+        
+                                            <p><p>ORDER BY for an API list sorted in SQL, from the keys ListSort::fields() returns.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
             </div>
 
 
@@ -129,7 +151,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_getNaturalSortOrder">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Utility/SortHelper.php#L35">at line 35</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Utility/SortHelper.php#L38">at line 38</a></div>
         <code>        static            string
     <strong>getNaturalSortOrder</strong>(string $table, string $dbType, string $direction = &#039;ASC&#039;)
         </code>
@@ -180,11 +202,126 @@
     </div>
 
             </div>
+                    <div class="method-item">
+                    <h3 id="method_naturalSortOrder">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Utility/SortHelper.php#L47">at line 47</a></div>
+        <code>        static            string
+    <strong>naturalSortOrder</strong>(string $nameField, string $dbType, string $direction = &#039;ASC&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>ORDER BY clause that sorts any name column naturally, for tables whose
+name column is not called name (e.g. zones.zone_name in API mode).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$nameField</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$dbType</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$direction</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_orderBy">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Utility/SortHelper.php#L70">at line 70</a></div>
+        <code>        static            string
+    <strong>orderBy</strong>(array $sort, array $columns, string $tiebreaker, string $default)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>ORDER BY for an API list sorted in SQL, from the keys ListSort::fields() returns.</p></p>                <p><p>Each allowed field maps to a fixed column, or to a closure that gets ASC or DESC
+and returns the clause (e.g. a natural name order), so request input never
+reaches the SQL. The tiebreaker comes last so pages stay stable when sort values
+repeat; without sort keys the list keeps its default order.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$sort</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$columns</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$tiebreaker</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$default</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
             </div>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/6eaaf96" rel="noreferrer" target="_blank">commit 6eaaf96,</a> built 2026-10-10 15:14 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/7c8aa5d" rel="noreferrer" target="_blank">commit 7c8aa5d,</a> built 2026-10-11 10:19 UTC.</div></div>
     </div>
     </body>
 

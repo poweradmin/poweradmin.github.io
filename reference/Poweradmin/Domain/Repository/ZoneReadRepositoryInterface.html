@@ -156,7 +156,7 @@
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getAllZonesFiltered">getAllZonesFiltered</a>(array|null $zoneIds, int|null $userId = null, string|null $nameFilter = null, int|null $offset = null, int|null $limit = null)
+                    <a href="#method_getAllZonesFiltered">getAllZonesFiltered</a>(array|null $zoneIds, int|null $userId = null, string|null $nameFilter = null, int|null $offset = null, int|null $limit = null, string|null $nameContains = null, array $sort = [])
         
                                             <p><p>Get all zones with filtering and pagination</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -176,7 +176,7 @@
                     int
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getZoneCountFiltered">getZoneCountFiltered</a>(array|null $zoneIds, int|null $userId = null, string|null $nameFilter = null)
+                    <a href="#method_getZoneCountFiltered">getZoneCountFiltered</a>(array|null $zoneIds, int|null $userId = null, string|null $nameFilter = null, string|null $nameContains = null)
         
                                             <p><p>Get count of zones with filtering</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -433,9 +433,9 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getAllZonesFiltered">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L82">at line 82</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L84">at line 84</a></div>
         <code>                    array
-    <strong>getAllZonesFiltered</strong>(array|null $zoneIds, int|null $userId = null, string|null $nameFilter = null, int|null $offset = null, int|null $limit = null)
+    <strong>getAllZonesFiltered</strong>(array|null $zoneIds, int|null $userId = null, string|null $nameFilter = null, int|null $offset = null, int|null $limit = null, string|null $nameContains = null, array $sort = [])
         </code>
     </h3>
     <div class="details">    
@@ -475,6 +475,16 @@ gives the legacy column-keyed shape.</p></p>
                 <td>$limit</td>
                 <td><p>Optional pagination limit</p></td>
             </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$nameContains</td>
+                <td><p>Optional case-insensitive substring filter on the name</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$sort</td>
+                <td><p>Sort keys (name, type or id); empty keeps the name order</p></td>
+            </tr>
             </table>
 
             
@@ -496,7 +506,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneCount">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L89">at line 89</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L91">at line 91</a></div>
         <code>                    int
     <strong>getZoneCount</strong>()
         </code>
@@ -529,9 +539,9 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneCountFiltered">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L99">at line 99</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L102">at line 102</a></div>
         <code>                    int
-    <strong>getZoneCountFiltered</strong>(array|null $zoneIds, int|null $userId = null, string|null $nameFilter = null)
+    <strong>getZoneCountFiltered</strong>(array|null $zoneIds, int|null $userId = null, string|null $nameFilter = null, string|null $nameContains = null)
         </code>
     </h3>
     <div class="details">    
@@ -561,6 +571,11 @@ gives the legacy column-keyed shape.</p></p>
                 <td>$nameFilter</td>
                 <td><p>Optional name filter</p></td>
             </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$nameContains</td>
+                <td><p>Optional case-insensitive substring filter on the name</p></td>
+            </tr>
             </table>
 
             
@@ -582,7 +597,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getDistinctStartingLetters">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L101">at line 101</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L104">at line 104</a></div>
         <code>                    array
     <strong>getDistinctStartingLetters</strong>(int $userId, bool $viewOthers)
         </code>
@@ -631,7 +646,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getReverseZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L116">at line 116</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L119">at line 119</a></div>
         <code>                    <abbr title="Poweradmin\Domain\Repository\array&lt;string, \Poweradmin\Domain\Model\ZoneSummary&gt;">ZoneSummary&gt;</abbr>|int
     <strong>getReverseZones</strong>(string $permType, int $userId, string $reverseType = &#039;all&#039;, int $offset = 0, int $limit = 25, string $sortBy = &#039;name&#039;, string $sortDirection = &#039;ASC&#039;, bool $countOnly = false, bool $showSerial = false, bool $showTemplate = false, bool $includeHealth = true, bool $includeRecordCount = true)
         </code>
@@ -729,7 +744,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getReverseZoneCounts">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L138">at line 138</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L141">at line 141</a></div>
         <code>                    array
     <strong>getReverseZoneCounts</strong>(string $permType, int $userId)
         </code>
@@ -777,7 +792,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_countZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L149">at line 149</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L152">at line 152</a></div>
         <code>                    int
     <strong>countZones</strong>(string $permType, int|null $userId, string $letterStart = &#039;all&#039;, string $zoneType = &#039;forward&#039;)
         </code>
@@ -835,7 +850,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_findForwardZonesByPtrRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L157">at line 157</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Domain/Repository/ZoneReadRepositoryInterface.php#L160">at line 160</a></div>
         <code>                    array
     <strong>findForwardZonesByPtrRecords</strong>(array $reverseZoneIds)
         </code>
@@ -880,7 +895,7 @@ gives the legacy column-keyed shape.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/6eaaf96" rel="noreferrer" target="_blank">commit 6eaaf96,</a> built 2026-10-10 15:14 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/7c8aa5d" rel="noreferrer" target="_blank">commit 7c8aa5d,</a> built 2026-10-11 10:19 UTC.</div></div>
     </div>
     </body>
 

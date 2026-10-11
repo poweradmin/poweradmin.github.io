@@ -7180,13 +7180,63 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pagination" class="md-nav__link">
+  <a href="#paging-sorting-and-filtering" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pagination
+        Paging, sorting and filtering
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Paging, sorting and filtering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sorting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sorting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -7660,13 +7710,63 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pagination" class="md-nav__link">
+  <a href="#paging-sorting-and-filtering" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pagination
+        Paging, sorting and filtering
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Paging, sorting and filtering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sorting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sorting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -8382,13 +8482,25 @@ similar but the response envelope is less consistent and several v2 features
 (RRsets, bulk records, zone owners, groups, zone templates) are not available.
 See <a href="../../configuration/api/#api-v1-endpoints-legacy-removed-in-450">API Configuration</a> for
 the v1 endpoint list, and migrate to v2 before upgrading to 4.5.0.</p>
-<h2 id="pagination">Pagination<a class="headerlink" href="#pagination" title="Permanent link">¶</a></h2>
-<p>List endpoints for zones and users accept <code>page</code> and <code>per_page</code> query
-parameters:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>GET<span class="w"> </span>/api/v2/zones?page<span class="o">=</span><span class="m">1</span><span class="p">&amp;</span><span class="nv">per_page</span><span class="o">=</span><span class="m">50</span>
+<h2 id="paging-sorting-and-filtering">Paging, sorting and filtering<a class="headerlink" href="#paging-sorting-and-filtering" title="Permanent link">¶</a></h2>
+<p>From 4.6.0, the v2 list endpoints in the table below accept <code>page</code> and <code>per_page</code>, and most
+also take <code>sort</code> and a few filters. Before 4.6.0 only <code>/zones</code> and <code>/users</code> paged, and none
+sorted or filtered. Short lists such as <code>/zones/{id}/owners</code> always come back whole.</p>
+<h3 id="paging">Paging<a class="headerlink" href="#paging" title="Permanent link">¶</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>GET<span class="w"> </span>/api/v2/zones?page<span class="o">=</span><span class="m">2</span><span class="p">&amp;</span><span class="nv">per_page</span><span class="o">=</span><span class="m">50</span>
 </code></pre></div>
-<p>Omitting <code>per_page</code> returns all results. <code>page</code> is only read when <code>per_page</code> is
-given, and <code>per_page</code> is capped at 10000.</p>
+<p>Without <code>per_page</code> (or with <code>per_page=0</code>) the whole list comes back and there is no
+<code>pagination</code> object. With it, <code>page</code> starts at 1 (a smaller value is read as 1), <code>per_page</code>
+is capped at 10000, and the response carries a <code>pagination</code> object at the top level, next to
+<code>data</code>:</p>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"zones"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">"per_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="nt">"last_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">}</span>
+</code></pre></div>
+<p>A page past the end returns an empty list together with the <code>pagination</code> object, so a client
+can stop when <code>current_page</code> reaches <code>last_page</code>.</p>
 <blockquote>
 <p><strong>Warning:</strong> The parameter is <code>per_page</code>, not <code>limit</code>. An unrecognised
 parameter is ignored rather than rejected, so <code>?limit=50</code> silently returns
@@ -8397,10 +8509,114 @@ every row.</p>
 <p>From 4.6.0, a query parameter sent as an array, such as <code>?type[]=A</code>, answers <code>400</code> with
 "Query parameter 'type' must be a single value". This applies to every v2 endpoint and to the
 internal API.</p>
-<p>Paginated responses include a <code>pagination</code> block alongside <code>data</code>:</p>
-<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"per_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="nt">"last_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">}</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="p">}</span>
+<h3 id="sorting">Sorting<a class="headerlink" href="#sorting" title="Permanent link">¶</a></h3>
+<p><code>sort</code> takes comma-separated field names, each with an optional <code>:asc</code> or <code>:desc</code> suffix
+(ascending by default), up to five fields:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>GET<span class="w"> </span>/api/v2/zones/42/records?sort<span class="o">=</span>type,name:desc
+</code></pre></div>
+<p>A field the endpoint does not offer, a field given twice, or a direction other than <code>asc</code> or
+<code>desc</code> answers <code>400</code> with a message that lists the allowed fields.</p>
+<p>Without <code>sort</code>, most lists come in the database order of their name column; the exceptions are
+noted in the table below. Lists that are sorted in memory (records, RRsets, groups, templates,
+permissions) compare text fields case-insensitively in natural order, so <code>host2</code> sorts before
+<code>host10</code>. <code>/zones</code> applies that natural order only for <code>sort=name</code>, where numeric prefixes are
+compared as numbers. <code>/users</code> sorts case-insensitively but not naturally.</p>
+<h3 id="filters">Filters<a class="headerlink" href="#filters" title="Permanent link">¶</a></h3>
+<p>Every filter is a query parameter and combines with <code>sort</code>, <code>page</code> and <code>per_page</code>. The
+<code>pagination.total</code> counts the filtered list. <code>q</code> is a case-insensitive substring match.</p>
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Sort fields</th>
+<th>Filters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /zones</code></td>
+<td><code>name</code>, <code>type</code>, <code>id</code></td>
+<td><code>name</code> (exact zone name), <code>q</code> (zone name)</td>
+</tr>
+<tr>
+<td><code>GET /zones/{id}/records</code></td>
+<td><code>name</code>, <code>type</code>, <code>content</code>, <code>ttl</code>, <code>priority</code></td>
+<td><code>type</code> (record type), <code>name</code>, <code>content</code>, <code>q</code> (name or content). Default order: type, then name (as PowerDNS returns them in API backend mode)</td>
+</tr>
+<tr>
+<td><code>GET /zones/{id}/rrsets</code></td>
+<td><code>name</code>, <code>type</code>, <code>ttl</code></td>
+<td><code>type</code> (record type), <code>name</code>, <code>content</code>, <code>q</code> (name or content); <code>content</code> and <code>q</code> keep an RRset when any of its records matches. Default order: type, then name (as PowerDNS returns them in API backend mode)</td>
+</tr>
+<tr>
+<td><code>GET /users</code></td>
+<td><code>id</code>, <code>username</code>, <code>fullname</code>, <code>email</code></td>
+<td><code>q</code> (username, full name, email or description), <code>username</code> and <code>email</code> (exact lookups, see below). Default order: <code>id</code></td>
+</tr>
+<tr>
+<td><code>GET /groups</code></td>
+<td><code>id</code>, <code>name</code>, <code>member_count</code>, <code>zone_count</code>, <code>created_at</code></td>
+<td><code>q</code> (name or description)</td>
+</tr>
+<tr>
+<td><code>GET /groups/{id}/members</code></td>
+<td><code>user_id</code>, <code>username</code>, <code>fullname</code>, <code>email</code>, <code>joined_at</code></td>
+<td><code>q</code> (username, full name or email). Default order: newest member first</td>
+</tr>
+<tr>
+<td><code>GET /groups/{id}/zones</code></td>
+<td><code>zone_id</code>, <code>zone_name</code>, <code>zone_type</code>, <code>created_at</code></td>
+<td><code>q</code> (zone name). Default order: newest assignment first</td>
+</tr>
+<tr>
+<td><code>GET /zone-templates</code></td>
+<td><code>id</code>, <code>name</code>, <code>zones_linked</code></td>
+<td><code>q</code> (name or description)</td>
+</tr>
+<tr>
+<td><code>GET /zone-templates/{id}/records</code></td>
+<td><code>name</code>, <code>type</code>, <code>content</code>, <code>ttl</code>, <code>priority</code></td>
+<td><code>type</code> (record type, case-insensitive), <code>name</code>, <code>content</code>, <code>q</code> (name or content)</td>
+</tr>
+<tr>
+<td><code>GET /permissions</code></td>
+<td><code>id</code>, <code>name</code></td>
+<td><code>q</code> (name or description)</td>
+</tr>
+<tr>
+<td><code>GET /permission-templates</code></td>
+<td><code>id</code>, <code>name</code>, <code>template_type</code></td>
+<td><code>q</code> (name or description), <code>type</code> (<code>user</code> or <code>group</code>; anything else answers <code>400</code>)</td>
+</tr>
+<tr>
+<td><code>GET /change-requests</code></td>
+<td>none</td>
+<td><code>status</code> (<code>pending</code> by default; <code>approved</code>, <code>rejected</code>, <code>cancelled</code>, <code>failed</code> or <code>all</code>; anything else answers <code>400</code>), <code>zone_id</code>. Default order: newest first</td>
+</tr>
+</tbody>
+</table>
+<p><code>name</code> and <code>content</code> on the record lists are case-insensitive substring matches like <code>q</code>;
+<code>q</code> searches both columns at once.</p>
+<p><code>GET /users?username=alice</code> and <code>GET /users?email=alice@example.com</code> look up one user. The
+list then holds that user or is empty, <code>page</code>, <code>per_page</code> and <code>q</code> are ignored, <code>sort</code> is
+checked but not applied, no <code>pagination</code> object is returned, and <code>username</code> wins when both are
+given.</p>
+<p><code>GET /change-requests</code> ignores <code>sort</code>; it always lists newest first. Without <code>per_page</code> it
+returns at most 10000 requests, and when more match, the response carries a <code>pagination</code>
+object (<code>per_page</code> 10000, <code>last_page</code> above 1) so the client knows to page on with
+<code>per_page</code> and <code>page</code>.</p>
+<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">¶</a></h3>
+<p>The second page of 50 zones, newest id first:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones?sort=id:desc&amp;page=2&amp;per_page=50"</span>
+</code></pre></div>
+<p>The A records of a zone that mention <code>mail</code>, by name:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones/42/records?type=A&amp;q=mail&amp;sort=name"</span>
+</code></pre></div>
+<p>Group permission templates, ordered by name:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/permission-templates?type=group&amp;sort=name"</span>
 </code></pre></div>
 <h2 id="related-documentation">Related documentation<a class="headerlink" href="#related-documentation" title="Permanent link">¶</a></h2>
 <ul>
