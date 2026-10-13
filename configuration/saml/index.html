@@ -2444,6 +2444,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#https-for-the-acs-url-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPS for the ACS URL (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2709,6 +2720,17 @@
     <span class="md-ellipsis">
       
         Groups not mapped
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-sign-in-was-not-started-from-this-browser-or-took-too-long" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "The sign-in was not started from this browser or took too long"
       
     </span>
   </a>
@@ -7607,6 +7629,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#https-for-the-acs-url-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPS for the ACS URL (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7879,6 +7912,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#the-sign-in-was-not-started-from-this-browser-or-took-too-long" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "The sign-in was not started from this browser or took too long"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#redirect-loop" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7968,6 +8012,9 @@
 <p>Alternatively, set <code>sp.entity_id</code>, <code>sp.assertion_consumer_service_url</code> and <code>sp.single_logout_service_url</code> explicitly (see <a href="#service-provider-sp-configuration">Service Provider Configuration</a>). Those are then used as given and nothing is derived, so <code>application_url</code> is not required for SAML.</p>
 <p><code>interface.base_url</code> is also still accepted as a source for the derived SP URLs. It is a legacy fallback kept so that installs which set it by hand are not broken; prefer <code>interface.application_url</code> for new configuration.</p>
 <p>Earlier versions derived the host from the web server's <code>SERVER_NAME</code> when this was empty. That fallback was removed in 4.2.6, 4.3.5, 4.4.1 and 4.5.0; on earlier releases of those lines the host is still derived from the request. After the removal: under the official Docker image (FrankenPHP/Caddy) and under Apache's default <code>UseCanonicalName Off</code>, <code>SERVER_NAME</code> comes from the client's <code>Host</code> header, so a forged header could advertise an attacker's ACS URL to an IdP that consumes SP metadata dynamically.</p>
+<h3 id="https-for-the-acs-url-v460">HTTPS for the ACS URL <em>(v4.6.0+)</em><a class="headerlink" href="#https-for-the-acs-url-v460" title="Permanent link">¶</a></h3>
+<p>From 4.6.0 Poweradmin accepts a SAML response only as the answer to a sign-in started from the same browser. The request id travels in a short-lived <code>__Host-saml_flow</code> cookie, which browsers only keep over HTTPS (or on <code>localhost</code>), because the identity provider's POST to <code>/saml/acs</code> arrives without the session cookie.</p>
+<p>If users reach Poweradmin over plain HTTP on any other host, or you rely on sign-ins started from the identity provider's portal (IdP-initiated SSO), set <code>'allow_idp_initiated' =&gt; true</code> on that provider. It restores the pre-4.6.0 behaviour for that provider only. Responses are still checked for signature, audience and validity window.</p>
 <h2 id="global-settings">Global Settings<a class="headerlink" href="#global-settings" title="Permanent link">¶</a></h2>
 <table>
 <thead>
@@ -8185,6 +8232,11 @@ to refuse such links.</p>
 <td><code>user_mapping</code></td>
 <td>Yes</td>
 <td>Map SAML attributes to user fields</td>
+</tr>
+<tr>
+<td><code>allow_idp_initiated</code></td>
+<td>No</td>
+<td>Accept responses that do not answer a sign-in started in Poweradmin: IdP-initiated SSO, or installs not served over HTTPS. Default <code>false</code> <em>(v4.6.0+)</em></td>
 </tr>
 </tbody>
 </table>
@@ -8540,6 +8592,8 @@ to refuse such links.</p>
 <li>Check the attribute name matches <code>user_mapping.groups</code></li>
 <li>For Azure AD, configure Group claims in Token configuration</li>
 </ul>
+<h3 id="the-sign-in-was-not-started-from-this-browser-or-took-too-long">"The sign-in was not started from this browser or took too long"<a class="headerlink" href="#the-sign-in-was-not-started-from-this-browser-or-took-too-long" title="Permanent link">¶</a></h3>
+<p>The response did not come with the sign-in cookie Poweradmin set when the login started. Common causes: Poweradmin is served over plain HTTP (the cookie needs HTTPS), the sign-in was started from the identity provider's portal, or more than 10 minutes passed at the identity provider. Serve Poweradmin over HTTPS, or set <code>allow_idp_initiated</code> on the provider (see <a href="#https-for-the-acs-url-v460">HTTPS for the ACS URL</a>). The log names the provider and, at the start of the sign-in, warns when the ACS URL is not HTTPS.</p>
 <h3 id="redirect-loop">Redirect loop<a class="headerlink" href="#redirect-loop" title="Permanent link">¶</a></h3>
 <ul>
 <li>Clear browser cookies</li>

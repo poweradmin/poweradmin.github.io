@@ -7953,6 +7953,21 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../configuration/oidc/#requiring-a-verified-address">OIDC Authentication</a></td>
 </tr>
 <tr>
+<td>SAML sign-in tied to the browser</td>
+<td>A SAML response is accepted only as the answer to a sign-in started from the same browser, so an unsolicited or replayed response no longer signs anyone in. Needs HTTPS; <code>allow_idp_initiated</code> on a provider restores the old behaviour</td>
+<td><a href="../../configuration/saml/#https-for-the-acs-url-v460">SAML Authentication</a></td>
+</tr>
+<tr>
+<td>Maximum session lifetime</td>
+<td><code>interface.session_max_lifetime</code> (off by default) ends a session a set time after sign-in, however active it stays</td>
+<td><a href="../../configuration/basic/">Basic Configuration</a></td>
+</tr>
+<tr>
+<td>Bulk record requests capped</td>
+<td><code>POST /zones/{id}/records/bulk</code> takes at most <code>api.bulk_max_operations</code> operations (1000 by default) and answers 400 above that</td>
+<td><a href="../../configuration/api/">API Configuration</a></td>
+</tr>
+<tr>
 <td>Record edit checks the posted record</td>
 <td>The record edit form refuses a save whose posted record is not the record the page was opened for</td>
 <td></td>

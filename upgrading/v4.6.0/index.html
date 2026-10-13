@@ -7676,6 +7676,9 @@
 <li>In API backend mode the automatic zone sync changes nothing when PowerDNS no longer lists more than half of the known zones, which usually means <code>pdns_api.url</code> points at the wrong server; the manual sync on the Forward Zones page still applies the changes.</li>
 <li>With <code>approval.enabled</code> on before the 4.6.0 update script has run, the Change requests entry and the pending counts are hidden and an error is logged, instead of every page failing. Filing a request still fails until the script has run.</li>
 <li>A <code>security.password_encryption</code> of <code>md5</code> or <code>md5salt</code> (removed in 4.3.0) now stops Poweradmin at startup with a message naming the setting. Before, every login of a bcrypt user failed. Set it to <code>bcrypt</code>, <code>argon2i</code> or <code>argon2id</code>; existing md5 password hashes still verify and are rehashed at the next login.</li>
+<li>SAML sign-in now needs HTTPS (or <code>localhost</code>) and refuses responses that do not answer a sign-in started from the same browser, including IdP-initiated SSO. Set <code>'allow_idp_initiated' =&gt; true</code> on a provider (<code>PA_SAML_&lt;PROVIDER&gt;_ALLOW_IDP_INITIATED=true</code> in Docker) to keep the old behaviour for it. See <a href="../../configuration/saml/#https-for-the-acs-url-v460">SAML Authentication</a>.</li>
+<li><code>POST /zones/{id}/records/bulk</code> refuses more than 1000 operations per request with <code>400 Too many operations: at most 1000 per request</code>. Raise or remove the limit with <code>api.bulk_max_operations</code> (<code>0</code> = no limit).</li>
+<li><code>interface.session_max_lifetime</code> is new and off by default.</li>
 </ul>
 <h2 id="rollback">Rollback<a class="headerlink" href="#rollback" title="Permanent link">¶</a></h2>
 <p>To roll back to v4.5.0:</p>

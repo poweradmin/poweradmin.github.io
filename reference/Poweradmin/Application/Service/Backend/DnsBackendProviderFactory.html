@@ -118,7 +118,7 @@ DnssecProviderFactory.</p></p>        </div>
                     static&nbsp;<a href="../../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_create">create</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null)
+                    <a href="#method_create">create</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $session, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null)
         
                                             <p><p>Create a DNS backend provider instance.</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -138,7 +138,7 @@ DnssecProviderFactory.</p></p>        </div>
                     static&nbsp;<a href="../../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a>|null
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_createApiClient">createApiClient</a>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, int|null $timeout = null)
+                    <a href="#method_createApiClient">createApiClient</a>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $session, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, int|null $timeout = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -163,9 +163,9 @@ read caches instead of constructing a second client against the same server.</p>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_create">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/DnsBackendProviderFactory.php#L53">at line 53</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/DnsBackendProviderFactory.php#L56">at line 56</a></div>
         <code>        static            <a href="../../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>
-    <strong>create</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null)
+    <strong>create</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $session, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null)
         </code>
     </h3>
     <div class="details">    
@@ -189,6 +189,11 @@ read caches instead of constructing a second client against the same server.</p>
                 <td><a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
                 <td>$config</td>
                 <td><p>Configuration object</p></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a></td>
+                <td>$session</td>
+                <td><p>The request's session, which holds the API outage banner state</p></td>
             </tr>
                     <tr>
                 <td><abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null</td>
@@ -216,7 +221,7 @@ read caches instead of constructing a second client against the same server.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isApiBackend">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/DnsBackendProviderFactory.php#L94">at line 94</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/DnsBackendProviderFactory.php#L98">at line 98</a></div>
         <code>        static            bool
     <strong>isApiBackend</strong>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
         </code>
@@ -261,9 +266,9 @@ exception and by ConfigValidator as an error, not masked here.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_createApiClient">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/DnsBackendProviderFactory.php#L99">at line 99</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/DnsBackendProviderFactory.php#L103">at line 103</a></div>
         <code>        static            <a href="../../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a>|null
-    <strong>createApiClient</strong>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, int|null $timeout = null)
+    <strong>createApiClient</strong>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $session, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, int|null $timeout = null)
         </code>
     </h3>
     <div class="details">    
@@ -282,6 +287,11 @@ exception and by ConfigValidator as an error, not masked here.</p></p>
                     <tr>
                 <td><a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a></td>
                 <td>$config</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a></td>
+                <td>$session</td>
                 <td></td>
             </tr>
                     <tr>
@@ -315,7 +325,7 @@ exception and by ConfigValidator as an error, not masked here.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_apiClientFrom">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/DnsBackendProviderFactory.php#L131">at line 131</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Application/Service/Backend/DnsBackendProviderFactory.php#L136">at line 136</a></div>
         <code>        static            <a href="../../../../Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a>|null
     <strong>apiClientFrom</strong>(<a href="../../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null $provider)
         </code>
@@ -361,7 +371,7 @@ read caches instead of constructing a second client against the same server.</p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/7c8aa5d" rel="noreferrer" target="_blank">commit 7c8aa5d,</a> built 2026-10-11 10:19 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ac4d64b" rel="noreferrer" target="_blank">commit ac4d64b,</a> built 2026-10-13 18:48 UTC.</div></div>
     </div>
     </body>
 

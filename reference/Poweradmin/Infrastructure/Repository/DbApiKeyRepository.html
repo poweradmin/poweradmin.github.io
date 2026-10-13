@@ -129,7 +129,7 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, bool $zoneScopesReady = true)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, bool $zoneScopesReady = true, bool $isApiBackend = false)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -290,9 +290,9 @@ also rejecting unusual legacy key formats.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L57">at line 57</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L61">at line 61</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, bool $zoneScopesReady = true)
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null, bool $zoneScopesReady = true, bool $isApiBackend = false)
         </code>
     </h3>
     <div class="details">    
@@ -328,6 +328,11 @@ also rejecting unusual legacy key formats.</p></p>                </div>
                 <td>$zoneScopesReady</td>
                 <td><p>False while the one-time scope migration has not run (see ApiKeyZoneScopeMigration)</p></td>
             </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$isApiBackend</td>
+                <td><p>Whether zones are served by the PowerDNS API; under the SQL backend a scoped zone gets a named zones row</p></td>
+            </tr>
             </table>
 
             
@@ -340,7 +345,7 @@ also rejecting unusual legacy key formats.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneScopesReady">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L64">at line 64</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L73">at line 73</a></div>
         <code>                    bool
     <strong>zoneScopesReady</strong>()
         </code>
@@ -374,7 +379,7 @@ do not, a restricted key matches no zone and new restrictions must not be saved.
             </div>
                     <div class="method-item">
                     <h3 id="method_getAll">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L72">at line 72</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L81">at line 81</a></div>
         <code>                    array
     <strong>getAll</strong>(int|null $userId = null)
         </code>
@@ -418,7 +423,7 @@ do not, a restricted key matches no zone and new restrictions must not be saved.
             </div>
                     <div class="method-item">
                     <h3 id="method_findById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L99">at line 99</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L108">at line 108</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/ApiKey.html"><abbr title="Poweradmin\Domain\Model\ApiKey">ApiKey</abbr></a>|null
     <strong>findById</strong>(int $id)
         </code>
@@ -462,7 +467,7 @@ do not, a restricted key matches no zone and new restrictions must not be saved.
             </div>
                     <div class="method-item">
                     <h3 id="method_findBySecretKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L117">at line 117</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L126">at line 126</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/ApiKey.html"><abbr title="Poweradmin\Domain\Model\ApiKey">ApiKey</abbr></a>|null
     <strong>findBySecretKey</strong>(string $secretKey)
         </code>
@@ -506,7 +511,7 @@ do not, a restricted key matches no zone and new restrictions must not be saved.
             </div>
                     <div class="method-item">
                     <h3 id="method_hashSecretKey">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L147">at line 147</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L156">at line 156</a></div>
         <code>        static            string
     <strong>hashSecretKey</strong>(string $secretKey)
         </code>
@@ -554,7 +559,7 @@ also rejecting unusual legacy key formats.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_save">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L198">at line 198</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L207">at line 207</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/ApiKey.html"><abbr title="Poweradmin\Domain\Model\ApiKey">ApiKey</abbr></a>
     <strong>save</strong>(<a href="../../../Poweradmin/Domain/Model/ApiKey.html"><abbr title="Poweradmin\Domain\Model\ApiKey">ApiKey</abbr></a> $apiKey)
         </code>
@@ -598,7 +603,7 @@ also rejecting unusual legacy key formats.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_delete">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L260">at line 260</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L269">at line 269</a></div>
         <code>                    bool
     <strong>delete</strong>(int $id)
         </code>
@@ -642,7 +647,7 @@ also rejecting unusual legacy key formats.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_updateLastUsed">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L292">at line 292</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L301">at line 301</a></div>
         <code>                    bool
     <strong>updateLastUsed</strong>(int $id)
         </code>
@@ -686,7 +691,7 @@ also rejecting unusual legacy key formats.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_disable">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L304">at line 304</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L313">at line 313</a></div>
         <code>                    bool
     <strong>disable</strong>(int $id)
         </code>
@@ -730,7 +735,7 @@ also rejecting unusual legacy key formats.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_enable">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L316">at line 316</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L325">at line 325</a></div>
         <code>                    bool
     <strong>enable</strong>(int $id)
         </code>
@@ -774,7 +779,7 @@ also rejecting unusual legacy key formats.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_countByUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L328">at line 328</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L337">at line 337</a></div>
         <code>                    int
     <strong>countByUser</strong>(int $userId)
         </code>
@@ -818,7 +823,7 @@ also rejecting unusual legacy key formats.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L384">at line 384</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L393">at line 393</a></div>
         <code>                    array
     <strong>getZoneIds</strong>(int $apiKeyId)
         </code>
@@ -862,7 +867,7 @@ also rejecting unusual legacy key formats.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_saveZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L398">at line 398</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/DbApiKeyRepository.php#L407">at line 407</a></div>
         <code>                    void
     <strong>saveZoneIds</strong>(int $apiKeyId, array $zoneIds)
         </code>
@@ -913,7 +918,7 @@ also rejecting unusual legacy key formats.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/7c8aa5d" rel="noreferrer" target="_blank">commit 7c8aa5d,</a> built 2026-10-11 10:19 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/ac4d64b" rel="noreferrer" target="_blank">commit ac4d64b,</a> built 2026-10-13 18:48 UTC.</div></div>
     </div>
     </body>
 
