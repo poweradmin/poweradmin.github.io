@@ -4953,6 +4953,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#zone-ids-in-api-backend-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone ids in API backend mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#other-changes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8018,6 +8029,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#zone-ids-in-api-backend-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zone ids in API backend mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#other-changes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8450,6 +8472,26 @@ Assigning any ordinary template is unaffected, so a delegated user administrator
 working as before unless they were relying on handing out the Administrator template.</p>
 <p>This ships across the supported lines, not only here: 4.4.1, 4.3.5, 4.2.6 and 3.9.12 carry
 the same rule.</p>
+<h3 id="zone-ids-in-api-backend-mode">Zone ids in API backend mode<a class="headerlink" href="#zone-ids-in-api-backend-mode" title="Permanent link">¶</a></h3>
+<p>This applies only to installs running the API backend that were migrated from SQL mode.</p>
+<ul>
+<li>The API v2 zone list, <code>GET /zones/{id}</code> and the internal zone list now report the canonical
+  zone id as <code>id</code>, the same value every other zone endpoint takes. Before, the list reported the
+  zones table row id, which could open a different zone. Clients that stored the old ids (for
+  example Terraform state or scripts) see them change once, and requests with an old id get
+  <code>403</code> or <code>404</code>.</li>
+<li>On the first request after the upgrade, stored API key zone restrictions are moved from row
+  ids to canonical ids. This runs once. A restriction that cannot be moved is kept but matches
+  no zone, and the log names the key. Open each restricted key afterwards: the edit form shows a
+  warning on a key that lost its zone, and the zone has to be selected again. Saving the key
+  without a zone keeps it restricted; it does not become unrestricted. Until the move has run, a
+  restricted key reaches no zone and new restrictions cannot be saved.</li>
+<li>A new zone no longer takes a zone id that a migrated zone, a group grant or an API key
+  restriction already uses. Before, it could take over a migrated zone's id and hide that zone.</li>
+<li>A zone created in API mode before 4.5.0 may already share its id with a migrated zone. See
+  <a href="../../configuration/powerdns-api/#zone-ids-shared-by-two-zones">Zone IDs Shared by Two Zones</a>
+  for how Poweradmin handles it.</li>
+</ul>
 <h3 id="other-changes">Other changes<a class="headerlink" href="#other-changes" title="Permanent link">¶</a></h3>
 <ul>
 <li>The Records column in zone lists is no longer sortable in API backend mode. Record counts are now resolved only for the zones on the current page, so ordering by them would sort just that page rather than the whole list. The column header is plain text instead of a sort link, and a stale <code>count_records</code> sort carried over in a session falls back to sorting by name. SQL backend mode is unaffected and still sorts by record count.</li>

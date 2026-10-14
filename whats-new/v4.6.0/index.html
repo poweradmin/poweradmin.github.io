@@ -7743,8 +7743,8 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../api/overview/">API Overview</a></td>
 </tr>
 <tr>
-<td>One zone id in API backend mode</td>
-<td><code>GET /zones</code>, <code>GET /zones/{id}</code> and API key zone restrictions all use the canonical zone id, so a listed id always opens that zone and a key restricted to a zone cannot reach another one. <code>canonical_id</code> stays, equal to <code>id</code>. Stored key restrictions are moved over once (#1559)</td>
+<td><code>canonical_id</code> in zone responses</td>
+<td>In API backend mode, the API v2 zone list and <code>GET /zones/{id}</code> also return <code>canonical_id</code>, equal to <code>id</code>. The id itself became canonical in <a href="../v4.5.0/">4.5.0</a></td>
 <td><a href="../../api/endpoints/">API Endpoints</a></td>
 </tr>
 <tr>
@@ -7848,11 +7848,6 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../configuration/basic/">Basic Configuration</a></td>
 </tr>
 <tr>
-<td>API-mode reverse zones listed correctly</td>
-<td>With the API backend, reverse zones are listed under their canonical id</td>
-<td><a href="../../configuration/powerdns-api/">PowerDNS API</a></td>
-</tr>
-<tr>
 <td>Zone record counts on signed zones</td>
 <td>The zone list and the internal zone endpoint report the true record count on DNSSEC-signed zones, and empty non-terminal rows are not counted anywhere. The internal endpoint also returns <code>master</code>, <code>account</code>, <code>owner</code> and <code>record_count</code></td>
 <td></td>
@@ -7926,11 +7921,6 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td>DNSSEC key changes need zone view access</td>
 <td>Adding, importing, updating and deleting keys through the API needs view access to the zone as well as the DNSSEC manage permission, as on the web pages. An imported key whose algorithm is not offered for new keys on the connected PowerDNS version is refused, on the import form and with a 400 in the API</td>
 <td><a href="../../api/endpoints/#zone-metadata-and-dnssec">API Endpoints</a></td>
-</tr>
-<tr>
-<td>Zone ids shared by two zones</td>
-<td>In API backend mode, a zone created there and a zone migrated from SQL mode can end up with the same zone id. The id opens one of them, extra owners and group grants keyed by it are ignored, and adding owners or groups to it is refused (409 in the API). Deleting either zone also removes those grants</td>
-<td><a href="../../configuration/powerdns-api/#zone-ids-shared-by-two-zones">PowerDNS API</a></td>
 </tr>
 <tr>
 <td>Shared zone ids in the consistency check</td>

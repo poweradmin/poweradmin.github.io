@@ -7761,6 +7761,31 @@ APIs, RRsets, bulk records and the DNS wizards.</p>
 <td><a href="../../configuration/powerdns-api/">PowerDNS API</a></td>
 </tr>
 <tr>
+<td>One zone id in API backend mode</td>
+<td>The API v2 zone list, <code>GET /zones/{id}</code> and the internal zone list report the canonical zone id as <code>id</code>, the value every other zone endpoint takes, so a listed id always opens that zone. Before, installs migrated from SQL mode listed the zones table row id, which could open a different zone (#1559)</td>
+<td><a href="../../api/endpoints/">API Endpoints</a></td>
+</tr>
+<tr>
+<td>API-mode reverse zones listed correctly</td>
+<td>With the API backend, reverse zones are listed under their canonical id</td>
+<td><a href="../../configuration/powerdns-api/">PowerDNS API</a></td>
+</tr>
+<tr>
+<td>API key restrictions moved to canonical ids</td>
+<td>In API backend mode, stored API key zone restrictions are moved to canonical ids once, on the first request. A restriction that cannot be moved matches no zone, and the key edit form asks for the zone to be selected again; saving it without a zone keeps the key restricted</td>
+<td><a href="../../api/authentication/#restricting-what-a-key-can-do">API Authentication</a></td>
+</tr>
+<tr>
+<td>Zone ids shared by two zones</td>
+<td>In API backend mode, a zone created there and a zone migrated from SQL mode can end up with the same zone id. The id opens one of them, and lists and search show only that one. Extra owners and group grants keyed by it are ignored, adding owners or groups to it is refused (409 in the API), and those grants are removed when either zone is deleted or removed by the zone sync</td>
+<td><a href="../../configuration/powerdns-api/#zone-ids-shared-by-two-zones">PowerDNS API</a></td>
+</tr>
+<tr>
+<td>Zones created at the same time in API mode</td>
+<td>Creating several zones at once with the API backend no longer fails, and a new zone never takes an id a migrated zone, a group grant or an API key restriction already uses (#1710)</td>
+<td><a href="../../configuration/powerdns-api/">PowerDNS API</a></td>
+</tr>
+<tr>
 <td>OIDC verified-email linking</td>
 <td><code>email_verified</code> is read from the ID token as well as the userinfo response, and <code>oidc.require_verified_email</code> can demand the claim before an address may match an existing account</td>
 <td><a href="../../configuration/oidc/">OIDC Authentication</a></td>
