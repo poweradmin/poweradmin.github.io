@@ -116,7 +116,7 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, string $dbType, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $session)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, string $dbType, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $session, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -308,6 +308,16 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>     
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    bool|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_handOverNamedZoneRow">handOverNamedZoneRow</a>(int $zoneId, int $fromUserId, int $toUserId)
+        
+                                            <p><p>Give the named zone row a user being deleted holds to another user, so the zone stays.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     bool
                 </div>
                 <div class="col-md-8">
@@ -394,9 +404,9 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>     
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L58">at line 58</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L60">at line 60</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, string $dbType, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $session)
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, string $dbType, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Port/SessionInterface.html"><abbr title="Poweradmin\Domain\Port\SessionInterface">SessionInterface</abbr></a> $session, <abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null $logger = null)
         </code>
     </h3>
     <div class="details">    
@@ -437,6 +447,11 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>     
                 <td>$session</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><abbr title="Psr\Log\LoggerInterface">LoggerInterface</abbr>|null</td>
+                <td>$logger</td>
+                <td></td>
+            </tr>
             </table>
 
             
@@ -449,7 +464,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>     
             </div>
                     <div class="method-item">
                     <h3 id="method_getDistinctStartingLetters">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L94">at line 94</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L97">at line 97</a></div>
         <code>                    array
     <strong>getDistinctStartingLetters</strong>(int $userId, bool $viewOthers)
         </code>
@@ -498,7 +513,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>     
             </div>
                     <div class="method-item">
                     <h3 id="method_getReverseZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L134">at line 134</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L137">at line 137</a></div>
         <code>                    <abbr title="Poweradmin\Domain\Repository\array&lt;string, \Poweradmin\Domain\Model\ZoneSummary&gt;">ZoneSummary&gt;</abbr>|int
     <strong>getReverseZones</strong>(string $permType, int $userId, string $reverseType = &#039;all&#039;, int $offset = 0, int $limit = 25, string $sortBy = &#039;name&#039;, string $sortDirection = &#039;ASC&#039;, bool $countOnly = false, bool $showSerial = false, bool $showTemplate = false, bool $includeHealth = true, bool $includeRecordCount = true)
         </code>
@@ -596,7 +611,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>     
             </div>
                     <div class="method-item">
                     <h3 id="method_countZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L394">at line 394</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L397">at line 397</a></div>
         <code>                    int
     <strong>countZones</strong>(string $permType, int|null $userId, string $letterStart = &#039;all&#039;, string $zoneType = &#039;forward&#039;)
         </code>
@@ -654,7 +669,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>     
             </div>
                     <div class="method-item">
                     <h3 id="method_getReverseZoneCounts">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L436">at line 436</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L439">at line 439</a></div>
         <code>                    array
     <strong>getReverseZoneCounts</strong>(string $permType, int $userId)
         </code>
@@ -702,7 +717,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>     
             </div>
                     <div class="method-item">
                     <h3 id="method_listZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L458">at line 458</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L461">at line 461</a></div>
         <code>                    array
     <strong>listZones</strong>(int|null $userId = null, bool $viewOthers = false, array $filters = [], int $offset = 0, int $limit = 100)
         </code>
@@ -765,7 +780,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>     
             </div>
                     <div class="method-item">
                     <h3 id="method_getZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L518">at line 518</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L521">at line 521</a></div>
         <code>                    <a href="../../../Poweradmin/Domain/Model/ZoneDetail.html"><abbr title="Poweradmin\Domain\Model\ZoneDetail">ZoneDetail</abbr></a>|null
     <strong>getZone</strong>(int $zoneId)
         </code>
@@ -809,7 +824,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_findForwardZonesByPtrRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L535">at line 535</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L538">at line 538</a></div>
         <code>                    array
     <strong>findForwardZonesByPtrRecords</strong>(array $reverseZoneIds)
         </code>
@@ -852,7 +867,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L612">at line 612</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L615">at line 615</a></div>
         <code>                    string|null
     <strong>getZoneComment</strong>(int $zoneId)
         </code>
@@ -895,7 +910,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_createZoneShell">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L618">at line 618</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L621">at line 621</a></div>
         <code>                    int|string
     <strong>createZoneShell</strong>(int $domainId, int|null $owner, int $templateId)
         </code>
@@ -948,7 +963,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteZoneShell">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L631">at line 631</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L634">at line 634</a></div>
         <code>                    void
     <strong>deleteZoneShell</strong>(int $domainId)
         </code>
@@ -991,7 +1006,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_saveZoneComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L638">at line 638</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L647">at line 647</a></div>
         <code>                    void
     <strong>saveZoneComment</strong>(int $zoneId, string $comment)
         </code>
@@ -1039,7 +1054,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_updateZoneComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L658">at line 658</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L667">at line 667</a></div>
         <code>                    bool
     <strong>updateZoneComment</strong>(int $zoneId, string $comment)
         </code>
@@ -1087,7 +1102,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getOwnerIdsByZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L670">at line 670</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L679">at line 679</a></div>
         <code>                    array
     <strong>getOwnerIdsByZoneIds</strong>(array $zoneIds)
         </code>
@@ -1130,7 +1145,7 @@ gives the legacy column-keyed shape.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getOwnedZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L701">at line 701</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L710">at line 710</a></div>
         <code>                    array
     <strong>getOwnedZoneIds</strong>(int $userId)
         </code>
@@ -1174,7 +1189,7 @@ space the zone logs and zones_groups use.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneOwners">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L720">at line 720</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L729">at line 729</a></div>
         <code>                    array
     <strong>getZoneOwners</strong>(int $zoneId)
         </code>
@@ -1217,7 +1232,7 @@ space the zone logs and zones_groups use.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isSharedZoneId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L737">at line 737</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L746">at line 746</a></div>
         <code>                    bool
     <strong>isSharedZoneId</strong>(int $zoneId)
         </code>
@@ -1261,7 +1276,7 @@ grants keyed by it cannot tell the zones apart and are not honoured.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_lockZoneOwners">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L765">at line 765</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L774">at line 774</a></div>
         <code>                    void
     <strong>lockZoneOwners</strong>(int $zoneId)
         </code>
@@ -1305,7 +1320,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_addOwnerToZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L795">at line 795</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L804">at line 804</a></div>
         <code>                    bool
     <strong>addOwnerToZone</strong>(int $zoneId, int $userId)
         </code>
@@ -1352,8 +1367,62 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_handOverNamedZoneRow">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L828">at line 828</a></div>
+        <code>                    bool|null
+    <strong>handOverNamedZoneRow</strong>(int $zoneId, int $fromUserId, int $toUserId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Give the named zone row a user being deleted holds to another user, so the zone stays.</p></p>                <p><p>Null when the backend keeps no such row or the user holds none (add an owner instead);
+false when the id is shared and the row it opens is not that user's.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$fromUserId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$toUserId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_removeOwnerFromZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L879">at line 879</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L963">at line 963</a></div>
         <code>                    bool
     <strong>removeOwnerFromZone</strong>(int $zoneId, int $userId)
         </code>
@@ -1401,7 +1470,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isUserZoneOwner">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L916">at line 916</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L1000">at line 1000</a></div>
         <code>                    bool
     <strong>isUserZoneOwner</strong>(int $zoneId, int $userId)
         </code>
@@ -1449,7 +1518,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L938">at line 938</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L1022">at line 1022</a></div>
         <code>                    bool
     <strong>deleteZone</strong>(int $zoneId)
         </code>
@@ -1492,7 +1561,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_updateZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L1019">at line 1019</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L1104">at line 1104</a></div>
         <code>                    bool
     <strong>updateZone</strong>(int $zoneId, array $updates)
         </code>
@@ -1540,7 +1609,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneCount">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L1052">at line 1052</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L1137">at line 1137</a></div>
         <code>                    int
     <strong>getZoneCount</strong>()
         </code>
@@ -1573,7 +1642,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneCountFiltered">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L1059">at line 1059</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L1144">at line 1144</a></div>
         <code>                    int
     <strong>getZoneCountFiltered</strong>(array|null $zoneIds, int|null $userId = null, string|null $nameFilter = null, string|null $nameContains = null)
         </code>
@@ -1631,7 +1700,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getAllZonesFiltered">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L1169">at line 1169</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L1254">at line 1254</a></div>
         <code>                    array
     <strong>getAllZonesFiltered</strong>(array|null $zoneIds, int|null $userId = null, string|null $nameFilter = null, int|null $offset = null, int|null $limit = null, string|null $nameContains = null, array $sort = [])
         </code>
@@ -1704,7 +1773,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L1205">at line 1205</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneRepository.php#L1290">at line 1290</a></div>
         <code>                    array|null
     <strong>getZoneById</strong>(int $zoneId)
         </code>
@@ -1749,7 +1818,7 @@ concurrent removal waits instead of deciding on stale owner counts.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/313a6a6" rel="noreferrer" target="_blank">commit 313a6a6,</a> built 2026-10-14 12:24 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/bdf581a" rel="noreferrer" target="_blank">commit bdf581a,</a> built 2026-10-16 04:27 UTC.</div></div>
     </div>
     </body>
 
