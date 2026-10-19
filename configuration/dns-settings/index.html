@@ -2267,6 +2267,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Zone Overlap Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#in-442-436-427-and-3913" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In 4.4.2, 4.3.6, 4.2.7 and 3.9.13
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -7405,6 +7422,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Zone Overlap Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#in-442-436-427-and-3913" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In 4.4.2, 4.3.6, 4.2.7 and 3.9.13
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -7764,35 +7798,45 @@
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    'parent_zone_ownership_check' =&gt; false,</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">],</span>
 </code></pre></div>
+<h3 id="in-442-436-427-and-3913">In 4.4.2, 4.3.6, 4.2.7 and 3.9.13<a class="headerlink" href="#in-442-436-427-and-3913" title="Permanent link">¶</a></h3>
+<p>These releases ship a simpler form of the same check, also on by default:</p>
+<ul>
+<li>It blocks only a <strong>subdomain</strong> of another owner's zone. Creating a parent of another owner's zone is not checked.</li>
+<li>Only the closest existing parent zone counts. A parent zone with no owner at all, such as one an autoprimary created or one added with <code>pdnsutil</code>, does not block.</li>
+<li>Ueberusers and users with <code>zone_content_edit_others</code> are exempt.</li>
+</ul>
+<p>On 4.2.x to 4.4.x, turn it off with the same <code>parent_zone_ownership_check</code> setting. On 3.9.x, add this to <code>inc/config.inc.php</code>:</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="x">$dns_parent_zone_ownership_check = false;</span>
+</code></pre></div>
 <h2 id="configuration-example">Configuration Example<a class="headerlink" href="#configuration-example" title="Permanent link">¶</a></h2>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="x">return [</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="x">    'dns' =&gt; [</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="x">        'hostmaster' =&gt; 'hostmaster.example.com',</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="x">        'ns1' =&gt; 'ns1.example.com',</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="x">        'ns2' =&gt; 'ns2.example.com',</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="x">        'ns3' =&gt; 'ns3.example.com',</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="x">        'ns4' =&gt; 'ns4.example.com',</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="x">        'ttl' =&gt; 86400,</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="x">        'ttl_reverse' =&gt; null, // PTR-specific default; null falls back to dns.ttl (added in 4.4.0)</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="x">        // SOA settings</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="x">        'soa_refresh' =&gt; 28800,</span>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="x">        'soa_retry' =&gt; 7200,</span>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="x">        'soa_expire' =&gt; 604800,</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="x">        'soa_minimum' =&gt; 86400,</span>
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="x">        'zone_type_default' =&gt; 'MASTER',</span>
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="x">        'default_zone_template' =&gt; null, // template id (int) or name (string); null for "none"</span>
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="x">        'zone_ownership_mode' =&gt; 'both', // 'both', 'users_only', or 'groups_only'</span>
-<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="x">        'strict_tld_check' =&gt; false,</span>
-<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="x">        'top_level_tld_check' =&gt; false,</span>
-<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="x">        'third_level_check' =&gt; false,</span>
-<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="x">        'parent_zone_ownership_check' =&gt; true, // block overlapping zones across owners (added in 4.5.0)</span>
-<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="x">        'txt_auto_quote' =&gt; false,</span>
-<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="x">        'prevent_duplicate_ptr' =&gt; true,</span>
-<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="x">        'domain_record_types' =&gt; null, // Uses default types</span>
-<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="x">        'reverse_record_types' =&gt; null, // Uses default types</span>
-<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="x">        'custom_tlds' =&gt; [], // Custom TLDs for CNAME validation</span>
-<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="x">    ],</span>
-<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="x">];</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="x">return [</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="x">    'dns' =&gt; [</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="x">        'hostmaster' =&gt; 'hostmaster.example.com',</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="x">        'ns1' =&gt; 'ns1.example.com',</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="x">        'ns2' =&gt; 'ns2.example.com',</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="x">        'ns3' =&gt; 'ns3.example.com',</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="x">        'ns4' =&gt; 'ns4.example.com',</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="x">        'ttl' =&gt; 86400,</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="x">        'ttl_reverse' =&gt; null, // PTR-specific default; null falls back to dns.ttl (added in 4.4.0)</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="x">        // SOA settings</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="x">        'soa_refresh' =&gt; 28800,</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="x">        'soa_retry' =&gt; 7200,</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="x">        'soa_expire' =&gt; 604800,</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="x">        'soa_minimum' =&gt; 86400,</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="x">        'zone_type_default' =&gt; 'MASTER',</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="x">        'default_zone_template' =&gt; null, // template id (int) or name (string); null for "none"</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="x">        'zone_ownership_mode' =&gt; 'both', // 'both', 'users_only', or 'groups_only'</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="x">        'strict_tld_check' =&gt; false,</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="x">        'top_level_tld_check' =&gt; false,</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="x">        'third_level_check' =&gt; false,</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="x">        'parent_zone_ownership_check' =&gt; true, // block overlapping zones across owners (added in 4.5.0)</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="x">        'txt_auto_quote' =&gt; false,</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="x">        'prevent_duplicate_ptr' =&gt; true,</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="x">        'domain_record_types' =&gt; null, // Uses default types</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="x">        'reverse_record_types' =&gt; null, // Uses default types</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="x">        'custom_tlds' =&gt; [], // Custom TLDs for CNAME validation</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="x">    ],</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="x">];</span>
 </code></pre></div>
 
 

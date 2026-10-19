@@ -4568,6 +4568,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Database Schema Update">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#duplicate-usernames" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Duplicate usernames
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -7402,6 +7419,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Database Schema Update">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#duplicate-usernames" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Duplicate usernames
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -7559,7 +7593,7 @@
 <p>Version 4.6.0 adds an opt-in change approval workflow: users with a change request permission file their zone edits for review instead of writing them, and reviewers approve or reject from a new <strong>Change requests</strong> page or through the API. Alongside it, secondary zones can be retrieved from their primary on demand, the SOA serial bump on unchanged saves can be turned off, and every setting is reachable from a Docker environment variable.</p>
 <p>Nothing changes unless you turn the workflow on. See <a href="../../whats-new/v4.6.0/">What's New in 4.6.0</a> for the full list.</p>
 <h2 id="database-schema-update">Database Schema Update<a class="headerlink" href="#database-schema-update" title="Permanent link">¶</a></h2>
-<p>The 4.6.0 migration adds one table, four permissions and two columns:</p>
+<p>The 4.6.0 migration adds one table, four permissions, two columns and one index:</p>
 <table>
 <thead>
 <tr>
@@ -7584,6 +7618,10 @@
 <td>Columns <code>users.max_zones</code>, <code>user_groups.max_zones</code></td>
 <td>The zone limit of a user or group; <code>NULL</code> uses the <code>dns.default_max_zones_*</code> setting (unlimited by default). See <a href="../../user-guide/users-roles/#zone-limits">Zone Limits</a></td>
 </tr>
+<tr>
+<td>Unique index <code>idx_users_username</code> on <code>users.username</code></td>
+<td>Two accounts can no longer share a username. See <a href="#duplicate-usernames">Duplicate usernames</a></td>
+</tr>
 </tbody>
 </table>
 <p>The permissions are not granted to any permission template automatically. Grant them in the template editor once <code>approval.enabled</code> is on - see <a href="../../user-guide/change-requests/#permissions">Change Requests</a>.</p>
@@ -7601,6 +7639,15 @@
 <li><code>sql/poweradmin-sqlite-update-to-4.6.0.sql</code></li>
 </ul>
 <p>Run the script even if you do not plan to use the workflow, so the schema matches the release.</p>
+<h3 id="duplicate-usernames">Duplicate usernames<a class="headerlink" href="#duplicate-usernames" title="Permanent link">¶</a></h3>
+<p>The new unique index can't be created while two accounts share a username. Check before upgrading:</p>
+<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="k">HAVING</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
+<p>Rename or remove the extra accounts first. If duplicates are still there when the script runs:</p>
+<ul>
+<li>MySQL/MariaDB and PostgreSQL: the script skips the index and prints a warning. Clean up, then run the script again.</li>
+<li>SQLite: the last statement fails with <code>UNIQUE constraint failed</code>. Everything before it has already been applied, so clean up and run only the final <code>CREATE UNIQUE INDEX</code> statement again.</li>
+</ul>
 <h2 id="upgrade-instructions">Upgrade Instructions<a class="headerlink" href="#upgrade-instructions" title="Permanent link">¶</a></h2>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h3>
 <ul>
@@ -7610,48 +7657,48 @@
 </ul>
 <p>If you are upgrading from an older release, run the intermediate migration scripts first (4.3.0, then 4.4.0, then 4.5.0, then 4.6.0). Do not skip versions.</p>
 <h3 id="step-1-backup-your-data">Step 1: Backup Your Data<a class="headerlink" href="#step-1-backup-your-data" title="Permanent link">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># MySQL/MariaDB</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mysqldump<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&gt;<span class="w"> </span>poweradmin_backup_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d<span class="k">)</span>.sql
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># PostgreSQL</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>pg_dump<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>poweradmin_db<span class="w"> </span>&gt;<span class="w"> </span>poweradmin_backup_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d<span class="k">)</span>.sql
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># SQLite</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>cp<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>/path/to/poweradmin_backup_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d<span class="k">)</span>.db
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># MySQL/MariaDB</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>mysqldump<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&gt;<span class="w"> </span>poweradmin_backup_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d<span class="k">)</span>.sql
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># PostgreSQL</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>pg_dump<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>poweradmin_db<span class="w"> </span>&gt;<span class="w"> </span>poweradmin_backup_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d<span class="k">)</span>.sql
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># SQLite</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>cp<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>/path/to/poweradmin_backup_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d<span class="k">)</span>.db
 </code></pre></div>
 <h3 id="step-2-download-and-extract">Step 2: Download and Extract<a class="headerlink" href="#step-2-download-and-extract" title="Permanent link">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>/tmp
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>wget<span class="w"> </span>https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.6.0.tar.gz
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>tar<span class="w"> </span>-xzf<span class="w"> </span>v4.6.0.tar.gz
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>rsync<span class="w"> </span>-av<span class="w"> </span>poweradmin-4.6.0/<span class="w"> </span>/var/www/poweradmin/<span class="w"> </span>--exclude<span class="o">=</span>config/settings.php
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>/tmp
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>wget<span class="w"> </span>https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.6.0.tar.gz
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>tar<span class="w"> </span>-xzf<span class="w"> </span>v4.6.0.tar.gz
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>rsync<span class="w"> </span>-av<span class="w"> </span>poweradmin-4.6.0/<span class="w"> </span>/var/www/poweradmin/<span class="w"> </span>--exclude<span class="o">=</span>config/settings.php
 </code></pre></div>
 <h3 id="step-3-run-database-update">Step 3: Run Database Update<a class="headerlink" href="#step-3-run-database-update" title="Permanent link">¶</a></h3>
 <p><strong>MySQL/MariaDB:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-mysql-update-to-4.6.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-mysql-update-to-4.6.0.sql
 </code></pre></div>
 <p><strong>PostgreSQL:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>sql/poweradmin-pgsql-update-to-4.6.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>sql/poweradmin-pgsql-update-to-4.6.0.sql
 </code></pre></div>
 <p><strong>SQLite:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-sqlite-update-to-4.6.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-sqlite-update-to-4.6.0.sql
 </code></pre></div>
 <h3 id="step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart<a class="headerlink" href="#step-4-clear-cache-and-restart" title="Permanent link">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>php-fpm
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># or</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>php-fpm
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># or</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
 </code></pre></div>
 <h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
 <h3 id="change-approval-workflow">Change Approval Workflow<a class="headerlink" href="#change-approval-workflow" title="Permanent link">¶</a></h3>
 <p>Off by default. To turn it on:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="x">return [</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="x">    'approval' =&gt; [</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="x">        'enabled' =&gt; true,</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="x">        'require_review_for_all' =&gt; false,</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="x">    ],</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="x">    'notifications' =&gt; [</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="x">        'change_request_enabled' =&gt; false, // mail reviewers and requesters; needs mail.enabled</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="x">    ],</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="x">];</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="x">return [</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="x">    'approval' =&gt; [</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="x">        'enabled' =&gt; true,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="x">        'require_review_for_all' =&gt; false,</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="x">    ],</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="x">    'notifications' =&gt; [</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="x">        'change_request_enabled' =&gt; false, // mail reviewers and requesters; needs mail.enabled</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="x">    ],</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="x">];</span>
 </code></pre></div>
 <p>Then grant <code>zone_change_request_*</code> to the users who should file requests and <code>zone_change_approve_*</code> to the reviewers. Reviewers also need the edit permission for the zone; superusers review everything. With <code>require_review_for_all</code>, every change goes through review, editors and administrators included.</p>
 <p>In Docker the variables are <code>PA_APPROVAL_ENABLED</code>, <code>PA_APPROVAL_REQUIRE_REVIEW_FOR_ALL</code>, <code>PA_APPROVAL_ALLOW_SELF_APPROVAL</code> and <code>PA_NOTIFICATION_CHANGE_REQUEST</code>. Set <code>approval.allow_self_approval</code> to <code>false</code> if a requester must not approve their own request.</p>
