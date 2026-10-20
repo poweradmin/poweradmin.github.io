@@ -2971,6 +2971,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#record-comments-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Record Comments (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#supported-features" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7448,6 +7459,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#record-comments-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Record Comments (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#supported-features" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7595,6 +7617,27 @@
 <li>Review the parsed records</li>
 <li>Confirm the import</li>
 </ol>
+<h3 id="record-comments-v460">Record Comments <em>(v4.6.0+)</em><a class="headerlink" href="#record-comments-v460" title="Permanent link">¶</a></h3>
+<p>Zone files can carry Poweradmin record comments, so a zone keeps them when it is exported
+and imported again. Both directions need <code>interface.show_record_comments</code> enabled.</p>
+<p><strong>Export.</strong> Tick <strong>Include comments</strong> in the zone page's <strong>Export</strong> menu before choosing
+<strong>Zone File</strong>. Each comment is written on the line above its record, one marker line per
+line of the comment:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>; poweradmin-comment: web server
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>; poweradmin-comment: replaced in March
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>www.example.com. 3600 IN A 192.0.2.1
+</code></pre></div>
+<p>The marker starts with <code>;</code>, so BIND, <code>pdnsutil load-zone</code> and other tools read it as an
+ordinary comment. With the box unticked the export is unchanged. A file with comments is
+built by Poweradmin from the zone's records rather than taken from the PowerDNS zone
+export.</p>
+<p><strong>Import.</strong> Zone Import reads <code>; poweradmin-comment:</code> lines back into the comment of the
+record that follows them; the preview shows how many comments will be imported and lists
+them next to their records. Other <code>;</code> comments are ignored as before. A marker that is not
+directly followed by a record is skipped with a warning. When record comments are
+disabled, the comments in the file are skipped and the preview says so.</p>
+<p>Disabled records are not exported, with or without comments, because a zone file cannot
+mark a record as disabled.</p>
 <h3 id="supported-features">Supported Features<a class="headerlink" href="#supported-features" title="Permanent link">¶</a></h3>
 <ul>
 <li>BIND zone file format</li>

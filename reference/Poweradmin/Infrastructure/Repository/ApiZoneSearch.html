@@ -94,7 +94,7 @@
 
     
     <p>final         class
-    <strong>ApiZoneSearch</strong>        extends <a href="../../../Poweradmin/Infrastructure/Repository/ApiSearchBase.html"><abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a>        implements        <a href="../../../Poweradmin/Domain/Port/ZoneSearchInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneSearchInterface">ZoneSearchInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneSearch.php">View source</a>)
+    <strong>ApiZoneSearch</strong>        extends <a href="../../../Poweradmin/Infrastructure/Repository/ApiSearchBase.html"><abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a>        implements        <a href="../../../Poweradmin/Domain/Port/ZoneSearchInterface.html"><abbr title="Poweradmin\Domain\Port\ZoneSearchInterface">ZoneSearchInterface</abbr></a>        (<a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiZoneSearch.php">View source</a>)
 </p>
 
         
@@ -150,6 +150,17 @@ BaseSearch::buildSearchString() does for the SQL search.</p></p>                
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_keepOpenedZones">keepOpenedZones</a>(array $items, string $idKey, string $nameKey)
+        
+                                            <p><p>Drop the results of a zone whose canonical id another zone shares and opens (see SharedZoneIds).</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="../../../Poweradmin/Infrastructure/Repository/ApiSearchBase.html#method_keepOpenedZones">
+<abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     string
                 </div>
                 <div class="col-md-8">
@@ -191,7 +202,7 @@ an API call per matched zone only to be discarded.</p></p>                </div>
                     <div class="method-item">
                     <h3 id="method___construct">
         <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/ApiSearchBase.html#method___construct">
-<abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiSearchBase.php#L38">at line 38</a></div>
+<abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiSearchBase.php#L39">at line 39</a></div>
         <code>                    
     <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a> $backendProvider, <a href="../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a> $zoneRepository)
         </code>
@@ -237,7 +248,7 @@ an API call per matched zone only to be discarded.</p></p>                </div>
                     <div class="method-item">
                     <h3 id="method_preprocessSearchQuery">
         <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/ApiSearchBase.html#method_preprocessSearchQuery">
-<abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiSearchBase.php#L49">at line 49</a></div>
+<abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiSearchBase.php#L50">at line 50</a></div>
         <code>            protected        array
     <strong>preprocessSearchQuery</strong>(array $parameters)
         </code>
@@ -282,7 +293,7 @@ BaseSearch::buildSearchString() does for the SQL search.</p></p>
                     <div class="method-item">
                     <h3 id="method_ownedZoneIds">
         <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/ApiSearchBase.html#method_ownedZoneIds">
-<abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiSearchBase.php#L75">at line 75</a></div>
+<abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiSearchBase.php#L76">at line 76</a></div>
         <code>            protected        array
     <strong>ownedZoneIds</strong>(int $userId)
         </code>
@@ -325,9 +336,63 @@ BaseSearch::buildSearchString() does for the SQL search.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_keepOpenedZones">
+        <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/ApiSearchBase.html#method_keepOpenedZones">
+<abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiSearchBase.php#L87">at line 87</a></div>
+        <code>            protected        array
+    <strong>keepOpenedZones</strong>(array $items, string $idKey, string $nameKey)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Drop the results of a zone whose canonical id another zone shares and opens (see SharedZoneIds).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$items</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$idKey</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$nameKey</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_canonicalZoneId">
         <div class="location">in <a href="../../../Poweradmin/Infrastructure/Repository/ApiSearchBase.html#method_canonicalZoneId">
-<abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiSearchBase.php#L80">at line 80</a></div>
+<abbr title="Poweradmin\Infrastructure\Repository\ApiSearchBase">ApiSearchBase</abbr></a> <a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiSearchBase.php#L103">at line 103</a></div>
         <code>            protected        string
     <strong>canonicalZoneId</strong>(string $alias)
         </code>
@@ -371,7 +436,7 @@ BaseSearch::buildSearchString() does for the SQL search.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_searchZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneSearch.php#L36">at line 36</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiZoneSearch.php#L36">at line 36</a></div>
         <code>                    array
     <strong>searchZones</strong>(array $parameters, string $permissionView, int|null $userId, string $sortBy, string $sortDirection, int $rowAmount, bool $includeComments, int $page)
         </code>
@@ -450,7 +515,7 @@ BaseSearch::buildSearchString() does for the SQL search.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getTotalZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/develop/lib/Infrastructure/Repository/ApiZoneSearch.php#L53">at line 53</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiZoneSearch.php#L53">at line 53</a></div>
         <code>                    int
     <strong>getTotalZones</strong>(array $parameters, string $permissionView, int|null $userId)
         </code>
@@ -506,7 +571,7 @@ an API call per matched zone only to be discarded.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, develop branch, <a href="https://github.com/poweradmin/poweradmin/commit/dd815af" rel="noreferrer" target="_blank">commit dd815af,</a> built 2026-10-20 04:14 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/e51e20b" rel="noreferrer" target="_blank">commit e51e20b,</a> built 2026-10-20 11:24 UTC.</div></div>
     </div>
     </body>
 

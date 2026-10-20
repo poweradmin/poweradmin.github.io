@@ -50,7 +50,7 @@
                     {
                         "name": "per_page",
                         "in": "query",
-                        "description": "Requests per page; omit to return every match",
+                        "description": "Requests per page (max 10000). Omit for up to 10000 matches, newest first; more than that adds a pagination object",
                         "schema": {
                             "type": "integer",
                             "example": 25
@@ -80,7 +80,7 @@
                                             "type": "object"
                                         },
                                         "pagination": {
-                                            "description": "Present when per_page was given",
+                                            "description": "Present when per_page was given, or when a list without per_page was cut at 10000",
                                             "properties": {
                                                 "current_page": {
                                                     "type": "integer",
@@ -528,6 +528,48 @@
                         "schema": {
                             "type": "integer"
                         }
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on username, full name or email",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "admin"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: user_id, username, fullname, email, joined_at. Default: newest member first",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "username"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number, starting at 1 (only used together with per_page)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page, capped at 10000. Omit or set to 0 to return all items without a pagination object",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "minimum": 0
+                        }
                     }
                 ],
                 "responses": {
@@ -544,6 +586,28 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Members retrieved successfully"
+                                        },
+                                        "pagination": {
+                                            "description": "Only present when per_page is given",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 40
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "data": {
                                             "properties": {
@@ -584,11 +648,17 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "Invalid sort parameter"
+                    },
                     "401": {
                         "description": "Unauthorized"
                     },
                     "403": {
                         "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Group not found"
                     }
                 },
                 "security": [
@@ -766,6 +836,48 @@
                         "schema": {
                             "type": "integer"
                         }
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the zone name",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "example"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: zone_id, zone_name, zone_type, created_at. Default: newest assignment first",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "zone_name"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number, starting at 1 (only used together with per_page)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page, capped at 10000. Omit or set to 0 to return all items without a pagination object",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "minimum": 0
+                        }
                     }
                 ],
                 "responses": {
@@ -782,6 +894,28 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Zones retrieved successfully"
+                                        },
+                                        "pagination": {
+                                            "description": "Only present when per_page is given",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 40
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "data": {
                                             "properties": {
@@ -818,11 +952,17 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "Invalid sort parameter"
+                    },
                     "401": {
                         "description": "Unauthorized"
                     },
                     "403": {
                         "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Group not found"
                     }
                 },
                 "security": [
@@ -997,6 +1137,50 @@
                 "summary": "List all groups",
                 "description": "Retrieves a list of all user groups with wrapped response",
                 "operationId": "v2ListGroups",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the group name or description",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "dns"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: id, name, member_count, zone_count, created_at. Default: name in database order (sort=name uses natural, case-insensitive order)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "zone_count:desc,name"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number, starting at 1 (only used together with per_page)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page, capped at 10000. Omit or set to 0 to return all items without a pagination object",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "minimum": 0
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Groups retrieved successfully",
@@ -1011,6 +1195,28 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Groups retrieved successfully"
+                                        },
+                                        "pagination": {
+                                            "description": "Only present when per_page is given",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 40
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "data": {
                                             "properties": {
@@ -1063,6 +1269,9 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Invalid sort parameter"
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -1505,6 +1714,63 @@
                 "summary": "Get list of permission templates",
                 "description": "Get list of permission templates",
                 "operationId": "v2ListPermissionTemplates",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the template name or description",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "zone"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: id, name, template_type. Default: name in database order (sort=name uses natural, case-insensitive order)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "template_type,name"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number, starting at 1 (only used together with per_page)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page, capped at 10000. Omit or set to 0 to return all items without a pagination object",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Only templates of this type",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "user",
+                                "group"
+                            ]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "List of permission templates",
@@ -1515,6 +1781,28 @@
                                         "success": {
                                             "type": "boolean",
                                             "example": true
+                                        },
+                                        "pagination": {
+                                            "description": "Only present when per_page is given",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 40
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "data": {
                                             "properties": {
@@ -1554,6 +1842,9 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Invalid sort or type parameter"
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -1641,9 +1932,13 @@
                                             "example": "Permission template created successfully"
                                         },
                                         "data": {
-                                            "type": "object",
-                                            "example": null,
-                                            "nullable": true
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 7
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -1973,6 +2268,50 @@
                 "summary": "Get list of available permissions",
                 "description": "Get list of available permissions",
                 "operationId": "v2ListPermissions",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the permission name or description",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "zone"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: id, name. Default: name in database order (sort=name uses natural, case-insensitive order)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "name:desc"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number, starting at 1 (only used together with per_page)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page, capped at 10000. Omit or set to 0 to return all items without a pagination object",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "minimum": 0
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "List of available permissions",
@@ -1983,6 +2322,28 @@
                                         "success": {
                                             "type": "boolean",
                                             "example": true
+                                        },
+                                        "pagination": {
+                                            "description": "Only present when per_page is given",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 40
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "data": {
                                             "properties": {
@@ -2015,8 +2376,14 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "Invalid sort parameter"
+                    },
                     "401": {
                         "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -2092,6 +2459,9 @@
                     },
                     "401": {
                         "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     },
                     "404": {
                         "description": "Permission not found"
@@ -2925,7 +3295,8 @@
                         "description": "Page number for pagination (optional, only used when per_page is specified)",
                         "schema": {
                             "type": "integer",
-                            "default": 1
+                            "default": 1,
+                            "minimum": 1
                         }
                     },
                     {
@@ -2940,7 +3311,7 @@
                     {
                         "name": "username",
                         "in": "query",
-                        "description": "Filter by username (optional)",
+                        "description": "Look up one user by username; the list then holds only that user or is empty, page and per_page are ignored, and sort is checked but not applied (optional)",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -2949,14 +3320,40 @@
                     {
                         "name": "email",
                         "in": "query",
-                        "description": "Filter by email (optional)",
+                        "description": "Look up one user by email address, like username, which wins when both are given (optional)",
                         "required": false,
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on username, full name, email or description (optional, ignored together with username or email)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "admin"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: id, username, fullname, email. Text fields sort case-insensitively but not naturally (user10 before user9). Default: id",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "username"
+                        }
                     }
                 ],
                 "responses": {
+                    "400": {
+                        "description": "Invalid sort parameter"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
                     "200": {
                         "description": "Users retrieved successfully",
                         "content": {
@@ -3341,47 +3738,7 @@
                                             "example": "DNSSEC status retrieved successfully"
                                         },
                                         "data": {
-                                            "properties": {
-                                                "enabled": {
-                                                    "type": "boolean",
-                                                    "example": true
-                                                },
-                                                "presigned": {
-                                                    "description": "Whether the zone is presigned (DNSSEC managed at the primary server)",
-                                                    "type": "boolean",
-                                                    "example": false
-                                                },
-                                                "ds_records": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "properties": {
-                                                            "key_tag": {
-                                                                "type": "integer",
-                                                                "example": 12345
-                                                            },
-                                                            "algorithm": {
-                                                                "type": "integer",
-                                                                "example": 13
-                                                            },
-                                                            "digest_type": {
-                                                                "type": "integer",
-                                                                "example": 2
-                                                            },
-                                                            "digest": {
-                                                                "type": "string",
-                                                                "example": "ABC123DEF456"
-                                                            }
-                                                        },
-                                                        "type": "object"
-                                                    }
-                                                },
-                                                "dnskey": {
-                                                    "type": "string",
-                                                    "example": "257 3 13 ...",
-                                                    "nullable": true
-                                                }
-                                            },
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/ZoneDnssecStatus"
                                         }
                                     },
                                     "type": "object"
@@ -3453,7 +3810,27 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "DNSSEC status updated successfully"
+                        "description": "DNSSEC status updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "DNSSEC enabled successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/ZoneDnssecStatus"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Invalid input"
@@ -4658,6 +5035,14 @@
                                                         "type": "integer"
                                                     },
                                                     "example": []
+                                                },
+                                                "failed": {
+                                                    "description": "Users the write failed for; the others in the batch are unaffected",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "integer"
+                                                    },
+                                                    "example": []
                                                 }
                                             },
                                             "type": "object",
@@ -4670,7 +5055,7 @@
                         }
                     },
                     "200": {
-                        "description": "Batch processed but no owners were added (all skipped or not found)"
+                        "description": "Batch processed but no owners were added (all skipped, not found or over their zone limit)"
                     },
                     "400": {
                         "description": "Invalid input"
@@ -4784,6 +5169,78 @@
                         "schema": {
                             "type": "integer"
                         }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Filter by record type (case-insensitive exact match)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "MX"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the record name",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "mail"
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the record content",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "[NS1]"
+                        }
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the record name or content",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "mail"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: name, type, content, ttl, priority. Default: name in database order (sort=name uses natural, case-insensitive order)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "type,name"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number, starting at 1 (only used together with per_page)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page, capped at 10000. Omit or set to 0 to return all items without a pagination object",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "minimum": 0
+                        }
                     }
                 ],
                 "responses": {
@@ -4796,6 +5253,28 @@
                                         "success": {
                                             "type": "boolean",
                                             "example": true
+                                        },
+                                        "pagination": {
+                                            "description": "Only present when per_page is given",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 40
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "data": {
                                             "properties": {
@@ -4839,6 +5318,9 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Invalid sort parameter"
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -5264,6 +5746,50 @@
                 ],
                 "summary": "Get list of zone templates",
                 "operationId": "v2ListZoneTemplates",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the template name or description",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "mail"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: id, name, zones_linked. Default: name in database order (sort=name uses natural, case-insensitive order)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "zones_linked:desc,name"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number, starting at 1 (only used together with per_page)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page, capped at 10000. Omit or set to 0 to return all items without a pagination object",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0,
+                            "minimum": 0
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "List of zone templates",
@@ -5274,6 +5800,28 @@
                                         "success": {
                                             "type": "boolean",
                                             "example": true
+                                        },
+                                        "pagination": {
+                                            "description": "Only present when per_page is given",
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 40
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "data": {
                                             "properties": {
@@ -5318,8 +5866,14 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "Invalid sort parameter"
+                    },
                     "401": {
                         "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -5892,7 +6446,8 @@
                         "description": "Page number for pagination (optional, only used when per_page is specified)",
                         "schema": {
                             "type": "integer",
-                            "default": 1
+                            "default": 1,
+                            "minimum": 1
                         }
                     },
                     {
@@ -5913,9 +6468,32 @@
                             "type": "string",
                             "example": "example.com"
                         }
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the zone name (optional)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "example"
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: name, type, id. Default: name in database order (sort=name sorts numeric prefixes numerically, then by name)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "type,name:desc"
+                        }
                     }
                 ],
                 "responses": {
+                    "400": {
+                        "description": "Invalid sort parameter"
+                    },
                     "200": {
                         "description": "Zones retrieved successfully",
                         "content": {
@@ -6116,6 +6694,32 @@
                                                     "description": "Only when enable_dnssec was requested: the signing outcome, e.g. signed, server_disabled or secure_failed",
                                                     "type": "string",
                                                     "example": "signed"
+                                                },
+                                                "shadowed_records": {
+                                                    "description": "Only when the new zone hides records of an existing parent zone and the caller may view that zone: the parent zone and the records it no longer serves. Make sure the new zone serves them, then delete them from the parent.",
+                                                    "properties": {
+                                                        "parent_zone": {
+                                                            "type": "string",
+                                                            "example": "example.com"
+                                                        },
+                                                        "records": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "name": {
+                                                                        "type": "string",
+                                                                        "example": "www.shop.example.com"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "example": "A"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 }
                                             },
                                             "type": "object"
@@ -6417,6 +7021,11 @@
                                                             "type": "integer",
                                                             "example": 123
                                                         },
+                                                        "canonical_id": {
+                                                            "description": "Same as id, kept for clients that read it",
+                                                            "type": "integer",
+                                                            "example": 123
+                                                        },
                                                         "name": {
                                                             "type": "string",
                                                             "example": "example.com"
@@ -6618,9 +7227,19 @@
                         }
                     },
                     {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter: keeps RRSets whose name or any record content matches",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "www"
+                        }
+                    },
+                    {
                         "name": "sort",
                         "in": "query",
-                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: name, type, ttl. Default: backend order",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: name, type, ttl. Default: type, then name (PowerDNS order in API backend mode)",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -7363,6 +7982,9 @@
                     "204": {
                         "description": "RRSet deleted successfully"
                     },
+                    "400": {
+                        "description": "Unknown record type"
+                    },
                     "404": {
                         "description": "RRSet not found"
                     }
@@ -7529,7 +8151,7 @@
                         }
                     },
                     "400": {
-                        "description": "Invalid request data"
+                        "description": "Invalid request data, or more operations than api.bulk_max_operations allows (1000 by default)"
                     }
                 },
                 "security": [
@@ -7590,9 +8212,19 @@
                         }
                     },
                     {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the record name or content",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "www"
+                        }
+                    },
+                    {
                         "name": "sort",
                         "in": "query",
-                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: name, type, content, ttl, priority. Default: backend order",
+                        "description": "Sort order: comma-separated fields, each optionally suffixed with :asc or :desc. Allowed fields: name, type, content, ttl, priority. Default: type, then name (PowerDNS order in API backend mode)",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -7825,13 +8457,19 @@
                                                     "properties": {
                                                         "id": {
                                                             "example": 456,
-                                                            "nullable": true,
                                                             "oneOf": [
                                                                 {
                                                                     "type": "integer"
                                                                 },
                                                                 {
                                                                     "type": "string"
+                                                                },
+                                                                {
+                                                                    "type": "object",
+                                                                    "nullable": true,
+                                                                    "enum": [
+                                                                        null
+                                                                    ]
                                                                 }
                                                             ]
                                                         },
@@ -8023,6 +8661,10 @@
                                                                 }
                                                             ]
                                                         },
+                                                        "zone_id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
                                                         "name": {
                                                             "type": "string",
                                                             "example": "www"
@@ -8183,6 +8825,10 @@
                                                                 }
                                                             ]
                                                         },
+                                                        "zone_id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
                                                         "name": {
                                                             "type": "string",
                                                             "example": "www"
@@ -8212,6 +8858,11 @@
                                                             "description": "Authoritative flag (true = authoritative, false = non-authoritative/glue record)",
                                                             "type": "boolean",
                                                             "example": true
+                                                        },
+                                                        "ptr_updated": {
+                                                            "description": "Whether the matching PTR record was updated as well",
+                                                            "type": "boolean",
+                                                            "example": false
                                                         }
                                                     },
                                                     "type": "object"
@@ -8451,6 +9102,51 @@
                     "message": {
                         "type": "string",
                         "example": "Change request approved and applied."
+                    }
+                },
+                "type": "object"
+            },
+            "ZoneDnssecStatus": {
+                "description": "DNSSEC signing status of a zone",
+                "properties": {
+                    "enabled": {
+                        "description": "Whether the zone is DNSSEC signed",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "presigned": {
+                        "description": "Whether the zone is presigned (DNSSEC managed at the primary server)",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "ds_records": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "key_tag": {
+                                    "type": "integer",
+                                    "example": 12345
+                                },
+                                "algorithm": {
+                                    "type": "integer",
+                                    "example": 13
+                                },
+                                "digest_type": {
+                                    "type": "integer",
+                                    "example": 2
+                                },
+                                "digest": {
+                                    "type": "string",
+                                    "example": "ABC123DEF456"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "dnskey": {
+                        "type": "string",
+                        "example": "257 3 13 ...",
+                        "nullable": true
                     }
                 },
                 "type": "object"
