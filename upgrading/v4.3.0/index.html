@@ -8018,16 +8018,18 @@
 </code></pre></div>
 <h3 id="step-2-download-and-extract">Step 2: Download and Extract<a class="headerlink" href="#step-2-download-and-extract" title="Permanent link">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>/tmp
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>wget<span class="w"> </span>https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.3.0.tar.gz
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>tar<span class="w"> </span>-xzf<span class="w"> </span>v4.3.0.tar.gz
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>rsync<span class="w"> </span>-av<span class="w"> </span>poweradmin-4.3.0/<span class="w"> </span>/var/www/poweradmin/<span class="w"> </span>--exclude<span class="o">=</span>config/settings.php
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>wget<span class="w"> </span>https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.3.6.tar.gz
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>tar<span class="w"> </span>-xzf<span class="w"> </span>v4.3.6.tar.gz
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>rsync<span class="w"> </span>-av<span class="w"> </span>poweradmin-4.3.6/<span class="w"> </span>/var/www/poweradmin/<span class="w"> </span>--exclude<span class="o">=</span>config/settings.php
 </code></pre></div>
+<p>Use the latest 4.3.x release (v4.3.6 or later); its update scripts include the fixes described in Step 3.</p>
 <h3 id="step-3-run-database-updates">Step 3: Run Database Updates<a class="headerlink" href="#step-3-run-database-updates" title="Permanent link">¶</a></h3>
-<p><strong>Separate PowerDNS database (MySQL/MariaDB with <code>pdns_db_name</code>)</strong></p>
+<p><strong>Separate PowerDNS database (MySQL/MariaDB with <code>pdns_db_name</code>)</strong> <em>(4.3.6, 4.4.2 and later scripts)</em></p>
 <p>The 4.3.0 MySQL upgrade script backfills <code>zones.zone_name</code>, <code>zone_type</code>, and <code>zone_master</code> from the PowerDNS <code>domains</code> table. If you have <code>pdns_db_name</code> set (PowerDNS tables live in a separate database), open <code>sql/poweradmin-mysql-update-to-4.3.0.sql</code> and set <code>@pdns_db</code> to that database name before running it:</p>
 <div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">SET</span><span class="w"> </span><span class="o">@</span><span class="n">pdns_db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'pdns'</span><span class="p">;</span>
 </code></pre></div>
 <p>Your MySQL user needs <code>SELECT</code> on that database. If the <code>domains</code> table is not found in <code>@pdns_db</code>, the script prints <code>PowerDNS domains table not found, zone backfill skipped</code> and still applies everything else; the backfill only matters if you later switch the installation to the API backend.</p>
+<p>The scripts shipped with 4.3.0 to 4.3.5 and 4.4.0 to 4.4.1 have no <code>@pdns_db</code>. In those, replace <code>domains</code> in the backfill <code>UPDATE</code> with <code>`pdns`.`domains`</code> (your <code>pdns_db_name</code>) before running it, as the note at the top of the script says.</p>
 <p>This only applies to MySQL/MariaDB. <code>pdns_db_name</code> is not supported on PostgreSQL or SQLite - those deployments always keep Poweradmin and PowerDNS tables in the same database, and no edit is needed.</p>
 <p><strong>Database without PowerDNS tables (API backend)</strong> <em>(4.3.6 and 4.4.2 scripts)</em></p>
 <p>The PostgreSQL script skips the backfill with <code>NOTICE: PowerDNS domains table not found, zone backfill skipped</code> and applies everything else. The SQLite backfill is a separate script, <code>sql/poweradmin-sqlite-update-to-4.3.0-backfill.sql</code>, because SQLite cannot skip a statement on a missing table; run it only when the database holds the PowerDNS tables (see the SQLite command below). Earlier scripts failed at <code>relation "domains" does not exist</code> (PostgreSQL) or <code>no such table: domains</code> (SQLite); with <code>psql -v ON_ERROR_STOP=1</code> or <code>sqlite3 -bail</code> the rest of the update was not applied.</p>
@@ -8063,16 +8065,16 @@
 </code></pre></div>
 <p>Quote the database and table names separately: <code>`pdns`.`domains`</code>, not <code>`pdns.domains`</code>.</p>
 <p><strong>MySQL/MariaDB:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-mysql-update-to-4.3.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-mysql-update-to-4.3.0.sql
 </code></pre></div>
 <p><strong>PostgreSQL:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>sql/poweradmin-pgsql-update-to-4.3.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-pgsql-update-to-4.3.0.sql
 </code></pre></div>
 <p><strong>SQLite:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-sqlite-update-to-4.3.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-sqlite-update-to-4.3.0.sql
 </code></pre></div>
 <p>When the database also holds the PowerDNS tables (SQL backend), run the zone backfill as well <em>(4.3.6 and 4.4.2)</em>:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-sqlite-update-to-4.3.0-backfill.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-sqlite-update-to-4.3.0-backfill.sql
 </code></pre></div>
 <h3 id="step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart<a class="headerlink" href="#step-4-clear-cache-and-restart" title="Permanent link">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>php-fpm

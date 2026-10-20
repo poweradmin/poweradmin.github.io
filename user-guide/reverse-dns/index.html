@@ -3583,6 +3583,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#keeping-ptr-and-aaaaa-records-in-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keeping PTR and A/AAAA Records in Step
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#method-2-using-batch-ptr-records-feature" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7465,6 +7476,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#keeping-ptr-and-aaaaa-records-in-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keeping PTR and A/AAAA Records in Step
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#method-2-using-batch-ptr-records-feature" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7695,6 +7717,11 @@
 <li><strong>TTL</strong>: Time-to-live value (e.g., 86400 for 1 day)</li>
 <li>Click "Add Record"</li>
 </ol>
+<p></p>
+<h2 id="keeping-ptr-and-aaaaa-records-in-step">Keeping PTR and A/AAAA Records in Step<a class="headerlink" href="#keeping-ptr-and-aaaaa-records-in-step" title="Permanent link">¶</a></h2>
+<p>Poweradmin can create or move the matching record on the other side when you add or edit an address record. Both options are on by default (<code>interface.add_reverse_record</code> and <code>interface.add_domain_record</code>).</p>
+<p><strong>Adding records.</strong> In a forward zone, the add-record form has an <strong>Add PTR</strong> checkbox for A and AAAA records, which also creates the PTR in the matching reverse zone. In a reverse zone it has an <strong>Add A/AAAA</strong> checkbox, which creates the forward record in the zone that holds the PTR's hostname. Up to 4.5.0 this works for <code>in-addr.arpa</code> zones only; from 4.6.0 a PTR added in an <code>ip6.arpa</code> zone also creates the matching AAAA record.</p>
+<p><strong>Editing records (4.5.0).</strong> The record edit page of a forward zone has an <strong>Update PTR</strong> checkbox. When it is ticked and the record is an A or AAAA record, saving deletes the PTR for the old address and creates one for the new address, name and TTL. If the PTR cannot be written, for example because there is no matching reverse zone, the record is still saved and a warning says why. The v2 API does the same with <code>update_ptr: true</code> on a record update.</p>
 <p></p>
 <h2 id="method-2-using-batch-ptr-records-feature">Method 2: Using Batch PTR Records Feature<a class="headerlink" href="#method-2-using-batch-ptr-records-feature" title="Permanent link">¶</a></h2>
 <p>For creating multiple PTR records at once:</p>

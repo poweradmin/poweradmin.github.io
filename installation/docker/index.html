@@ -8424,8 +8424,18 @@
 <tbody>
 <tr>
 <td><code>stable</code></td>
-<td><code>release/4.3.x</code></td>
-<td>Tracks the latest tagged release on <code>release/4.3.x</code>.</td>
+<td><code>release/4.4.x</code></td>
+<td>Tracks the latest tagged release on <code>release/4.4.x</code>, the line recommended for production.</td>
+</tr>
+<tr>
+<td><code>latest</code></td>
+<td><code>release/4.5.x</code></td>
+<td>Tracks the latest tagged release on <code>release/4.5.x</code>, the newest release line.</td>
+</tr>
+<tr>
+<td><code>4.5.x</code></td>
+<td><code>release/4.5.x</code></td>
+<td>Newest release line; updates on every commit to the branch.</td>
 </tr>
 <tr>
 <td><code>4.4.x</code></td>
@@ -8435,22 +8445,17 @@
 <tr>
 <td><code>4.3.x</code></td>
 <td><code>release/4.3.x</code></td>
-<td>Maintenance line, end of life three months after the 4.5.0 release; updates on every commit to the branch.</td>
+<td>Maintenance line, end of life on 2027-01-31; updates on every commit to the branch.</td>
 </tr>
 <tr>
 <td><code>4.2.x</code></td>
 <td><code>release/4.2.x</code></td>
-<td>Maintenance line, end of life three months after the 4.5.0 release; updates on every commit to the branch.</td>
-</tr>
-<tr>
-<td><code>latest</code></td>
-<td><code>master</code></td>
-<td>Tracks <code>master</code>, which carries the newest release line between patch releases.</td>
+<td>Maintenance line, end of life on 2027-01-31; updates on every commit to the branch.</td>
 </tr>
 <tr>
 <td><code>dev</code></td>
-<td><code>develop</code></td>
-<td>Development tip - not for production.</td>
+<td><code>master</code></td>
+<td>Development tip (4.6.0 work) - unstable, not for production.</td>
 </tr>
 <tr>
 <td><code>lts</code></td>
@@ -8458,14 +8463,14 @@
 <td>Long-term support for the 3.x series.</td>
 </tr>
 <tr>
-<td><code>4.4.1</code>, <code>4.3.5</code></td>
+<td><code>4.5.0</code>, <code>4.4.2</code></td>
 <td>Tagged release</td>
-<td>Pin to a specific version, for example <code>4.4.1</code> on the LTS line - <strong>recommended for production</strong>. Image tags carry no <code>v</code> prefix: the <code>v4.4.1</code> git tag is published as <code>4.4.1</code> (plus <code>4.4</code> and <code>4</code>).</td>
+<td>Pin to a specific version, for example <code>4.4.2</code> on the LTS line - <strong>recommended for production</strong>. Image tags carry no <code>v</code> prefix: the <code>v4.4.2</code> git tag is published as <code>4.4.2</code> (plus <code>4.4</code> and <code>4</code>).</td>
 </tr>
 </tbody>
 </table>
 <blockquote>
-<p><strong>Note:</strong> The <code>next</code> tag was removed when the release branch structure changed. The per-version tags (<code>4.4.1</code>) are the safest choices for production; the branch tags (<code>4.2.x</code>, <code>4.3.x</code>, <code>4.4.x</code>) update on every push and may include unreleased fixes. For moving an existing container to a newer release, see <a href="../../upgrading/#upgrading-a-docker-or-docker-compose-deployment">Upgrading a Docker deployment</a>.</p>
+<p><strong>Note:</strong> The <code>next</code> tag was removed when the release branch structure changed. The per-version tags (<code>4.4.2</code>) are the safest choices for production; the branch tags (<code>4.2.x</code>, <code>4.3.x</code>, <code>4.4.x</code>, <code>4.5.x</code>) update on every push and may include unreleased fixes. For moving an existing container to a newer release, see <a href="../../upgrading/#upgrading-a-docker-or-docker-compose-deployment">Upgrading a Docker deployment</a>.</p>
 </blockquote>
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">¶</a></h2>
 <h3 id="sqlite">SQLite<a class="headerlink" href="#sqlite" title="Permanent link">¶</a></h3>
@@ -9602,6 +9607,16 @@ them are explained in <a href="../../configuration/oidc/">OIDC</a> and <a href="
 <td><code>PA_HEALTH_PDNS_TIMEOUT</code></td>
 <td>2</td>
 <td>PowerDNS API timeout in seconds used by the health check</td>
+</tr>
+<tr>
+<td><code>PA_HEALTH_TOKEN</code></td>
+<td>-</td>
+<td>When set, <code>/api/health</code> answers only requests sending it in the <code>X-Health-Token</code> header (<code>PA_HEALTH_TOKEN__FILE</code> reads it from a file)</td>
+</tr>
+<tr>
+<td><code>PA_HEALTH_CACHE_SECONDS</code></td>
+<td>0</td>
+<td>Reuse the last <code>/api/health</code> result for this many seconds; 0 runs the checks on every request</td>
 </tr>
 </tbody>
 </table>

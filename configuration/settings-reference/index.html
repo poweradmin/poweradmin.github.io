@@ -7743,6 +7743,12 @@ describe what these settings actually do and when to change them.</p>
 <td>Maximum number of API keys per user (admin users have no limit)</td>
 <td>-</td>
 </tr>
+<tr>
+<td id="setting-api-bulk-max-operations"><code>api.bulk_max_operations</code></td>
+<td><code>1000</code></td>
+<td>Maximum operations in one bulk records request; 0 = no limit</td>
+<td>4.6.0</td>
+</tr>
 </tbody>
 </table>
 <h2 id="approval">approval<a class="headerlink" href="#approval" title="Permanent link">¶</a></h2>
@@ -7846,6 +7852,12 @@ describe what these settings actually do and when to change them.</p>
 <td><code>''</code></td>
 <td>Separate database for PowerDNS, MySQL/MariaDB only</td>
 <td>3.8.0</td>
+</tr>
+<tr>
+<td id="setting-database-sqlite-wal"><code>database.sqlite_wal</code></td>
+<td><code>true</code></td>
+<td>SQLite only: WAL journal mode on connect; set false on NFS</td>
+<td>4.6.0</td>
 </tr>
 <tr>
 <td id="setting-database-ssl"><code>database.ssl</code></td>
@@ -8150,6 +8162,18 @@ describe what these settings actually do and when to change them.</p>
 <td>PowerDNS API timeout in seconds used by the health check</td>
 <td>4.5.0</td>
 </tr>
+<tr>
+<td id="setting-health-token"><code>health.token</code></td>
+<td><code>''</code></td>
+<td>When set, /api/health answers only requests sending it in the X-Health-Token header</td>
+<td>4.5.0</td>
+</tr>
+<tr>
+<td id="setting-health-cache-seconds"><code>health.cache_seconds</code></td>
+<td><code>0</code></td>
+<td>Reuse the last /api/health result for this many seconds; 0 runs the checks on every request</td>
+<td>4.5.0</td>
+</tr>
 </tbody>
 </table>
 <h2 id="interface">interface<a class="headerlink" href="#interface" title="Permanent link">¶</a></h2>
@@ -8186,6 +8210,12 @@ describe what these settings actually do and when to change them.</p>
 <td><code>1800</code></td>
 <td>Session timeout in seconds (30 minutes); must be above 0, the timeout cannot be disabled</td>
 <td>-</td>
+</tr>
+<tr>
+<td id="setting-interface-session-max-lifetime"><code>interface.session_max_lifetime</code></td>
+<td><code>0</code></td>
+<td>End a session this many seconds after sign-in, however active; 0 = off</td>
+<td>4.6.0</td>
 </tr>
 <tr>
 <td id="setting-interface-rows-per-page"><code>interface.rows_per_page</code></td>
@@ -9445,13 +9475,13 @@ describe what these settings actually do and when to change them.</p>
 <td id="setting-security-protect-last-admin-on-edit"><code>security.protect_last_admin_on_edit</code></td>
 <td><code>false</code></td>
 <td>Refuse a user edit that moves the last super admin to a template without super admin; delete, disable and API PATCH always refuse</td>
-<td>4.6.0</td>
+<td>4.5.0</td>
 </tr>
 <tr>
 <td id="setting-security-strict-session-gates"><code>security.strict_session_gates</code></td>
 <td><code>false</code></td>
 <td>Hold internal API calls with a 403, and match API paths by segment, while required MFA setup or a user agreement is pending</td>
-<td>4.6.0</td>
+<td>4.5.0</td>
 </tr>
 <tr>
 <td id="setting-security-password-policy-enable-password-rules"><code>security.password_policy.enable_password_rules</code></td>
@@ -9625,7 +9655,7 @@ describe what these settings actually do and when to change them.</p>
 <td id="setting-security-password-reset-single-use-claim"><code>security.password_reset.single_use_claim</code></td>
 <td><code>false</code></td>
 <td>Claim the link before the password changes, so one link sets one password even under parallel requests</td>
-<td>4.6.0</td>
+<td>4.5.0</td>
 </tr>
 <tr>
 <td id="setting-security-username-recovery-enabled"><code>security.username_recovery.enabled</code></td>

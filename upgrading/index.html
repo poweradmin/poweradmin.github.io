@@ -7201,10 +7201,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#patch-version-upgrades-eg-40x-40y" class="md-nav__link">
+  <a href="#patch-version-upgrades-eg-44x-44y" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Patch Version Upgrades (e.g., 4.0.x → 4.0.y)
+        Patch Version Upgrades (e.g., 4.4.x → 4.4.y)
       
     </span>
   </a>
@@ -7246,10 +7246,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#recommended-path-from-200-to-440" class="md-nav__link">
+  <a href="#recommended-path-from-200-to-450" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Recommended Path from 2.0.0 to 4.4.0
+        Recommended Path from 2.0.0 to 4.5.0
       
     </span>
   </a>
@@ -7357,13 +7357,13 @@
 <li><strong>Backup your existing files</strong> - Make a complete backup of your current installation</li>
 <li><strong>Replace files</strong> - Replace all files with the new version's files</li>
 <li><strong>Restore configuration</strong> - Depending on your version:</li>
-<li>For versions &lt; 4.x: Restore <code>inc/config.inc.php</code> from your backup</li>
+<li>For versions &lt; 4.x: Restore <code>inc/config.inc.php</code> from your backup, then convert it to <code>config/settings.php</code> with <code>php config/migrate-config.php</code>, which ships only in 4.0.x (see <a href="v4.0.0/#configuration-migration">v4.0.0</a>)</li>
 <li>For versions ≥ 4.x: Restore <code>config/settings.php</code> from your backup</li>
 <li><strong>Update database structure</strong> - If required by the specific version upgrade</li>
 <li><strong>Test functionality</strong> - Verify all features work correctly after upgrade</li>
 </ol>
-<h2 id="patch-version-upgrades-eg-40x-40y">Patch Version Upgrades (e.g., 4.0.x → 4.0.y)<a class="headerlink" href="#patch-version-upgrades-eg-40x-40y" title="Permanent link">¶</a></h2>
-<p>For patch releases within the same minor version (e.g., 4.0.0 → 4.0.3, or 4.0.3 → 4.0.4), the upgrade process is straightforward:</p>
+<h2 id="patch-version-upgrades-eg-44x-44y">Patch Version Upgrades (e.g., 4.4.x → 4.4.y)<a class="headerlink" href="#patch-version-upgrades-eg-44x-44y" title="Permanent link">¶</a></h2>
+<p>For patch releases within the same minor version (e.g., 4.4.0 → 4.4.2, or 4.4.1 → 4.4.2), the upgrade process is straightforward:</p>
 <ol>
 <li><strong>Backup your database and files</strong> - Always a good practice</li>
 <li><strong>Replace all application files</strong> - Extract the new release over your existing installation</li>
@@ -7390,10 +7390,10 @@
 <p><strong>Alternative: Symlink Strategy</strong></p>
 <p>For easier rollbacks, consider using symlinks:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Extract new version to versioned directory</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>tar<span class="w"> </span>-xzf<span class="w"> </span>poweradmin-4.0.4.tar.gz<span class="w"> </span>-C<span class="w"> </span>/var/www/
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>tar<span class="w"> </span>-xzf<span class="w"> </span>v4.4.2.tar.gz<span class="w"> </span>-C<span class="w"> </span>/var/www/
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Update symlink to point to new version</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>ln<span class="w"> </span>-sfn<span class="w"> </span>/var/www/poweradmin-4.0.4<span class="w"> </span>/var/www/poweradmin
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>ln<span class="w"> </span>-sfn<span class="w"> </span>/var/www/poweradmin-4.4.2<span class="w"> </span>/var/www/poweradmin
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Keep config outside versioned directories</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>ln<span class="w"> </span>-s<span class="w"> </span>/etc/poweradmin/settings.php<span class="w"> </span>/var/www/poweradmin/config/settings.php
@@ -7401,7 +7401,7 @@
 <p>This allows quick rollback by simply changing the symlink back to the previous version.</p>
 <h2 id="upgrading-a-docker-or-docker-compose-deployment">Upgrading a Docker or Docker Compose Deployment<a class="headerlink" href="#upgrading-a-docker-or-docker-compose-deployment" title="Permanent link">¶</a></h2>
 <p>The official image does not migrate an existing database. On startup the entrypoint loads the Poweradmin schema only into an empty database; a database created by an older version is left as it is. Upgrading a container therefore means: back up, switch the image tag, restart, and run the release's migration script yourself. The image ships the <code>sql/</code> directory together with the <code>psql</code>, <code>mysql</code> and <code>sqlite3</code> clients, and the <code>DB_*</code> variables are already in the container's environment, so the script can be run from inside the new container.</p>
-<p>The examples below assume the Compose service names <code>poweradmin</code> and <code>postgres</code> (or <code>mysql</code>) and an upgrade from 4.3.x to 4.4.1. Adjust the names and the script version to your setup.</p>
+<p>The examples below assume the Compose service names <code>poweradmin</code> and <code>postgres</code> (or <code>mysql</code>) and an upgrade from 4.3.x to 4.4.2. Adjust the names and the script version to your setup.</p>
 <ol>
 <li>
 <p><strong>Back up the database:</strong></p>
@@ -7413,7 +7413,7 @@
 </code></pre></div>
 </li>
 <li>
-<p><strong>Switch the image tag</strong> in your Compose file (for example <code>poweradmin/poweradmin:4.4.1</code>), then pull and recreate only the application container:</p>
+<p><strong>Switch the image tag</strong> in your Compose file (for example <code>poweradmin/poweradmin:4.4.2</code>), then pull and recreate only the application container:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>pull<span class="w"> </span>poweradmin
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>poweradmin
 </code></pre></div>
@@ -7437,10 +7437,11 @@
 </ol>
 <p>Notes:</p>
 <ul>
-<li>Run one script per version, in order, and never skip a version. Coming from 4.2.x, run the 4.3.0 script before the 4.4.0 one.</li>
-<li>Between the container restart and the migration, pages that read the new schema fail with "An error occurred while processing the request" (on 4.4.x: zone templates and add zone). The rest of the application keeps working, so the window is short but real; run the script right after the restart.</li>
+<li>Run one script per version, in order, and never skip a version. Coming from 4.2.x, run the 4.3.0 script before the 4.4.0 one. On SQLite with the PowerDNS tables in the same file, also run <code>sql/poweradmin-sqlite-update-to-4.3.0-backfill.sql</code> right after the 4.3.0 script if you may later switch the database to API backend mode; it fills in the zone names that mode reads.</li>
+<li>The <code>stable</code> and <code>latest</code> tags move between release lines at this release: <code>stable</code> now follows 4.4.x (it followed 4.3.x before) and <code>latest</code> follows 4.5.x. A Compose file on either tag jumps a minor version on the next pull and must run the update script for every minor version it crosses. Pin a version tag such as <code>4.4</code> or <code>4.4.2</code> to decide when you upgrade.</li>
+<li>Between the container restart and the migration, pages that read the new schema fail with "An error occurred while processing the request" (which pages depends on the release; for the 4.4.0 script, zone templates and add zone). The rest of the application keeps working, so the window is short but real; run the script right after the restart.</li>
 <li>Run each script once. The scripts are not idempotent: a second run stops with an error such as <code>column "is_default" of relation "zone_templ" already exists</code>, which is harmless but means the script was already applied.</li>
-<li>Patch releases (4.4.0 to 4.4.1) need no script unless their release notes say otherwise; switching the tag and restarting is enough.</li>
+<li>Patch releases (4.4.1 to 4.4.2) need no script unless their release notes say otherwise; switching the tag and restarting is enough.</li>
 <li>A volume-mounted <code>config/settings.php</code> is left untouched. Check the release notes for new settings or container variables you may want to set.</li>
 </ul>
 <h2 id="important-considerations">Important Considerations<a class="headerlink" href="#important-considerations" title="Permanent link">¶</a></h2>
@@ -7455,19 +7456,21 @@
 </ul>
 <h2 id="upgrade-path">Upgrade Path<a class="headerlink" href="#upgrade-path" title="Permanent link">¶</a></h2>
 <p>If you're upgrading across multiple major versions, it's often safest to upgrade incrementally through each major version rather than jumping directly to the latest version.</p>
-<h3 id="recommended-path-from-200-to-440">Recommended Path from 2.0.0 to 4.4.0<a class="headerlink" href="#recommended-path-from-200-to-440" title="Permanent link">¶</a></h3>
-<p>If you're upgrading from a very old version (e.g., 2.0.0) to the latest release, 4.4.0, we recommend the following path:</p>
+<h3 id="recommended-path-from-200-to-450">Recommended Path from 2.0.0 to 4.5.0<a class="headerlink" href="#recommended-path-from-200-to-450" title="Permanent link">¶</a></h3>
+<p>If you're upgrading from a very old version (e.g., 2.0.0), we recommend the following path:</p>
 <ol>
 <li>2.0.0 → 2.1.4 (Important database structure changes)</li>
 <li>2.1.4 → 2.2.2 (API integration changes)</li>
 <li>2.2.2 → 3.2.0 (DNSSEC implementation)</li>
-<li>3.2.0 → 3.9.3 (Security improvements)</li>
-<li>3.9.3 → 4.0.0 (Complete architecture overhaul)</li>
-<li>4.0.0 → 4.1.0 (OIDC/SAML authentication, DNS wizards, permission improvements)</li>
+<li>3.2.0 → 3.9.13 (latest 3.x release; run the 3.9.0 and 3.9.7 update scripts)</li>
+<li>3.9.x → 4.0.11 (last 4.0.x release, complete architecture overhaul; run the 4.0.0, 4.0.2 and 4.0.5 update scripts and convert the configuration with <code>php config/migrate-config.php</code>, which ships only in 4.0.x - 4.1.0 and later no longer read <code>inc/config.inc.php</code>)</li>
+<li>4.0.11 → 4.1.0 (OIDC/SAML authentication, DNS wizards, permission improvements)</li>
 <li>4.1.0 → 4.2.0 (PHP 8.2 minimum, groups support, bulk record operations)</li>
 <li>4.2.0 → 4.3.0 (PowerDNS API backend mode, zone metadata editor, separate API log table)</li>
-<li>4.3.0 → 4.4.0 (Default zone template, PowerDNS capability detection, Views &amp; Networks)</li>
+<li>4.3.0 → 4.4.x (Default zone template, PowerDNS capability detection, Views &amp; Networks)</li>
+<li>4.4.x → 4.5.0 (Record change log, granular API keys, new permissions, API v1 removed)</li>
 </ol>
+<p>Coming from 3.9.x (LTS until December 2027), upgrade to 4.4.x, the production line. Continue to 4.5.0 only if you want its features.</p>
 <h3 id="critical-versions-with-sql-migrations">Critical Versions with SQL Migrations<a class="headerlink" href="#critical-versions-with-sql-migrations" title="Permanent link">¶</a></h3>
 <p>The following versions include important database structure changes:</p>
 <ul>
@@ -7482,17 +7485,19 @@
 <li><a href="v4.2.0/">v4.2.0</a> - PHP 8.2 minimum, groups support, bulk record operations</li>
 <li><a href="v4.3.0/">v4.3.0</a> - PowerDNS API backend mode, zone metadata editor, separate API log table</li>
 <li><a href="v4.4.0/">v4.4.0</a> - Default zone template (<code>zone_templ.is_default</code>), PowerDNS capability detection, Views &amp; Networks for PowerDNS 5.0</li>
-<li><a href="v4.5.0/">v4.5.0</a> (unreleased - complete on the master branch, awaiting its tag) - Serial policies (SOA-EDIT), record change log, granular API keys, log/metadata/ownership view permissions</li>
-<li><a href="v4.6.0/">v4.6.0</a> (in development on the develop branch) - Change approval workflow (<code>zone_change_requests</code> table, four permissions)</li>
+<li><a href="v4.5.0/">v4.5.0</a> - Serial policies (SOA-EDIT), record change log, granular API keys, log/metadata/ownership view permissions</li>
+<li><a href="v4.6.0/">v4.6.0</a> (in development on the master branch) - Change approval workflow (<code>zone_change_requests</code> table, four permissions)</li>
 </ul>
 <h3 id="recent-patch-releases">Recent Patch Releases<a class="headerlink" href="#recent-patch-releases" title="Permanent link">¶</a></h3>
 <p>The following releases are bug fix updates. Unless marked otherwise, no special upgrade steps are required - simply replace files and preserve your configuration. Releases marked <strong>requires SQL migration</strong> need their <code>sql/</code> update script run first:</p>
 <p><strong>v4.4.x Series:</strong></p>
 <ul>
+<li><strong>v4.4.2</strong> (Oct 2026) - Creating a zone inside a zone owned by another user is now refused by the new setting <code>dns.parent_zone_ownership_check</code>, on by default (see <a href="../configuration/dns-settings/#zone-overlap-protection">Zone Overlap Protection</a>). Also: new users only get a permission template within the creator's permissions, record comments sync to the related A or PTR record only in zones the user may edit, installer IP allow-list matches IPv6, dynamic DNS treats array query parameters as missing, username rename duplicate check fixed, MFA verified against the account that is signing in, exact email match for password reset, sendmail header line breaks refused, STARTTLS enforced when mail requires TLS, startup refused with the removed <code>md5</code> or <code>md5salt</code> password encryption, unknown record types and malformed RFC 3597 data refused, disabled accounts refused at OIDC and SAML login, opt-in strict session gates and single-use reset links, MFA setup and zone search paging fixes, Docker waits for the database before schema setup (<code>DB_WAIT_TIMEOUT</code>) and the <code>stable</code> tag now follows 4.4.x. API zone rename in SQL backend mode is refused. No database migration</li>
 <li><strong>v4.4.1</strong> (Sep 2026) - Same fixes as v4.3.5 for the 4.4.x line, plus dynamic DNS routing each <code>myip</code> address to its own record family, bulk record paths matched before single-record lookup, the PowerDNS metrics URL derived from <code>pdns_api.url</code>, and container variables for the 4.4.0 settings. No database migration</li>
 </ul>
 <p><strong>v4.3.x Series:</strong></p>
 <ul>
+<li><strong>v4.3.6</strong> (Oct 2026) - Creating a zone inside a zone owned by another user is now refused by the new setting <code>dns.parent_zone_ownership_check</code>, on by default (see <a href="../configuration/dns-settings/#zone-overlap-protection">Zone Overlap Protection</a>). Also the v4.4.2 fixes that apply to 4.3.x, except the Docker database wait, plus fixes 4.4.x already had: global zone templates limited to superusers, <code>zone_content_edit_others</code> needed to assign a new zone to another user, the last owner of a zone can no longer be removed, IPv6 addresses matched in the login allow and deny lists, password reset declined for an email shared by several accounts, auth-critical fields kept out of user self-edit, API zone rename in SQL backend mode refused. The Docker <code>stable</code> tag no longer follows 4.3.x. No database migration</li>
 <li><strong>v4.3.5</strong> (Sep 2026) - Same fixes as v4.2.6 for the 4.3.x line, plus LUA records restricted for client-level editors on every surface, one canonical zone id in API backend mode, and container config generation that escapes secrets and emits valid booleans. No database migration</li>
 <li><strong>v4.3.4</strong> (Jul 2026) - User management and SSO account hardening, <code>max_input_vars</code> form fixes for large zones and groups, record/log/template binding fixes, MariaDB 11.6+ record search fix, per-zone logs button (<strong>requires MySQL migration</strong>; PostgreSQL/SQLite unaffected)</li>
 <li><strong>v4.3.3</strong> (Jun 2026) - Permission and authorization hardening across API and DNSSEC, API-backend mode polish (record ordering, dashboard resilience), template sync correctness, Docker schema initialization</li>
@@ -7501,6 +7506,7 @@
 </ul>
 <p><strong>v4.2.x Series:</strong></p>
 <ul>
+<li><strong>v4.2.7</strong> (Oct 2026) - Creating a zone inside a zone owned by another user is now refused by the new setting <code>dns.parent_zone_ownership_check</code>, on by default (see <a href="../configuration/dns-settings/#zone-overlap-protection">Zone Overlap Protection</a>). Also the v4.3.6 fixes that apply to 4.2.x, plus LUA records restricted to editors above client level. No database migration</li>
 <li><strong>v4.2.6</strong> (Sep 2026) - <code>interface.application_url</code> required for OIDC, SAML and password reset; Docker containers with SSO enabled refuse to start without a URL source; API user creation without <code>perm_templ</code> no longer yields an administrator; deactivating a user revokes their API keys; zone template records validated on save; five confirmation flows moved to POST (re-sync forked themes). No database migration</li>
 <li><strong>v4.2.5</strong> (Jul 2026) - Same fixes as v4.3.4 for the 4.2.x line (<strong>requires MySQL migration</strong>; PostgreSQL/SQLite unaffected)</li>
 <li><strong>v4.2.4</strong> (Jun 2026) - Same fixes as v4.3.3 for the 4.2.x line</li>
@@ -7530,6 +7536,7 @@
 </ul>
 <p><strong>v3.9.x Series (LTS):</strong></p>
 <ul>
+<li><strong>v3.9.13</strong> (Oct 2026) - Creating a zone inside a zone owned by another user is now refused, on by default; turn it off with <code>$dns_parent_zone_ownership_check = false;</code> in <code>inc/config.inc.php</code> (see <a href="../configuration/dns-settings/#zone-overlap-protection">Zone Overlap Protection</a>). Also: new users only get a permission template within the creator's permissions, record comments sync to the related A or PTR record only in zones the user may edit, <code>zone_content_edit_others</code> needed to assign a new zone to another user, delegated managers can no longer edit superusers, LUA records limited to editors above client level, client-level editors can no longer delete NS records, control characters refused in records, SameSite set on the session cookie, installer IP allow-list matched by address family and prefix, dynamic DNS array parameter and username rename fixes, DNSSEC key management gated on the zone edit permission, template assignment needs <code>user_edit_templ_perm</code>, TLD data refreshed. <code>.htaccess</code> now ships in the archive, so merge your own before overwriting. No database migration</li>
 <li><strong>v3.9.12</strong> (Sep 2026) - Permission checks on template, user and zone changes; template, supermaster and DNSSEC key changes require a confirmed POST; login timing equalised; session key warning distinguishes the shipped default; log and error output escaped; public suffix and TLD data refreshed. No database migration</li>
 <li><strong>v3.9.11</strong> (Jul 2026) - Record edits and log entries bound to the record's real zone, duplicate email rejection, dependency updates</li>
 <li><strong>v3.9.10</strong> (Mar 2026) - Translation updates for all locales</li>
@@ -7540,8 +7547,8 @@
 <li><strong>v3.9.4</strong> (Jul 2025) - Configurable pagination rows per page</li>
 </ul>
 <h2 id="long-term-support-lts">Long-Term Support (LTS)<a class="headerlink" href="#long-term-support-lts" title="Permanent link">¶</a></h2>
-<p>4.4.x and 3.9.x are LTS until December 2027. 4.2.x and 4.3.x reach end of life three months after
-4.5.0 is released. See <a href="../getting-started/lifecycle/">Version Support</a> for every release line,
+<p>4.4.x and 3.9.x are LTS until December 2027. 4.2.x and 4.3.x reach end of life on
+2027-01-31. See <a href="../getting-started/lifecycle/">Version Support</a> for every release line,
 the support rules and the PHP range of each line.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
 <p>If you encounter issues during or after an upgrade:</p>

@@ -7626,6 +7626,10 @@ not provide reliably, and SQLite cannot detect them, so the switch appears to
 succeed. Keep the database on local storage, or force the old journal mode:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sqlite3<span class="w"> </span>/path/to/your/poweradmin.sqlite<span class="w"> </span><span class="s2">"PRAGMA journal_mode = DELETE;"</span>
 </code></pre></div>
+<p>From 4.6.0 Poweradmin switches the file to WAL on every connection. To keep the old
+mode, also set <code>database.sqlite_wal</code> to <code>false</code> (<code>DB_SQLITE_WAL=false</code> in Docker). The
+setting does not convert a file that is already in WAL, and the web installer always
+switches a new database to WAL, so run the command above once after setting it.</p>
 <h3 id="serving-the-database-over-the-web">Serving the database over the web<a class="headerlink" href="#serving-the-database-over-the-web" title="Permanent link">¶</a></h3>
 <p>Keep the database outside the web root. If it must live inside, note that the
 bundled <code>.htaccess</code>, Dockerfile and devcontainer web server configuration deny

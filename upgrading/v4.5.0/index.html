@@ -4665,6 +4665,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4898,6 +4909,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#secondary-and-consumer-zones-are-read-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secondary and Consumer zones are read-only
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-themes-need-re-syncing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom themes need re-syncing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ldap-identity-fields-become-read-only-when-sync-is-enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4957,6 +4990,17 @@
     <span class="md-ellipsis">
       
         Zone ids in API backend mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upgrading-from-440-or-441" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading from 4.4.0 or 4.4.1
       
     </span>
   </a>
@@ -7741,6 +7785,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7974,6 +8029,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#secondary-and-consumer-zones-are-read-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secondary and Consumer zones are read-only
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-themes-need-re-syncing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom themes need re-syncing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ldap-identity-fields-become-read-only-when-sync-is-enabled" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8040,6 +8117,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#upgrading-from-440-or-441" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading from 4.4.0 or 4.4.1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#other-changes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8092,9 +8180,6 @@
 
 
 <h1 id="upgrading-to-version-450">Upgrading to Version 4.5.0<a class="headerlink" href="#upgrading-to-version-450" title="Permanent link">¶</a></h1>
-<blockquote>
-<p><strong>Warning:</strong> Not yet released. Version 4.5.0 is complete on the <code>master</code> branch and awaiting its tag. This guide is prepared in advance and the steps below will only work once v4.5.0 is tagged and published. The latest release is v4.4.1; 4.3.x remains the stable line recommended for production.</p>
-</blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¶</a></h2>
 <p>Version 4.5.0 centers on serial handling and delegation. SOA-EDIT and SOA-EDIT-API serial policies can be managed from the UI, zone lists can show the signed serial PowerDNS actually serves, and zone templates understand serial placeholders. Access control gets finer-grained: dedicated permissions for viewing logs, zone metadata, and zone ownership, a DNSSEC key-management permission separate from zone editing, delegation NS editing below the apex, and granular API keys (read-only, operation-restricted, zone-scoped).</p>
 <p>Also new: a structured record change log with before/after snapshots, per-record-type default TTLs, trusted proxy support, LDAP user-info sync and auto-provisioning, OIDC <code>form_post</code> response mode, per-request API logging, health and ping endpoints for external monitoring, and a headless mode that serves the API without the web interface.</p>
@@ -8176,6 +8261,7 @@
 <li><code>sql/poweradmin-pgsql-update-to-4.5.0.sql</code></li>
 <li><code>sql/poweradmin-sqlite-update-to-4.5.0.sql</code></li>
 </ul>
+<p>They also index <code>log_api.created_at</code> for API log pruning. On PostgreSQL the script first resyncs the permission id sequences, and on SQLite it rebuilds the <code>zones</code> table to apply the new default.</p>
 <h2 id="upgrade-instructions">Upgrade Instructions<a class="headerlink" href="#upgrade-instructions" title="Permanent link">¶</a></h2>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h3>
 <ul>
@@ -8195,6 +8281,9 @@
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># SQLite</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>cp<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>/path/to/poweradmin_backup_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d<span class="k">)</span>.db
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Installation directory, including config/settings.php</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>tar<span class="w"> </span>-czf<span class="w"> </span>poweradmin_files_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d<span class="k">)</span>.tar.gz<span class="w"> </span>-C<span class="w"> </span>/var/www<span class="w"> </span>poweradmin
 </code></pre></div>
 <h3 id="step-2-download-and-extract">Step 2: Download and Extract<a class="headerlink" href="#step-2-download-and-extract" title="Permanent link">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>/tmp
@@ -8204,19 +8293,25 @@
 </code></pre></div>
 <h3 id="step-3-run-database-update">Step 3: Run Database Update<a class="headerlink" href="#step-3-run-database-update" title="Permanent link">¶</a></h3>
 <p><strong>MySQL/MariaDB:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-mysql-update-to-4.5.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-mysql-update-to-4.5.0.sql
 </code></pre></div>
 <p><strong>PostgreSQL:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>sql/poweradmin-pgsql-update-to-4.5.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-pgsql-update-to-4.5.0.sql
 </code></pre></div>
 <p><strong>SQLite:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-sqlite-update-to-4.5.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-sqlite-update-to-4.5.0.sql
 </code></pre></div>
 <h3 id="step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart<a class="headerlink" href="#step-4-clear-cache-and-restart" title="Permanent link">¶</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>php-fpm
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># or</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
 </code></pre></div>
+<h3 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">¶</a></h3>
+<ul>
+<li>The container waits up to <code>DB_WAIT_TIMEOUT</code> seconds (default 30) for MySQL or PostgreSQL to answer before schema initialization. If the database does not answer in time, initialization is skipped with a warning. This also ships in 4.4.2.</li>
+<li>The 4.5.0 settings can be set as environment variables, including <code>PA_HEALTH_TOKEN</code> and <code>PA_HEALTH_CACHE_SECONDS</code> for the health probe. See <a href="../../installation/docker/">Docker</a>.</li>
+<li>Since 4.4.1 (4.3.5 and 4.2.6 on the older lines), when <code>settings.php</code> is generated from environment variables, a container with OIDC enabled and no <code>PA_APPLICATION_URL</code> refuses to start. With SAML enabled it needs <code>PA_APPLICATION_URL</code>, <code>PA_BASE_URL</code> or all of <code>PA_SAML_SP_ENTITY_ID</code>, <code>PA_SAML_SP_ACS_URL</code> and <code>PA_SAML_SP_SLS_URL</code>. A mounted <code>settings.php</code> is not checked.</li>
+</ul>
 <h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
 <h3 id="serial-policies-soa-edit-soa-edit-api">Serial Policies (SOA-EDIT / SOA-EDIT-API)<a class="headerlink" href="#serial-policies-soa-edit-soa-edit-api" title="Permanent link">¶</a></h3>
 <p>PowerDNS rewrites zone serials according to the SOA-EDIT and SOA-EDIT-API metadata kinds. Poweradmin can now manage both from the metadata editor and preset them for new zones:</p>
@@ -8288,12 +8383,11 @@
 <li>Record comments show author and last-modified time in a tooltip.</li>
 <li>API-backend zone lists indicate zones with a pending NOTIFY.</li>
 <li>The "Permission templates" menu item is now labeled "Permissions".</li>
-<li><code>dns.parent_zone_ownership_check</code> (default on) blocks creating a zone that overlaps an existing zone owned by another user.</li>
 <li>Each user can switch the interface to the full browser width under Account &gt; Preferences &gt; Display Settings; <code>interface.wide_layout</code> sets the site-wide default.</li>
 </ul>
 <h3 id="health-and-ping-endpoints">Health and Ping Endpoints<a class="headerlink" href="#health-and-ping-endpoints" title="Permanent link">¶</a></h3>
-<p>Two unauthenticated endpoints for external monitoring, both disabled by default and
-answering 404 while off:</p>
+<p>Two endpoints for external monitoring, both disabled by default and answering 404
+while off. Neither needs a login; <code>/api/health</code> can require a token (see below):</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="x">return [</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="x">    'health' =&gt; [</span>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="x">        'enabled' =&gt; true,       // GET /api/health</span>
@@ -8308,6 +8402,11 @@ carries a version, hostname or error text.</p>
 <p>Failure detail goes through the normal logger, so it honors <code>logging.type</code>. That ships as
 <code>null</code>, meaning a failing check writes nothing until you set a real log type. Tune the
 probe timeouts with <code>health.db_timeout</code> and <code>health.pdns_timeout</code> (2 seconds each).</p>
+<p>With <code>health.token</code> set, <code>/api/health</code> answers only requests that send the same value in
+an <code>X-Health-Token</code> header; any other request gets 403 and runs no check. <code>/ping</code> is not
+affected. <code>health.cache_seconds</code> reuses the last result for that many seconds (0, the
+default, checks on every request). See
+<a href="../../operations/health-checks/#token-and-result-cache-v450">Token and result cache</a>.</p>
 <p>Expose these deliberately. See <a href="../../operations/health-checks/">Health Checks</a> for how to
 restrict access at the web server.</p>
 <h3 id="headless-mode-api-only">Headless Mode (API-Only)<a class="headerlink" href="#headless-mode-api-only" title="Permanent link">¶</a></h3>
@@ -8424,6 +8523,27 @@ affect them. Delete the installer after installing, as usual.</p>
 <a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">perm_templ_items</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">templ_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pti</span><span class="p">.</span><span class="n">templ_id</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">perm_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">np</span><span class="p">.</span><span class="n">id</span><span class="p">);</span>
 </code></pre></div>
 <p>The zone logs page also needs <code>logging.database_enabled</code>, as before.</p>
+<p>Enabling DNSSEC while creating a zone needs the same permission: the add-zone form and
+<code>POST /api/v2/zones</code> with <code>enable_dnssec</code> are refused without <code>zone_dnssec_manage_own</code>
+when <code>dnssec.enabled</code> is on. The SQL above restores it for templates that can edit zones.</p>
+<h3 id="secondary-and-consumer-zones-are-read-only">Secondary and Consumer zones are read-only<a class="headerlink" href="#secondary-and-consumer-zones-are-read-only" title="Permanent link">¶</a></h3>
+<p>Records in Secondary (SLAVE) and Consumer zones come from the primary by zone transfer, so
+they can no longer be added, edited or deleted through the web interface, the API or
+dynamic DNS. API record writes get a 403 with a read-only message, v2 dynamic DNS updates
+get 403, and the legacy dynamic DNS endpoint answers <code>!yours</code>. If you edited records of
+such a zone locally, change the zone's type on its edit page first.</p>
+<h3 id="custom-themes-need-re-syncing">Custom themes need re-syncing<a class="headerlink" href="#custom-themes-need-re-syncing" title="Permanent link">¶</a></h3>
+<p>If you run a theme forked from <code>templates/default</code> or <code>templates/modern</code>, compare it with
+the 4.5.0 templates:</p>
+<ul>
+<li>Every POST is now checked for a CSRF token, so every form that posts needs the token
+  field. Add <code>{{ macros.csrf_field() }}</code> (from <code>_macros.html</code>) to each one.</li>
+<li>Since 4.4.1 (4.3.5 and 4.2.6 on the older lines), deleting a supermaster, a permission
+  template, a zone template or a zone template record needs a confirmed POST from the
+  confirmation page. Themes forked before that need the change too.</li>
+<li>With <code>misc.display_errors</code> on, Twig runs in strict mode, so a template that uses an
+  undefined variable raises an error instead of rendering it empty.</li>
+</ul>
 <h3 id="ldap-identity-fields-become-read-only-when-sync-is-enabled">LDAP identity fields become read-only when sync is enabled<a class="headerlink" href="#ldap-identity-fields-become-read-only-when-sync-is-enabled" title="Permanent link">¶</a></h3>
 <p>With <code>ldap.sync_user_info</code> enabled, fullname and email of LDAP accounts are managed by the directory and read-only in the user editor. With sync disabled (the default), they remain editable as before.</p>
 <h3 id="lua-enabling-zone-metadata-is-restricted-to-administrators">Lua-enabling zone metadata is restricted to administrators<a class="headerlink" href="#lua-enabling-zone-metadata-is-restricted-to-administrators" title="Permanent link">¶</a></h3>
@@ -8472,6 +8592,10 @@ Assigning any ordinary template is unaffected, so a delegated user administrator
 working as before unless they were relying on handing out the Administrator template.</p>
 <p>This ships across the supported lines, not only here: 4.4.1, 4.3.5, 4.2.6 and 3.9.12 carry
 the same rule.</p>
+<p>Creating a user is also refused when the chosen template holds a permission the creator
+lacks (their own template plus their groups' templates). Creators who hold
+<code>user_edit_others</code>, and administrators, are not limited by this. It applies to the user
+create form and <code>POST /api/v2/users</code>.</p>
 <h3 id="zone-ids-in-api-backend-mode">Zone ids in API backend mode<a class="headerlink" href="#zone-ids-in-api-backend-mode" title="Permanent link">¶</a></h3>
 <p>This applies only to installs running the API backend that were migrated from SQL mode.</p>
 <ul>
@@ -8492,6 +8616,19 @@ the same rule.</p>
   <a href="../../configuration/powerdns-api/#zone-ids-shared-by-two-zones">Zone IDs Shared by Two Zones</a>
   for how Poweradmin handles it.</li>
 </ul>
+<h3 id="upgrading-from-440-or-441">Upgrading from 4.4.0 or 4.4.1<a class="headerlink" href="#upgrading-from-440-or-441" title="Permanent link">¶</a></h3>
+<p>These changes also ship in 4.4.2. If you are coming from 4.4.0 or 4.4.1, they are new to you:</p>
+<ul>
+<li>With <code>mail.encryption</code> set to <code>tls</code> (the default) and the SMTP transport, mail is sent
+  only over STARTTLS. A server that does not offer STARTTLS now makes sending fail instead
+  of falling back to plain text. Set <code>mail.encryption</code> to <code>''</code> for such a server.</li>
+<li>Records with an unknown type, and malformed RFC 3597 (<code>\# &lt;length&gt; &lt;hex&gt;</code>) data, are
+  refused. PowerDNS fails such a name and aborts AXFR of the whole zone.</li>
+<li>Disabled accounts are refused at OIDC and SAML login, and their existing sessions end.</li>
+<li>A <code>security.password_encryption</code> of <code>md5</code> or <code>md5salt</code> stops startup, and <code>dnssec.debug</code> is removed (both described below).</li>
+<li>4.4.2 refuses creating a zone inside another user's zone (<code>dns.parent_zone_ownership_check</code>, on). 4.5.0 also refuses a zone above another user's zones and covers reverse zones.</li>
+<li>Opt-in settings, off by default: <code>security.strict_session_gates</code>, <code>security.password_reset.single_use_claim</code>.</li>
+</ul>
 <h3 id="other-changes">Other changes<a class="headerlink" href="#other-changes" title="Permanent link">¶</a></h3>
 <ul>
 <li>The Records column in zone lists is no longer sortable in API backend mode. Record counts are now resolved only for the zones on the current page, so ordering by them would sort just that page rather than the whole list. The column header is plain text instead of a sort link, and a stale <code>count_records</code> sort carried over in a session falls back to sorting by name. SQL backend mode is unaffected and still sorts by record count.</li>
@@ -8501,16 +8638,23 @@ the same rule.</p>
 <li><code>interface.rows_per_page</code> now accepts any value from 5 to 500 rather than silently falling back to 10 for anything outside 10/20/50/100. If you had set a value like 25 it was previously ignored, and will now take effect. A value outside 5 to 500 is clamped to the nearest limit and a warning is logged; it does not stop the application from starting.</li>
 <li>PHP's session garbage collection is raised to match <code>interface.session_timeout</code>. Sessions previously expired after PHP's 1440-second default rather than the configured 1800, which returned users to the login page without an explanation.</li>
 <li>An unrecognised <code>logging.level</code> now falls back to <code>info</code> rather than silently suppressing everything below <code>emergency</code>. If you have a typo such as <code>warn</code> instead of <code>warning</code> and <code>logging.type</code> is <code>native</code>, log volume will increase noticeably until the value is corrected. The logger records one warning naming the rejected value.</li>
-<li>All other new features are additive or opt-in: new tables start empty, new settings default to prior behavior, and new permissions (except the auto-granted view split) are not assigned to any template.</li>
+<li>A <code>security.password_encryption</code> of <code>md5</code> or <code>md5salt</code> (removed in 4.3.0) now stops Poweradmin at startup with a message naming the setting. Before, every login of a bcrypt user failed. Set it to <code>bcrypt</code>, <code>argon2i</code> or <code>argon2id</code>; existing md5 password hashes still verify and are rehashed at the next login.</li>
+<li><code>dnssec.debug</code> and <code>PA_DNSSEC_DEBUG</code> are removed; they had no effect since the pdnsutil provider was dropped.</li>
+<li>Creating a zone that overlaps a zone owned by another user, as its parent or as a zone below it (forward or reverse), is refused. Administrators are exempt. Set <code>dns.parent_zone_ownership_check</code> to <code>false</code> to allow it as before.</li>
+<li><code>interface.session_timeout</code> must be a positive integer. <code>0</code> or a quoted string now stops Poweradmin at startup with a message naming the setting. The timeout cannot be disabled; use a large value instead.</li>
+<li><code>/api/docs</code> and its menu link answer 404 when <code>api.enabled</code> is <code>false</code>, even if <code>api.docs_enabled</code> is <code>true</code>.</li>
+<li><code>POST /api/v2/zones</code> refuses a SLAVE zone without masters (400) and also accepts <code>masters</code> as a PowerDNS-style array. Before, the array form was dropped and the zone was created without masters.</li>
+<li>All other new features are additive or opt-in: new tables start empty and new permissions (except the auto-granted view split) are not assigned to any template. New settings default to prior behavior, except <code>dns.parent_zone_ownership_check</code> (on), <code>security.mfa.max_verify_attempts</code> (5), <code>security.mfa.verify_lockout_duration</code> (15) and <code>allow_superuser_provisioning</code> for OIDC, SAML and LDAP (<code>false</code>), described above.</li>
 </ul>
 <h2 id="rollback">Rollback<a class="headerlink" href="#rollback" title="Permanent link">¶</a></h2>
-<p>To roll back to v4.4.0:</p>
+<p>To roll back to v4.4.x:</p>
 <ol>
 <li>Restore your database backup.</li>
 <li>Restore your file backup.</li>
 <li>Restart the web server.</li>
 </ol>
-<p>The new tables and columns are harmless in earlier versions - they are simply unused. Note that password reset tokens issued by 4.5.0 (hashed) cannot be validated by 4.4.0; users would need to request a new link after a rollback.</p>
+<p>The new tables and columns are harmless in earlier versions - they are simply unused. Note that password reset tokens issued by 4.5.0 (hashed) cannot be validated by 4.4.x; users would need to request a new link after a rollback.</p>
+<p>API keys created or used under 4.5.0 are stored hashed, and 4.4.x cannot verify them. Restoring the pre-upgrade database backup brings back the plaintext keys; keys created after the upgrade have to be regenerated.</p>
 
 
 

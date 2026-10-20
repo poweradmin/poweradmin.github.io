@@ -9005,7 +9005,6 @@
 <h3 id="database-schema-update">Database Schema Update<a class="headerlink" href="#database-schema-update" title="Permanent link">¶</a></h3>
 <p>Version 4.1.0 includes significant database schema changes:</p>
 <ul>
-<li><strong>Primary key</strong> added to <code>records_zone_templ</code> table (MySQL InnoDB Cluster compatibility)</li>
 <li><strong>New tables</strong>: <code>oidc_user_links</code>, <code>saml_user_links</code>, <code>username_recovery_requests</code></li>
 <li><strong>New column</strong>: <code>auth_method</code> on <code>users</code> table</li>
 <li><strong>New permissions</strong>: <code>api_manage_keys</code> (65), <code>zone_delete_own</code> (67), <code>zone_delete_others</code> (68)</li>
@@ -9047,7 +9046,6 @@
 <h3 id="step-3-run-database-updates">Step 3: Run Database Updates<a class="headerlink" href="#step-3-run-database-updates" title="Permanent link">¶</a></h3>
 <p>Version 4.1.0 includes significant database schema changes:</p>
 <ul>
-<li>Primary key added to <code>records_zone_templ</code> table</li>
 <li>New tables for OIDC/SAML authentication</li>
 <li>New <code>auth_method</code> column on users table</li>
 <li>New permissions for API key management and zone deletion</li>
@@ -9056,13 +9054,13 @@
 </ul>
 <p><strong>Apply the 4.1.0 migration:</strong></p>
 <p><strong>For MySQL/MariaDB:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-mysql-update-to-4.1.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-mysql-update-to-4.1.0.sql
 </code></pre></div>
 <p><strong>For PostgreSQL:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>sql/poweradmin-pgsql-update-to-4.1.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-pgsql-update-to-4.1.0.sql
 </code></pre></div>
 <p><strong>For SQLite:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-sqlite-update-to-4.1.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-sqlite-update-to-4.1.0.sql
 </code></pre></div>
 <p><strong>Note:</strong> If you're upgrading from v4.0.0-4.0.3, you may also need to apply the v4.0.2 migration if not already applied. Check if the <code>password_reset_tokens</code> table has a default value for the <code>used</code> field:</p>
 <div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">-- MySQL/MariaDB</span>
@@ -9076,22 +9074,37 @@
 </code></pre></div>
 <p>If the <code>used</code> field doesn't have <code>DEFAULT 0</code>, apply the 4.0.2 migration first:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># MySQL/MariaDB</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-mysql-update-to-4.0.2.sql
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-mysql-update-to-4.0.2.sql
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># PostgreSQL</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>sql/poweradmin-pgsql-update-to-4.0.2.sql
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-pgsql-update-to-4.0.2.sql
 <a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
 <a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># SQLite</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-sqlite-update-to-4.0.2.sql
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-sqlite-update-to-4.0.2.sql
 </code></pre></div>
+<p><strong>Coming from v4.0.0-4.0.4:</strong> run the 4.0.5 migration first. It adds a primary key to the <code>records_zone_templ</code> table (MySQL InnoDB Cluster compatibility). The 4.1.0 and later archives do not include it, so take it from the <a href="https://github.com/poweradmin/poweradmin/releases/tag/v4.0.11">v4.0.11</a> archive:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">cd</span><span class="w"> </span>/tmp
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>wget<span class="w"> </span>https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.0.11.tar.gz
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>tar<span class="w"> </span>-xzf<span class="w"> </span>v4.0.11.tar.gz
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1"># MySQL/MariaDB</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>/tmp/poweradmin-4.0.11/sql/poweradmin-mysql-update-to-4.0.5.sql
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c1"># PostgreSQL</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>/tmp/poweradmin-4.0.11/sql/poweradmin-pgsql-update-to-4.0.5.sql
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="c1"># SQLite</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>/tmp/poweradmin-4.0.11/sql/poweradmin-sqlite-update-to-4.0.5.sql
+</code></pre></div>
+<p>If you skip it, the 4.6.0 update script adds the primary key when it is missing.</p>
 <h3 id="step-4-clear-cache-and-restart-services">Step 4: Clear Cache and Restart Services<a class="headerlink" href="#step-4-clear-cache-and-restart-services" title="Permanent link">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Clear PHP opcache (if applicable)</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>php-fpm
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># or</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="c1"># Clear any application cache</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>rm<span class="w"> </span>-rf<span class="w"> </span>cache/*<span class="w"> </span>tmp/*
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Clear PHP opcache (if applicable)</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>php-fpm
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># or</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># Clear any application cache</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>rm<span class="w"> </span>-rf<span class="w"> </span>cache/*<span class="w"> </span>tmp/*
 </code></pre></div>
 <h3 id="step-5-verify-the-upgrade">Step 5: Verify the Upgrade<a class="headerlink" href="#step-5-verify-the-upgrade" title="Permanent link">¶</a></h3>
 <ol>
@@ -9195,34 +9208,34 @@
 <p>If you use any of the following features, review your configuration:</p>
 <h4 id="email-configuration">Email Configuration<a class="headerlink" href="#email-configuration" title="Permanent link">¶</a></h4>
 <p>With the improved SMTP handling, verify your email transport settings in <code>config/settings.php</code>:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="x">'mail' =&gt; [</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="x">    'transport' =&gt; 'smtp',  // or 'sendmail', 'mail'</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="x">    'smtp' =&gt; [</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="x">        'host' =&gt; 'smtp.example.com',</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="x">        'port' =&gt; 587,</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="x">        'encryption' =&gt; 'tls',  // Options: 'tls', 'ssl', null</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="x">        'auth' =&gt; true,</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="x">        'username' =&gt; 'user@example.com',</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="x">        'password' =&gt; 'your-password',</span>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="x">    ],</span>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="x">    'debug' =&gt; false,  // Set to true to enable detailed logging</span>
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="x">'mail' =&gt; [</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="x">    'transport' =&gt; 'smtp',  // or 'sendmail', 'mail'</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="x">    'smtp' =&gt; [</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="x">        'host' =&gt; 'smtp.example.com',</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="x">        'port' =&gt; 587,</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="x">        'encryption' =&gt; 'tls',  // Options: 'tls', 'ssl', null</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="x">        'auth' =&gt; true,</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="x">        'username' =&gt; 'user@example.com',</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="x">        'password' =&gt; 'your-password',</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="x">    ],</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="x">    'debug' =&gt; false,  // Set to true to enable detailed logging</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="x">],</span>
 </code></pre></div>
 <p><strong>Note:</strong> The TLS/STARTTLS handling has been fixed in v4.1.0. If you experienced email issues in earlier versions, they should now be resolved.</p>
 <h4 id="powerdns-api-configuration">PowerDNS API Configuration<a class="headerlink" href="#powerdns-api-configuration" title="Permanent link">¶</a></h4>
 <p>If you use PowerDNS metrics or API features, you can now use Basic Auth:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="x">'pdns' =&gt; [</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="x">    'api_url' =&gt; 'http://localhost:8081/api/v1',</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="x">    'api_key' =&gt; 'your-api-key',</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="x">    'server_id' =&gt; 'localhost',</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="x">    'metrics' =&gt; [</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="x">        'enabled' =&gt; true,</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="x">        'basic_auth' =&gt; [</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="x">            'username' =&gt; 'admin',</span>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="x">            'password' =&gt; 'your-password',</span>
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="x">        ],</span>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="x">    ],</span>
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="x">'pdns' =&gt; [</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="x">    'api_url' =&gt; 'http://localhost:8081/api/v1',</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="x">    'api_key' =&gt; 'your-api-key',</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="x">    'server_id' =&gt; 'localhost',</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="x">    'metrics' =&gt; [</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="x">        'enabled' =&gt; true,</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="x">        'basic_auth' =&gt; [</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="x">            'username' =&gt; 'admin',</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="x">            'password' =&gt; 'your-password',</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="x">        ],</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="x">    ],</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="x">],</span>
 </code></pre></div>
 <h4 id="enhanced-dns-record-validation">Enhanced DNS Record Validation<a class="headerlink" href="#enhanced-dns-record-validation" title="Permanent link">¶</a></h4>
 <p>DKIM and long TXT records are now properly supported. No configuration changes needed, but you can now add DKIM records without worrying about the 255-character limit.</p>
@@ -9283,12 +9296,12 @@
 <ol>
 <li>
 <p>Check database indexes are present:</p>
-<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1">-- MySQL</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">SHOW</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">zones</span><span class="p">;</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">SHOW</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">records</span><span class="p">;</span>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="c1">-- PostgreSQL</span>
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="err">\</span><span class="n">di</span>
+<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1">-- MySQL</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">SHOW</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">zones</span><span class="p">;</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">SHOW</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">records</span><span class="p">;</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="c1">-- PostgreSQL</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="err">\</span><span class="n">di</span>
 </code></pre></div>
 </li>
 <li>
@@ -9308,17 +9321,17 @@
 <ol>
 <li>
 <p><strong>Apache</strong>: Verify <code>mod_rewrite</code> is enabled:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>apache2ctl<span class="w"> </span>-M<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>rewrite
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1"># If not listed, enable it:</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>a2enmod<span class="w"> </span>rewrite
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>apache2ctl<span class="w"> </span>-M<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>rewrite
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="c1"># If not listed, enable it:</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>a2enmod<span class="w"> </span>rewrite
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
 </code></pre></div>
 </li>
 <li>
 <p><strong>Apache</strong>: Verify <code>AllowOverride All</code> is set in your VirtualHost:</p>
-<div class="language-apache highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">&lt;Directory</span><span class="w"> </span><span class="s">/path/to/poweradmin</span><span class="nt">&gt;</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="nb">AllowOverride</span><span class="w"> </span><span class="k">All</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nt">&lt;/Directory&gt;</span>
+<div class="language-apache highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">&lt;Directory</span><span class="w"> </span><span class="s">/path/to/poweradmin</span><span class="nt">&gt;</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="nb">AllowOverride</span><span class="w"> </span><span class="k">All</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nt">&lt;/Directory&gt;</span>
 </code></pre></div>
 </li>
 <li>
@@ -9326,28 +9339,28 @@
 </li>
 <li>
 <p><strong>Nginx</strong>: Verify your configuration includes the <code>try_files</code> directive:</p>
-<div class="language-nginx highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nv">$uri/</span><span class="w"> </span><span class="s">/index.php</span><span class="nv">$is_args$args</span><span class="p">;</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="p">}</span>
+<div class="language-nginx highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nv">$uri/</span><span class="w"> </span><span class="s">/index.php</span><span class="nv">$is_args$args</span><span class="p">;</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="p">}</span>
 </code></pre></div>
 </li>
 <li>
 <p><strong>All servers</strong>: Check error logs for more details:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Apache</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/apache2/error.log
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># Nginx</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/nginx/error.log
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Apache</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/apache2/error.log
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># Nginx</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/nginx/error.log
 </code></pre></div>
 </li>
 </ol>
 <h3 id="permission-issues-after-upgrade">Permission Issues After Upgrade<a class="headerlink" href="#permission-issues-after-upgrade" title="Permanent link">¶</a></h3>
 <p>If you see permission denied errors:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Fix file permissions</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span>www-data:www-data<span class="w"> </span>/var/www/poweradmin
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>sudo<span class="w"> </span>chmod<span class="w"> </span>-R<span class="w"> </span><span class="m">755</span><span class="w"> </span>/var/www/poweradmin
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>sudo<span class="w"> </span>chmod<span class="w"> </span>-R<span class="w"> </span><span class="m">775</span><span class="w"> </span>/var/www/poweradmin/cache
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>sudo<span class="w"> </span>chmod<span class="w"> </span>-R<span class="w"> </span><span class="m">775</span><span class="w"> </span>/var/www/poweradmin/tmp
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Fix file permissions</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>sudo<span class="w"> </span>chown<span class="w"> </span>-R<span class="w"> </span>www-data:www-data<span class="w"> </span>/var/www/poweradmin
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>sudo<span class="w"> </span>chmod<span class="w"> </span>-R<span class="w"> </span><span class="m">755</span><span class="w"> </span>/var/www/poweradmin
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>sudo<span class="w"> </span>chmod<span class="w"> </span>-R<span class="w"> </span><span class="m">775</span><span class="w"> </span>/var/www/poweradmin/cache
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>sudo<span class="w"> </span>chmod<span class="w"> </span>-R<span class="w"> </span><span class="m">775</span><span class="w"> </span>/var/www/poweradmin/tmp
 </code></pre></div>
 <h2 id="rollback-instructions">Rollback Instructions<a class="headerlink" href="#rollback-instructions" title="Permanent link">¶</a></h2>
 <p>If you need to rollback to your previous version:</p>
@@ -9356,7 +9369,7 @@
 <li>Restore your file backup</li>
 <li>Clear PHP session files and restart web server</li>
 </ol>
-<p><strong>Note:</strong> If you need to rollback to v4.0.x, the <code>records_zone_templ</code> table will have an extra <code>id</code> column from the 4.1.0 migration. This is harmless and doesn't affect functionality. If you applied the 4.0.2 migration, you can keep it applied as it's a minor fix.</p>
+<p><strong>Note:</strong> If you need to rollback to v4.0.x, the <code>records_zone_templ</code> table may have an extra <code>id</code> column from the 4.0.5 migration. This is harmless and doesn't affect functionality. If you applied the 4.0.2 migration, you can keep it applied as it's a minor fix.</p>
 <h2 id="upgrading-from-older-versions">Upgrading from Older Versions<a class="headerlink" href="#upgrading-from-older-versions" title="Permanent link">¶</a></h2>
 <h3 id="from-v3x">From v3.x<a class="headerlink" href="#from-v3x" title="Permanent link">¶</a></h3>
 <p>You must first upgrade to <a href="../v4.0.0/">v4.0.0</a> before upgrading to v4.1.0.</p>
@@ -9366,9 +9379,10 @@
 <li>The MFA security fix (critical if you use MFA)</li>
 <li>Email configuration if you experienced delivery issues</li>
 <li>Database migration to 4.0.2 if you haven't applied it</li>
+<li>Database migration to 4.0.5 (see <a href="#step-3-run-database-updates">Step 3</a>)</li>
 </ul>
 <h3 id="from-v404-or-v405">From v4.0.4 or v4.0.5<a class="headerlink" href="#from-v404-or-v405" title="Permanent link">¶</a></h3>
-<p>Upgrading from v4.0.4 or v4.0.5 requires replacing the files and running the 4.1.0 database migration, which adds new tables and permissions for OIDC/SAML authentication and zone deletion.</p>
+<p>Upgrading from v4.0.4 or v4.0.5 requires replacing the files and running the 4.1.0 database migration, which adds new tables and permissions for OIDC/SAML authentication and zone deletion. From v4.0.4, also run the 4.0.5 migration first (see <a href="#step-3-run-database-updates">Step 3</a>).</p>
 <h2 id="known-issues">Known Issues<a class="headerlink" href="#known-issues" title="Permanent link">¶</a></h2>
 <h3 id="404-on-login-when-url-rewriting-is-not-configured-993">404 on /login When URL Rewriting Is Not Configured (#993)<a class="headerlink" href="#404-on-login-when-url-rewriting-is-not-configured-993" title="Permanent link">¶</a></h3>
 <p>Users upgrading from v4.0.x may encounter a 404 error when Poweradmin redirects to <code>/login</code>. This happens because v4.1.0 uses clean URLs that require URL rewriting to be properly configured on the web server. See the <a href="#url-rewriting-now-required">Breaking Changes</a> section above for the fix.</p>

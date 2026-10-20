@@ -7507,11 +7507,6 @@
 
 
 <h1 id="whats-new-in-450">What's New in 4.5.0<a class="headerlink" href="#whats-new-in-450" title="Permanent link">¶</a></h1>
-<blockquote>
-<p><strong>Warning:</strong> Not yet released. 4.5.0 is complete on the <code>master</code> branch and awaiting its tag.
-The latest release is v4.4.1, and 4.3.x remains the stable line recommended for production.
-This page describes what the release will contain.</p>
-</blockquote>
 <p>4.5.0 is about knowing what happened and controlling who can do what. A structured change log
 records the before and after of every record change. API keys stopped being all-or-nothing.
 Eleven new permissions break apart rights that previously required superuser. And API v1,
@@ -7716,6 +7711,11 @@ APIs, RRsets, bulk records and the DNS wizards.</p>
 <td><a href="../../operations/health-checks/">Health Checks</a></td>
 </tr>
 <tr>
+<td>Health probe token and cache</td>
+<td>Optional <code>health.token</code> makes <code>/api/health</code> answer only requests with a matching <code>X-Health-Token</code> header, and <code>health.cache_seconds</code> reuses the last result, so anonymous scrapes cannot fan out into database and PowerDNS calls. Both off by default</td>
+<td><a href="../../operations/health-checks/#token-and-result-cache-v450">Health Checks</a></td>
+</tr>
+<tr>
 <td>PowerDNS status for monitoring</td>
 <td><code>GET /api/v2/server/status</code> returns the PowerDNS version, uptime and statistics through Poweradmin's API keys, and the new <code>server_status_view</code> permission opens it and the status page to non-administrators</td>
 <td><a href="../../api/endpoints/#server-status-v450">API Endpoints</a></td>
@@ -7741,6 +7741,11 @@ APIs, RRsets, bulk records and the DNS wizards.</p>
 <td><a href="../../configuration/security-policies/">Security Policies</a></td>
 </tr>
 <tr>
+<td>Opt-in hardening settings</td>
+<td>Three new settings, all off by default so nothing changes on upgrade: <code>security.protect_last_admin_on_edit</code>, <code>security.strict_session_gates</code> and <code>security.password_reset.single_use_claim</code></td>
+<td><a href="../../configuration/security-policies/#opt-in-hardening-v450">Security Policies</a></td>
+</tr>
+<tr>
 <td>Skip MFA for external IdP</td>
 <td><code>security.mfa.skip_for_external_auth</code> trusts the identity provider's own MFA</td>
 <td><a href="../../configuration/security-policies/">Security Policies</a></td>
@@ -7749,6 +7754,11 @@ APIs, RRsets, bulk records and the DNS wizards.</p>
 <td>IdP superuser provisioning off by default</td>
 <td>An identity provider cannot grant <code>user_is_ueberuser</code> unless you opt in</td>
 <td><a href="../../configuration/oidc/">OIDC</a>, <a href="../../configuration/saml/">SAML</a></td>
+</tr>
+<tr>
+<td>Disabled accounts refused at OIDC and SAML sign-in</td>
+<td>A disabled account can no longer sign in through OIDC or SAML, and its open sessions end</td>
+<td><a href="../../configuration/oidc/">OIDC Authentication</a></td>
 </tr>
 <tr>
 <td>OIDC <code>form_post</code> response mode</td>
@@ -7869,6 +7879,61 @@ APIs, RRsets, bulk records and the DNS wizards.</p>
 <td>Fifteen new locales</td>
 <td>Arabic, Bulgarian, Bosnian, Danish, Greek, Persian, Irish, Hebrew, Hindi, Malay, Brazilian Portuguese, Slovenian, Albanian, Thai and Traditional Chinese, with right-to-left support, bringing the total to 43</td>
 <td><a href="../../configuration/basic/">Basic Configuration</a></td>
+</tr>
+<tr>
+<td>A zone always keeps an owner</td>
+<td>Removing the last owner is also refused on the quick-remove control and when removing several zones from a group at once, as it already was when removing an owner or a group</td>
+<td><a href="../../user-guide/permissions/#zones-always-keep-an-owner">Permissions</a></td>
+</tr>
+<tr>
+<td>Key tags for every DNSSEC key</td>
+<td>The key list shows the key tag for ZSKs as well as KSKs</td>
+<td><a href="../../user-guide/dnssec/">DNSSEC</a></td>
+</tr>
+<tr>
+<td>Record counts and comments on the full zone list</td>
+<td>Asking for every zone at once reported an inflated record count on zones with comments and dropped the zone comment; both now match the paginated list</td>
+<td></td>
+</tr>
+<tr>
+<td>Record edit and comment in one request</td>
+<td>On the API backend a record edit and its comment reach PowerDNS in a single call (#1556)</td>
+<td><a href="../../configuration/powerdns-api/">PowerDNS API</a></td>
+</tr>
+<tr>
+<td>Zero session timeout rejected</td>
+<td><code>interface.session_timeout = 0</code> is refused at startup instead of logging every user out on their next request</td>
+<td><a href="../../configuration/basic/">Basic Configuration</a></td>
+</tr>
+<tr>
+<td>Reset token kept out of the log</td>
+<td>Log lines about a password reset link carry a short fingerprint instead of the token</td>
+<td><a href="../../configuration/security-policies/#password-reset">Security Policies</a></td>
+</tr>
+<tr>
+<td><code>dnssec.debug</code> removed</td>
+<td>The setting and <code>PA_DNSSEC_DEBUG</code> had no effect since the pdnsutil provider was dropped</td>
+<td><a href="../../configuration/dnssec/">DNSSEC</a></td>
+</tr>
+<tr>
+<td>Signed zones stay consistent over the API</td>
+<td>Record writes through the API rectify the zone, so DNSSEC ordering data is not left stale</td>
+<td><a href="../../configuration/dnssec/">DNSSEC</a></td>
+</tr>
+<tr>
+<td>API events attributed to the key</td>
+<td>Audit entries for API requests name the API user, and the SAML logout entry keeps the acting user</td>
+<td><a href="../../configuration/database-logging/">Database Logging</a></td>
+</tr>
+<tr>
+<td>CNAME checks ignore case</td>
+<td>CNAME uniqueness and duplicate checks compare names case-insensitively on every database</td>
+<td></td>
+</tr>
+<tr>
+<td>New users limited to the creator's permissions</td>
+<td>A user without <code>user_edit_others</code> cannot create a user with a permission template that grants permissions they do not hold, on the web or through the API</td>
+<td><a href="../../user-guide/permissions/#user_edit_others">Permissions</a></td>
 </tr>
 </tbody>
 </table>

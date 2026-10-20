@@ -7574,9 +7574,9 @@
 
 <h1 id="whats-new-in-460">What's New in 4.6.0<a class="headerlink" href="#whats-new-in-460" title="Permanent link">¶</a></h1>
 <blockquote>
-<p><strong>Warning:</strong> In development. 4.6.0 is the <code>develop</code> branch and has no tag yet. This page
+<p><strong>Warning:</strong> In development. 4.6.0 is the <code>master</code> branch and has no tag yet. This page
 lists what has landed so far and grows until the release is cut. The latest release is
-v4.4.1, and 4.3.x remains the stable line recommended for production.</p>
+v4.5.0, and 4.4.x remains the stable line recommended for production.</p>
 </blockquote>
 <p>4.6.0 so far brings an opt-in change approval workflow, a handful of operational knobs and
 a large internal cleanup. Zone changes can be routed through a reviewer before they are
@@ -7704,7 +7704,7 @@ password policy's special-character set, the lockout IP whitelist and blacklist,
 permission template visibility flags, the dashboard statistics toggle, the four avatar
 settings and the pinned record types.</p>
 <p>See <a href="../../installation/docker/#key-environment-variables">Docker</a> and the full table in
-<a href="https://github.com/poweradmin/poweradmin/blob/develop/DOCKER.md">DOCKER.md</a>.</p>
+<a href="https://github.com/poweradmin/poweradmin/blob/master/DOCKER.md">DOCKER.md</a>.</p>
 <h3 id="stale-zone-saves-keep-your-edits">Stale zone saves keep your edits<a class="headerlink" href="#stale-zone-saves-keep-your-edits" title="Permanent link">¶</a></h3>
 <p>When another user saved the zone first and the conflict strategy rejects your form, the
 editor now re-renders with your submitted records and comment in place, marks the rows that
@@ -7722,21 +7722,6 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>Disabled accounts refused at OIDC and SAML sign-in</td>
-<td>A disabled account can no longer sign in through OIDC or SAML, and its open sessions end</td>
-<td><a href="../../configuration/oidc/">OIDC Authentication</a></td>
-</tr>
-<tr>
-<td>NAPTR service field checked properly</td>
-<td>The service field is validated as parts joined by plus signs, each starting with a letter, so a trailing plus (<code>"E2U+"</code>) or an empty part (<code>"aaa++diameter"</code>) is refused instead of accepted</td>
-<td><a href="../../user-guide/naptr-records/">NAPTR Records</a></td>
-</tr>
-<tr>
-<td>Login page no longer loops</td>
-<td>A session holding a user id the dashboard treats as logged out made <code>/</code> and <code>/login</code> redirect to each other until the browser gave up, with no way to reach the form. Both now decide the same way</td>
-<td></td>
-</tr>
 <tr>
 <td>Zero TTL accepted in the API</td>
 <td>The v2 record create, update, bulk and RRset endpoints accept <code>ttl: 0</code> (do not cache), as the web editor does; only negative values are refused. Integer fields such as <code>ttl</code> and <code>priority</code> reject fractional strings like <code>"0.5"</code> instead of truncating them</td>
@@ -7778,14 +7763,9 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../user-guide/permissions/">Permissions</a></td>
 </tr>
 <tr>
-<td>A zone always keeps an owner</td>
-<td>Removing the last owner is refused wherever it could happen: removing an owner or a group, the quick-remove control, removing several zones from a group at once, and deleting a group that is the last owner. The message names the zone, and the v2 API answers 409 with the same text</td>
+<td>Deleting a group that is a zone's last owner refused</td>
+<td>Deleting a group that is the last owner of a zone is refused. The message names the zone, and the v2 API answers 409 with the same text. Removing the last owner in other ways was already refused in <a href="../v4.5.0/">4.5.0</a></td>
 <td><a href="../../user-guide/permissions/#zones-always-keep-an-owner">Permissions</a></td>
-</tr>
-<tr>
-<td>Record counts and comments on the full zone list</td>
-<td>Asking for every zone at once reported an inflated record count on zones with comments and dropped the zone comment; both now match the paginated list</td>
-<td></td>
 </tr>
 <tr>
 <td>One permission rule for zone actions</td>
@@ -7798,14 +7778,14 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../user-guide/zones/">Zone Management</a></td>
 </tr>
 <tr>
+<td>Warning when a new zone hides parent records</td>
+<td>Creating a zone under an existing one, such as <code>shop.example.com</code> under <code>example.com</code>, lists the parent records the new zone now hides, excluding delegation records. The v2 API returns them as <code>shadowed_records</code> (#1641)</td>
+<td><a href="../../user-guide/zones/#adding-a-master-zone">Zone Management</a></td>
+</tr>
+<tr>
 <td>Unknown SOA-EDIT-API values rejected</td>
 <td>The add-zone form refuses a serial policy value it does not know instead of silently dropping it</td>
 <td><a href="../../configuration/dns-settings/">DNS Settings</a></td>
-</tr>
-<tr>
-<td>Record edit and comment in one request</td>
-<td>On the API backend a record edit and its comment reach PowerDNS in a single call (#1556)</td>
-<td><a href="../../configuration/powerdns-api/">PowerDNS API</a></td>
 </tr>
 <tr>
 <td>API user passwords follow the policy</td>
@@ -7823,29 +7803,14 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../api/overview/">API Overview</a></td>
 </tr>
 <tr>
-<td>Signed zones stay consistent over the API</td>
-<td>Record writes through the API rectify the zone, so DNSSEC ordering data is not left stale</td>
-<td><a href="../../configuration/dnssec/">DNSSEC</a></td>
-</tr>
-<tr>
 <td>Last super admin protected</td>
 <td>The last remaining superuser cannot be deleted, from the web or the API, and record comments are cleaned up when a zone is deleted</td>
 <td><a href="../../user-guide/users-roles/">Users and Roles</a></td>
 </tr>
 <tr>
-<td>API events attributed to the key</td>
-<td>Audit entries for API requests name the API principal, and the SAML logout entry keeps the acting user</td>
-<td><a href="../../configuration/database-logging/">Database Logging</a></td>
-</tr>
-<tr>
 <td>Request validation rules enforced</td>
 <td>Length, list and allowed-value rules on form fields are checked instead of being dropped</td>
 <td></td>
-</tr>
-<tr>
-<td>Zero session timeout rejected</td>
-<td><code>interface.session_timeout = 0</code> is refused at startup instead of logging every user out on their next request</td>
-<td><a href="../../configuration/basic/">Basic Configuration</a></td>
 </tr>
 <tr>
 <td>Zone record counts on signed zones</td>
@@ -7858,8 +7823,8 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../api/overview/">API Overview</a></td>
 </tr>
 <tr>
-<td>CNAME checks ignore case</td>
-<td>CNAME uniqueness and NS/MX target checks compare names case-insensitively on every database, and the internal validation endpoint validates through the configured backend in API mode</td>
+<td>NS and MX target checks ignore case</td>
+<td>NS and MX target checks compare names case-insensitively on every database, and the internal validation endpoint validates through the configured backend in API mode. CNAME checks already did in <a href="../v4.5.0/">4.5.0</a></td>
 <td></td>
 </tr>
 <tr>
@@ -7868,19 +7833,9 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../configuration/api/">API Configuration</a></td>
 </tr>
 <tr>
-<td>Key tags for every DNSSEC key</td>
-<td>The key list shows the key tag for ZSKs as well as KSKs</td>
-<td><a href="../../user-guide/dnssec/">DNSSEC</a></td>
-</tr>
-<tr>
 <td>Ed25519 and Ed448 keys in PKCS#8 v2 form</td>
 <td>The key import reads Ed25519 and Ed448 PEM keys that carry the public key next to the private one, which 4.5.0 refused as unreadable</td>
 <td><a href="../../configuration/dnssec/#importing-a-key">DNSSEC</a></td>
-</tr>
-<tr>
-<td><code>dnssec.debug</code> removed</td>
-<td>The setting and <code>PA_DNSSEC_DEBUG</code> had no effect since the pdnsutil provider was dropped</td>
-<td><a href="../../configuration/dnssec/">DNSSEC</a></td>
 </tr>
 <tr>
 <td>Internals reorganised</td>
@@ -7933,16 +7888,6 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../maintenance/consistency-check/">Database Consistency Check</a></td>
 </tr>
 <tr>
-<td>Opt-in hardening settings</td>
-<td>Three new settings, all off by default so nothing changes on upgrade: <code>security.protect_last_admin_on_edit</code>, <code>security.strict_session_gates</code> and <code>security.password_reset.single_use_claim</code></td>
-<td><a href="../../configuration/security-policies/#opt-in-hardening-v460">Security Policies</a></td>
-</tr>
-<tr>
-<td>Reset token kept out of the log</td>
-<td>Log lines about a password reset link carry a short fingerprint instead of the token</td>
-<td><a href="../../configuration/security-policies/#password-reset">Security Policies</a></td>
-</tr>
-<tr>
 <td>Unverified email links logged</td>
 <td>Linking an OIDC or SAML identity to an existing account by email without an <code>email_verified</code> claim is logged as a warning</td>
 <td><a href="../../configuration/oidc/#requiring-a-verified-address">OIDC Authentication</a></td>
@@ -7961,11 +7906,6 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td>Bulk record requests capped</td>
 <td><code>POST /zones/{id}/records/bulk</code> takes at most <code>api.bulk_max_operations</code> operations (1000 by default) and answers 400 above that</td>
 <td><a href="../../configuration/api/">API Configuration</a></td>
-</tr>
-<tr>
-<td>Health probe token and cache</td>
-<td>Optional <code>health.token</code> makes <code>/api/health</code> answer only requests with a matching <code>X-Health-Token</code> header, and <code>health.cache_seconds</code> reuses the last result, so anonymous scrapes cannot fan out into database and PowerDNS calls. Both off by default</td>
-<td><a href="../../operations/health-checks/#token-and-result-cache-v460">Health Checks</a></td>
 </tr>
 <tr>
 <td>Disabling MFA asks for a code</td>
