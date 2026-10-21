@@ -7710,6 +7710,7 @@
 <li>Databases upgraded from 4.0.0-4.0.4 straight to 4.1.0 or later never ran the 4.0.5 update: <code>records_zone_templ</code> gets its <code>id</code> primary key now.</li>
 <li>MySQL/MariaDB and PostgreSQL: fresh installs have had the <code>idx_zones_domain_id</code> and <code>idx_zones_owner</code> indexes on <code>zones</code> since 4.1.0, but no update added them, so every database installed before 4.1.0 lacks them. The script creates each one unless the column is already indexed under that name or under the 3.x name (<code>zones_domain_id_idx</code>, <code>zones_owner_idx</code>).</li>
 <li>MySQL/MariaDB: <code>zone_change_requests</code> is created with the <code>utf8mb4_unicode_ci</code> collation fresh installs use, instead of the server default.</li>
+<li>SQL backend: zones last changed by an older version can have no row in <code>zones</code> that carries the zone name, and a later switch to the API backend would bring them back as new zones without their owners. The scripts name those rows from the PowerDNS <code>domains</code> table, as the "Zones Without A Stored Name" fix on the database consistency page does. A row that holds an outdated name is still corrected only from that page. On SQLite this step is a separate script, see Step 3.</li>
 </ul>
 <p>The SQLite 4.1.0, 4.2.0 and 4.3.0 update scripts rebuild tables. Run them once only: a second run drops the columns later updates added, and on an API backend database can empty the <code>zones</code> table.</p>
 <p>The migration scripts are:</p>
@@ -7717,6 +7718,7 @@
 <li><code>sql/poweradmin-mysql-update-to-4.6.0.sql</code></li>
 <li><code>sql/poweradmin-pgsql-update-to-4.6.0.sql</code></li>
 <li><code>sql/poweradmin-sqlite-update-to-4.6.0.sql</code></li>
+<li><code>sql/poweradmin-sqlite-update-to-4.6.0-backfill.sql</code> (SQLite with the PowerDNS tables in the same database only)</li>
 </ul>
 <p>Run the script even if you do not plan to use the workflow, so the schema matches the release.</p>
 <h3 id="duplicate-usernames">Duplicate usernames<a class="headerlink" href="#duplicate-usernames" title="Permanent link">¶</a></h3>
@@ -7757,16 +7759,24 @@
 <p><strong>MySQL/MariaDB:</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-mysql-update-to-4.6.0.sql
 </code></pre></div>
-<p><strong>PostgreSQL:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-pgsql-update-to-4.6.0.sql
+<p>If you have <code>pdns_db_name</code> set (PowerDNS tables in a separate database), first open the script and set <code>@pdns_db</code> near the end to that database name:</p>
+<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">SET</span><span class="w"> </span><span class="o">@</span><span class="n">pdns_db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'pdns'</span><span class="p">;</span>
 </code></pre></div>
+<p>Your MySQL user needs <code>SELECT</code> on that database. If the <code>domains</code> table is not found there, the script prints <code>PowerDNS domains table not found, zone name backfill skipped</code> (and a second notice for ownerless rows) and still applies everything else. The zone names only matter if you later switch to the API backend.</p>
+<p><strong>PostgreSQL:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-pgsql-update-to-4.6.0.sql
+</code></pre></div>
+<p>The zone names are read from the <code>domains</code> table on the search path. When it is not there (API backend, or PowerDNS tables in another database), psql shows <code>NOTICE: PowerDNS domains table not found, zone name backfill skipped</code>, and everything else is applied.</p>
 <p><strong>SQLite:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-sqlite-update-to-4.6.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-sqlite-update-to-4.6.0.sql
+</code></pre></div>
+<p>When the database also holds the PowerDNS tables (SQL backend), run the zone name backfill as well. It is safe to run again; on a database without them it stops at <code>no such table: domains</code> and changes nothing:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-sqlite-update-to-4.6.0-backfill.sql
 </code></pre></div>
 <h3 id="step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart<a class="headerlink" href="#step-4-clear-cache-and-restart" title="Permanent link">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>php-fpm
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># or</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>php-fpm
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="c1"># or</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
 </code></pre></div>
 <h2 id="behaviour-changes">Behaviour Changes<a class="headerlink" href="#behaviour-changes" title="Permanent link">¶</a></h2>
 <p>These changes apply as soon as 4.6.0 runs, with no setting to turn on. Check them before upgrading.</p>
@@ -7788,15 +7798,15 @@
 <h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">¶</a></h2>
 <h3 id="change-approval-workflow">Change Approval Workflow<a class="headerlink" href="#change-approval-workflow" title="Permanent link">¶</a></h3>
 <p>Off by default. To turn it on:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="x">return [</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="x">    'approval' =&gt; [</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="x">        'enabled' =&gt; true,</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="x">        'require_review_for_all' =&gt; false,</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="x">    ],</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="x">    'notifications' =&gt; [</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="x">        'change_request_enabled' =&gt; false, // mail reviewers and requesters; needs mail.enabled</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="x">    ],</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="x">];</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="x">return [</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="x">    'approval' =&gt; [</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="x">        'enabled' =&gt; true,</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="x">        'require_review_for_all' =&gt; false,</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="x">    ],</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="x">    'notifications' =&gt; [</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="x">        'change_request_enabled' =&gt; false, // mail reviewers and requesters; needs mail.enabled</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="x">    ],</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="x">];</span>
 </code></pre></div>
 <p>Then grant <code>zone_change_request_*</code> to the users who should file requests and <code>zone_change_approve_*</code> to the reviewers. Reviewers also need the edit permission for the zone; superusers review everything. With <code>require_review_for_all</code>, every change goes through review, editors and administrators included.</p>
 <p>In Docker the variables are <code>PA_APPROVAL_ENABLED</code>, <code>PA_APPROVAL_REQUIRE_REVIEW_FOR_ALL</code>, <code>PA_APPROVAL_ALLOW_SELF_APPROVAL</code> and <code>PA_NOTIFICATION_CHANGE_REQUEST</code>. Set <code>approval.allow_self_approval</code> to <code>false</code> if a requester must not approve their own request.</p>
