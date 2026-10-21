@@ -107,6 +107,39 @@
 lexically, and the ORDER BY of API lists sorted in SQL.</p></p>                    </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                            private
+                                                                                IPV4_ARPA_SUFFIX
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                            private
+                                                                                IP_LABELS
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+                    <tr>
+                <td>
+                                                            private
+                                                                                NON_NUMERIC_LABEL
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -135,6 +168,70 @@ name column is not called name (e.g. zones.zone_name in API mode).</p></p>      
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    static&nbsp;bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isIpv4ReverseZone">isIpv4ReverseZone</a>(string $zoneName)
+        
+                                            <p><p>Tell whether a zone is an IPv4 reverse zone, whose records sort by IP address.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_sortsByAddress">sortsByAddress</a>(string $zoneName)
+        
+                                            <p><p>Tell whether a zone's records sort by IP address: an IPv4 reverse zone whose name holds
+only plain DNS characters, since the name goes into the SQL text. SQL and API mode both
+gate on this, so they fall back to the natural order together.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_reverseZoneIpPositions">reverseZoneIpPositions</a>(string $zoneName)
+        
+                                            <p><p>How many address labels a record name can still carry below the zone: 3 under
+192.in-addr.arpa, 1 under 2.168.192.in-addr.arpa. Always at least one, so a
+classless zone such as 0/25.2.0.192.in-addr.arpa still sorts its host labels.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getReverseRecordNameSortOrder">getReverseRecordNameSortOrder</a>(string $table, string $dbType, string $direction = &#039;ASC&#039;, string $zoneName = &#039;in-addr.arpa&#039;)
+        
+                                            <p><p>ORDER BY clause that sorts the record names of an in-addr.arpa zone in IP order.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_reverseRecordNameKey">reverseRecordNameKey</a>(string $name, string $zoneName = &#039;in-addr.arpa&#039;)
+        
+                                            <p><p>The PHP twin of the reverse record order, for API mode where records are sorted in PHP.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_compareReverseRecordNames">compareReverseRecordNames</a>(string $a, string $b, string $zoneName = &#039;in-addr.arpa&#039;)
+        
+                                            <p><p>Compare two record names of an in-addr.arpa zone in IP order, as the SQL order does.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     static&nbsp;string
                 </div>
                 <div class="col-md-8">
@@ -151,7 +248,7 @@ name column is not called name (e.g. zones.zone_name in API mode).</p></p>      
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_getNaturalSortOrder">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/SortHelper.php#L38">at line 38</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/SortHelper.php#L42">at line 42</a></div>
         <code>        static            string
     <strong>getNaturalSortOrder</strong>(string $table, string $dbType, string $direction = &#039;ASC&#039;)
         </code>
@@ -204,7 +301,7 @@ name column is not called name (e.g. zones.zone_name in API mode).</p></p>      
             </div>
                     <div class="method-item">
                     <h3 id="method_naturalSortOrder">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/SortHelper.php#L47">at line 47</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/SortHelper.php#L51">at line 51</a></div>
         <code>        static            string
     <strong>naturalSortOrder</strong>(string $nameField, string $dbType, string $direction = &#039;ASC&#039;)
         </code>
@@ -257,8 +354,304 @@ name column is not called name (e.g. zones.zone_name in API mode).</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_isIpv4ReverseZone">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/SortHelper.php#L68">at line 68</a></div>
+        <code>        static            bool
+    <strong>isIpv4ReverseZone</strong>(string $zoneName)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Tell whether a zone is an IPv4 reverse zone, whose records sort by IP address.</p></p>                <p><p>ip6.arpa is left out: SQLite has no REVERSE() to build the nibble key.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$zoneName</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_sortsByAddress">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/SortHelper.php#L80">at line 80</a></div>
+        <code>        static            bool
+    <strong>sortsByAddress</strong>(string $zoneName)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Tell whether a zone's records sort by IP address: an IPv4 reverse zone whose name holds
+only plain DNS characters, since the name goes into the SQL text. SQL and API mode both
+gate on this, so they fall back to the natural order together.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$zoneName</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_reverseZoneIpPositions">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/SortHelper.php#L93">at line 93</a></div>
+        <code>        static            int
+    <strong>reverseZoneIpPositions</strong>(string $zoneName)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>How many address labels a record name can still carry below the zone: 3 under
+192.in-addr.arpa, 1 under 2.168.192.in-addr.arpa. Always at least one, so a
+classless zone such as 0/25.2.0.192.in-addr.arpa still sorts its host labels.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$zoneName</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getReverseRecordNameSortOrder">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/SortHelper.php#L114">at line 114</a></div>
+        <code>        static            string
+    <strong>getReverseRecordNameSortOrder</strong>(string $table, string $dbType, string $direction = &#039;ASC&#039;, string $zoneName = &#039;in-addr.arpa&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>ORDER BY clause that sorts the record names of an in-addr.arpa zone in IP order.</p></p>                <p><p>The zone's own labels are the same on every record, so they are cut off and the
+labels below it are compared as numbers, right to left: 10.0.2.5 comes before
+10.0.10.5. The apex (nothing left) comes first, labels that are not numbers come
+last, and the natural name sort breaks ties. Evaluated per row, so it is a filesort,
+as the natural sort already is.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$table</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$dbType</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$direction</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$zoneName</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_reverseRecordNameKey">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/SortHelper.php#L139">at line 139</a></div>
+        <code>        static            array
+    <strong>reverseRecordNameKey</strong>(string $name, string $zoneName = &#039;in-addr.arpa&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The PHP twin of the reverse record order, for API mode where records are sorted in PHP.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$zoneName</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>-1 for a missing label, 1000000 for a label that is not a number</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_compareReverseRecordNames">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/SortHelper.php#L163">at line 163</a></div>
+        <code>        static            int
+    <strong>compareReverseRecordNames</strong>(string $a, string $b, string $zoneName = &#039;in-addr.arpa&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Compare two record names of an in-addr.arpa zone in IP order, as the SQL order does.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$a</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$b</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$zoneName</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_orderBy">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/SortHelper.php#L70">at line 70</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/SortHelper.php#L223">at line 223</a></div>
         <code>        static            string
     <strong>orderBy</strong>(array $sort, array $columns, string $tiebreaker, string $default)
         </code>
@@ -321,7 +714,7 @@ repeat; without sort keys the list keeps its default order.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/4d22f7d" rel="noreferrer" target="_blank">commit 4d22f7d,</a> built 2026-10-21 14:03 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/2efa4f0" rel="noreferrer" target="_blank">commit 2efa4f0,</a> built 2026-10-21 19:33 UTC.</div></div>
     </div>
     </body>
 
