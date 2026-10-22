@@ -7566,6 +7566,16 @@ mails it. It is built for cron:</p>
 <p>A daily digest at 06:00 looks like this:</p>
 <div class="language-text highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>0 6 * * * php /var/www/poweradmin/addons/send_record_changes_email.php --to=ops@example.com --subject="DNS changes, last 24h"
 </code></pre></div>
+<p>With Docker, the script is in the image from 4.5.1 at <code>/app/addons/</code>. Run it from the host's cron
+through <code>docker exec</code>, as <code>www-data</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>0 6 * * * docker exec -u www-data poweradmin php /app/addons/send_record_changes_email.php --to=ops@example.com --subject="DNS changes, last 24h"
+</code></pre></div>
+<p>If the configuration path comes from <code>PA_CONFIG_PATH__FILE</code>, <code>docker exec</code> does not see it, so
+pass it on the command line: <code>docker exec -u www-data -e PA_CONFIG_PATH=/config/settings.php ...</code>.
+The image has no local mail server, so use <code>PA_MAIL_TRANSPORT=smtp</code>.</p>
+<p>On 4.5.0 the image does not include it; mount the file from the
+<a href="https://github.com/poweradmin/poweradmin/blob/release/4.5.x/addons/send_record_changes_email.php">source tree</a>
+to <code>/app/addons/send_record_changes_email.php</code> until you upgrade.</p>
 <p>Mail delivery uses the configured transport, so set that up first - see
 <a href="../../configuration/mail/">Mail Configuration</a>.</p>
 <h2 id="related-pages">Related pages<a class="headerlink" href="#related-pages" title="Permanent link">¶</a></h2>
