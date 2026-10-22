@@ -2504,6 +2504,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#known-issue-lua-records-refused-on-powerdns-auth-51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Issue: LUA Records Refused on PowerDNS Auth 5.1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#record-comments-on-lmdb" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7735,6 +7746,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#known-issue-lua-records-refused-on-powerdns-auth-51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Issue: LUA Records Refused on PowerDNS Auth 5.1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#record-comments-on-lmdb" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7918,7 +7940,7 @@ possible without administrator rights.</p>
 <p>The same data is available to monitoring systems as <code>GET /api/v2/server/status</code>, which uses
 Poweradmin's API keys and permissions instead of the PowerDNS API key. See
 <a href="../../api/endpoints/#server-status-v450">API Endpoints</a>.</p>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/pdns-status.png" data-desc-position="bottom"><img alt="PowerDNS Server Status" src="../../screenshots/pdns-status.png"></a></p>
 <h3 id="new-zones-and-the-powerdns-zone-cache">New Zones and the PowerDNS Zone Cache<a class="headerlink" href="#new-zones-and-the-powerdns-zone-cache" title="Permanent link">¶</a></h3>
 <p>PowerDNS 4.5 and later keeps a list of the zones it serves in memory and reloads it from the database every
 <code>zone-cache-refresh-interval</code> seconds (300 by default). In SQL mode Poweradmin writes new zones straight to the
@@ -7931,7 +7953,7 @@ failed flush is logged and does not fail the save. In API backend mode PowerDNS 
 <code>zone-cache-refresh-interval</code> in <code>pdns.conf</code>, for example to 60.</p>
 <h2 id="api-backend-mode-v430">API Backend Mode (v4.3.0+)<a class="headerlink" href="#api-backend-mode-v430" title="Permanent link">¶</a></h2>
 <p>API backend mode eliminates the need for Poweradmin to access the PowerDNS database. All DNS operations go through the PowerDNS REST API.</p>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/zone-list-api-backend.png" data-desc-position="bottom"><img alt="Zone list in API backend mode" src="../../screenshots/zone-list-api-backend.png"></a></p>
 <h3 id="when-to-use-api-backend-mode">When to Use API Backend Mode<a class="headerlink" href="#when-to-use-api-backend-mode" title="Permanent link">¶</a></h3>
 <ul>
 <li>PowerDNS database is not accessible from the Poweradmin server</li>
@@ -8102,15 +8124,29 @@ save still goes ahead.</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>pdnsutil<span class="w"> </span>rrset<span class="w"> </span>replace<span class="w"> </span>example.com.<span class="w"> </span>txt.example.com.<span class="w"> </span>TXT<span class="w"> </span><span class="m">3600</span><span class="w"> </span><span class="s1">'"a\\b"'</span>
 </code></pre></div>
 <p>PowerDNS Auth 5.1.5 does not contain the fix yet.</p>
+<h3 id="known-issue-lua-records-refused-on-powerdns-auth-51">Known Issue: LUA Records Refused on PowerDNS Auth 5.1<a class="headerlink" href="#known-issue-lua-records-refused-on-powerdns-auth-51" title="Permanent link">¶</a></h3>
+<p>PowerDNS Auth 5.1.0 added <code>enable-lua-record-updates</code>, which defaults to <code>no</code>. While it is off,
+PowerDNS refuses to create, update or delete LUA records over its REST API (and through AXFR and
+DNS UPDATE). In API backend mode Poweradmin therefore cannot add, edit or delete LUA records, and
+creating a zone from a template that contains LUA records fails. The SQL backend writes to the
+database directly and is not affected.</p>
+<p>The web record forms show the PowerDNS reason. The API v2 does not yet
+(poweradmin/poweradmin#1779): it answers <code>500</code> with "Failed to create record" (or "Failed to
+update record" / "Failed to delete record"), and creating a zone from such a template fails with
+"Failed to create LUA record for zone.". The PowerDNS message "update of Lua records is not
+allowed" is in the Poweradmin log. To allow these writes, set this in <code>pdns.conf</code> and restart
+PowerDNS:</p>
+<div class="language-ini highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="na">enable-lua-record-updates</span><span class="o">=</span><span class="s">yes</span>
+</code></pre></div>
 <h3 id="record-comments-on-lmdb">Record Comments on LMDB<a class="headerlink" href="#record-comments-on-lmdb" title="Permanent link">¶</a></h3>
 <p>Before PowerDNS Auth 5.1.5, the LMDB backend kept a zone's or RRset's comments after the zone or
 RRset was deleted. 5.1.5 deletes them together (PowerDNS pull request 18111).</p>
 <h3 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">¶</a></h3>
 <p>For Docker deployments, set the backend via environment variable:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">PA_DNS_BACKEND</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">PA_PDNS_API_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://powerdns:8081</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">PA_PDNS_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">your-api-key</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">PA_DNS_BACKEND</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">PA_PDNS_API_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://powerdns:8081</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">PA_PDNS_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">your-api-key</span>
 </code></pre></div>
 <h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">¶</a></h2>
 <ul>

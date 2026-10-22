@@ -7886,7 +7886,7 @@
 
 <h1 id="zone-management">Zone Management<a class="headerlink" href="#zone-management" title="Permanent link">¶</a></h1>
 <p>Zones are the core objects in Poweradmin. Each zone corresponds to a DNS domain (or reverse network) managed by PowerDNS. This guide covers creating, editing, and managing zones.</p>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/zone-list.png" data-desc-position="bottom"><img alt="Zone List" src="../../screenshots/zone-list.png"></a></p>
 <h2 id="zone-types">Zone Types<a class="headerlink" href="#zone-types" title="Permanent link">¶</a></h2>
 <p>Choose the type based on your DNS architecture:</p>
 <ul>
@@ -7908,13 +7908,13 @@
 <p>From the <strong>producer</strong> side, open the Producer zone and use the <strong>Catalog Members</strong> button on the zone
 editor. The page lists the zones the catalog currently publishes and lets you add or remove one at a
 time.</p>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/catalog-members.png" data-desc-position="bottom"><img alt="Catalog Members page" src="../../screenshots/catalog-members.png"></a></p>
 <p>From the <strong>member</strong> side, open the zone and use the <strong>Catalog</strong> selector in the <strong>Zone Configuration</strong> block.
 It offers every producer zone you are allowed to manage, plus <code>none</code> to take the zone out of its
 catalog. If the zone is already in a catalog whose producer this installation does not hold, the
 selector shows that catalog name marked <code>not managed here</code> and leaves it untouched unless you pick
 something else.</p>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/catalog-member-selector.png" data-desc-position="bottom"><img alt="Catalog selector on a member zone" src="../../screenshots/catalog-member-selector.png"></a></p>
 <p>Two limits come from PowerDNS itself:</p>
 <ul>
 <li>Only <strong>Primary</strong> (Master) and <strong>Producer</strong> zones can be members. PowerDNS serves a catalog from
@@ -7938,8 +7938,8 @@ and template, and every change is written to the audit log.</p>
 <p>To change the records in a read-only zone, edit them on the primary server - the changes replicate automatically. You can still change the zone's own configuration (such as the Secondary master IP) and delete the zone itself.</p>
 <p>From 4.6.0, when Poweradmin can reach the <a href="../../configuration/powerdns-api/">PowerDNS API</a> (the API backend, or the SQL backend with <code>pdns_api.url</code> and <code>pdns_api.key</code> set), the edit page of a Secondary zone offers <strong>Retrieve from primary</strong> next to the primary IP. It asks PowerDNS to transfer the zone from its primary right away instead of waiting for the next SOA refresh, and reports whether the request was accepted. The button needs the zone meta edit permission. Without the PowerDNS API there is no way to trigger a transfer, so the button is not shown and PowerDNS pulls on its own schedule.</p>
 <p>The edit page of a Master or Producer zone offers <strong>Send NOTIFY</strong> in the same place, under the same conditions: the PowerDNS API and the zone meta edit permission. It asks PowerDNS to send a NOTIFY to the zone's secondaries and ALSO-NOTIFY targets now instead of waiting for its next check. PowerDNS accepts the request even when it has nobody to notify, so a success message means it was asked, not that a secondary transferred the zone.</p>
-<p></p>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/retrieve-from-primary.png" data-desc-position="bottom"><img alt="Retrieve from primary" src="../../screenshots/retrieve-from-primary.png"></a></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/send-notify.png" data-desc-position="bottom"><img alt="Send NOTIFY" src="../../screenshots/send-notify.png"></a></p>
 <h2 id="notify-status-in-the-zone-list">NOTIFY Status in the Zone List<a class="headerlink" href="#notify-status-in-the-zone-list" title="Permanent link">¶</a></h2>
 <p>From 4.5.0, with the <a href="../../configuration/powerdns-api/#api-backend-mode-v430">API backend</a>, the <strong>Serial</strong> column of the zone lists shows whether PowerDNS has sent a NOTIFY for the current serial of a Master or Producer zone:</p>
 <ul>
@@ -7947,13 +7947,13 @@ and template, and every change is written to the audit log.</p>
 <li>A green cloud with a check mark means PowerDNS has sent a NOTIFY for the current serial.</li>
 </ul>
 <p>Hovering the icon shows the serial it refers to. The Serial column is off by default; turn it on with <code>interface.display_serial_in_zone_list</code> or the <strong>Zone serial numbers</strong> <a href="../user-preferences/#zone-options">preference</a>. Other zone kinds and zones with serial 0 show no icon. The SQL backend has no NOTIFY status to show.</p>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/zone-list-notify-pending.png" data-desc-position="bottom"><img alt="NOTIFY status in the zone list" src="../../screenshots/zone-list-notify-pending.png"></a></p>
 <h2 id="signed-serial-in-the-zone-list">Signed Serial in the Zone List<a class="headerlink" href="#signed-serial-in-the-zone-list" title="Permanent link">¶</a></h2>
 <p>PowerDNS can serve a signed zone with a different serial from the one stored, depending on the zone's <code>SOA-EDIT</code> <a href="#zone-metadata">metadata</a>. From 4.5.0, with the API backend and <code>interface.display_signed_serial_in_zone_list</code> set to <code>true</code>, the zone lists add a <strong>Signed serial</strong> column with the serial PowerDNS serves. It is filled for DNSSEC-signed zones only, since unsigned zones serve the stored serial. The setting is off by default and has no effect with the SQL backend.</p>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/zone-list-signed-serial.png" data-desc-position="bottom"><img alt="Signed serial column" src="../../screenshots/zone-list-signed-serial.png"></a></p>
 <h2 id="creating-zones">Creating Zones<a class="headerlink" href="#creating-zones" title="Permanent link">¶</a></h2>
 <h3 id="adding-a-master-zone">Adding a Master Zone<a class="headerlink" href="#adding-a-master-zone" title="Permanent link">¶</a></h3>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/zone-add-master.png" data-desc-position="bottom"><img alt="Add Master Zone" src="../../screenshots/zone-add-master.png"></a></p>
 <ol>
 <li>Navigate to <strong>Zones</strong> and click <strong>Add master zone</strong></li>
 <li>Enter the <strong>Zone name</strong> (e.g., <code>example.com</code>)</li>
@@ -7964,7 +7964,7 @@ and template, and every change is written to the audit log.</p>
 </ol>
 <p>The zone is created with the records defined in the selected template. If no template is chosen, only a SOA record is created.</p>
 <p>From 4.6.0, Poweradmin warns when a new zone hides records in its parent zone. Creating <code>shop.example.com</code> while <code>example.com</code> still holds <code>www.shop.example.com</code> means PowerDNS answers for that name from the new zone, so the parent's record is no longer served. The zone is still created; the zone list then shows a warning naming the parent zone and up to five of the hidden records. Add them to the new zone if they are needed, then delete them from the parent. Delegation records (NS and DS for the new zone and the glue for its name servers) are not reported. The warning is shown only to users who may view the parent zone, and also appears for slave zones, bulk registration and zone imports. The v2 API returns the full list, with the parent zone name, as <code>shadowed_records</code> in the <code>POST /zones</code> response.</p>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/parent-zone-warning.png" data-desc-position="bottom"><img alt="Parent zone warning" src="../../screenshots/parent-zone-warning.png"></a></p>
 <h3 id="adding-a-slave-zone">Adding a Slave Zone<a class="headerlink" href="#adding-a-slave-zone" title="Permanent link">¶</a></h3>
 <ol>
 <li>Navigate to <strong>Zones</strong> and click <strong>Add slave zone</strong></li>
@@ -7977,7 +7977,7 @@ and template, and every change is written to the audit log.</p>
 <h3 id="zone-templates">Zone Templates<a class="headerlink" href="#zone-templates" title="Permanent link">¶</a></h3>
 <p>Zone templates let you define a standard set of records that are added when creating a new zone. This is useful for ensuring every zone starts with consistent SOA values, nameserver records, and common entries like MX or SPF records. See <a href="../dns-templates/">DNS Templates</a> for details on creating and managing templates.</p>
 <h2 id="zone-editor">Zone Editor<a class="headerlink" href="#zone-editor" title="Permanent link">¶</a></h2>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/zone-editor.png" data-desc-position="bottom"><img alt="Zone Editor" src="../../screenshots/zone-editor.png"></a></p>
 <p>The zone editor is where you view and modify a zone's DNS records. It shows all records in a table with columns for name, type, content, TTL, and priority.</p>
 <h3 id="editing-records">Editing Records<a class="headerlink" href="#editing-records" title="Permanent link">¶</a></h3>
 <p>Records are edited in the table itself:</p>
@@ -7987,7 +7987,7 @@ and template, and every change is written to the audit log.</p>
 </ul>
 <p>Enabling <code>interface.show_record_edit_button</code> adds an <strong>Actions</strong> column with a per-record edit button that opens the record on its own page. It is off by default, as is <code>interface.show_record_delete_button</code>, so a default install has no Actions column.</p>
 <p>With <code>interface.show_record_comments</code> on, a record that has a comment shows an info icon next to it from 4.5.0. Hovering the icon shows who last edited the comment and when.</p>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/record-comment-author.png" data-desc-position="bottom"><img alt="Comment author and time" src="../../screenshots/record-comment-author.png"></a></p>
 <h3 id="editing-the-soa-record">Editing the SOA Record<a class="headerlink" href="#editing-the-soa-record" title="Permanent link">¶</a></h3>
 <p>From 4.6.0 the SOA record has its own editor. Tick the SOA row and click <strong>Edit selected</strong>,
 or use its edit button when the Actions column is on. The record page then shows the SOA
@@ -8005,7 +8005,7 @@ fields separately instead of one content string:</p>
   placeholder (<code>[SERIAL]</code>, <code>[UNIXTIME]</code>, <code>[COUNTER]</code>). <strong>Edit as fields</strong> switches back once
   the string has seven fields again.</li>
 </ul>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/soa-editor.png" data-desc-position="bottom"><img alt="SOA record editor" src="../../screenshots/soa-editor.png"></a></p>
 <p>An SOA record that does not have seven fields, or a browser with JavaScript off, gets the
 plain content field.</p>
 <p>In the record list the SOA row keeps its single content field. Its <strong>Details</strong> toggle shows the
@@ -8040,7 +8040,7 @@ shown. Kinds not in the built-in list can be added through the <strong>Custom</s
 PowerDNS serves for a signed zone, and <code>SOA-EDIT-API</code> how PowerDNS updates the serial on API
 changes. From 4.5.0, <code>dns.soa_edit_options</code> and <code>dns.soa_edit_api_options</code> limit the values these selectors
 offer; see <a href="../../configuration/dns-settings/">DNS Settings</a>.</p>
-<p></p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/zone-metadata-serial-policy.png" data-desc-position="bottom"><img alt="Serial policy in the metadata editor" src="../../screenshots/zone-metadata-serial-policy.png"></a></p>
 <p>Some kinds accept several values - <code>ALLOW-AXFR-FROM</code>, <code>ALLOW-DNSUPDATE-FROM</code>, <code>ALSO-NOTIFY</code>,
 <code>TSIG-ALLOW-AXFR</code>, <code>TSIG-ALLOW-DNSUPDATE</code>, <code>GSS-ALLOW-AXFR-PRINCIPAL</code> and <code>PUBLISH-CDS</code>. Add
 one row per value. Every other kind holds a single value.</p>

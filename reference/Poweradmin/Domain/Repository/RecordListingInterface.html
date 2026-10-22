@@ -116,9 +116,21 @@
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getRecordsByDomainId">getRecordsByDomainId</a>(int $domainId, string|null $recordType = null)
+                    <a href="#method_getRecordsByDomainId">getRecordsByDomainId</a>(int $domainId, string|null $recordType = null, bool $withComments = false)
         
                                             <p><p>Get records by domain ID</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getCommentForRecord">getCommentForRecord</a>(int|string $recordId, int $domainId, string $name, string $type)
+        
+                                            <p><p>The comment shown for one record: the SQL backend gives the comment linked to the
+record, else the unlinked comment for its name and type; the API backend gives
+the RRset comment, shared by every record in the set.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -189,9 +201,9 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_getRecordsByDomainId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L40">at line 40</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L41">at line 41</a></div>
         <code>                    array
-    <strong>getRecordsByDomainId</strong>(int $domainId, string|null $recordType = null)
+    <strong>getRecordsByDomainId</strong>(int $domainId, string|null $recordType = null, bool $withComments = false)
         </code>
     </h3>
     <div class="details">    
@@ -216,6 +228,11 @@
                 <td>$recordType</td>
                 <td><p>Optional record type filter</p></td>
             </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$withComments</td>
+                <td><p>Add a <code>comment</code> key (string or null) to every row, resolved in one lookup</p></td>
+            </tr>
             </table>
 
             
@@ -236,8 +253,68 @@
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_getCommentForRecord">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L54">at line 54</a></div>
+        <code>                    string|null
+    <strong>getCommentForRecord</strong>(int|string $recordId, int $domainId, string $name, string $type)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The comment shown for one record: the SQL backend gives the comment linked to the
+record, else the unlinked comment for its name and type; the API backend gives
+the RRset comment, shared by every record in the set.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int|string</td>
+                <td>$recordId</td>
+                <td><p>Record ID (int for SQL mode, encoded string for API mode)</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td><p>Domain ID</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td><p>Fully qualified record name, no trailing dot</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$type</td>
+                <td><p>Record type</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|null</td>
+            <td><p>The comment, null when there is none</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_getRecordsFromDomainId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L56">at line 56</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L70">at line 70</a></div>
         <code>                    array
     <strong>getRecordsFromDomainId</strong>(int $id, int $rowstart = 0, int $rowamount = Constants::DEFAULT_MAX_ROWS, string $sortby = &#039;name&#039;, string $sortDirection = &#039;ASC&#039;, bool $fetchComments = false)
         </code>
@@ -305,7 +382,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getFilteredRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L72">at line 72</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L86">at line 86</a></div>
         <code>                    array
     <strong>getFilteredRecords</strong>(int $zone_id, int $row_start, int $row_amount, string $sort_by, string $sort_direction, bool $include_comments, string $search_term = &#039;&#039;, string $type_filter = &#039;&#039;, string $content_filter = &#039;&#039;)
         </code>
@@ -388,7 +465,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getFilteredRecordCount">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L94">at line 94</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L108">at line 108</a></div>
         <code>                    int
     <strong>getFilteredRecordCount</strong>(int $zone_id, bool $include_comments, string $search_term = &#039;&#039;, string $type_filter = &#039;&#039;, string $content_filter = &#039;&#039;)
         </code>
@@ -451,7 +528,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getRRSetRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L110">at line 110</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L124">at line 124</a></div>
         <code>                    array
     <strong>getRRSetRecords</strong>(int $domainId, string $name, string $type)
         </code>
@@ -504,7 +581,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_countZoneRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L119">at line 119</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L133">at line 133</a></div>
         <code>                    int
     <strong>countZoneRecords</strong>(int $zone_id)
         </code>
@@ -547,7 +624,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getNewRecordId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L130">at line 130</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Repository/RecordListingInterface.php#L144">at line 144</a></div>
         <code>                    int|string|null
     <strong>getNewRecordId</strong>(int $domainId, string $name, string $type, string $content)
         </code>
@@ -607,7 +684,7 @@
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/3251e71" rel="noreferrer" target="_blank">commit 3251e71,</a> built 2026-10-22 06:09 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/c9fd220" rel="noreferrer" target="_blank">commit c9fd220,</a> built 2026-10-22 20:27 UTC.</div></div>
     </div>
     </body>
 

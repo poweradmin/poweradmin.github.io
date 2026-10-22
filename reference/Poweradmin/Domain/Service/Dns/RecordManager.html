@@ -149,7 +149,7 @@
                     <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_addRecordGetId">addRecordGetId</a>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null)
+                    <a href="#method_addRecordGetId">addRecordGetId</a>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false)
         
                                             <p><p>Add a record and return its ID</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -181,7 +181,7 @@ control characters and capped; the caller escapes it on output like any message.
                     <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_editRecord">editRecord</a>(array $record, bool $finalizeZone = true, array|null $comment = null)
+                    <a href="#method_editRecord">editRecord</a>(array $record, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false)
         
                                             <p><p>Edit a record</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -191,7 +191,7 @@ control characters and capped; the caller escapes it on output like any message.
                     <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_deleteRecord">deleteRecord</a>(int|string $rid, bool $finalizeZone = true)
+                    <a href="#method_deleteRecord">deleteRecord</a>(int|string $rid, bool $finalizeZone = true, bool $dryRun = false)
         
                                             <p><p>Delete a record by a given record id</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -395,9 +395,9 @@ rectifies from committed rows.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_addRecordGetId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L252">at line 252</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L253">at line 253</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
-    <strong>addRecordGetId</strong>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null)
+    <strong>addRecordGetId</strong>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false)
         </code>
     </h3>
     <div class="details">    
@@ -459,6 +459,11 @@ returning the new record's ID for use with per-record comments.</p></p>
                 <td><p>RRset comment ['content' =&gt; string, 'account' =&gt; string]; the API
 backend writes it in the same PATCH as the record, SQL ignores it</p></td>
             </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$dryRun</td>
+                <td><p>Run every check and stop before anything is written</p></td>
+            </tr>
             </table>
 
             
@@ -480,7 +485,7 @@ backend writes it in the same PATCH as the record, SQL ignores it</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_backendFailureMessage">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L378">at line 378</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L383">at line 383</a></div>
         <code>        static            string
     <strong>backendFailureMessage</strong>(string $message, string|null $reason)
         </code>
@@ -530,7 +535,7 @@ control characters and capped; the caller escapes it on output like any message.
             </div>
                     <div class="method-item">
                     <h3 id="method_recordFieldsDiffer">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L401">at line 401</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L406">at line 406</a></div>
         <code>        static            bool
     <strong>recordFieldsDiffer</strong>(array $before, array $after)
         </code>
@@ -578,9 +583,9 @@ control characters and capped; the caller escapes it on output like any message.
             </div>
                     <div class="method-item">
                     <h3 id="method_editRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L419">at line 419</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L424">at line 424</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
-    <strong>editRecord</strong>(array $record, bool $finalizeZone = true, array|null $comment = null)
+    <strong>editRecord</strong>(array $record, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false)
         </code>
     </h3>
     <div class="details">    
@@ -611,6 +616,11 @@ control characters and capped; the caller escapes it on output like any message.
                 <td><p>RRset comment ['content' =&gt; string, 'account' =&gt; string] to
 store with the record where the backend keeps them together</p></td>
             </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$dryRun</td>
+                <td><p>Run every check and stop before anything is written</p></td>
+            </tr>
             </table>
 
             
@@ -632,9 +642,9 @@ store with the record where the backend keeps them together</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L549">at line 549</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L558">at line 558</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
-    <strong>deleteRecord</strong>(int|string $rid, bool $finalizeZone = true)
+    <strong>deleteRecord</strong>(int|string $rid, bool $finalizeZone = true, bool $dryRun = false)
         </code>
     </h3>
     <div class="details">    
@@ -659,6 +669,11 @@ store with the record where the backend keeps them together</p></td>
                 <td>$finalizeZone</td>
                 <td><p>Bump the serial and rectify; a batch caller does that once itself</p></td>
             </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$dryRun</td>
+                <td><p>Run every check and stop before anything is written</p></td>
+            </tr>
             </table>
 
             
@@ -680,7 +695,7 @@ store with the record where the backend keeps them together</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_finalizeZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L605">at line 605</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L618">at line 618</a></div>
         <code>                    void
     <strong>finalizeZone</strong>(int $zoneId, bool $bumpSerial = true)
         </code>
@@ -732,7 +747,7 @@ rectifies from committed rows.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_editZoneComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L646">at line 646</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L659">at line 659</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>editZoneComment</strong>(int $zone_id, string $comment)
         </code>
@@ -782,7 +797,7 @@ rectifies from committed rows.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/3251e71" rel="noreferrer" target="_blank">commit 3251e71,</a> built 2026-10-22 06:09 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/c9fd220" rel="noreferrer" target="_blank">commit c9fd220,</a> built 2026-10-22 20:27 UTC.</div></div>
     </div>
     </body>
 

@@ -7078,6 +7078,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Records">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#record-comments-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Record comments (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bulk operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -7607,6 +7635,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Records">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#record-comments-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Record comments (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bulk operations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -8148,7 +8204,7 @@ zone are routed through review, the record write endpoints below answer <code>40
 <tr>
 <td><code>POST</code></td>
 <td><code>/zones/{id}/records/bulk</code></td>
-<td>Bulk create records</td>
+<td>Bulk create, update and delete records</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
@@ -8172,6 +8228,43 @@ is accepted (do not cache); negative values and fractional strings such as
 from a primary. Create, update, delete, and bulk-write calls against such a
 zone return <code>403</code> with a message stating the zone is read-only (rather than a
 permission error). Edit the records on the primary instead.</p>
+<h4 id="record-comments-v460">Record comments (v4.6.0+)<a class="headerlink" href="#record-comments-v460" title="Permanent link">¶</a></h4>
+<p>Record responses (list, single <code>GET</code>, <code>POST</code> and <code>PUT</code>) include <code>comment</code>, a string or <code>null</code>.
+<code>GET /zones/{id}/records</code> accepts a <code>comment</code> filter, a case-insensitive substring match like
+<code>name</code> and <code>content</code>. Records without a comment never match it, and <code>q</code> does not search comments.</p>
+<p>With the SQL backend the value is the record's linked comment, else the comment stored for its
+name and type. In API backend mode it is the RRset comment, so every record in an RRset returns
+the same one. A <code>PUT</code> without <code>comment</code> leaves the stored comment alone; an empty string clears it.</p>
+<h4 id="bulk-operations">Bulk operations<a class="headerlink" href="#bulk-operations" title="Permanent link">¶</a></h4>
+<p><code>POST /zones/{id}/records/bulk</code> takes an <code>operations</code> array. Each operation has an <code>action</code> of
+<code>create</code>, <code>update</code> or <code>delete</code>, plus the fields of the matching single-record call (bulk
+<code>update</code> has no <code>update_ptr</code>).</p>
+<ul>
+<li><code>comment</code> on a <code>create</code> or <code>update</code> operation sets the record comment. The top-level <code>comment</code>
+  is the change reason; on its own it satisfies the require-reason setting.</li>
+<li><code>create_ptr</code> on a <code>create</code> operation (A and AAAA records only) also creates the PTR record in
+  the matching reverse zone. A PTR that cannot be created does not fail the batch; the reason is
+  added to <code>data.warnings</code>, which is always present and empty when there is nothing to report.</li>
+<li>With the SQL backend the batch is one transaction and the PTR records roll back with it. In API
+  backend mode there is no transaction: operations already applied, PTR records included, stay
+  when a later operation fails.</li>
+</ul>
+<p>Set <code>dry_run</code> to <code>true</code> at the top level to run every check without writing anything. The zone
+scope, permissions, change-approval refusal, operation cap and required reason apply as for a real
+call, and the summary comes back with <code>"dry_run": true</code>. No records, comments, PTR records, serial
+change, log entry or change request is kept.</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">     </span>-d<span class="w"> </span><span class="s1">'{"dry_run": true, "comment": "move the web tier", "operations": [</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="s1">           {"action": "create", "name": "www", "type": "A", "content": "192.0.2.10",</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="s1">            "comment": "web server", "create_ptr": true}]}'</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones/42/records/bulk"</span>
+</code></pre></div>
+<p>With the SQL backend a dry run executes the operations inside the transaction and rolls it back,
+so the result is exact. In API backend mode it only validates each operation against the zone as
+it is now, and tracks deletes, re-keying updates and duplicate creates inside the batch. It does
+not see a create followed by an update of that record, AAAA addresses spelled differently, a
+second <code>create_ptr</code> for the same address, or a CNAME added next to other data in the same batch.
+PowerDNS's own checks, such as the LUA record gate, are not run.</p>
 <h3 id="users">Users<a class="headerlink" href="#users" title="Permanent link">¶</a></h3>
 <table>
 <thead>
@@ -8226,29 +8319,29 @@ administrator, so check any client that relies on the old default.</p>
 <h4 id="permission-template-and-groups-on-reads-v450">Permission template and groups on reads (v4.5.0+)<a class="headerlink" href="#permission-template-and-groups-on-reads-v450" title="Permanent link">¶</a></h4>
 <p>User reads carry the assigned permission template by ID and by name, plus the
 groups the user belongs to:</p>
-<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"svc-acme"</span><span class="p">,</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">"perm_templ"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">"perm_templ_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Zone Manager"</span><span class="p">,</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dns-operators"</span><span class="w"> </span><span class="p">}]</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"svc-acme"</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">"perm_templ"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">"perm_templ_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Zone Manager"</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dns-operators"</span><span class="w"> </span><span class="p">}]</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">}</span>
 </code></pre></div>
 <p><code>perm_templ_name</code> is <code>null</code> when the stored template no longer exists or is a
 group template rather than a user template.</p>
 <h4 id="assigning-groups-on-create-v450">Assigning groups on create (v4.5.0+)<a class="headerlink" href="#assigning-groups-on-create-v450" title="Permanent link">¶</a></h4>
 <p><code>POST /users</code> accepts an optional <code>groups</code> array holding integer group IDs,
 exact group names, or a mix of both:</p>
-<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"svc-acme"</span><span class="p">,</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">"perm_templ"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s2">"dns-operators"</span><span class="p">]</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"svc-acme"</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">"perm_templ"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s2">"dns-operators"</span><span class="p">]</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">}</span>
 </code></pre></div>
 <p>The response lists the memberships that were actually created, so a caller does
 not have to assume the request took full effect:</p>
-<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dns-operators"</span><span class="w"> </span><span class="p">}]</span><span class="w"> </span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dns-operators"</span><span class="w"> </span><span class="p">}]</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 <p>Rules worth knowing before you script against it:</p>
 <ul>
@@ -8487,17 +8580,17 @@ the v1 endpoint list, and migrate to v2 before upgrading to 4.5.0.</p>
 also take <code>sort</code> and a few filters. Before 4.6.0 only <code>/zones</code> and <code>/users</code> paged, and none
 sorted or filtered. Short lists such as <code>/zones/{id}/owners</code> always come back whole.</p>
 <h3 id="paging">Paging<a class="headerlink" href="#paging" title="Permanent link">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>GET<span class="w"> </span>/api/v2/zones?page<span class="o">=</span><span class="m">2</span><span class="p">&amp;</span><span class="nv">per_page</span><span class="o">=</span><span class="m">50</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>GET<span class="w"> </span>/api/v2/zones?page<span class="o">=</span><span class="m">2</span><span class="p">&amp;</span><span class="nv">per_page</span><span class="o">=</span><span class="m">50</span>
 </code></pre></div>
 <p>Without <code>per_page</code> (or with <code>per_page=0</code>) the whole list comes back and there is no
 <code>pagination</code> object. With it, <code>page</code> starts at 1 (a smaller value is read as 1), <code>per_page</code>
 is capped at 10000, and the response carries a <code>pagination</code> object at the top level, next to
 <code>data</code>:</p>
-<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"zones"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">"per_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="nt">"last_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">}</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"zones"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">"per_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="nt">"last_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">}</span>
 </code></pre></div>
 <p>A page past the end returns an empty list together with the <code>pagination</code> object, so a client
 can stop when <code>current_page</code> reaches <code>last_page</code>.</p>
@@ -8512,7 +8605,7 @@ internal API.</p>
 <h3 id="sorting">Sorting<a class="headerlink" href="#sorting" title="Permanent link">¶</a></h3>
 <p><code>sort</code> takes comma-separated field names, each with an optional <code>:asc</code> or <code>:desc</code> suffix
 (ascending by default), up to five fields:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>GET<span class="w"> </span>/api/v2/zones/42/records?sort<span class="o">=</span>type,name:desc
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>GET<span class="w"> </span>/api/v2/zones/42/records?sort<span class="o">=</span>type,name:desc
 </code></pre></div>
 <p>A field the endpoint does not offer, a field given twice, or a direction other than <code>asc</code> or
 <code>desc</code> answers <code>400</code> with a message that lists the allowed fields.</p>
@@ -8541,7 +8634,7 @@ compared as numbers. <code>/users</code> sorts case-insensitively but not natura
 <tr>
 <td><code>GET /zones/{id}/records</code></td>
 <td><code>name</code>, <code>type</code>, <code>content</code>, <code>ttl</code>, <code>priority</code></td>
-<td><code>type</code> (record type), <code>name</code>, <code>content</code>, <code>q</code> (name or content). Default order: type, then name (as PowerDNS returns them in API backend mode)</td>
+<td><code>type</code> (record type), <code>name</code>, <code>content</code>, <code>comment</code>, <code>q</code> (name or content). Default order: type, then name (as PowerDNS returns them in API backend mode)</td>
 </tr>
 <tr>
 <td><code>GET /zones/{id}/rrsets</code></td>
@@ -8595,7 +8688,7 @@ compared as numbers. <code>/users</code> sorts case-insensitively but not natura
 </tr>
 </tbody>
 </table>
-<p><code>name</code> and <code>content</code> on the record lists are case-insensitive substring matches like <code>q</code>;
+<p><code>name</code> and <code>content</code> (and <code>comment</code> on the zone record list) are case-insensitive substring matches like <code>q</code>;
 <code>q</code> searches both columns at once.</p>
 <p><code>GET /users?username=alice</code> and <code>GET /users?email=alice@example.com</code> look up one user. The
 list then holds that user or is empty, <code>page</code>, <code>per_page</code> and <code>q</code> are ignored, <code>sort</code> is
@@ -8607,16 +8700,16 @@ object (<code>per_page</code> 10000, <code>last_page</code> above 1) so the clie
 <code>per_page</code> and <code>page</code>.</p>
 <h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">¶</a></h3>
 <p>The second page of 50 zones, newest id first:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones?sort=id:desc&amp;page=2&amp;per_page=50"</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones?sort=id:desc&amp;page=2&amp;per_page=50"</span>
 </code></pre></div>
 <p>The A records of a zone that mention <code>mail</code>, by name:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones/42/records?type=A&amp;q=mail&amp;sort=name"</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones/42/records?type=A&amp;q=mail&amp;sort=name"</span>
 </code></pre></div>
 <p>Group permission templates, ordered by name:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/permission-templates?type=group&amp;sort=name"</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/permission-templates?type=group&amp;sort=name"</span>
 </code></pre></div>
 <h2 id="related-documentation">Related documentation<a class="headerlink" href="#related-documentation" title="Permanent link">¶</a></h2>
 <ul>

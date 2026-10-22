@@ -126,7 +126,7 @@
                     <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_addRecordGetId">addRecordGetId</a>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null)
+                    <a href="#method_addRecordGetId">addRecordGetId</a>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false)
         
                                             <p><p>Add a record and return its ID</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -136,7 +136,7 @@
                     <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_editRecord">editRecord</a>(array $record, bool $finalizeZone = true, array|null $comment = null)
+                    <a href="#method_editRecord">editRecord</a>(array $record, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false)
         
                                             <p><p>Edit a record. An unchanged save is skipped entirely when
 dns.bump_serial_on_unchanged_save is off, so nothing bumps the serial then;
@@ -162,7 +162,7 @@ rectifies from committed rows.</p></p>                </div>
                     <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_deleteRecord">deleteRecord</a>(int|string $rid, bool $finalizeZone = true)
+                    <a href="#method_deleteRecord">deleteRecord</a>(int|string $rid, bool $finalizeZone = true, bool $dryRun = false)
         
                                             <p><p>Delete a record and everything that pointed at it (template link, comments)</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -253,9 +253,9 @@ rectifies from committed rows.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_addRecordGetId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManagerInterface.php#L60">at line 60</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManagerInterface.php#L61">at line 61</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
-    <strong>addRecordGetId</strong>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null)
+    <strong>addRecordGetId</strong>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false)
         </code>
     </h3>
     <div class="details">    
@@ -316,6 +316,11 @@ rectifies from committed rows.</p></p>                </div>
                 <td><p>RRset comment ['content' =&gt; string, 'account' =&gt; string]; the API
 backend writes it in the same PATCH as the record, SQL ignores it</p></td>
             </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$dryRun</td>
+                <td><p>Run every check and stop before anything is written</p></td>
+            </tr>
             </table>
 
             
@@ -337,9 +342,9 @@ backend writes it in the same PATCH as the record, SQL ignores it</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_editRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManagerInterface.php#L72">at line 72</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManagerInterface.php#L74">at line 74</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
-    <strong>editRecord</strong>(array $record, bool $finalizeZone = true, array|null $comment = null)
+    <strong>editRecord</strong>(array $record, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false)
         </code>
     </h3>
     <div class="details">    
@@ -372,6 +377,11 @@ the result then reports changed = false.</p></p>
                 <td><p>RRset comment ['content' =&gt; string, 'account' =&gt; string] to
 store with the record where the backend keeps them together</p></td>
             </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$dryRun</td>
+                <td><p>Run every check and stop before anything is written</p></td>
+            </tr>
             </table>
 
             
@@ -393,7 +403,7 @@ store with the record where the backend keeps them together</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_finalizeZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManagerInterface.php#L81">at line 81</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManagerInterface.php#L83">at line 83</a></div>
         <code>                    void
     <strong>finalizeZone</strong>(int $zoneId, bool $bumpSerial = true)
         </code>
@@ -445,9 +455,9 @@ rectifies from committed rows.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManagerInterface.php#L89">at line 89</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManagerInterface.php#L92">at line 92</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
-    <strong>deleteRecord</strong>(int|string $rid, bool $finalizeZone = true)
+    <strong>deleteRecord</strong>(int|string $rid, bool $finalizeZone = true, bool $dryRun = false)
         </code>
     </h3>
     <div class="details">    
@@ -472,6 +482,11 @@ rectifies from committed rows.</p></p>
                 <td>$finalizeZone</td>
                 <td><p>Bump the serial and rectify; a batch caller does that once itself</p></td>
             </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$dryRun</td>
+                <td><p>Run every check and stop before anything is written</p></td>
+            </tr>
             </table>
 
             
@@ -493,7 +508,7 @@ rectifies from committed rows.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_editZoneComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManagerInterface.php#L99">at line 99</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManagerInterface.php#L102">at line 102</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>editZoneComment</strong>(int $zone_id, string $comment)
         </code>
@@ -543,7 +558,7 @@ rectifies from committed rows.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/3251e71" rel="noreferrer" target="_blank">commit 3251e71,</a> built 2026-10-22 06:09 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/c9fd220" rel="noreferrer" target="_blank">commit c9fd220,</a> built 2026-10-22 20:27 UTC.</div></div>
     </div>
     </body>
 

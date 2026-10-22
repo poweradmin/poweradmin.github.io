@@ -8005,7 +8005,7 @@
                     "records"
                 ],
                 "summary": "Perform bulk record operations",
-                "description": "Create, update, or delete multiple records in a single request.",
+                "description": "Create, update, or delete multiple records in a single request. With a local database the request is one transaction, PTR records in reverse zones included, and rolls back on the first failure. With the API backend there is no transaction: operations already applied, PTR records included, stay when a later one fails. With dry_run the same checks run and nothing is kept: no records, comments, PTR records, serial bump, change log or audit entry, and no change request. A local database runs the operations in the transaction and rolls it back, so it sees effects between operations. The API backend only validates each operation against the zone as it is now and tracks deletes, re-keying updates and duplicate creates inside the batch. It does not see a create followed by an update of that record, AAAA addresses spelled differently, a second create_ptr for the same address, or a CNAME added next to other data in the batch, and PowerDNS's own checks (for example the LUA record gate) are not run.",
                 "operationId": "v2BulkRecordOperations",
                 "parameters": [
                     {
@@ -8081,6 +8081,16 @@
                                                     "description": "Disabled flag",
                                                     "type": "boolean",
                                                     "example": false
+                                                },
+                                                "comment": {
+                                                    "description": "Record comment (create/update). On update an empty string clears it and omitting it leaves it unchanged. Not the change reason, which is the top-level comment. With the API backend the comment belongs to the RRset, so when several operations set one on the same name and type, the last one wins",
+                                                    "type": "string",
+                                                    "example": "web server"
+                                                },
+                                                "create_ptr": {
+                                                    "description": "Create the PTR record (create only, A and AAAA only, ignored for other types). Needs a matching reverse zone the caller may edit. A PTR that cannot be created does not fail the operation; it is reported in data.warnings",
+                                                    "type": "boolean",
+                                                    "example": false
                                                 }
                                             },
                                             "type": "object"
@@ -8090,6 +8100,11 @@
                                         "description": "Reason for this change, recorded in the change log.",
                                         "type": "string",
                                         "example": "ticket-4821: move the web tier"
+                                    },
+                                    "dry_run": {
+                                        "description": "Run every check and report what would happen, without writing anything. Defaults to false. Gates apply as for a real call, including the required reason, and a zone under change approval is still refused",
+                                        "type": "boolean",
+                                        "example": false
                                     }
                                 },
                                 "type": "object"
@@ -8134,12 +8149,27 @@
                                                     "type": "integer",
                                                     "example": 0
                                                 },
+                                                "dry_run": {
+                                                    "description": "Present and true only for a dry run, whose counts are what would have happened",
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
                                                 "errors": {
                                                     "description": "Array of error messages (if any)",
                                                     "type": "array",
                                                     "items": {
                                                         "type": "string"
                                                     }
+                                                },
+                                                "warnings": {
+                                                    "description": "Non-fatal problems, such as a create_ptr that could not be honoured; the record is still counted in created. Always present, empty when there are none",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "Operation 2 (create): PTR record creation failed: There is no matching reverse-zone for: 1.2.0.192.in-addr.arpa."
+                                                    ]
                                                 }
                                             },
                                             "type": "object"
@@ -8209,6 +8239,16 @@
                         "schema": {
                             "type": "string",
                             "example": "192.0.2."
+                        }
+                    },
+                    {
+                        "name": "comment",
+                        "in": "query",
+                        "description": "Case-insensitive substring filter on the record comment; records without a comment never match",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "web server"
                         }
                     },
                     {
@@ -8341,6 +8381,11 @@
                                                                 "description": "Authoritative flag (true = authoritative, false = non-authoritative/glue record)",
                                                                 "type": "boolean",
                                                                 "example": true
+                                                            },
+                                                            "comment": {
+                                                                "description": "Linked record comment, else the name and type comment (SQL); the shared RRset comment (API backend). Null when none",
+                                                                "type": "string",
+                                                                "nullable": true
                                                             }
                                                         },
                                                         "type": "object"
@@ -8505,6 +8550,11 @@
                                                         "auth": {
                                                             "type": "boolean",
                                                             "example": true
+                                                        },
+                                                        "comment": {
+                                                            "description": "Linked record comment, else the name and type comment (SQL); the shared RRset comment (API backend). Null when none",
+                                                            "type": "string",
+                                                            "nullable": true
                                                         },
                                                         "ptr_created": {
                                                             "description": "Whether a PTR record was created (create_ptr)",
@@ -8694,6 +8744,11 @@
                                                             "description": "Authoritative flag (true = authoritative, false = non-authoritative/glue record). Automatically managed by PowerDNS.",
                                                             "type": "boolean",
                                                             "example": true
+                                                        },
+                                                        "comment": {
+                                                            "description": "Linked record comment, else the name and type comment (SQL); the shared RRset comment (API backend). Null when none",
+                                                            "type": "string",
+                                                            "nullable": true
                                                         }
                                                     },
                                                     "type": "object"
@@ -8858,6 +8913,11 @@
                                                             "description": "Authoritative flag (true = authoritative, false = non-authoritative/glue record)",
                                                             "type": "boolean",
                                                             "example": true
+                                                        },
+                                                        "comment": {
+                                                            "description": "Linked record comment, else the name and type comment (SQL); the shared RRset comment (API backend). Null when none",
+                                                            "type": "string",
+                                                            "nullable": true
                                                         },
                                                         "ptr_updated": {
                                                             "description": "Whether the matching PTR record was updated as well",
