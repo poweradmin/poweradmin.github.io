@@ -1540,6 +1540,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#two-or-more-proxies-v450" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two or more proxies (v4.5.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7416,6 +7427,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#two-or-more-proxies-v450" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two or more proxies (v4.5.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7578,6 +7600,20 @@
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="x">],</span>
 </code></pre></div>
 <p>See <a href="../../configuration/security-policies/">Security Policies</a> for details.</p>
+<h3 id="two-or-more-proxies-v450">Two or more proxies <em>(v4.5.0+)</em><a class="headerlink" href="#two-or-more-proxies-v450" title="Permanent link">¶</a></h3>
+<p>Each proxy appends the address it received the request from to <code>X-Forwarded-For</code>, so behind two
+proxies the header reads <code>client, proxy1</code>. Poweradmin reads the header from the right and skips only
+the addresses listed in <code>security.trusted_proxies</code>; the first address it does not know is logged as
+the client. <code>X-Forwarded-For</code> is read before <code>X-Real-IP</code>, so a correct <code>X-Real-IP</code> from the outer
+proxy does not change the result. The proxy that connects to Poweradmin is trusted automatically when its address is
+private, but the proxies further out appear only inside the header and must be listed.</p>
+<p>For example, with <code>client 10.10.10.10 -&gt; proxy1 10.20.20.20 -&gt; proxy2 -&gt; Poweradmin</code>, set
+<code>TRUSTED_PROXIES=private_ranges,10.20.20.20</code> in Docker (keep <code>private_ranges</code> so Caddy still
+resolves the address for its own access log), or <code>'trusted_proxies' =&gt; ['10.20.20.20']</code> under
+<code>security</code> in <code>config/settings.php</code>. Without it the logs show 10.20.20.20. <code>private_ranges</code> does
+not help here, because it applies to Caddy only.</p>
+<p>Reading from the right is deliberate: the leftmost address can be set by the client, so trusting it
+would let anyone choose the address shown in audit logs and counted for login rate limits.</p>
 <h2 id="traefik">Traefik<a class="headerlink" href="#traefik" title="Permanent link">¶</a></h2>
 <h3 id="basic-setup-http-only">Basic Setup (HTTP only)<a class="headerlink" href="#basic-setup-http-only" title="Permanent link">¶</a></h3>
 <div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">services</span><span class="p">:</span>
