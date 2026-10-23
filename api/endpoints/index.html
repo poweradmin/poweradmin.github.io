@@ -7082,6 +7082,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#powerdns-refusals-in-api-backend-mode-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerDNS refusals in API backend mode (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#record-comments-v460" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7638,6 +7649,17 @@
   
     <nav class="md-nav" aria-label="Records">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#powerdns-refusals-in-api-backend-mode-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerDNS refusals in API backend mode (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#record-comments-v460" class="md-nav__link">
@@ -8228,6 +8250,14 @@ is accepted (do not cache); negative values and fractional strings such as
 from a primary. Create, update, delete, and bulk-write calls against such a
 zone return <code>403</code> with a message stating the zone is read-only (rather than a
 permission error). Edit the records on the primary instead.</p>
+<h4 id="powerdns-refusals-in-api-backend-mode-v460">PowerDNS refusals in API backend mode (v4.6.0+)<a class="headerlink" href="#powerdns-refusals-in-api-backend-mode-v460" title="Permanent link">¶</a></h4>
+<p>In API backend mode, when PowerDNS answers a write with 400 or 422, the API returns <code>422</code> with the
+usual message followed by the PowerDNS reason, for example <code>Failed to create record: RRset
+www.example.com. IN LUA: update of Lua records is not allowed</code>. This covers record create, update
+and delete, bulk operations, RRset replace and delete, zone create from a template (<code>Failed to create LUA
+record for zone: &lt;reason&gt;</code>) and change request approval. When PowerDNS is unreachable or fails, the
+status stays <code>500</code> with the old message. Before 4.6.0 every one of these answered <code>500</code>. See the
+<a href="../../configuration/powerdns-api/#known-issue-lua-records-refused-on-powerdns-auth-51">LUA record note</a>.</p>
 <h4 id="record-comments-v460">Record comments (v4.6.0+)<a class="headerlink" href="#record-comments-v460" title="Permanent link">¶</a></h4>
 <p>Record responses (list, single <code>GET</code>, <code>POST</code> and <code>PUT</code>) include <code>comment</code>, a string or <code>null</code>.
 <code>GET /zones/{id}/records</code> accepts a <code>comment</code> filter, a case-insensitive substring match like

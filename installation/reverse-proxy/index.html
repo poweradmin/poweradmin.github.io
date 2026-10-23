@@ -1629,6 +1629,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#framing-and-response-headers-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Framing and Response Headers (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#health-endpoints-v450" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7494,6 +7505,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#framing-and-response-headers-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Framing and Response Headers (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#health-endpoints-v450" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7690,18 +7712,73 @@
 <a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="nt">&lt;/VirtualHost&gt;</span>
 </code></pre></div>
 <p>Requires <code>mod_proxy</code>, <code>mod_proxy_http</code>, and <code>mod_ssl</code> modules.</p>
+<h2 id="framing-and-response-headers-v460">Framing and Response Headers <em>(v4.6.0+)</em><a class="headerlink" href="#framing-and-response-headers-v460" title="Permanent link">¶</a></h2>
+<p>Every response from Poweradmin carries these headers:</p>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>X-Frame-Options</code></td>
+<td><code>DENY</code></td>
+</tr>
+<tr>
+<td><code>Content-Security-Policy</code></td>
+<td><code>frame-ancestors 'none'</code></td>
+</tr>
+<tr>
+<td><code>X-Content-Type-Options</code></td>
+<td><code>nosniff</code></td>
+</tr>
+<tr>
+<td><code>Referrer-Policy</code></td>
+<td><code>same-origin</code></td>
+</tr>
+</tbody>
+</table>
+<p>Poweradmin cannot be shown inside a frame by default. To embed it in a portal or dashboard, list
+the origins that may do so in <code>config/settings.php</code>:</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="x">'interface' =&gt; [</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="x">    'frame_ancestors' =&gt; ['https://portal.example.com', 'https://*.example.net'],</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="x">],</span>
+</code></pre></div>
+<p>With origins set, the policy becomes <code>frame-ancestors 'self' https://portal.example.com ...</code> and
+<code>X-Frame-Options</code> is no longer sent, because it cannot name several origins. The default is an empty list,
+which denies all framing. Entries must be an <code>http://</code> or <code>https://</code> origin with no path;
+<code>https://*.example.com</code> allows every subdomain. Origins are lowercased, and an invalid entry is
+dropped and logged as a warning.</p>
+<p>The headers come from the application, so a proxy that passes requests through needs nothing extra. Files
+that the web server serves itself, such as CSS and images, bypass the application. The
+<code>nginx.conf.example</code> and <code>caddy.conf.example</code> shipped with Poweradmin add the same four headers
+to those files:</p>
+<div class="language-nginx highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">location</span><span class="w"> </span><span class="p">~</span><span class="sr">*</span><span class="w"> </span><span class="s">\.(js|css|png|jpg|jpeg|gif|ico|svg)</span>$<span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="kn">add_header</span><span class="w"> </span><span class="s">X-Frame-Options</span><span class="w"> </span><span class="s">"DENY"</span><span class="w"> </span><span class="s">always</span><span class="p">;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="kn">add_header</span><span class="w"> </span><span class="s">Content-Security-Policy</span><span class="w"> </span><span class="s">"frame-ancestors</span><span class="w"> </span><span class="s">'none'"</span><span class="w"> </span><span class="s">always</span><span class="p">;</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="kn">add_header</span><span class="w"> </span><span class="s">X-Content-Type-Options</span><span class="w"> </span><span class="s">"nosniff"</span><span class="w"> </span><span class="s">always</span><span class="p">;</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="kn">add_header</span><span class="w"> </span><span class="s">Referrer-Policy</span><span class="w"> </span><span class="s">"same-origin"</span><span class="w"> </span><span class="s">always</span><span class="p">;</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="p">}</span>
+</code></pre></div>
+<p>If you allow framing, change or drop the two framing headers in that block to match.</p>
+<blockquote>
+<p><strong>Note:</strong> The application already sets these headers on dynamic pages. A header added again at the
+proxy for the same pages can contradict <code>interface.frame_ancestors</code>, so leave them to the application.</p>
+</blockquote>
 <h2 id="health-endpoints-v450">Health endpoints <em>(v4.5.0+)</em><a class="headerlink" href="#health-endpoints-v450" title="Permanent link">¶</a></h2>
 <p>If you enable the health endpoints, restrict them at the proxy. They answer without a
 session and without an API key, so anyone who can reach the path can call them.</p>
-<div class="language-nginx highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">location</span><span class="w"> </span><span class="p">~</span><span class="w"> </span><span class="sr">^/(ping|api/health)$</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="kn">allow</span><span class="w"> </span><span class="mi">10</span><span class="s">.0.0.0/8</span><span class="p">;</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="kn">deny</span><span class="w"> </span><span class="s">all</span><span class="p">;</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="s">/index.php</span><span class="nv">$is_args$args</span><span class="p">;</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">}</span>
+<div class="language-nginx highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">location</span><span class="w"> </span><span class="p">~</span><span class="w"> </span><span class="sr">^/(ping|api/health)$</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="kn">allow</span><span class="w"> </span><span class="mi">10</span><span class="s">.0.0.0/8</span><span class="p">;</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="kn">deny</span><span class="w"> </span><span class="s">all</span><span class="p">;</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="kn">try_files</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="s">/index.php</span><span class="nv">$is_args$args</span><span class="p">;</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="p">}</span>
 </code></pre></div>
-<div class="language-apache highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">&lt;LocationMatch</span><span class="w"> </span><span class="s">"^/(ping|api/health)$"</span><span class="nt">&gt;</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="nb">Require</span><span class="w"> </span>ip<span class="w"> </span><span class="m">10.0.0.0/8</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nt">&lt;/LocationMatch&gt;</span>
+<div class="language-apache highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">&lt;LocationMatch</span><span class="w"> </span><span class="s">"^/(ping|api/health)$"</span><span class="nt">&gt;</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="nb">Require</span><span class="w"> </span>ip<span class="w"> </span><span class="m">10.0.0.0/8</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nt">&lt;/LocationMatch&gt;</span>
 </code></pre></div>
 <p>See <a href="../../operations/health-checks/">Health Checks</a>.</p>
 

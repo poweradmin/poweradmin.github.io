@@ -2515,6 +2515,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#powerdns-5-views-and-view-variants-v452" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerDNS 5 Views and View Variants (v4.5.2+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#record-comments-on-lmdb" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7757,6 +7768,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#powerdns-5-views-and-view-variants-v452" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerDNS 5 Views and View Variants (v4.5.2+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#record-comments-on-lmdb" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8130,14 +8152,22 @@ PowerDNS refuses to create, update or delete LUA records over its REST API (and 
 DNS UPDATE). In API backend mode Poweradmin therefore cannot add, edit or delete LUA records, and
 creating a zone from a template that contains LUA records fails. The SQL backend writes to the
 database directly and is not affected.</p>
-<p>The web record forms show the PowerDNS reason. The API v2 does not yet
-(poweradmin/poweradmin#1779): it answers <code>500</code> with "Failed to create record" (or "Failed to
-update record" / "Failed to delete record"), and creating a zone from such a template fails with
-"Failed to create LUA record for zone.". The PowerDNS message "update of Lua records is not
-allowed" is in the Poweradmin log. To allow these writes, set this in <code>pdns.conf</code> and restart
-PowerDNS:</p>
+<p>The web record forms show the PowerDNS reason. From 4.6.0 the API v2 does too: it answers <code>422</code>
+with "Failed to create record" (or "Failed to update record" / "Failed to delete record") followed
+by the reason, for example "update of Lua records is not allowed". Creating a zone from such a
+template fails with "Failed to create LUA record for zone: <reason>". Versions before 4.6.0 answer
+<code>500</code> with only the generic message (poweradmin/poweradmin#1779); the reason is in the Poweradmin
+log. To allow these writes, set this in <code>pdns.conf</code> and restart PowerDNS:</reason></p>
 <div class="language-ini highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="na">enable-lua-record-updates</span><span class="o">=</span><span class="s">yes</span>
 </code></pre></div>
+<h3 id="powerdns-5-views-and-view-variants-v452">PowerDNS 5 Views and View Variants <em>(v4.5.2+)</em><a class="headerlink" href="#powerdns-5-views-and-view-variants-v452" title="Permanent link">¶</a></h3>
+<p>With PowerDNS Auth 5 on the LMDB backend and <code>views=yes</code>, a zone can have per-view variants named
+<code>zone..variant</code>, created with <code>pdnsutil zone create example.com..internal</code>. In API backend mode
+Poweradmin opens and edits these zones: records are shown and written under the apex name
+(<code>www</code> becomes <code>www.example.com</code>), and the SOA serial bump and the SOA badge work. From 4.5.2,
+Dynamic DNS updates prefer the base zone over its variant. Earlier versions could not open a
+variant. The fix is in 4.6.0, 4.5.2 and 4.4.4. Reverse zone variants are not yet treated as reverse
+zones (poweradmin/poweradmin#1786).</p>
 <h3 id="record-comments-on-lmdb">Record Comments on LMDB<a class="headerlink" href="#record-comments-on-lmdb" title="Permanent link">¶</a></h3>
 <p>Before PowerDNS Auth 5.1.5, the LMDB backend kept a zone's or RRset's comments after the zone or
 RRset was deleted. 5.1.5 deletes them together (PowerDNS pull request 18111).</p>
