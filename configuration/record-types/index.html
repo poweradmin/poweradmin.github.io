@@ -2539,6 +2539,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#https-records-and-ech" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPS records and ECH
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7441,6 +7452,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#https-records-and-ech" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTPS records and ECH
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7653,6 +7675,30 @@ configuration problem. See the
   is set (<a href="../powerdns-api/#known-issue-lua-records-refused-on-powerdns-auth-51">details</a>). See
   <a href="https://doc.powerdns.com/authoritative/lua-records/index.html">LUA records</a>.</li>
 </ul>
+<h3 id="https-records-and-ech">HTTPS records and ECH<a class="headerlink" href="#https-records-and-ech" title="Permanent link">¶</a></h3>
+<p>Encrypted Client Hello (ECH) keys are published in an <code>HTTPS</code> record at the site name, in the
+<code>ech</code> parameter. The value is the base64 <code>ECHConfigList</code> your TLS server or CDN generates with
+its ECH key; Poweradmin checks only that it is valid base64.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>example.com</code></td>
+<td><code>HTTPS</code></td>
+<td><code>1 . alpn=h2,h3 ipv4hint=192.0.2.1 ech="AEX+DQBB..."</code></td>
+</tr>
+</tbody>
+</table>
+<p>Write the value in quotes. The PowerDNS API refuses an unquoted <code>ech</code> value with
+"Not in expected format", so in API backend mode the record cannot be saved without them. From
+4.4.4, 4.5.2 and 4.6.0 Poweradmin adds the quotes itself when it saves the record. In SQL mode PowerDNS serves
+both forms the same way. Long values are fine: a 400-character key saves and is served unchanged.</p>
 <h2 id="customizing-domain-forward-zone-record-types">Customizing Domain (Forward) Zone Record Types<a class="headerlink" href="#customizing-domain-forward-zone-record-types" title="Permanent link">¶</a></h2>
 <p>To customize which record types are available when editing forward zones:</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="x">'domain_record_types' =&gt; ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT', 'SRV', 'CAA'],</span>
