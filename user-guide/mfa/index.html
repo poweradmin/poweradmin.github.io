@@ -3294,6 +3294,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#passkeys-and-security-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passkeys and Security Keys
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#disabling-mfa" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7354,6 +7365,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#passkeys-and-security-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passkeys and Security Keys
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#disabling-mfa" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7480,6 +7502,15 @@
 <p><strong>Note:</strong> MFA enforcement requires both the global <code>mfa.enabled</code> and <code>mfa.enforced</code> settings to be set to <code>true</code> in your configuration. See <a href="#configuration">Configuration</a> below.</p>
 </blockquote>
 <p>Since 4.5.0, enforcement can be waived for users who log in through an external identity provider (LDAP, OIDC, SAML) by setting <code>mfa.skip_for_external_auth</code> to <code>true</code>. Use this when the IdP already enforces MFA - it avoids a second OTP prompt in Poweradmin. Local (password) logins are still enforced, and external users can still enable Poweradmin MFA voluntarily.</p>
+<h2 id="passkeys-and-security-keys">Passkeys and Security Keys<a class="headerlink" href="#passkeys-and-security-keys" title="Permanent link">¶</a></h2>
+<p>Poweradmin does not support passkeys or hardware security keys (WebAuthn) for local accounts yet. This is planned as an extra MFA method, tracked in <a href="https://github.com/poweradmin/poweradmin/issues/1679">#1679</a>.</p>
+<p>You can use them today by signing in through an identity provider that supports passkeys, such as Keycloak, Microsoft Entra ID or Authentik:</p>
+<ol>
+<li>Set up <a href="../../configuration/oidc/">OIDC</a> or <a href="../../configuration/saml/">SAML</a> login in Poweradmin</li>
+<li>In the identity provider, enable passkeys or security keys and require them for the Poweradmin client or application</li>
+<li>Optionally set <code>mfa.skip_for_external_auth</code> to <code>true</code>, so MFA enforcement does not also make OIDC and SAML users set up Poweradmin MFA (added in 4.5.0)</li>
+</ol>
+<p>Poweradmin does not check which method the identity provider used. Passkeys are only required if the identity provider is configured to require them. Local accounts that log in with a password still use Poweradmin's own MFA.</p>
 <h2 id="disabling-mfa">Disabling MFA<a class="headerlink" href="#disabling-mfa" title="Permanent link">¶</a></h2>
 <p>To disable MFA on your account:</p>
 <ol>
