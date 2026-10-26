@@ -9799,6 +9799,9 @@ See <a href="../../operations/health-checks/">Health Checks</a>.</p>
 </table>
 <p>To change any of them, mount an ini file into <code>/usr/local/etc/php/conf.d/</code>. The image's
 own overrides load first, so any file you mount there wins.</p>
+<p>The web server caps request bodies at <code>20MiB</code> <em>(v4.6.0+)</em>. When you raise <code>post_max_size</code>,
+raise the cap too with <code>REQUEST_BODY_MAX_SIZE</code> (for example <code>-e REQUEST_BODY_MAX_SIZE=50MiB</code>),
+or larger uploads are cut off and rejected. Use <code>MiB</code>: Caddy reads <code>M</code> and <code>MB</code> as millions of bytes.</p>
 <p>PHP warnings go to the container log (<code>docker logs</code>), not into the page <em>(v4.4.2+)</em>.</p>
 <p>Anything not listed on this page is in
 <a href="https://github.com/poweradmin/poweradmin/blob/master/DOCKER.md">DOCKER.md</a>, which

@@ -118,7 +118,7 @@ serial bump that closes a save.</p></p>                    </div>
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a> $zones, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains, <a href="../../../../Poweradmin/Domain/Repository/RecordLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLookupInterface">RecordLookupInterface</abbr></a> $records, <a href="../../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a> $recordManager, <a href="../../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a> $soaRecords, <a href="../../../../Poweradmin/Domain/Port/RecordCommentEditorInterface.html"><abbr title="Poweradmin\Domain\Port\RecordCommentEditorInterface">RecordCommentEditorInterface</abbr></a> $comments, <a href="../../../../Poweradmin/Domain/Port/RecordCommentSyncInterface.html"><abbr title="Poweradmin\Domain\Port\RecordCommentSyncInterface">RecordCommentSyncInterface</abbr></a> $commentSync, <a href="../../../../Poweradmin/Domain/Port/AuditLoggerInterface.html"><abbr title="Poweradmin\Domain\Port\AuditLoggerInterface">AuditLoggerInterface</abbr></a> $audit, bool $recordCommentsEnabled, bool $zoneCommentsEnabled)
+                    <a href="#method___construct">__construct</a>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a> $zones, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains, <a href="../../../../Poweradmin/Domain/Repository/RecordLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLookupInterface">RecordLookupInterface</abbr></a> $records, <a href="../../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a> $recordManager, <a href="../../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a> $soaRecords, <a href="../../../../Poweradmin/Domain/Port/RecordCommentEditorInterface.html"><abbr title="Poweradmin\Domain\Port\RecordCommentEditorInterface">RecordCommentEditorInterface</abbr></a> $comments, <a href="../../../../Poweradmin/Domain/Port/RecordCommentSyncInterface.html"><abbr title="Poweradmin\Domain\Port\RecordCommentSyncInterface">RecordCommentSyncInterface</abbr></a> $commentSync, <a href="../../../../Poweradmin/Domain/Port/AuditLoggerInterface.html"><abbr title="Poweradmin\Domain\Port\AuditLoggerInterface">AuditLoggerInterface</abbr></a> $audit, bool $recordCommentsEnabled, bool $zoneCommentsEnabled, <a href="../../../../Poweradmin/Domain/Port/TransactionInterface.html"><abbr title="Poweradmin\Domain\Port\TransactionInterface">TransactionInterface</abbr></a>|null $transaction = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -137,6 +137,20 @@ serial bump that closes a save.</p></p>                    </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_vacatedRecords">vacatedRecords</a>(array $changes)
+        
+                                            <p><p>Previews each change and collects the stored content of the records that pass
+validation and really move away from an RRset another change in the same save writes
+to. The writes run one by one, so a swap would otherwise be refused as a copy. The
+caller writes them in one transaction and rolls back on any refusal; a save with
+no such overlap gets an empty set and keeps saving row by row.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditRowChange.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditRowChange">ZoneEditRowChange</abbr></a>|null
                 </div>
                 <div class="col-md-8">
@@ -150,7 +164,7 @@ serial bump that closes a save.</p></p>                    </div>
                     <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_writeRow">writeRow</a>(<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditSubmission">ZoneEditSubmission</abbr></a> $submission, <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditRowChange.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditRowChange">ZoneEditRowChange</abbr></a> $change)
+                    <a href="#method_writeRow">writeRow</a>(<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditSubmission">ZoneEditSubmission</abbr></a> $submission, <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditRowChange.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditRowChange">ZoneEditRowChange</abbr></a> $change, array $vacated = [])
         
                                             <p><p>Writes one changed row without bumping the serial: the record, its audit
 line, and the record comment with its PTR/A sync when comments are shown.</p></p>                </div>
@@ -164,9 +178,9 @@ line, and the record comment with its PTR/A sync when comments are shown.</p></p
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L57">at line 57</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L60">at line 60</a></div>
         <code>                    
-    <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a> $zones, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains, <a href="../../../../Poweradmin/Domain/Repository/RecordLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLookupInterface">RecordLookupInterface</abbr></a> $records, <a href="../../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a> $recordManager, <a href="../../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a> $soaRecords, <a href="../../../../Poweradmin/Domain/Port/RecordCommentEditorInterface.html"><abbr title="Poweradmin\Domain\Port\RecordCommentEditorInterface">RecordCommentEditorInterface</abbr></a> $comments, <a href="../../../../Poweradmin/Domain/Port/RecordCommentSyncInterface.html"><abbr title="Poweradmin\Domain\Port\RecordCommentSyncInterface">RecordCommentSyncInterface</abbr></a> $commentSync, <a href="../../../../Poweradmin/Domain/Port/AuditLoggerInterface.html"><abbr title="Poweradmin\Domain\Port\AuditLoggerInterface">AuditLoggerInterface</abbr></a> $audit, bool $recordCommentsEnabled, bool $zoneCommentsEnabled)
+    <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a> $zones, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains, <a href="../../../../Poweradmin/Domain/Repository/RecordLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLookupInterface">RecordLookupInterface</abbr></a> $records, <a href="../../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a> $recordManager, <a href="../../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a> $soaRecords, <a href="../../../../Poweradmin/Domain/Port/RecordCommentEditorInterface.html"><abbr title="Poweradmin\Domain\Port\RecordCommentEditorInterface">RecordCommentEditorInterface</abbr></a> $comments, <a href="../../../../Poweradmin/Domain/Port/RecordCommentSyncInterface.html"><abbr title="Poweradmin\Domain\Port\RecordCommentSyncInterface">RecordCommentSyncInterface</abbr></a> $commentSync, <a href="../../../../Poweradmin/Domain/Port/AuditLoggerInterface.html"><abbr title="Poweradmin\Domain\Port\AuditLoggerInterface">AuditLoggerInterface</abbr></a> $audit, bool $recordCommentsEnabled, bool $zoneCommentsEnabled, <a href="../../../../Poweradmin/Domain/Port/TransactionInterface.html"><abbr title="Poweradmin\Domain\Port\TransactionInterface">TransactionInterface</abbr></a>|null $transaction = null)
         </code>
     </h3>
     <div class="details">    
@@ -242,6 +256,12 @@ line, and the record comment with its PTR/A sync when comments are shown.</p></p
                 <td>$zoneCommentsEnabled</td>
                 <td><p>Whether the zone comment is stored with a save</p></td>
             </tr>
+                    <tr>
+                <td><a href="../../../../Poweradmin/Domain/Port/TransactionInterface.html"><abbr title="Poweradmin\Domain\Port\TransactionInterface">TransactionInterface</abbr></a>|null</td>
+                <td>$transaction</td>
+                <td><p>The local write transaction, when the backend has one;
+without it a save never moves records into each other's place</p></td>
+            </tr>
             </table>
 
             
@@ -254,7 +274,7 @@ line, and the record comment with its PTR/A sync when comments are shown.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_save">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L73">at line 73</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L77">at line 77</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneSaveResult.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneSaveResult">ZoneSaveResult</abbr></a>
     <strong>save</strong>(<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditSubmission">ZoneEditSubmission</abbr></a> $submission)
         </code>
@@ -297,8 +317,55 @@ line, and the record comment with its PTR/A sync when comments are shown.</p></p
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_vacatedRecords">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L253">at line 253</a></div>
+        <code>                    array
+    <strong>vacatedRecords</strong>(array $changes)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Previews each change and collects the stored content of the records that pass
+validation and really move away from an RRset another change in the same save writes
+to. The writes run one by one, so a swap would otherwise be refused as a copy. The
+caller writes them in one transaction and rolls back on any refusal; a save with
+no such overlap gets an empty set and keeps saving row by row.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$changes</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Stored content by record id</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_diffRow">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L281">at line 281</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L366">at line 366</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditRowChange.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditRowChange">ZoneEditRowChange</abbr></a>|null
     <strong>diffRow</strong>(<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditSubmission">ZoneEditSubmission</abbr></a> $submission, <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditRow.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditRow">ZoneEditRow</abbr></a> $row)
         </code>
@@ -346,9 +413,9 @@ line, and the record comment with its PTR/A sync when comments are shown.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_writeRow">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L319">at line 319</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L406">at line 406</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
-    <strong>writeRow</strong>(<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditSubmission">ZoneEditSubmission</abbr></a> $submission, <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditRowChange.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditRowChange">ZoneEditRowChange</abbr></a> $change)
+    <strong>writeRow</strong>(<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditSubmission">ZoneEditSubmission</abbr></a> $submission, <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditRowChange.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditRowChange">ZoneEditRowChange</abbr></a> $change, array $vacated = [])
         </code>
     </h3>
     <div class="details">    
@@ -374,6 +441,11 @@ line, and the record comment with its PTR/A sync when comments are shown.</p></p
                 <td>$change</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td>array</td>
+                <td>$vacated</td>
+                <td><p>Stored content by id of the records the same save moves away</p></td>
+            </tr>
             </table>
 
             
@@ -397,7 +469,7 @@ line, and the record comment with its PTR/A sync when comments are shown.</p></p
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/ba401f3" rel="noreferrer" target="_blank">commit ba401f3,</a> built 2026-10-26 06:18 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/8dc614d" rel="noreferrer" target="_blank">commit 8dc614d,</a> built 2026-10-26 17:11 UTC.</div></div>
     </div>
     </body>
 

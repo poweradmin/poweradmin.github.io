@@ -6440,7 +6440,17 @@ not check every row separately.</p></dd><dt><a href="Poweradmin/Domain/Service/A
 <abbr title="Poweradmin\Domain\Service\Dns\DomainParsingService">DomainParsingService</abbr>::parseDomain</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Dns/DomainParsingService.html"><abbr title="Poweradmin\Domain\Service\Dns\DomainParsingService">DomainParsingService</abbr></a></em></dt>
                     <dd><p>Parse a domain into its components (domain name and TLD)</p></dd><dt><a href="Poweradmin/Domain/Service/Dns/DynamicDnsUpdateService.html#method_processUpdate">
 <abbr title="Poweradmin\Domain\Service\Dns\DynamicDnsUpdateService">DynamicDnsUpdateService</abbr>::processUpdate</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Dns/DynamicDnsUpdateService.html"><abbr title="Poweradmin\Domain\Service\Dns\DynamicDnsUpdateService">DynamicDnsUpdateService</abbr></a></em></dt>
-                    <dd></dd><dt><a href="Poweradmin/Domain/Service/Template/ZoneTemplatePlaceholders.html#method_parseTemplateValue">
+                    <dd></dd><dt><a href="Poweradmin/Domain/Service/Dns/RecordManager.html#method_previewEdit">
+<abbr title="Poweradmin\Domain\Service\Dns\RecordManager">RecordManager</abbr>::previewEdit</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Dns/RecordManager.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManager">RecordManager</abbr></a></em></dt>
+                    <dd><p>Runs an edit's permission checks and validation, but not the duplicate check, and
+writes nothing. A save that moves several records first previews each one: only a
+record that passes and really moves goes into the vacated set of the real writes.</p></dd><dt><a href="Poweradmin/Domain/Service/Dns/RecordManagerInterface.html#method_previewEdit">
+<abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr>::previewEdit</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a></em></dt>
+                    <dd><p>Runs an edit's permission checks and validation, but not the duplicate check, and
+writes nothing. A save that moves several records first previews each one: only a
+record that passes and really moves goes into the vacated set of the real writes.</p></dd><dt><a href="Poweradmin/Domain/Service/Dns/RecordWriteResult.html#method_previewed">
+<abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr>::previewed</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a></em></dt>
+                    <dd><p>An edit that passed validation and the permission checks in a preview, nothing written.</p></dd><dt><a href="Poweradmin/Domain/Service/Template/ZoneTemplatePlaceholders.html#method_parseTemplateValue">
 <abbr title="Poweradmin\Domain\Service\Template\ZoneTemplatePlaceholders">ZoneTemplatePlaceholders</abbr>::parseTemplateValue</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Template/ZoneTemplatePlaceholders.html"><abbr title="Poweradmin\Domain\Service\Template\ZoneTemplatePlaceholders">ZoneTemplatePlaceholders</abbr></a></em></dt>
                     <dd><p>Parse string and substitute domain and serial</p></dd><dt><a href="Poweradmin/Domain/Service/User/CreateUserCommand.html#method_passwordGiven">
 <abbr title="Poweradmin\Domain\Service\User\CreateUserCommand">CreateUserCommand</abbr>::passwordGiven</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/User/CreateUserCommand.html"><abbr title="Poweradmin\Domain\Service\User\CreateUserCommand">CreateUserCommand</abbr></a></em></dt>
@@ -8861,7 +8871,13 @@ The RP record contains the mailbox of the responsible person and a text record r
                     <dd><p>Simple validation result class following the Result pattern</p></dd><dt><a href="Poweradmin/Domain/Service/Validator.html"><abbr title="Poweradmin\Domain\Service\Validator">Validator</abbr></a> &mdash; <em>Class in namespace <a href="Poweradmin/Domain/Service.html">Poweradmin\Domain\Service</a></em></dt>
                     <dd><p>Syntax checks for email addresses and digit-only strings.</p></dd><dt><a href="Poweradmin/Domain/Service/Zone/DnssecKeyService.html#method_validateNewKey">
 <abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyService">DnssecKeyService</abbr>::validateNewKey</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Zone/DnssecKeyService.html"><abbr title="Poweradmin\Domain\Service\Zone\DnssecKeyService">DnssecKeyService</abbr></a></em></dt>
-                    <dd><p>Check a new key's type, algorithm and size, in that order, without asking PowerDNS.</p></dd><dt><a href="Poweradmin/Domain/Service/Zone/ZoneValidationService.html#method_validateZoneForDnssec">
+                    <dd><p>Check a new key's type, algorithm and size, in that order, without asking PowerDNS.</p></dd><dt><a href="Poweradmin/Domain/Service/Zone/ZoneEditService.html#method_vacatedRecords">
+<abbr title="Poweradmin\Domain\Service\Zone\ZoneEditService">ZoneEditService</abbr>::vacatedRecords</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Zone/ZoneEditService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditService">ZoneEditService</abbr></a></em></dt>
+                    <dd><p>Previews each change and collects the stored content of the records that pass
+validation and really move away from an RRset another change in the same save writes
+to. The writes run one by one, so a swap would otherwise be refused as a copy. The
+caller writes them in one transaction and rolls back on any refusal; a save with
+no such overlap gets an empty set and keeps saving row by row.</p></dd><dt><a href="Poweradmin/Domain/Service/Zone/ZoneValidationService.html#method_validateZoneForDnssec">
 <abbr title="Poweradmin\Domain\Service\Zone\ZoneValidationService">ZoneValidationService</abbr>::validateZoneForDnssec</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Zone/ZoneValidationService.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneValidationService">ZoneValidationService</abbr></a></em></dt>
                     <dd><p>Validate zone records before DNSSEC signing</p></dd><dt><a href="Poweradmin/Infrastructure/Auth/Google2FaTotp.html#method_verify">
 <abbr title="Poweradmin\Infrastructure\Auth\Google2FaTotp">Google2FaTotp</abbr>::verify</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Auth/Google2FaTotp.html"><abbr title="Poweradmin\Infrastructure\Auth\Google2FaTotp">Google2FaTotp</abbr></a></em></dt>
@@ -10101,7 +10117,7 @@ open a repository for an answer it will not use.</p></dd><dt><a href="Poweradmin
                     <dd></dd><dt><a href="Poweradmin/Module/ZoneImportExport/Service/ParsedZoneFile.html#method___construct">
 <abbr title="Poweradmin\Module\ZoneImportExport\Service\ParsedZoneFile">ParsedZoneFile</abbr>::__construct</a>() &mdash; <em>Method in class <a href="Poweradmin/Module/ZoneImportExport/Service/ParsedZoneFile.html"><abbr title="Poweradmin\Module\ZoneImportExport\Service\ParsedZoneFile">ParsedZoneFile</abbr></a></em></dt>
                     <dd></dd>        </dl></div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/ba401f3" rel="noreferrer" target="_blank">commit ba401f3,</a> built 2026-10-26 06:18 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/8dc614d" rel="noreferrer" target="_blank">commit 8dc614d,</a> built 2026-10-26 17:11 UTC.</div></div>
     </div>
     </body>
 
