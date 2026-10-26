@@ -143,7 +143,7 @@ the zone must be writable by them.</p></p>                </div>
                     <a href="../../../../Poweradmin/Application/Service/Record/RecordAddResult.html"><abbr title="Poweradmin\Application\Service\Record\RecordAddResult">RecordAddResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_add">add</a>(int $zoneId, string $zoneName, string $name, string $type, string $content, int|null $ttl, int $prio, string $comment, int $userId, string $username, string $companion = &#039;&#039;, int $disabled = 0, string $origin = AuditLoggerInterface::ORIGIN_WEB)
+                    <a href="#method_add">add</a>(int $zoneId, string $zoneName, string $name, string $type, string $content, int|null $ttl, int $prio, string $comment, int $userId, string $username, string $companion = &#039;&#039;, int $disabled = 0, string $origin = AuditLoggerInterface::ORIGIN_WEB, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $companionZoneAllowed = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -168,7 +168,7 @@ zone stands for its PTR name and one outside the zone is refused.</p></p>       
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Service/Record/RecordAddService.php#L48">at line 48</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Service/Record/RecordAddService.php#L49">at line 49</a></div>
         <code>                    
     <strong>__construct</strong>(<a href="../../../../Poweradmin/Application/Service/Record/RecordManagerService.html"><abbr title="Poweradmin\Application\Service\Record\RecordManagerService">RecordManagerService</abbr></a> $records, <a href="../../../../Poweradmin/Domain/Service/Dns/ReverseRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseRecordCreator">ReverseRecordCreator</abbr></a> $reverseRecords, <a href="../../../../Poweradmin/Domain/Service/Dns/DomainRecordCreator.html"><abbr title="Poweradmin\Domain\Service\Dns\DomainRecordCreator">DomainRecordCreator</abbr></a> $domainRecords, <a href="../../../../Poweradmin/Domain/Service/Dns/ReverseTtlResolver.html"><abbr title="Poweradmin\Domain\Service\Dns\ReverseTtlResolver">ReverseTtlResolver</abbr></a> $ttlResolver, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains, <a href="../../../../Poweradmin/Application/Service/Zone/ChangeApprovalContext.html"><abbr title="Poweradmin\Application\Service\Zone\ChangeApprovalContext">ChangeApprovalContext</abbr></a> $approval)
         </code>
@@ -233,7 +233,7 @@ zone stands for its PTR name and one outside the zone is refused.</p></p>       
             </div>
                     <div class="method-item">
                     <h3 id="method_open">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Service/Record/RecordAddService.php#L65">at line 65</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Service/Record/RecordAddService.php#L66">at line 66</a></div>
         <code>                    <a href="../../../../Poweradmin/Application/Service/Record/RecordAddAccess.html"><abbr title="Poweradmin\Application\Service\Record\RecordAddAccess">RecordAddAccess</abbr></a>
     <strong>open</strong>(int $zoneId, int $userId)
         </code>
@@ -284,9 +284,9 @@ the zone must be writable by them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_add">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Service/Record/RecordAddService.php#L95">at line 95</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Service/Record/RecordAddService.php#L97">at line 97</a></div>
         <code>                    <a href="../../../../Poweradmin/Application/Service/Record/RecordAddResult.html"><abbr title="Poweradmin\Application\Service\Record\RecordAddResult">RecordAddResult</abbr></a>
-    <strong>add</strong>(int $zoneId, string $zoneName, string $name, string $type, string $content, int|null $ttl, int $prio, string $comment, int $userId, string $username, string $companion = &#039;&#039;, int $disabled = 0, string $origin = AuditLoggerInterface::ORIGIN_WEB)
+    <strong>add</strong>(int $zoneId, string $zoneName, string $name, string $type, string $content, int|null $ttl, int $prio, string $comment, int $userId, string $username, string $companion = &#039;&#039;, int $disabled = 0, string $origin = AuditLoggerInterface::ORIGIN_WEB, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $companionZoneAllowed = null)
         </code>
     </h3>
     <div class="details">    
@@ -367,6 +367,11 @@ the zone must be writable by them.</p></p>
                 <td>$origin</td>
                 <td><p>One of the AuditLoggerInterface::ORIGIN_* values; the API writes api_add_record</p></td>
             </tr>
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null</td>
+                <td>$companionZoneAllowed</td>
+                <td><p>Whether the caller may write the companion or its synced comment into the other zone (an API key's zone scope)</p></td>
+            </tr>
             </table>
 
             
@@ -388,7 +393,7 @@ the zone must be writable by them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_addFromForm">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Service/Record/RecordAddService.php#L168">at line 168</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Service/Record/RecordAddService.php#L193">at line 193</a></div>
         <code>                    <a href="../../../../Poweradmin/Application/Service/Record/RecordAddResult.html"><abbr title="Poweradmin\Application\Service\Record\RecordAddResult">RecordAddResult</abbr></a>
     <strong>addFromForm</strong>(int $zoneId, string $zoneName, string $name, string $type, string $content, int|null $ttl, int $prio, string $comment, int $userId, string $username, string $companion = &#039;&#039;)
         </code>
@@ -484,7 +489,7 @@ zone stands for its PTR name and one outside the zone is refused.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/4f3aa57" rel="noreferrer" target="_blank">commit 4f3aa57,</a> built 2026-10-25 05:47 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/9c69729" rel="noreferrer" target="_blank">commit 9c69729,</a> built 2026-10-26 05:19 UTC.</div></div>
     </div>
     </body>
 

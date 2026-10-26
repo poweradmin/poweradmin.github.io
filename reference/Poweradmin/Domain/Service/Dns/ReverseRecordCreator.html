@@ -127,7 +127,7 @@
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_createReverseRecord">createReverseRecord</a>(string $name, string $type, string $content, int $zone_id, int $ttl, int $prio, string $comment = &#039;&#039;, string $account = &#039;&#039;, bool $finalizeZone = true, bool $audit = true, bool $validateOnly = false)
+                    <a href="#method_createReverseRecord">createReverseRecord</a>(string $name, string $type, string $content, int $zone_id, int $ttl, int $prio, string $comment = &#039;&#039;, string $account = &#039;&#039;, bool $finalizeZone = true, bool $audit = true, bool $validateOnly = false, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $zoneAllowed = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -149,7 +149,7 @@
                     bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_deleteReverseRecord">deleteReverseRecord</a>(string $type, string $content, string $name)
+                    <a href="#method_deleteReverseRecord">deleteReverseRecord</a>(string $type, string $content, string $name, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $zoneAllowed = null)
         
                                             <p><p>Find and delete the corresponding PTR record for a given A or AAAA record</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -159,7 +159,7 @@
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_updateReverseRecord">updateReverseRecord</a>(string $oldType, string $oldContent, string $oldName, string $newType, string $newContent, string $newName, int $zone_id, int $ttl, int $prio, string $comment = &#039;&#039;, string $account = &#039;&#039;)
+                    <a href="#method_updateReverseRecord">updateReverseRecord</a>(string $oldType, string $oldContent, string $oldName, string $newType, string $newContent, string $newName, int $zone_id, int $ttl, int $prio, string $comment = &#039;&#039;, string $account = &#039;&#039;, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $zoneAllowed = null)
         
                                             <p><p>Sync the PTR record after an A/AAAA forward record was edited.</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -169,7 +169,7 @@
                     bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_deleteForwardRecord">deleteForwardRecord</a>(string $ptrName, string $ptrContent)
+                    <a href="#method_deleteForwardRecord">deleteForwardRecord</a>(string $ptrName, string $ptrContent, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $zoneAllowed = null)
         
                                             <p><p>Find and delete the corresponding A or AAAA record for a given PTR record</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -182,7 +182,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/ReverseRecordCreator.php#L46">at line 46</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/ReverseRecordCreator.php#L47">at line 47</a></div>
         <code>                    
     <strong>__construct</strong>(bool $reverseHandling, <a href="../../../../Poweradmin/Domain/Port/AuditLoggerInterface.html"><abbr title="Poweradmin\Domain\Port\AuditLoggerInterface">AuditLoggerInterface</abbr></a> $audit, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domainRepository, <a href="../../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a> $recordManager, <a href="../../../../Poweradmin/Domain/Port/RecordReadBackendInterface.html"><abbr title="Poweradmin\Domain\Port\RecordReadBackendInterface">RecordReadBackendInterface</abbr></a> $recordBackend)
         </code>
@@ -237,9 +237,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_createReverseRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/ReverseRecordCreator.php#L74">at line 74</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/ReverseRecordCreator.php#L76">at line 76</a></div>
         <code>                    array
-    <strong>createReverseRecord</strong>(string $name, string $type, string $content, int $zone_id, int $ttl, int $prio, string $comment = &#039;&#039;, string $account = &#039;&#039;, bool $finalizeZone = true, bool $audit = true, bool $validateOnly = false)
+    <strong>createReverseRecord</strong>(string $name, string $type, string $content, int $zone_id, int $ttl, int $prio, string $comment = &#039;&#039;, string $account = &#039;&#039;, bool $finalizeZone = true, bool $audit = true, bool $validateOnly = false, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $zoneAllowed = null)
         </code>
     </h3>
     <div class="details">    
@@ -310,6 +310,11 @@
                 <td>$validateOnly</td>
                 <td><p>True when the PTR must not be written at all, only checked</p></td>
             </tr>
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null</td>
+                <td>$zoneAllowed</td>
+                <td><p>Whether the caller may write to the reverse zone, beyond the edit rights the record manager checks</p></td>
+            </tr>
             </table>
 
             
@@ -331,7 +336,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getContentRev">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/ReverseRecordCreator.php#L117">at line 117</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/ReverseRecordCreator.php#L132">at line 132</a></div>
         <code>                    string|null
     <strong>getContentRev</strong>($type, $content)
         </code>
@@ -380,9 +385,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteReverseRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/ReverseRecordCreator.php#L136">at line 136</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/ReverseRecordCreator.php#L152">at line 152</a></div>
         <code>                    bool
-    <strong>deleteReverseRecord</strong>(string $type, string $content, string $name)
+    <strong>deleteReverseRecord</strong>(string $type, string $content, string $name, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $zoneAllowed = null)
         </code>
     </h3>
     <div class="details">    
@@ -412,6 +417,11 @@
                 <td>$name</td>
                 <td><p>Hostname from A/AAAA record</p></td>
             </tr>
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null</td>
+                <td>$zoneAllowed</td>
+                <td><p>Whether the caller may write to the zone holding the PTR</p></td>
+            </tr>
             </table>
 
             
@@ -433,9 +443,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_updateReverseRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/ReverseRecordCreator.php#L167">at line 167</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/ReverseRecordCreator.php#L189">at line 189</a></div>
         <code>                    array
-    <strong>updateReverseRecord</strong>(string $oldType, string $oldContent, string $oldName, string $newType, string $newContent, string $newName, int $zone_id, int $ttl, int $prio, string $comment = &#039;&#039;, string $account = &#039;&#039;)
+    <strong>updateReverseRecord</strong>(string $oldType, string $oldContent, string $oldName, string $newType, string $newContent, string $newName, int $zone_id, int $ttl, int $prio, string $comment = &#039;&#039;, string $account = &#039;&#039;, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $zoneAllowed = null)
         </code>
     </h3>
     <div class="details">    
@@ -507,6 +517,12 @@ Returns success when no PTR-relevant fields changed.</p></p>
                 <td>$account</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null</td>
+                <td>$zoneAllowed</td>
+                <td><p>Whether the caller may write to a reverse zone; when the old
+or the new one is refused, neither PTR is touched</p></td>
+            </tr>
             </table>
 
             
@@ -528,9 +544,9 @@ Returns success when no PTR-relevant fields changed.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteForwardRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/ReverseRecordCreator.php#L207">at line 207</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/ReverseRecordCreator.php#L239">at line 239</a></div>
         <code>                    bool
-    <strong>deleteForwardRecord</strong>(string $ptrName, string $ptrContent)
+    <strong>deleteForwardRecord</strong>(string $ptrName, string $ptrContent, <a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null $zoneAllowed = null)
         </code>
     </h3>
     <div class="details">    
@@ -555,6 +571,11 @@ Returns success when no PTR-relevant fields changed.</p></p>
                 <td>$ptrContent</td>
                 <td><p>PTR record content (hostname)</p></td>
             </tr>
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/Closure">Closure</a>|null</td>
+                <td>$zoneAllowed</td>
+                <td><p>Whether the caller may write to the zone holding the A/AAAA record</p></td>
+            </tr>
             </table>
 
             
@@ -578,7 +599,7 @@ Returns success when no PTR-relevant fields changed.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/4f3aa57" rel="noreferrer" target="_blank">commit 4f3aa57,</a> built 2026-10-25 05:47 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/9c69729" rel="noreferrer" target="_blank">commit 9c69729,</a> built 2026-10-26 05:19 UTC.</div></div>
     </div>
     </body>
 

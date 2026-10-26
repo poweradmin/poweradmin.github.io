@@ -8274,7 +8274,10 @@ the same one. A <code>PUT</code> without <code>comment</code> leaves the stored 
   is the change reason; on its own it satisfies the require-reason setting.</li>
 <li><code>create_ptr</code> on a <code>create</code> operation (A and AAAA records only) also creates the PTR record in
   the matching reverse zone. A PTR that cannot be created does not fail the batch; the reason is
-  added to <code>data.warnings</code>, which is always present and empty when there is nothing to report.</li>
+  added to <code>data.warnings</code>, which is always present and empty when there is nothing to report.
+  That includes a reverse zone outside the API key's zone list and one where the user must file
+  change requests: the PTR is skipped there, as with <code>create_ptr</code> and <code>update_ptr</code> on the
+  single-record calls.</li>
 <li>With the SQL backend the batch is one transaction and the PTR records roll back with it. In API
   backend mode there is no transaction: operations already applied, PTR records included, stay
   when a later operation fails.</li>
