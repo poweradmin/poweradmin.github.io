@@ -4094,6 +4094,8 @@
       
         
       
+        
+      
     
     
     
@@ -4183,6 +4185,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../operations/metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prometheus Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../maintenance/consistency-check/" class="md-nav__link">
         
   
@@ -4230,10 +4260,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5">
         
           
-          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
             
   
   
@@ -4251,8 +4281,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4354,10 +4384,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_6">
         
           
-          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_6" id="__nav_7_6_label" tabindex="0">
             
   
   
@@ -4375,8 +4405,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7519,8 +7549,8 @@
 <li>Click <strong>Disable MFA</strong> - it takes effect immediately</li>
 </ol>
 <p>After disabling, you will only need your password to log in.</p>
-<p>The code proves you still hold the second factor, so someone using a stolen browser session cannot switch MFA off. <strong>Regenerate Recovery Codes</strong> asks for a code the same way. With email verification, click the button with the field empty and a code is sent to you; enter it and click again. If the email cannot be sent, the page says so and you can use a recovery code instead. Wrong codes here are counted on their own, so they never lock you out of logging in.</p>
-<p>Asking for a code is new in 4.6.0. Earlier versions disable MFA and regenerate recovery codes without one.</p>
+<p>The code proves you still hold the second factor, so someone using a stolen browser session cannot switch MFA off. <strong>Regenerate Recovery Codes</strong> asks for a code the same way. With email verification, click the button with the field empty and a code is sent to you; enter it and click again. If the email cannot be sent, the page says so and you can use a recovery code instead. Wrong codes are limited the same way as at sign-in (<code>max_verify_attempts</code> and <code>verify_lockout_duration</code>, see <a href="#configuration">Configuration</a>), but on their own counter, so they never lock you out of logging in.</p>
+<p>Asking for a code is new in 4.5.2 and 4.6.0. Earlier versions disable MFA and regenerate recovery codes without one.</p>
 <blockquote>
 <p><strong>Note:</strong> If MFA is enforced for your account through a user or group template, you cannot disable it. The <strong>Disable MFA</strong> button is not shown, and a disable request sent anyway is refused with a message saying MFA is required by your organization's security policy. The enforcement has to be removed first.</p>
 </blockquote>
@@ -7535,7 +7565,7 @@
 </ul>
 </li>
 </ol>
-<p>If you have no remaining recovery codes and cannot access your authenticator, contact your Poweradmin administrator. There is no admin screen for this: the user list shows whether MFA is configured, but nobody can clear another user's MFA from the interface or the API. Recovery means removing the user's row from the <code>user_mfa</code> table directly in the database, after which the account logs in with its password alone and can set MFA up again.</p>
+<p>If you have no remaining recovery codes and cannot access your authenticator, contact your Poweradmin administrator. There is no admin screen for this: the user list shows whether MFA is configured, but nobody can clear another user's MFA from the interface or the API. Recovery means removing the user's row from the <code>user_mfa</code> table directly in the database, after which the account logs in with its password alone and can set MFA up again. This is still the only way back for a user who has lost every factor: since 4.5.2 and 4.6.0 the user cannot switch MFA off without a current code either.</p>
 <h3 id="too-many-failed-attempts">Too many failed attempts<a class="headerlink" href="#too-many-failed-attempts" title="Permanent link">¶</a></h3>
 <p>After several wrong codes the verification screen stops accepting attempts for a while, and reports too many failed attempts. If you use email verification, any pending code is discarded and no replacement is sent until the wait is over.</p>
 <p>A recovery code is still accepted while the second factor is locked, on 4.5.0 as well as the 4.2.x, 4.3.x and 4.4.x lines, and is the documented way back into the account. A wrong recovery code during the lockout is written to the audit log but does not extend the wait.</p>

@@ -4150,6 +4150,8 @@
       
         
       
+        
+      
     
     
     
@@ -4239,6 +4241,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../operations/metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prometheus Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../maintenance/consistency-check/" class="md-nav__link">
         
   
@@ -4286,10 +4316,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5">
         
           
-          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
             
   
   
@@ -4307,8 +4337,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4410,10 +4440,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_6">
         
           
-          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_6" id="__nav_7_6_label" tabindex="0">
             
   
   
@@ -4431,8 +4461,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7764,7 +7794,7 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 </tr>
 <tr>
 <td>Zone type change needs the target grant</td>
-<td>Converting a zone into another kind requires the same permission as creating one of that kind: <code>zone_slave_add</code> for Secondary and Consumer, <code>zone_master_add</code> for the rest</td>
+<td>Converting a zone into another kind requires the same permission as creating one of that kind: <code>zone_slave_add</code> for Secondary and Consumer, <code>zone_master_add</code> for the rest. Applying a template to an existing zone needs content edit rights on it. Both also in 4.5.2</td>
 <td><a href="../../user-guide/permissions/">Permissions</a></td>
 </tr>
 <tr>
@@ -7794,8 +7824,8 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 </tr>
 <tr>
 <td>API user passwords follow the policy</td>
-<td>Passwords set through the API are hashed with the configured algorithm and must satisfy the password policy, the same as the web form</td>
-<td><a href="../../configuration/password-policies/">Password Policies</a></td>
+<td>Passwords set through the API are hashed with the configured algorithm and must satisfy the password policy, the same as the web form. <code>use_ldap</code> must be a boolean and is refused while LDAP is off. Also in 4.5.2</td>
+<td><a href="../../api/endpoints/#passwords-and-ldap-v452-and-v460">API Endpoints</a></td>
 </tr>
 <tr>
 <td>API zone creation matches the web form</td>
@@ -7804,13 +7834,13 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 </tr>
 <tr>
 <td>API records stored as punycode</td>
-<td>Record names and content are normalised to punycode and duplicate records are refused, matching the web editor</td>
-<td><a href="../../api/overview/">API Overview</a></td>
+<td>Record names and content are normalised to punycode (also in 4.5.2), and a record with the same name, type and content as an existing one answers 409, matching the web editor</td>
+<td><a href="../../api/endpoints/#internationalised-names-and-duplicates">API Endpoints</a></td>
 </tr>
 <tr>
 <td>Last super admin protected</td>
-<td>The last remaining superuser cannot be deleted, from the web or the API, and record comments are cleaned up when a zone is deleted</td>
-<td><a href="../../user-guide/users-roles/">Users and Roles</a></td>
+<td>Super admin granted through a group counts. Deleting or disabling the last one, removing them from a group, deleting the group, changing its template or taking <code>user_is_ueberuser</code> out of the template is refused (409 in the API), and sign-in sync skips such a change with a warning. 4.5.2 refuses deleting the last super admin in the web interface. Record comments are cleaned up when a zone is deleted</td>
+<td><a href="../../user-guide/users-roles/#understanding-uberuser-status">Users and Roles</a></td>
 </tr>
 <tr>
 <td>Request validation rules enforced</td>
@@ -7825,7 +7855,7 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <tr>
 <td>Turning off LDAP needs a password</td>
 <td><code>PUT /api/v2/users/{id}</code> with <code>use_ldap=false</code> must carry a <code>password</code>, since the LDAP placeholder cannot be kept as a login password</td>
-<td><a href="../../api/overview/">API Overview</a></td>
+<td><a href="../../api/endpoints/#passwords-and-ldap-v452-and-v460">API Endpoints</a></td>
 </tr>
 <tr>
 <td>NS and MX target checks ignore case</td>
@@ -7913,6 +7943,11 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../configuration/basic/">Basic Configuration</a></td>
 </tr>
 <tr>
+<td>Prometheus metrics</td>
+<td><code>GET /api/metrics</code> serves zone, DNSSEC, user and optional record counts in the Prometheus text format, off by default. Scrapes use an API key of a user with <code>server_status_view</code>; a Grafana dashboard ships in <code>addons/grafana/</code> (#1463)</td>
+<td><a href="../../operations/metrics/">Prometheus Metrics</a></td>
+</tr>
+<tr>
 <td>Bulk record requests capped</td>
 <td><code>POST /zones/{id}/records/bulk</code> takes at most <code>api.bulk_max_operations</code> operations (1000 by default) and answers 400 above that</td>
 <td><a href="../../configuration/api/">API Configuration</a></td>
@@ -7924,7 +7959,7 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 </tr>
 <tr>
 <td>Disabling MFA asks for a code</td>
-<td><strong>Disable MFA</strong> and <strong>Regenerate Recovery Codes</strong> need a current code from the authenticator app, an email code or a recovery code, so a stolen session cannot switch MFA off or take new recovery codes. An email code that could not be delivered is reported instead of shown as sent</td>
+<td><strong>Disable MFA</strong> and <strong>Regenerate Recovery Codes</strong> need a current code from the authenticator app, an email code or a recovery code, so a stolen session cannot switch MFA off or take new recovery codes. An email code that could not be delivered is reported instead of shown as sent. Also in 4.5.2</td>
 <td><a href="../../user-guide/mfa/#disabling-mfa">Multi-Factor Authentication</a></td>
 </tr>
 <tr>

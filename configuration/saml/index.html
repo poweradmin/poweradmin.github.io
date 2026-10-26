@@ -2738,6 +2738,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#response-received-at-the-wrong-url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response "received at" the wrong URL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#redirect-loop" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4358,6 +4369,8 @@
       
         
       
+        
+      
     
     
     
@@ -4447,6 +4460,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../operations/metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prometheus Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../maintenance/consistency-check/" class="md-nav__link">
         
   
@@ -4494,10 +4535,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5">
         
           
-          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
             
   
   
@@ -4515,8 +4556,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4618,10 +4659,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_6">
         
           
-          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_6" id="__nav_7_6_label" tabindex="0">
             
   
   
@@ -4639,8 +4680,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7923,6 +7964,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#response-received-at-the-wrong-url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Response "received at" the wrong URL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#redirect-loop" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8010,6 +8062,7 @@
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="x">],</span>
 </code></pre></div>
 <p>Alternatively, set <code>sp.entity_id</code>, <code>sp.assertion_consumer_service_url</code> and <code>sp.single_logout_service_url</code> explicitly (see <a href="#service-provider-sp-configuration">Service Provider Configuration</a>). Those are then used as given and nothing is derived, so <code>application_url</code> is not required for SAML.</p>
+<p>From 4.5.2 and 4.6.0 these advertised URLs are also what an incoming message is checked against: a response must have been sent to the ACS URL, and a logout request to the SLS URL. Earlier versions rebuilt the expected URL from the request PHP received, so a port mapping or proxy in front of PHP made every response fail (see <a href="#response-received-at-the-wrong-url">Response "received at" the wrong URL</a>).</p>
 <p><code>interface.base_url</code> is also still accepted as a source for the derived SP URLs. It is a legacy fallback kept so that installs which set it by hand are not broken; prefer <code>interface.application_url</code> for new configuration.</p>
 <p>Earlier versions derived the host from the web server's <code>SERVER_NAME</code> when this was empty. That fallback was removed in 4.2.6, 4.3.5, 4.4.1 and 4.5.0; on earlier releases of those lines the host is still derived from the request. After the removal: under the official Docker image (FrankenPHP/Caddy) and under Apache's default <code>UseCanonicalName Off</code>, <code>SERVER_NAME</code> comes from the client's <code>Host</code> header, so a forged header could advertise an attacker's ACS URL to an IdP that consumes SP metadata dynamically.</p>
 <h3 id="https-for-the-acs-url-v460">HTTPS for the ACS URL <em>(v4.6.0+)</em><a class="headerlink" href="#https-for-the-acs-url-v460" title="Permanent link">¶</a></h3>
@@ -8094,6 +8147,7 @@ to refuse such links.</p>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="group-membership-mapping">Group Membership Mapping<a class="headerlink" href="#group-membership-mapping" title="Permanent link">¶</a></h2>
+<p>From 4.6.0, sign-in sync never demotes or removes the last active super admin. It skips that change and logs a warning on every login until another super admin exists. See <a href="../../user-guide/users-roles/#understanding-uberuser-status">Users and Roles</a>.</p>
 <p>Separate from permission templates, you can also map SAML groups to Poweradmin groups. This controls zone ownership and access through group membership.</p>
 <p>Key differences from permission template mapping:</p>
 <ul>
@@ -8595,6 +8649,11 @@ to refuse such links.</p>
 </ul>
 <h3 id="the-sign-in-was-not-started-from-this-browser-or-took-too-long">"The sign-in was not started from this browser or took too long"<a class="headerlink" href="#the-sign-in-was-not-started-from-this-browser-or-took-too-long" title="Permanent link">¶</a></h3>
 <p>The response did not come with the sign-in cookie Poweradmin set when the login started. Common causes: Poweradmin is served over plain HTTP (the cookie needs HTTPS), the sign-in was started from the identity provider's portal, or more than 10 minutes passed at the identity provider. Serve Poweradmin over HTTPS, or set <code>allow_idp_initiated</code> on the provider (see <a href="#https-for-the-acs-url-v460">HTTPS for the ACS URL</a>). The log names the provider and, at the start of the sign-in, warns when the ACS URL is not HTTPS.</p>
+<h3 id="response-received-at-the-wrong-url">Response "received at" the wrong URL<a class="headerlink" href="#response-received-at-the-wrong-url" title="Permanent link">¶</a></h3>
+<p>The log shows an error like:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>The response was received at http://host/saml/acs instead of http://host:8089/saml/acs
+</code></pre></div>
+<p>PHP saw the request on a different port or host than the one advertised to the identity provider, typically a plain-HTTP container published with a port mapping such as Docker <code>-p 8089:80</code>. Before 4.5.2 and 4.6.0 every response was refused this way. Upgrade, and set <code>interface.application_url</code> (or the explicit <code>sp</code> URLs) to the address users reach, here <code>http://host:8089</code>. On 4.6.0 a plain-HTTP host other than <code>localhost</code> also needs <code>allow_idp_initiated</code>, see <a href="#https-for-the-acs-url-v460">HTTPS for the ACS URL</a>.</p>
 <h3 id="redirect-loop">Redirect loop<a class="headerlink" href="#redirect-loop" title="Permanent link">¶</a></h3>
 <ul>
 <li>Clear browser cookies</li>

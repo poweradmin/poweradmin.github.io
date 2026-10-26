@@ -114,7 +114,9 @@ so a spoofed ?page=api/... query cannot flip the result.</p></p>        </div>
                                                                                                                         HEALTH_PROBE_PATHS
                                     </td>
                 <td class="last">
-                    <p><em><p>Paths of the unauthenticated monitoring probes, as declared in routes.yaml.</p></em></p>
+                    <p><em><p>Paths of the monitoring endpoints, as declared in routes.yaml. None of them
+needs a session: health and ping are unauthenticated, and metrics takes an
+API key on every scrape.</p></em></p>
                     <p><p>Shared so the session skip below and HeadlessRouteFilter cannot drift apart
 from each other or from the routes themselves.</p></p>
                 </td>
@@ -266,7 +268,7 @@ never receives an HTML stack page.</p></p>                </div>
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_isApiRequest">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L64">at line 64</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L66">at line 66</a></div>
         <code>        static            bool
     <strong>isApiRequest</strong>(bool $requireTrailingSlash = false)
         </code>
@@ -312,7 +314,7 @@ through to web handling</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_isInternalApiRoute">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L75">at line 75</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L77">at line 77</a></div>
         <code>        static            bool
     <strong>isInternalApiRoute</strong>()
         </code>
@@ -345,7 +347,7 @@ through to web handling</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_isV2ApiRequest">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L85">at line 85</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L87">at line 87</a></div>
         <code>        static            bool
     <strong>isV2ApiRequest</strong>()
         </code>
@@ -380,7 +382,7 @@ unrelated URL that merely mentions /api/v2/ in its query string.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isPublicApiRequest">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L95">at line 95</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L97">at line 97</a></div>
         <code>        static            bool
     <strong>isPublicApiRequest</strong>()
         </code>
@@ -414,7 +416,7 @@ authenticates every request by key or Basic credentials and keeps no session.</p
             </div>
                     <div class="method-item">
                     <h3 id="method_isApiPath">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L105">at line 105</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L107">at line 107</a></div>
         <code>        static            bool
     <strong>isApiPath</strong>()
         </code>
@@ -449,7 +451,7 @@ per segment: a plain <code>/api/</code> test also caught the web page /settings/
             </div>
                     <div class="method-item">
                     <h3 id="method_isHealthProbeRequest">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L118">at line 118</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L120">at line 120</a></div>
         <code>        static            bool
     <strong>isHealthProbeRequest</strong>(string $baseUrlPrefix = &#039;&#039;)
         </code>
@@ -495,7 +497,7 @@ paths such as /zones/ping and silently deny them a session.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_acceptsJson">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L137">at line 137</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L139">at line 139</a></div>
         <code>        static            bool
     <strong>acceptsJson</strong>()
         </code>
@@ -528,7 +530,7 @@ paths such as /zones/ping and silently deny them a session.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_acceptsJsonOnly">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L145">at line 145</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L147">at line 147</a></div>
         <code>        static            bool
     <strong>acceptsJsonOnly</strong>()
         </code>
@@ -561,7 +563,7 @@ paths such as /zones/ping and silently deny them a session.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isAjax">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L153">at line 153</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L155">at line 155</a></div>
         <code>        static            bool
     <strong>isAjax</strong>()
         </code>
@@ -594,7 +596,7 @@ paths such as /zones/ping and silently deny them a session.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_hasJsonContentType">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L162">at line 162</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L164">at line 164</a></div>
         <code>        static            bool
     <strong>hasJsonContentType</strong>()
         </code>
@@ -627,7 +629,7 @@ paths such as /zones/ping and silently deny them a session.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_expectsJson">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L174">at line 174</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L176">at line 176</a></div>
         <code>        static            bool
     <strong>expectsJson</strong>()
         </code>
@@ -661,7 +663,7 @@ This is more comprehensive than just checking the route</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_expectsJsonOnError">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L191">at line 191</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Application/Http/RequestContext.php#L193">at line 193</a></div>
         <code>        static            bool
     <strong>expectsJsonOnError</strong>()
         </code>
@@ -700,7 +702,7 @@ never receives an HTML stack page.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/9c69729" rel="noreferrer" target="_blank">commit 9c69729,</a> built 2026-10-26 05:19 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/ba401f3" rel="noreferrer" target="_blank">commit ba401f3,</a> built 2026-10-26 06:18 UTC.</div></div>
     </div>
     </body>
 

@@ -4159,6 +4159,8 @@
       
         
       
+        
+      
     
     
     
@@ -4248,6 +4250,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../operations/metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prometheus Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../maintenance/consistency-check/" class="md-nav__link">
         
   
@@ -4295,10 +4325,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5">
         
           
-          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
             
   
   
@@ -4316,8 +4346,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4419,10 +4449,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_6">
         
           
-          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_6" id="__nav_7_6_label" tabindex="0">
             
   
   
@@ -4440,8 +4470,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7650,6 +7680,7 @@
 <li>Recovery codes are still accepted during a lockout on every line, so they remain the way back into the account. A wrong recovery code during the lockout is written to the audit log but does not count as a further attempt. A blacklisted source address is refused regardless.</li>
 </ul>
 <p>MFA failures are tracked separately from password failures, so a wrong code never blocks a later password login, and a fresh password login does not reset the MFA counter. Setting either value to <code>0</code> is treated as <code>1</code> rather than as "unlimited"; to remove the limit entirely, disable MFA.</p>
+<p>From 4.5.2 and 4.6.0 the same limit applies to the code asked for when a user disables MFA or regenerates recovery codes on the <strong>Account</strong> page. Those attempts have their own counter, so wrong codes there do not lock the user out of signing in.</p>
 <h2 id="ip-address-management">IP Address Management<a class="headerlink" href="#ip-address-management" title="Permanent link">¶</a></h2>
 <p>Control which IP addresses can access the system:</p>
 <ul>
@@ -7715,7 +7746,7 @@ nothing; turn them on after checking the notes below.</p>
 <tr>
 <td><code>security.protect_last_admin_on_edit</code></td>
 <td>The user edit form and API <code>PUT /users/{id}</code> refuse to give the last super admin a template without <code>user_is_ueberuser</code>. Delete, disable and <code>PATCH</code> always refuse this</td>
-<td>Super admin rights held only through a group are not counted, so with that setup a valid change can be refused; give the remaining admin a super admin template directly</td>
+<td>Before 4.6.0, super admin rights held only through a group are not counted, so with that setup a valid change can be refused; give the remaining admin a super admin template directly. 4.6.0 counts them</td>
 </tr>
 <tr>
 <td><code>security.strict_session_gates</code></td>

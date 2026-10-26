@@ -3938,6 +3938,8 @@
       
         
       
+        
+      
     
     
     
@@ -4027,6 +4029,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../operations/metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prometheus Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../maintenance/consistency-check/" class="md-nav__link">
         
   
@@ -4074,10 +4104,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5">
         
           
-          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
             
   
   
@@ -4095,8 +4125,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -4198,10 +4228,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_5">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_6">
         
           
-          <label class="md-nav__link" for="__nav_7_5" id="__nav_7_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7_6" id="__nav_7_6_label" tabindex="0">
             
   
   
@@ -4219,8 +4249,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -7783,9 +7813,11 @@
 <h3 id="permissions-and-refusals">Permissions and refusals<a class="headerlink" href="#permissions-and-refusals" title="Permanent link">¶</a></h3>
 <ul>
 <li>One permission rule for zone actions. A zone action is granted when any permission template the user holds, directly or through a group, grants it and the user owns the zone. The stricter hybrid rule, which required the grant to come from a group that owns the zone, is gone. This can give users more access than before, so review the permission templates of your groups.</li>
-<li>Changing a zone's type needs the add permission for the new type: <code>zone_slave_add</code> for Secondary and Consumer, <code>zone_master_add</code> for the others.</li>
+<li>Changing a zone's type needs the add permission for the new type: <code>zone_slave_add</code> for Secondary and Consumer, <code>zone_master_add</code> for the others. 4.5.2 makes the same change.</li>
+<li>Applying a zone template to an existing zone needs the content edit permission for the zone (<code>zone_content_edit_own</code> or <code>zone_content_edit_others</code>); meta edit rights alone are refused. 4.5.2 makes the same change.</li>
 <li>Deleting a group that is the last owner of a zone is refused. The message names the zone, and API v2 answers <code>409</code>.</li>
-<li><strong>Disable MFA</strong> and <strong>Regenerate Recovery Codes</strong> ask for a current code from the authenticator app, an email code or a recovery code.</li>
+<li>Super admin granted through a group counts as super admin. Removing a group member, deleting a group, changing a group's template or removing <code>user_is_ueberuser</code> from a template is refused when it would leave no active super admin, with <code>409</code> in API v2. OIDC, SAML and LDAP sign-in skip such a change and log a warning. See <a href="../../user-guide/users-roles/#understanding-uberuser-status">Users and Roles</a>.</li>
+<li><strong>Disable MFA</strong> and <strong>Regenerate Recovery Codes</strong> ask for a current code from the authenticator app, an email code or a recovery code. 4.5.2 makes the same change.</li>
 <li><code>DELETE /api/v2/zones/{id}/rrsets/{name}/{type}</code> with an unknown record type answers <code>400 Invalid record type.</code> instead of <code>404</code>.</li>
 </ul>
 <h3 id="defaults">Defaults<a class="headerlink" href="#defaults" title="Permanent link">¶</a></h3>
@@ -7827,6 +7859,7 @@
 <li>The SQL backend now stores the zone name whenever it writes a zone row, and the <a href="../../maintenance/consistency-check/">Database Consistency Check</a> lists zones that still lack one, so a later switch to the API backend keeps every zone's owners.</li>
 <li>In API backend mode the automatic zone sync changes nothing when PowerDNS no longer lists more than half of the known zones, which usually means <code>pdns_api.url</code> points at the wrong server; the manual sync on the Forward Zones page still applies the changes.</li>
 <li>With <code>approval.enabled</code> on before the 4.6.0 update script has run, the Change requests entry and the pending counts are hidden and an error is logged, instead of every page failing. Filing a request still fails until the script has run.</li>
+<li>SAML responses are checked against the advertised ACS URL and logout requests against the SLS URL, so a port mapping in front of PHP no longer refuses every response (also in 4.5.2). See <a href="../../configuration/saml/#response-received-at-the-wrong-url">SAML Authentication</a>.</li>
 <li>SAML sign-in now needs HTTPS (or <code>localhost</code>) and refuses responses that do not answer a sign-in started from the same browser, including IdP-initiated SSO. Set <code>'allow_idp_initiated' =&gt; true</code> on a provider (<code>PA_SAML_&lt;PROVIDER&gt;_ALLOW_IDP_INITIATED=true</code> in Docker) to keep the old behaviour for it. See <a href="../../configuration/saml/#https-for-the-acs-url-v460">SAML Authentication</a>.</li>
 <li><code>POST /zones/{id}/records/bulk</code> refuses more than 1000 operations per request with <code>400 Too many operations: at most 1000 per request</code>. Raise or remove the limit with <code>api.bulk_max_operations</code> (<code>0</code> = no limit).</li>
 <li><code>interface.session_max_lifetime</code> is new and off by default.</li>
