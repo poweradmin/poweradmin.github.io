@@ -251,6 +251,18 @@ it is not a member.</p></p>                </div>
                     bool
                 </div>
                 <div class="col-md-8">
+                    <a href="#method_rewriteSoaContent">rewriteSoaContent</a>(int $zoneId, callable $change)
+        
+                                            <p><p>Rewrites the zone's SOA content from its current value as one step, so concurrent
+writers to the zone cannot both bump from the same serial. The SQL backend locks the
+SOA row for it; the API backend reads and rewrites the RRset.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
                     <a href="#method_replaceSoaContent">replaceSoaContent</a>(int $zoneId, string $content)
         
                                             <p><p>Replace the content of a zone's SOA record. The SQL backend keeps the stored
@@ -1369,8 +1381,58 @@ it is not a member.</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_replaceSoaContent">
+                    <h3 id="method_rewriteSoaContent">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L462">at line 462</a></div>
+        <code>                    bool
+    <strong>rewriteSoaContent</strong>(int $zoneId, callable $change)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Rewrites the zone's SOA content from its current value as one step, so concurrent
+writers to the zone cannot both bump from the same serial. The SQL backend locks the
+SOA row for it; the API backend reads and rewrites the RRset.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td><p>Domain ID</p></td>
+            </tr>
+                    <tr>
+                <td>callable</td>
+                <td>$change</td>
+                <td><p>Gets the current content, returns the new content or null to keep it</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>False when the zone has no SOA record or the write failed</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_replaceSoaContent">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L473">at line 473</a></div>
         <code>                    bool
     <strong>replaceSoaContent</strong>(int $zoneId, string $content)
         </code>
@@ -1419,7 +1481,7 @@ TTL; the API backend rewrites the whole RRset with the configured dns.ttl.</p></
             </div>
                     <div class="method-item">
                     <h3 id="method_addRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L479">at line 479</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L490">at line 490</a></div>
         <code>                    bool
     <strong>addRecord</strong>(int $domainId, string $name, string $type, string $content, int $ttl, int $prio)
         </code>
@@ -1487,7 +1549,7 @@ TTL; the API backend rewrites the whole RRset with the configured dns.ttl.</p></
             </div>
                     <div class="method-item">
                     <h3 id="method_addRecordGetId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L484">at line 484</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L495">at line 495</a></div>
         <code>                    int|string|null
     <strong>addRecordGetId</strong>(int $domainId, string $name, string $type, string $content, int $ttl, int $prio, array|null $comment = null)
         </code>
@@ -1561,7 +1623,7 @@ comments untouched. SQL mode ignores it.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_createRecordAtomic">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L489">at line 489</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L500">at line 500</a></div>
         <code>                    int|string|null
     <strong>createRecordAtomic</strong>(int $domainId, string $name, string $type, string $content, int $ttl, int $prio, int $disabled = 0, array|null $comment = null)
         </code>
@@ -1640,7 +1702,7 @@ In API mode, one RRset REPLACE carries the record and the disabled flag.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_editRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L548">at line 548</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L559">at line 559</a></div>
         <code>                    bool
     <strong>editRecord</strong>(int|string $recordId, string $name, string $type, string $content, int $ttl, int $prio, int $disabled, array|null $comment = null)
         </code>
@@ -1719,7 +1781,7 @@ comments untouched, empty content clears them. SQL mode ignores it.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_lastWriteRejection">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L681">at line 681</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L692">at line 692</a></div>
         <code>                    string|null
     <strong>lastWriteRejection</strong>()
         </code>
@@ -1753,7 +1815,7 @@ the write succeeded or failed without a verdict from the service.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_lastWriteRejectionStatus">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L686">at line 686</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L697">at line 697</a></div>
         <code>                    int|null
     <strong>lastWriteRejectionStatus</strong>()
         </code>
@@ -1786,7 +1848,7 @@ the write succeeded or failed without a verdict from the service.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L707">at line 707</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L718">at line 718</a></div>
         <code>                    bool
     <strong>deleteRecord</strong>(int|string $recordId)
         </code>
@@ -1829,7 +1891,7 @@ the write succeeded or failed without a verdict from the service.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L778">at line 778</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L789">at line 789</a></div>
         <code>                    bool
     <strong>zoneExists</strong>(string $zoneName)
         </code>
@@ -1872,7 +1934,7 @@ the write succeeded or failed without a verdict from the service.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L785">at line 785</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L796">at line 796</a></div>
         <code>                    array|null
     <strong>getZoneById</strong>(int $domainId)
         </code>
@@ -1915,7 +1977,7 @@ the write succeeded or failed without a verdict from the service.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneNameById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L805">at line 805</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L816">at line 816</a></div>
         <code>                    string|null
     <strong>getZoneNameById</strong>(int $domainId)
         </code>
@@ -1958,7 +2020,7 @@ the write succeeded or failed without a verdict from the service.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneIdByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L810">at line 810</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L821">at line 821</a></div>
         <code>                    int|null
     <strong>getZoneIdByName</strong>(string $zoneName)
         </code>
@@ -2001,7 +2063,7 @@ the write succeeded or failed without a verdict from the service.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneTypeById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L823">at line 823</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L834">at line 834</a></div>
         <code>                    string
     <strong>getZoneTypeById</strong>(int $domainId)
         </code>
@@ -2044,7 +2106,7 @@ the write succeeded or failed without a verdict from the service.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneMasterById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L828">at line 828</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L839">at line 839</a></div>
         <code>                    string|null
     <strong>getZoneMasterById</strong>(int $domainId)
         </code>
@@ -2087,7 +2149,7 @@ the write succeeded or failed without a verdict from the service.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L864">at line 864</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L875">at line 875</a></div>
         <code>                    array|null
     <strong>getRecordById</strong>(int|string $recordId)
         </code>
@@ -2130,7 +2192,7 @@ the write succeeded or failed without a verdict from the service.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneIdFromRecordId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L915">at line 915</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L926">at line 926</a></div>
         <code>                    int
     <strong>getZoneIdFromRecordId</strong>(int|string $recordId)
         </code>
@@ -2173,7 +2235,7 @@ the write succeeded or failed without a verdict from the service.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneStats">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L927">at line 927</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L938">at line 938</a></div>
         <code>                    array
     <strong>getZoneStats</strong>(bool $withDnssec = true)
         </code>
@@ -2218,7 +2280,7 @@ Record counts are not included - the PowerDNS zone list carries none.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_countZoneRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L932">at line 932</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L943">at line 943</a></div>
         <code>                    int
     <strong>countZoneRecords</strong>(int $domainId)
         </code>
@@ -2261,7 +2323,7 @@ Record counts are not included - the PowerDNS zone list carries none.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_recordExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L942">at line 942</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L953">at line 953</a></div>
         <code>                    bool
     <strong>recordExists</strong>(int $domainId, string $name, string $type, string $content)
         </code>
@@ -2319,7 +2381,7 @@ Record counts are not included - the PowerDNS zone list carries none.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsByZoneId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L957">at line 957</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L968">at line 968</a></div>
         <code>                    array
     <strong>getRecordsByZoneId</strong>(int $domainId, string|null $type = null)
         </code>
@@ -2367,7 +2429,7 @@ Record counts are not included - the PowerDNS zone list carries none.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L970">at line 970</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L981">at line 981</a></div>
         <code>                    array
     <strong>getRecordsByName</strong>(int $domainId, string $name, string|null $type = null)
         </code>
@@ -2420,7 +2482,7 @@ Record counts are not included - the PowerDNS zone list carries none.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_findRecordsByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L996">at line 996</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1007">at line 1007</a></div>
         <code>                    array
     <strong>findRecordsByName</strong>(string $name, string|null $type = null)
         </code>
@@ -2469,7 +2531,7 @@ search endpoint, which caps the candidate set at 100 matches before filtering.</
             </div>
                     <div class="method-item">
                     <h3 id="method_findRecordsByContent">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1006">at line 1006</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1017">at line 1017</a></div>
         <code>                    array
     <strong>findRecordsByContent</strong>(string $content, string|null $type = null)
         </code>
@@ -2519,7 +2581,7 @@ findRecordsByName().</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getSOARecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1027">at line 1027</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1038">at line 1038</a></div>
         <code>                    string
     <strong>getSOARecord</strong>(int $domainId)
         </code>
@@ -2562,7 +2624,7 @@ findRecordsByName().</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getBestMatchingReverseZoneId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1056">at line 1056</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1067">at line 1067</a></div>
         <code>                    int
     <strong>getBestMatchingReverseZoneId</strong>(string $reverseName)
         </code>
@@ -2605,7 +2667,7 @@ findRecordsByName().</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1089">at line 1089</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1100">at line 1100</a></div>
         <code>                    array
     <strong>getZones</strong>(bool $withDnssec = true)
         </code>
@@ -2650,7 +2712,7 @@ avoid a per-zone lookup and report dnssec as false</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZonesByIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1159">at line 1159</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1170">at line 1170</a></div>
         <code>                    array
     <strong>getZonesByIds</strong>(array $domainIds)
         </code>
@@ -2693,7 +2755,7 @@ avoid a per-zone lookup and report dnssec as false</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_countZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1176">at line 1176</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1187">at line 1187</a></div>
         <code>                    int
     <strong>countZones</strong>()
         </code>
@@ -2726,7 +2788,7 @@ avoid a per-zone lookup and report dnssec as false</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_countRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1182">at line 1182</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1193">at line 1193</a></div>
         <code>                    int|null
     <strong>countRecords</strong>()
         </code>
@@ -2759,7 +2821,7 @@ avoid a per-zone lookup and report dnssec as false</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneSoaHealth">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1188">at line 1188</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1199">at line 1199</a></div>
         <code>                    array|null
     <strong>getZoneSoaHealth</strong>(string $zoneName, string $kind)
         </code>
@@ -2811,7 +2873,7 @@ previously-cached state instead of overwriting it with an inferred default.</p><
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1243">at line 1243</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1254">at line 1254</a></div>
         <code>                    array
     <strong>getZoneRecords</strong>(int $domainId, string $zoneName)
         </code>
@@ -2861,7 +2923,7 @@ ENT records (null/empty type) are excluded.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_searchDnsData">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1319">at line 1319</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1330">at line 1330</a></div>
         <code>                    array
     <strong>searchDnsData</strong>(string $query, string $objectType = &#039;all&#039;, int $max = 100)
         </code>
@@ -2916,7 +2978,7 @@ Poweradmin metadata (ownership, permissions).</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_addSupermaster">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1404">at line 1404</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1415">at line 1415</a></div>
         <code>                    bool
     <strong>addSupermaster</strong>(string $masterIp, string $nsName, string $account)
         </code>
@@ -2969,7 +3031,7 @@ Poweradmin metadata (ownership, permissions).</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteSupermaster">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1409">at line 1409</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1420">at line 1420</a></div>
         <code>                    bool
     <strong>deleteSupermaster</strong>(string $masterIp, string $nsName)
         </code>
@@ -3017,7 +3079,7 @@ Poweradmin metadata (ownership, permissions).</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getSupermasters">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1414">at line 1414</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1425">at line 1425</a></div>
         <code>                    array
     <strong>getSupermasters</strong>()
         </code>
@@ -3050,7 +3112,7 @@ Poweradmin metadata (ownership, permissions).</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_updateSupermaster">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1430">at line 1430</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1441">at line 1441</a></div>
         <code>                    bool
     <strong>updateSupermaster</strong>(string $oldMasterIp, string $oldNsName, string $newMasterIp, string $newNsName, string $account)
         </code>
@@ -3113,7 +3175,7 @@ Poweradmin metadata (ownership, permissions).</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isApiBackend">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1463">at line 1463</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1474">at line 1474</a></div>
         <code>                    bool
     <strong>isApiBackend</strong>()
         </code>
@@ -3147,7 +3209,7 @@ updates, show notices about search limitations).</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_supportsLocalWriteTransaction">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1468">at line 1468</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1479">at line 1479</a></div>
         <code>                    bool
     <strong>supportsLocalWriteTransaction</strong>()
         </code>
@@ -3182,7 +3244,7 @@ the new ids, and an open transaction would hide those rows.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_recordIdsAreNumeric">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1473">at line 1473</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1484">at line 1484</a></div>
         <code>                    bool
     <strong>recordIdsAreNumeric</strong>()
         </code>
@@ -3216,7 +3278,7 @@ encoded composite keys (see RecordIdentifier) that do not fit an INT column.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_managesSoaRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1478">at line 1478</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1489">at line 1489</a></div>
         <code>                    bool
     <strong>managesSoaRecord</strong>()
         </code>
@@ -3251,7 +3313,7 @@ whatever SOA Poweradmin writes.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_allocatesZoneIdsLocally">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1483">at line 1483</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1494">at line 1494</a></div>
         <code>                    bool
     <strong>allocatesZoneIdsLocally</strong>()
         </code>
@@ -3287,7 +3349,7 @@ domains.id, the caller adds the zones row and a zone without a domains row is st
             </div>
                     <div class="method-item">
                     <h3 id="method_providesSignedSerial">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1488">at line 1488</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1499">at line 1499</a></div>
         <code>                    bool
     <strong>providesSignedSerial</strong>()
         </code>
@@ -3321,7 +3383,7 @@ for the SQL backend, which only sees the stored SOA serial.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_supportsRecordCountSort">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1493">at line 1493</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1504">at line 1504</a></div>
         <code>                    bool
     <strong>supportsRecordCountSort</strong>()
         </code>
@@ -3356,7 +3418,7 @@ the rows already on screen.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_supportsGroupSort">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1498">at line 1498</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1509">at line 1509</a></div>
         <code>                    bool
     <strong>supportsGroupSort</strong>()
         </code>
@@ -3391,7 +3453,7 @@ PowerDNS and cannot join them.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_supportsZoneRetrieve">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1503">at line 1503</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1514">at line 1514</a></div>
         <code>                    bool
     <strong>supportsZoneRetrieve</strong>()
         </code>
@@ -3425,7 +3487,7 @@ configured. False otherwise, as there is no way to trigger a transfer.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_supportsZoneNotify">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1508">at line 1508</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1519">at line 1519</a></div>
         <code>                    bool
     <strong>supportsZoneNotify</strong>()
         </code>
@@ -3459,7 +3521,7 @@ configured. False otherwise, as there is no way to trigger a NOTIFY.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_syncsZoneListFromServer">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1513">at line 1513</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1524">at line 1524</a></div>
         <code>                    bool
     <strong>syncsZoneListFromServer</strong>()
         </code>
@@ -3493,7 +3555,7 @@ False for the SQL backend, where the domains table is the source itself.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_hasSoaEditApi">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1518">at line 1518</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1529">at line 1529</a></div>
         <code>                    bool
     <strong>hasSoaEditApi</strong>(int $domainId)
         </code>
@@ -3536,7 +3598,7 @@ False for the SQL backend, where the domains table is the source itself.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_setZoneSerialPolicy">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1534">at line 1534</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1545">at line 1545</a></div>
         <code>                    bool
     <strong>setZoneSerialPolicy</strong>(int $domainId, string $zoneName, array $properties)
         </code>
@@ -3592,7 +3654,7 @@ matching domainmetadata rows.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_stripTrailingDotFromContent">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1641">at line 1641</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Service/ApiDnsBackendProvider.php#L1652">at line 1652</a></div>
         <code>        static            string
     <strong>stripTrailingDotFromContent</strong>(string $type, string $content)
         </code>
@@ -3642,7 +3704,7 @@ matching domainmetadata rows.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/8dc614d" rel="noreferrer" target="_blank">commit 8dc614d,</a> built 2026-10-26 17:11 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/5874a30" rel="noreferrer" target="_blank">commit 5874a30,</a> built 2026-10-27 16:22 UTC.</div></div>
     </div>
     </body>
 

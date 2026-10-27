@@ -8097,6 +8097,7 @@ rather than picking it from a list.</p>
 </code></pre></div>
 <p>You can automate this with a cron job or scheduled task.</p>
 <p>The <code>log_api</code> table has built-in retention: set <code>logging.api_log_retention_days</code> to a positive number of days and Poweradmin prunes older API log rows automatically (opportunistically, during API request logging). Leave it at <code>0</code> to keep API logs forever and manage them manually as above. This applies only to <code>log_api</code>; the other log tables have no built-in pruning.</p>
+<p>Failed API authentication (401) and permission errors (403) are written to <code>log_api</code> even with <code>api_request_logging</code> off, and that includes requests without valid credentials. If the API is reachable from untrusted networks, set <code>api_log_retention_days</code> and rate-limit <code>/api/</code> at the reverse proxy (<code>limit_req</code> in nginx, a rate-limit module in Caddy), so a flood of bad requests cannot grow the table without bound.</p>
 <h2 id="performance-considerations">Performance Considerations<a class="headerlink" href="#performance-considerations" title="Permanent link">¶</a></h2>
 <ol>
 <li><strong>Index optimization</strong>: Ensure indexes on <code>zone_id</code>, <code>group_id</code>, and <code>created_at</code> columns</li>
