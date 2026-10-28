@@ -159,6 +159,49 @@ the backend provider.</p></p>        </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_visibleToUserSql">visibleToUserSql</a>(string $alias, string $userParam, string $groupUserParam)
+        
+                                            <p><p>WHERE condition for the templates a user may see: global ones, their own, and
+those shared with a group they belong to. Takes two placeholders bound to the
+same user id, since native MySQL prepares cannot reuse one.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isSharedWithUser">isSharedWithUser</a>(int $templateId, int $userId)
+        
+                                            <p><p>Whether the template is shared with a group the user belongs to.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_listGroupsForTemplates">listGroupsForTemplates</a>(array $templateIds, int|null $viewerId = null)
+        
+                                            <p><p>Groups each template is shared with, sorted by name. With a viewer, a template
+the viewer does not own lists only the groups the viewer belongs to.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_replaceTemplateGroups">replaceTemplateGroups</a>(int $templateId, array $groupIds)
+        
+                                            <p><p>Replace the groups a template is shared with.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     array|false
                 </div>
                 <div class="col-md-8">
@@ -568,8 +611,208 @@ per owner, and the template sync state keys on that id.</p></p>                <
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_visibleToUserSql">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L241">at line 241</a></div>
+        <code>        static            string
+    <strong>visibleToUserSql</strong>(string $alias, string $userParam, string $groupUserParam)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>WHERE condition for the templates a user may see: global ones, their own, and
+those shared with a group they belong to. Takes two placeholders bound to the
+same user id, since native MySQL prepares cannot reuse one.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$alias</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$userParam</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$groupUserParam</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isSharedWithUser">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L249">at line 249</a></div>
+        <code>                    bool
+    <strong>isSharedWithUser</strong>(int $templateId, int $userId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the template is shared with a group the user belongs to.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$templateId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_listGroupsForTemplates">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L261">at line 261</a></div>
+        <code>                    array
+    <strong>listGroupsForTemplates</strong>(array $templateIds, int|null $viewerId = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Groups each template is shared with, sorted by name. With a viewer, a template
+the viewer does not own lists only the groups the viewer belongs to.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$templateIds</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$viewerId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Keyed by template ID; unshared templates are absent</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_replaceTemplateGroups">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L299">at line 299</a></div>
+        <code>                    void
+    <strong>replaceTemplateGroups</strong>(int $templateId, array $groupIds)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Replace the groups a template is shared with.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$templateId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$groupIds</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_getZoneTemplateDetails">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L237">at line 237</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L324">at line 324</a></div>
         <code>                    array|false
     <strong>getZoneTemplateDetails</strong>(int $id)
         </code>
@@ -612,7 +855,7 @@ per owner, and the template sync state keys on that id.</p></p>                <
             </div>
                     <div class="method-item">
                     <h3 id="method_getTemplateNameForZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L251">at line 251</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L338">at line 338</a></div>
         <code>                    string
     <strong>getTemplateNameForZone</strong>(int|string $zoneId)
         </code>
@@ -655,7 +898,7 @@ per owner, and the template sync state keys on that id.</p></p>                <
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneTemplateRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L270">at line 270</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L357">at line 357</a></div>
         <code>                    array
     <strong>getZoneTemplateRecords</strong>(int $templateId, int $rowStart = 0, int $rowAmount = Constants::DEFAULT_MAX_ROWS, string $sortBy = &#039;name&#039;)
         </code>
@@ -713,7 +956,7 @@ per owner, and the template sync state keys on that id.</p></p>                <
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneTemplateRecordById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L308">at line 308</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L395">at line 395</a></div>
         <code>                    array
     <strong>getZoneTemplateRecordById</strong>(int $id, int|null $templateId = null)
         </code>
@@ -762,7 +1005,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_countZoneTemplateRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L339">at line 339</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L426">at line 426</a></div>
         <code>                    int
     <strong>countZoneTemplateRecords</strong>(int $templateId)
         </code>
@@ -805,7 +1048,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_findFlaggedDefaultTemplateId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L352">at line 352</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L439">at line 439</a></div>
         <code>                    int|null
     <strong>findFlaggedDefaultTemplateId</strong>()
         </code>
@@ -838,7 +1081,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_globalTemplateExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L368">at line 368</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L455">at line 455</a></div>
         <code>                    bool
     <strong>globalTemplateExists</strong>(int $id)
         </code>
@@ -881,7 +1124,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_findGlobalTemplateIdsByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L382">at line 382</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L469">at line 469</a></div>
         <code>                    array
     <strong>findGlobalTemplateIdsByName</strong>(string $name)
         </code>
@@ -924,7 +1167,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_flagDefaultTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L395">at line 395</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L482">at line 482</a></div>
         <code>                    void
     <strong>flagDefaultTemplate</strong>(int $templateId)
         </code>
@@ -967,7 +1210,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_clearDefaultTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L411">at line 411</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L498">at line 498</a></div>
         <code>                    void
     <strong>clearDefaultTemplate</strong>()
         </code>
@@ -1000,7 +1243,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_createZoneTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L429">at line 429</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L516">at line 516</a></div>
         <code>                    int
     <strong>createZoneTemplate</strong>(string $name, string $description, int $owner, int $createdBy)
         </code>
@@ -1067,7 +1310,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_createZoneTemplateWithRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L445">at line 445</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L532">at line 532</a></div>
         <code>                    int
     <strong>createZoneTemplateWithRecords</strong>(string $name, string $description, int $owner, int $createdBy, array $records)
         </code>
@@ -1139,7 +1382,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_updateZoneTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L514">at line 514</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L601">at line 601</a></div>
         <code>                    bool
     <strong>updateZoneTemplate</strong>(int $id, string $name, string $description, int|null $owner = null)
         </code>
@@ -1197,7 +1440,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteZoneTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L547">at line 547</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L647">at line 647</a></div>
         <code>                    bool
     <strong>deleteZoneTemplate</strong>(int $id)
         </code>
@@ -1249,7 +1492,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteZoneTemplatesOwnedBy">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L580">at line 580</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L683">at line 683</a></div>
         <code>                    void
     <strong>deleteZoneTemplatesOwnedBy</strong>(int $ownerId)
         </code>
@@ -1292,7 +1535,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_addRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L609">at line 609</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L713">at line 713</a></div>
         <code>                    int
     <strong>addRecord</strong>(int $templateId, string $name, string $type, string $content, int $ttl, int $prio)
         </code>
@@ -1360,7 +1603,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_updateRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L638">at line 638</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L742">at line 742</a></div>
         <code>                    bool
     <strong>updateRecord</strong>(int $id, string $name, string $type, string $content, int $ttl, int $prio)
         </code>
@@ -1428,7 +1671,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L661">at line 661</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L765">at line 765</a></div>
         <code>                    bool
     <strong>deleteRecord</strong>(int $id)
         </code>
@@ -1471,7 +1714,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_unlinkZoneFromTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L675">at line 675</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L779">at line 779</a></div>
         <code>                    bool
     <strong>unlinkZoneFromTemplate</strong>(int $zoneId)
         </code>
@@ -1514,7 +1757,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_getTemplateIdForZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L689">at line 689</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L793">at line 793</a></div>
         <code>                    int
     <strong>getTemplateIdForZone</strong>(int $zoneId)
         </code>
@@ -1557,7 +1800,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_assignTemplateToZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L704">at line 704</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L808">at line 808</a></div>
         <code>                    void
     <strong>assignTemplateToZone</strong>(int $zoneId, int $templateId)
         </code>
@@ -1605,7 +1848,7 @@ ID from another template cannot be read</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_listZoneRowIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L712">at line 712</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L816">at line 816</a></div>
         <code>                    array
     <strong>listZoneRowIds</strong>(int $zoneId)
         </code>
@@ -1649,7 +1892,7 @@ per owner, and the template sync state keys on that id.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneTemplateExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L727">at line 727</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L831">at line 831</a></div>
         <code>                    bool
     <strong>zoneTemplateExists</strong>(int $id)
         </code>
@@ -1692,7 +1935,7 @@ per owner, and the template sync state keys on that id.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_zoneTemplateNameExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L742">at line 742</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L846">at line 846</a></div>
         <code>                    bool
     <strong>zoneTemplateNameExists</strong>(string $name, int|null $excludeId = null)
         </code>
@@ -1740,7 +1983,7 @@ per owner, and the template sync state keys on that id.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_findTemplateIdsByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L761">at line 761</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L865">at line 865</a></div>
         <code>                    array
     <strong>findTemplateIdsByName</strong>(string $name)
         </code>
@@ -1783,7 +2026,7 @@ per owner, and the template sync state keys on that id.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isOwner">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L776">at line 776</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L880">at line 880</a></div>
         <code>                    bool
     <strong>isOwner</strong>(int $templateId, int $userId)
         </code>
@@ -1831,7 +2074,7 @@ per owner, and the template sync state keys on that id.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getOwner">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L787">at line 787</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L891">at line 891</a></div>
         <code>                    int|null
     <strong>getOwner</strong>(int $templateId)
         </code>
@@ -1874,7 +2117,7 @@ per owner, and the template sync state keys on that id.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_listLinkedZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L803">at line 803</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L907">at line 907</a></div>
         <code>                    array
     <strong>listLinkedZoneIds</strong>(int $templateId, int|null $ownerId)
         </code>
@@ -1922,7 +2165,7 @@ per owner, and the template sync state keys on that id.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_listLinkedZoneIdPairs">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L852">at line 852</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L956">at line 956</a></div>
         <code>                    array
     <strong>listLinkedZoneIdPairs</strong>(int $templateId, int|null $ownerId)
         </code>
@@ -1970,7 +2213,7 @@ per owner, and the template sync state keys on that id.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_listLinkedZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L875">at line 875</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L979">at line 979</a></div>
         <code>                    array
     <strong>listLinkedZones</strong>(int $templateId, int|null $ownerId)
         </code>
@@ -2018,7 +2261,7 @@ per owner, and the template sync state keys on that id.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getZonesByIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L925">at line 925</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateRepository.php#L1029">at line 1029</a></div>
         <code>                    array
     <strong>getZonesByIds</strong>(array $zoneIds)
         </code>
@@ -2063,7 +2306,7 @@ per owner, and the template sync state keys on that id.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/bd336ce" rel="noreferrer" target="_blank">commit bd336ce,</a> built 2026-10-28 09:37 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/e32389d" rel="noreferrer" target="_blank">commit e32389d,</a> built 2026-10-28 12:33 UTC.</div></div>
     </div>
     </body>
 

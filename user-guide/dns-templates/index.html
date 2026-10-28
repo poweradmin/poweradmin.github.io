@@ -3650,6 +3650,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sharing-templates-with-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sharing Templates with Groups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#permissions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7652,6 +7663,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sharing-templates-with-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sharing Templates with Groups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#permissions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7908,14 +7930,26 @@ same template, use the bulk update below.</p>
 <li>The template editor shows a <strong>Sync Required</strong> banner with the number of zones needing an update, and repeats that count as a badge on the <strong>Update zones</strong> button.</li>
 </ul>
 <p>The zones themselves are still only updated when you ask for it.</p>
+<h2 id="sharing-templates-with-groups">Sharing Templates with Groups<a class="headerlink" href="#sharing-templates-with-groups" title="Permanent link">¶</a></h2>
+<p>From 4.6.0 a private template can be shared with one or more <a href="../users-roles/">user groups</a>. Members of those groups see the template in the template list and in the template dropdowns, and can create zones from it, on the web and through the API. Members who also hold <code>zone_templ_edit</code> can edit the template and its records.</p>
+<p>To share a template, open it in the template editor and tick the groups under <strong>Shared with groups</strong>, then click <strong>Update</strong>.</p>
+<ul>
+<li>The template owner can share it with the groups they are a member of. A super admin can share it with any group.</li>
+<li>Only the owner or a super admin can delete the template or change the groups it is shared with. Group members see the list of groups but cannot change it.</li>
+<li>When the owner saves, groups a super admin added that the owner is not a member of stay shared.</li>
+<li>Editing a shared template never makes a group member its owner.</li>
+<li>Global templates are visible to everyone and cannot be shared. Making a shared template global removes its shares.</li>
+<li>The template list shows a <strong>shared</strong> badge with the group names. A group member sees only the groups they belong to.</li>
+</ul>
+<p>API v2 returns the groups as a read-only <code>groups</code> array on <code>GET /api/v2/zone-templates</code> and <code>GET /api/v2/zone-templates/{id}</code>. Sharing is set on the web only.</p>
 <h2 id="permissions">Permissions<a class="headerlink" href="#permissions" title="Permanent link">¶</a></h2>
 <h3 id="zone-template-operations">Zone Template Operations<a class="headerlink" href="#zone-template-operations" title="Permanent link">¶</a></h3>
 <p>Different template operations require different permissions:</p>
 <ul>
 <li><strong>Creating zone templates</strong>: Requires <code>zone_templ_add</code> permission</li>
 <li><strong>Listing zone templates</strong>: Requires <code>zone_templ_add</code> OR <code>zone_templ_edit</code> OR <code>user_is_ueberuser</code> permission</li>
-<li><strong>Editing/deleting zone templates</strong>: Requires <code>user_is_ueberuser</code> OR (<code>zone_templ_edit</code> AND template ownership)</li>
-<li><strong>Adding/editing/deleting template records</strong>: Requires <code>user_is_ueberuser</code> OR (<code>zone_templ_edit</code> AND template ownership)</li>
+<li><strong>Editing zone templates and their records</strong>: Requires <code>user_is_ueberuser</code> OR (<code>zone_templ_edit</code> AND template ownership) OR (<code>zone_templ_edit</code> AND membership of a group the template is shared with)</li>
+<li><strong>Deleting zone templates and changing their groups</strong>: Requires <code>user_is_ueberuser</code> OR (<code>zone_templ_edit</code> AND template ownership)</li>
 </ul>
 <h3 id="applying-templates-to-zones">Applying Templates to Zones<a class="headerlink" href="#applying-templates-to-zones" title="Permanent link">¶</a></h3>
 <ul>

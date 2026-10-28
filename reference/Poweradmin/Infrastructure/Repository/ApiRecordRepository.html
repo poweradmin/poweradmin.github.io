@@ -287,6 +287,30 @@ on the page comes back, in that same order</p></p>                </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRecordsByDomainIdContaining">getRecordsByDomainIdContaining</a>(int $domainId, string|null $recordType, bool $withComments, array $contains)
+        
+                                            <p><p>getRecordsByDomainId(), narrowed to rows that may contain the given substrings,
+case-insensitively. It never drops a row that contains them; it may keep more, so
+callers still apply their own exact filter.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_getRRSetRecordsContaining">getRRSetRecordsContaining</a>(int $domainId, string|null $recordType, array $contains)
+        
+                                            <p><p>Every record of each RRset (name and type) that has a member which may contain the
+given substrings, in getRecordsByDomainId() order. Like
+getRecordsByDomainIdContaining() it may keep more than the exact match.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     int
                 </div>
                 <div class="col-md-8">
@@ -1224,8 +1248,123 @@ on the page comes back, in that same order</p></p>
 
             </div>
                     <div class="method-item">
-                    <h3 id="method_countRRSetsByDomainId">
+                    <h3 id="method_getRecordsByDomainIdContaining">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L212">at line 212</a></div>
+        <code>                    array
+    <strong>getRecordsByDomainIdContaining</strong>(int $domainId, string|null $recordType, bool $withComments, array $contains)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>getRecordsByDomainId(), narrowed to rows that may contain the given substrings,
+case-insensitively. It never drops a row that contains them; it may keep more, so
+callers still apply their own exact filter.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td><p>Domain ID</p></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$recordType</td>
+                <td><p>Optional record type filter</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$withComments</td>
+                <td><p>Add a <code>comment</code> key (string or null) to every row</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$contains</td>
+                <td><p>Needles by query parameter: name, content, q (name or content)</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Array of records</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getRRSetRecordsContaining">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L218">at line 218</a></div>
+        <code>                    array
+    <strong>getRRSetRecordsContaining</strong>(int $domainId, string|null $recordType, array $contains)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Every record of each RRset (name and type) that has a member which may contain the
+given substrings, in getRecordsByDomainId() order. Like
+getRecordsByDomainIdContaining() it may keep more than the exact match.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td><p>Domain ID</p></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$recordType</td>
+                <td><p>Optional record type filter</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$contains</td>
+                <td><p>Needles by query parameter: name, content, q</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Array of records</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_countRRSetsByDomainId">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L223">at line 223</a></div>
         <code>                    int
     <strong>countRRSetsByDomainId</strong>(int $domainId, string|null $recordType = null)
         </code>
@@ -1273,7 +1412,7 @@ on the page comes back, in that same order</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getCommentForRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L242">at line 242</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L253">at line 253</a></div>
         <code>                    string|null
     <strong>getCommentForRecord</strong>(int|string $recordId, int $domainId, string $name, string $type)
         </code>
@@ -1333,7 +1472,7 @@ the RRset comment, shared by every record in the set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L253">at line 253</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L264">at line 264</a></div>
         <code>                    array
     <strong>getRecordsByName</strong>(int $domainId, string $name, string|null $type = null)
         </code>
@@ -1388,7 +1527,7 @@ Names match case-insensitively, per RFC 4343.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordsAtOrUnder">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L258">at line 258</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L269">at line 269</a></div>
         <code>                    array
     <strong>getRecordsAtOrUnder</strong>(int $domainId, string $name)
         </code>
@@ -1437,7 +1576,7 @@ case-insensitively. Empty non-terminals are excluded.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getFilteredRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L271">at line 271</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L282">at line 282</a></div>
         <code>                    array
     <strong>getFilteredRecords</strong>(int $zone_id, int $row_start, int $row_amount, string $sort_by, string $sort_direction, bool $include_comments, string $search_term = &#039;&#039;, string $type_filter = &#039;&#039;, string $content_filter = &#039;&#039;)
         </code>
@@ -1520,7 +1659,7 @@ case-insensitively. Empty non-terminals are excluded.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getFilteredRecordCount">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L303">at line 303</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L314">at line 314</a></div>
         <code>                    int
     <strong>getFilteredRecordCount</strong>(int $zone_id, bool $include_comments, string $search_term = &#039;&#039;, string $type_filter = &#039;&#039;, string $content_filter = &#039;&#039;)
         </code>
@@ -1583,7 +1722,7 @@ case-insensitively. Empty non-terminals are excluded.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getNewRecordId">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L314">at line 314</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L325">at line 325</a></div>
         <code>                    int|string|null
     <strong>getNewRecordId</strong>(int $domainId, string $name, string $type, string $content)
         </code>
@@ -1641,7 +1780,7 @@ case-insensitively. Empty non-terminals are excluded.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecordById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L325">at line 325</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L336">at line 336</a></div>
         <code>                    array|null
     <strong>getRecordById</strong>(int|string $recordId)
         </code>
@@ -1684,7 +1823,7 @@ case-insensitively. Empty non-terminals are excluded.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRRSetRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L336">at line 336</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/ApiRecordRepository.php#L347">at line 347</a></div>
         <code>                    array
     <strong>getRRSetRecords</strong>(int $domainId, string $name, string $type)
         </code>
@@ -1739,7 +1878,7 @@ case-insensitively. Empty non-terminals are excluded.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/bd336ce" rel="noreferrer" target="_blank">commit bd336ce,</a> built 2026-10-28 09:37 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/e32389d" rel="noreferrer" target="_blank">commit e32389d,</a> built 2026-10-28 12:33 UTC.</div></div>
     </div>
     </body>
 

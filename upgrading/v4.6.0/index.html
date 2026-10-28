@@ -7701,7 +7701,7 @@
 <p>Version 4.6.0 adds an opt-in change approval workflow: users with a change request permission file their zone edits for review instead of writing them, and reviewers approve or reject from a new <strong>Change requests</strong> page or through the API. Alongside it, secondary zones can be retrieved from their primary on demand, the SOA serial bump on unchanged saves can be turned off, and every setting is reachable from a Docker environment variable.</p>
 <p>Nothing changes unless you turn the workflow on. See <a href="../../whats-new/v4.6.0/">What's New in 4.6.0</a> for the full list.</p>
 <h2 id="database-schema-update">Database Schema Update<a class="headerlink" href="#database-schema-update" title="Permanent link">¶</a></h2>
-<p>The 4.6.0 migration adds one table, four permissions, two columns and one index:</p>
+<p>The 4.6.0 migration adds two tables, four permissions, two columns and one index:</p>
 <table>
 <thead>
 <tr>
@@ -7713,6 +7713,10 @@
 <tr>
 <td>Table <code>zone_change_requests</code></td>
 <td>Stores filed change requests: the zone, requester, reason, the JSON action list with before/after rows, the reviewer, decision, the error when applying failed, and the zone file kept before an approved deletion</td>
+</tr>
+<tr>
+<td>Table <code>zone_templ_groups</code></td>
+<td>The user groups each zone template is shared with. See <a href="../../user-guide/dns-templates/#sharing-templates-with-groups">Sharing Templates with Groups</a></td>
 </tr>
 <tr>
 <td>Permissions <code>zone_change_request_own</code>, <code>zone_change_request_others</code></td>
@@ -7818,6 +7822,7 @@
 <li>Deleting a group that is the last owner of a zone is refused. The message names the zone, and API v2 answers <code>409</code>.</li>
 <li>Super admin granted through a group counts as super admin. Removing a group member, deleting a group, changing a group's template or removing <code>user_is_ueberuser</code> from a template is refused when it would leave no active super admin, with <code>409</code> in API v2. OIDC, SAML and LDAP sign-in skip such a change and log a warning. See <a href="../../user-guide/users-roles/#understanding-uberuser-status">Users and Roles</a>.</li>
 <li><strong>Disable MFA</strong> and <strong>Regenerate Recovery Codes</strong> ask for a current code from the authenticator app, an email code or a recovery code. 4.5.2 makes the same change.</li>
+<li>A super admin who edits another user's private zone template without ticking <strong>Global template</strong> no longer becomes its owner; the owner stays. Before, the edit moved the template to the super admin.</li>
 <li><code>DELETE /api/v2/zones/{id}/rrsets/{name}/{type}</code> with an unknown record type answers <code>400 Invalid record type.</code> instead of <code>404</code>.</li>
 </ul>
 <h3 id="defaults">Defaults<a class="headerlink" href="#defaults" title="Permanent link">¶</a></h3>
@@ -7871,7 +7876,7 @@
 <li>Restore your file backup.</li>
 <li>Restart the web server.</li>
 </ol>
-<p>The <code>zone_change_requests</code> table and the four permissions are harmless in 4.5.0 - they are simply unused. Pending change requests are not applied by the older version; decide them before rolling back or file them again afterwards.</p>
+<p>The <code>zone_change_requests</code> and <code>zone_templ_groups</code> tables and the four permissions are harmless in 4.5.0 - they are simply unused, and shared templates go back to being visible to their owner only. Pending change requests are not applied by the older version; decide them before rolling back or file them again afterwards.</p>
 
 
 

@@ -170,6 +170,16 @@ reserved for ueberusers; anyone else owns the template personally.</p></p>      
                     int|null
                 </div>
                 <div class="col-md-8">
+                    <a href="#method_resolveEditedTemplateOwner">resolveEditedTemplateOwner</a>(int $zone_templ_id, bool $requestedGlobal, int $userid)
+        
+                                            <p><p>Owner column to write when a template is edited, or null to keep the stored one.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|null
+                </div>
+                <div class="col-md-8">
                     <a href="#method_linkedZoneOwnerFilter">linkedZoneOwnerFilter</a>(int $userid)
         
                                             <p><p>Owner the zone listings are narrowed to: null when the user may edit every
@@ -184,6 +194,28 @@ zone, otherwise the user themselves.</p></p>                </div>
                     <a href="#method_canUseTemplate">canUseTemplate</a>(mixed $zone_templ_id, int $userid, bool $isAdmin)
         
                                             <p><p>Whether a posted template id may be applied to a zone.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canViewTemplate">canViewTemplate</a>(int $zone_templ_id, int $userid, bool $isAdmin)
+        
+                                            <p><p>Whether the user may see a template and create zones from it: a global
+template, their own, one shared with a group they belong to, or any
+template for an administrator. A missing template is never visible.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canCurrentUserViewTemplate">canCurrentUserViewTemplate</a>(int $zone_templ_id)
+        
+                                            <p><p>canViewTemplate() for the logged-in user.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -211,11 +243,41 @@ zone, otherwise the user themselves.</p></p>                </div>
                     bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_canCurrentUserEditTemplate">canCurrentUserEditTemplate</a>(int $owner)
+                    <a href="#method_canCurrentUserEditTemplate">canCurrentUserEditTemplate</a>(int $owner, bool $sharedWithUser = false)
         
-                                            <p><p>Whether the logged-in user may edit or delete a template with this owner
-column: a ueberuser, or the owner holding zone_templ_edit. Global
-templates (owner 0) are only editable by ueberusers.</p></p>                </div>
+                                            <p><p>Whether the logged-in user may edit a template and its records: a ueberuser,
+or a holder of zone_templ_edit who owns it or shares it through a group.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canCurrentUserManageTemplate">canCurrentUserManageTemplate</a>(int $owner)
+        
+                                            <p><p>Whether the logged-in user may delete a template or change who it is shared
+with: a ueberuser, or the owner holding zone_templ_edit. Group members may not.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canCurrentUserEditTemplateById">canCurrentUserEditTemplateById</a>(int $zone_templ_id)
+        
+                                            <p><p>canCurrentUserEditTemplate() for a stored template; false when it does not exist.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_canCurrentUserManageTemplateById">canCurrentUserManageTemplateById</a>(int $zone_templ_id)
+        
+                                            <p><p>canCurrentUserManageTemplate() for a stored template; false when it does not exist.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -438,8 +500,62 @@ reserved for ueberusers; anyone else owns the template personally.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_resolveEditedTemplateOwner">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L103">at line 103</a></div>
+        <code>                    int|null
+    <strong>resolveEditedTemplateOwner</strong>(int $zone_templ_id, bool $requestedGlobal, int $userid)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Owner column to write when a template is edited, or null to keep the stored one.</p></p>                <p><p>Only a ueberuser changes it, by making the template global or by taking a
+global template back as their own; a group member never becomes the owner.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zone_templ_id</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$requestedGlobal</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userid</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|null</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_linkedZoneOwnerFilter">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L102">at line 102</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L119">at line 119</a></div>
         <code>                    int|null
     <strong>linkedZoneOwnerFilter</strong>(int $userid)
         </code>
@@ -483,7 +599,7 @@ zone, otherwise the user themselves.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_canUseTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L115">at line 115</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L131">at line 131</a></div>
         <code>                    bool
     <strong>canUseTemplate</strong>(mixed $zone_templ_id, int $userid, bool $isAdmin)
         </code>
@@ -494,8 +610,7 @@ zone, otherwise the user themselves.</p></p>
             
 
         <div class="method-description">
-                            <p><p>Whether a posted template id may be applied to a zone.</p></p>                <p><p>Follows the listing scope: no template, a global template (owner 0), the
-user's own template, or any template for an administrator.</p></p>        
+                            <p><p>Whether a posted template id may be applied to a zone.</p></p>                <p><p>Follows the listing scope: no template, or a template canViewTemplate() allows.</p></p>        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -536,8 +651,106 @@ user's own template, or any template for an administrator.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_canViewTemplate">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L155">at line 155</a></div>
+        <code>                    bool
+    <strong>canViewTemplate</strong>(int $zone_templ_id, int $userid, bool $isAdmin)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the user may see a template and create zones from it: a global
+template, their own, one shared with a group they belong to, or any
+template for an administrator. A missing template is never visible.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zone_templ_id</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$userid</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$isAdmin</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canCurrentUserViewTemplate">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L169">at line 169</a></div>
+        <code>                    bool
+    <strong>canCurrentUserViewTemplate</strong>(int $zone_templ_id)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>canViewTemplate() for the logged-in user.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zone_templ_id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_canCurrentUserUseTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L142">at line 142</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L180">at line 180</a></div>
         <code>                    bool
     <strong>canCurrentUserUseTemplate</strong>(mixed $zone_templ_id)
         </code>
@@ -580,7 +793,7 @@ user's own template, or any template for an administrator.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isUserOwnerOfTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L152">at line 152</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L190">at line 190</a></div>
         <code>                    bool
     <strong>isUserOwnerOfTemplate</strong>(int $zone_templ_id, int $userid)
         </code>
@@ -628,9 +841,9 @@ user's own template, or any template for an administrator.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_canCurrentUserEditTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L162">at line 162</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L200">at line 200</a></div>
         <code>                    bool
-    <strong>canCurrentUserEditTemplate</strong>(int $owner)
+    <strong>canCurrentUserEditTemplate</strong>(int $owner, bool $sharedWithUser = false)
         </code>
     </h3>
     <div class="details">    
@@ -639,9 +852,57 @@ user's own template, or any template for an administrator.</p></p>
             
 
         <div class="method-description">
-                            <p><p>Whether the logged-in user may edit or delete a template with this owner
-column: a ueberuser, or the owner holding zone_templ_edit. Global
-templates (owner 0) are only editable by ueberusers.</p></p>                        
+                            <p><p>Whether the logged-in user may edit a template and its records: a ueberuser,
+or a holder of zone_templ_edit who owns it or shares it through a group.</p></p>                <p><p>Global templates (owner 0) are only editable by ueberusers.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$owner</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$sharedWithUser</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canCurrentUserManageTemplate">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L216">at line 216</a></div>
+        <code>                    bool
+    <strong>canCurrentUserManageTemplate</strong>(int $owner)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Whether the logged-in user may delete a template or change who it is shared
+with: a ueberuser, or the owner holding zone_templ_edit. Group members may not.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -671,11 +932,97 @@ templates (owner 0) are only editable by ueberusers.</p></p>
     </div>
 
             </div>
+                    <div class="method-item">
+                    <h3 id="method_canCurrentUserEditTemplateById">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L224">at line 224</a></div>
+        <code>                    bool
+    <strong>canCurrentUserEditTemplateById</strong>(int $zone_templ_id)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>canCurrentUserEditTemplate() for a stored template; false when it does not exist.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zone_templ_id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_canCurrentUserManageTemplateById">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Template/ZoneTemplateAccessPolicy.php#L240">at line 240</a></div>
+        <code>                    bool
+    <strong>canCurrentUserManageTemplateById</strong>(int $zone_templ_id)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>canCurrentUserManageTemplate() for a stored template; false when it does not exist.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zone_templ_id</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
             </div>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/bd336ce" rel="noreferrer" target="_blank">commit bd336ce,</a> built 2026-10-28 09:37 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/e32389d" rel="noreferrer" target="_blank">commit e32389d,</a> built 2026-10-28 12:33 UTC.</div></div>
     </div>
     </body>
 
