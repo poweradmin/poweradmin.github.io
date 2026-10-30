@@ -7650,6 +7650,10 @@
 </code></pre></div>
 <p>The <code>private_ranges</code> value trusts all private IP ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) and is recommended for most Docker deployments. For specific CIDRs, use a comma-separated list: <code>TRUSTED_PROXIES=172.17.0.0/16,10.0.0.0/8</code>.</p>
 <p>Both <code>X-Forwarded-For</code> and <code>X-Real-IP</code> headers are supported. Your reverse proxy must forward at least one of these headers - see the examples below for proxy-specific configuration.</p>
+<p><code>X-Forwarded-For</code> is read first, so make sure a client cannot supply the header your proxy does not
+set. If the proxy only sets <code>X-Real-IP</code>, clear the incoming <code>X-Forwarded-For</code> (in nginx,
+<code>proxy_set_header X-Forwarded-For "";</code>), or the client's own value is used. A <code>Client-IP</code> header is
+ignored from 4.5.2 and 4.4.4, because proxies pass it through unchanged.</p>
 <h3 id="two-trust-layers-docker">Two trust layers (Docker)<a class="headerlink" href="#two-trust-layers-docker" title="Permanent link">¶</a></h3>
 <p><code>TRUSTED_PROXIES</code> configures two layers at once. The Docker image (4.5.0 and later) writes the same list to Poweradmin's <code>security.trusted_proxies</code> setting in addition to the Caddy server, so the application also honors forwarded headers from the listed proxies:</p>
 <ul>
@@ -7677,7 +7681,10 @@ resolves the address for its own access log), or <code>'trusted_proxies' =&gt; [
 <code>security</code> in <code>config/settings.php</code>. Without it the logs show 10.20.20.20. <code>private_ranges</code> does
 not help here, because it applies to Caddy only.</p>
 <p>Reading from the right is deliberate: the leftmost address can be set by the client, so trusting it
-would let anyone choose the address shown in audit logs and counted for login rate limits.</p>
+would let anyone choose the address shown in audit logs and counted for login rate limits.
+4.4.4 also reads the header from the right. It has no <code>trusted_proxies</code> setting, so behind two
+proxies it logs the outer proxy, and a dynamic DNS update that uses the caller's address stores the
+outer proxy's address too.</p>
 <h2 id="traefik">Traefik<a class="headerlink" href="#traefik" title="Permanent link">¶</a></h2>
 <h3 id="basic-setup-http-only">Basic Setup (HTTP only)<a class="headerlink" href="#basic-setup-http-only" title="Permanent link">¶</a></h3>
 <div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">services</span><span class="p">:</span>
