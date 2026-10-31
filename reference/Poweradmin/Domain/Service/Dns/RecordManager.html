@@ -180,7 +180,7 @@ case as DNS does, the unquoted ech form, or the same AAAA address written anothe
                     <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_addRecordGetId">addRecordGetId</a>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false)
+                    <a href="#method_addRecordGetId">addRecordGetId</a>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false, array $vacated = [])
         
                                             <p><p>Add a record and return its ID</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -506,7 +506,7 @@ case as DNS does, the unquoted ech form, or the same AAAA address written anothe
                     <h3 id="method_addRecordGetId">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L302">at line 302</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
-    <strong>addRecordGetId</strong>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false)
+    <strong>addRecordGetId</strong>(int $zone_id, string $name, string $type, string $content, int $ttl, mixed $prio, int $disabled = 0, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false, array $vacated = [])
         </code>
     </h3>
     <div class="details">    
@@ -573,6 +573,12 @@ backend writes it in the same PATCH as the record, SQL ignores it</p></td>
                 <td>$dryRun</td>
                 <td><p>Run every check and stop before anything is written</p></td>
             </tr>
+                    <tr>
+                <td>array</td>
+                <td>$vacated</td>
+                <td><p>Stored content by id of records the same write removes
+first (an RRset replace); they no longer conflict</p></td>
+            </tr>
             </table>
 
             
@@ -594,7 +600,7 @@ backend writes it in the same PATCH as the record, SQL ignores it</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_cleanBackendReason">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L447">at line 447</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L448">at line 448</a></div>
         <code>        static            string|null
     <strong>cleanBackendReason</strong>(string $reason)
         </code>
@@ -637,7 +643,7 @@ backend writes it in the same PATCH as the record, SQL ignores it</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_backendFailureMessage">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L462">at line 462</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L463">at line 463</a></div>
         <code>        static            string
     <strong>backendFailureMessage</strong>(string $message, string|null $reason)
         </code>
@@ -687,7 +693,7 @@ control characters and capped; the caller escapes it on output like any message.
             </div>
                     <div class="method-item">
                     <h3 id="method_recordFieldsDiffer">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L482">at line 482</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L483">at line 483</a></div>
         <code>        static            bool
     <strong>recordFieldsDiffer</strong>(array $before, array $after)
         </code>
@@ -735,7 +741,7 @@ control characters and capped; the caller escapes it on output like any message.
             </div>
                     <div class="method-item">
                     <h3 id="method_editRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L502">at line 502</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L503">at line 503</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>editRecord</strong>(array $record, bool $finalizeZone = true, array|null $comment = null, bool $dryRun = false, array $vacated = [])
         </code>
@@ -804,7 +810,7 @@ the writes in one transaction and roll back on any refusal.</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_previewEdit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L507">at line 507</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L508">at line 508</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>previewEdit</strong>(array $record)
         </code>
@@ -850,7 +856,7 @@ record leaves (null when it stays) and key its validated ones</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L671">at line 671</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L672">at line 672</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>deleteRecord</strong>(int|string $rid, bool $finalizeZone = true, bool $dryRun = false)
         </code>
@@ -903,7 +909,7 @@ record leaves (null when it stays) and key its validated ones</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_finalizeZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L736">at line 736</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L737">at line 737</a></div>
         <code>                    void
     <strong>finalizeZone</strong>(int $zoneId, bool $bumpSerial = true, bool $rrsetWritten = true)
         </code>
@@ -962,7 +968,7 @@ itself.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_editZoneComment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L777">at line 777</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Dns/RecordManager.php#L778">at line 778</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>editZoneComment</strong>(int $zone_id, string $comment)
         </code>
@@ -1012,7 +1018,7 @@ itself.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/bad950d" rel="noreferrer" target="_blank">commit bad950d,</a> built 2026-10-30 19:35 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/658e486" rel="noreferrer" target="_blank">commit 658e486,</a> built 2026-10-31 05:52 UTC.</div></div>
     </div>
     </body>
 

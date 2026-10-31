@@ -7735,8 +7735,10 @@ only superusers may set it.</p>
 <p>A private zone template can be shared with user groups (#1267). Members of a group see the
 template and create zones from it, and members with <code>zone_templ_edit</code> can edit it and its
 records. Only the owner or a super admin deletes it or changes its groups. The owner shares
-with the groups they belong to; a super admin with any group. API v2 returns the groups as a
-read-only <code>groups</code> array.</p>
+with the groups they belong to; a super admin with any group. The groups can be picked when a
+template is added or edited, and API v2 takes them as a <code>groups</code> array of ids on <code>POST</code> and <code>PUT</code>
+<code>/zone-templates</code>.</p>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../../screenshots/template-share-list.png" data-desc-position="bottom"><img alt="Shared badge in the template list" src="../../screenshots/template-share-list.png"></a></p>
 <p>See <a href="../../user-guide/dns-templates/#sharing-templates-with-groups">Sharing Templates with Groups</a>.</p>
 <h3 id="four-eyes-change-approval">Four-eyes change approval<a class="headerlink" href="#four-eyes-change-approval" title="Permanent link">¶</a></h3>
 <p><code>approval.allow_self_approval</code> (default <code>true</code>) can be set to <code>false</code> so a requester cannot
@@ -8000,6 +8002,21 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td>Record edit checks the posted record</td>
 <td>The record edit form refuses a save whose posted record is not the record the page was opened for</td>
 <td></td>
+</tr>
+<tr>
+<td>Zone import keeps records it cannot replace</td>
+<td>In replace mode, every record of a name and type is checked before the zone's records for it are deleted, so a refused line keeps them instead of leaving the zone without them. Also in 4.5.2 and 4.4.4</td>
+<td><a href="../../configuration/zone-import-export/#zone-import">Zone Import/Export</a></td>
+</tr>
+<tr>
+<td>CNAME RRsets replaced through the API</td>
+<td><code>PUT /zones/{id}/rrsets</code> replaces a CNAME RRset; the old CNAME no longer counts as a conflict with its replacement</td>
+<td><a href="../../api/endpoints/">API Endpoints</a></td>
+</tr>
+<tr>
+<td>Client address behind proxies</td>
+<td>A <code>Client-IP</code> header is ignored; <code>X-Forwarded-For</code> entries with a port or in <code>::ffff:</code> form are read as addresses, and an entry that is not an address makes Poweradmin use the proxy's address instead of <code>X-Real-IP</code>. Also in 4.5.2 and 4.4.4. The new <code>security.client_ip_header</code> (<code>PA_CLIENT_IP_HEADER</code>) picks the one header to trust</td>
+<td><a href="../../installation/reverse-proxy/#client-ip-resolution">Reverse Proxy</a></td>
 </tr>
 </tbody>
 </table>

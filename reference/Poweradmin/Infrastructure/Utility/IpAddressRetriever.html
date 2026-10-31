@@ -106,6 +106,19 @@
             <p><p>Resolves the client IP from REMOTE_ADDR, honoring forwarded headers only from private or trusted proxy peers.</p></p>                    </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                            private
+                                                                                HEADERS_BY_MODE
+                                    </td>
+                <td class="last">
+                    <p><em><p>Forwarded headers read for each security.client_ip_header value; anything else reads as 'auto'</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
@@ -116,7 +129,7 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(array $server, <a href="../../../Poweradmin/Domain/Service/DnsValidation/IPAddressValidator.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\IPAddressValidator">IPAddressValidator</abbr></a>|null $ipValidator = null, array $trustedProxies = [])
+                    <a href="#method___construct">__construct</a>(array $server, <a href="../../../Poweradmin/Domain/Service/DnsValidation/IPAddressValidator.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\IPAddressValidator">IPAddressValidator</abbr></a>|null $ipValidator = null, array $trustedProxies = [], string $clientIpHeader = &#039;auto&#039;)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -129,7 +142,7 @@
                 <div class="col-md-8">
                     <a href="#method_fromConfig">fromConfig</a>(array $server, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Service/DnsValidation/IPAddressValidator.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\IPAddressValidator">IPAddressValidator</abbr></a>|null $ipValidator = null)
         
-                                            <p><p>Build with the trusted proxy list from security.trusted_proxies.</p></p>                </div>
+                                            <p><p>Build with security.trusted_proxies and security.client_ip_header.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -150,9 +163,9 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/IpAddressRetriever.php#L40">at line 40</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/IpAddressRetriever.php#L52">at line 52</a></div>
         <code>                    
-    <strong>__construct</strong>(array $server, <a href="../../../Poweradmin/Domain/Service/DnsValidation/IPAddressValidator.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\IPAddressValidator">IPAddressValidator</abbr></a>|null $ipValidator = null, array $trustedProxies = [])
+    <strong>__construct</strong>(array $server, <a href="../../../Poweradmin/Domain/Service/DnsValidation/IPAddressValidator.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\IPAddressValidator">IPAddressValidator</abbr></a>|null $ipValidator = null, array $trustedProxies = [], string $clientIpHeader = &#039;auto&#039;)
         </code>
     </h3>
     <div class="details">    
@@ -183,6 +196,11 @@
                 <td>$trustedProxies</td>
                 <td><p>Public peers whose forwarded headers are honoured (security.trusted_proxies)</p></td>
             </tr>
+                    <tr>
+                <td>string</td>
+                <td>$clientIpHeader</td>
+                <td><p>Which forwarded header holds the client address (security.client_ip_header)</p></td>
+            </tr>
             </table>
 
             
@@ -195,7 +213,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_fromConfig">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/IpAddressRetriever.php#L50">at line 50</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/IpAddressRetriever.php#L63">at line 63</a></div>
         <code>        static            <a href="../../../Poweradmin/Infrastructure/Utility/IpAddressRetriever.html"><abbr title="Poweradmin\Infrastructure\Utility\IpAddressRetriever">IpAddressRetriever</abbr></a>
     <strong>fromConfig</strong>(array $server, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Service/DnsValidation/IPAddressValidator.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\IPAddressValidator">IPAddressValidator</abbr></a>|null $ipValidator = null)
         </code>
@@ -206,7 +224,7 @@
             
 
         <div class="method-description">
-                            <p><p>Build with the trusted proxy list from security.trusted_proxies.</p></p>                        
+                            <p><p>Build with security.trusted_proxies and security.client_ip_header.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -248,7 +266,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getClientIp">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/IpAddressRetriever.php#L69">at line 69</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Utility/IpAddressRetriever.php#L83">at line 83</a></div>
         <code>                    string
     <strong>getClientIp</strong>()
         </code>
@@ -288,7 +306,7 @@ prevent audit-log spoofing and per-IP rate-limit bypass.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/bad950d" rel="noreferrer" target="_blank">commit bad950d,</a> built 2026-10-30 19:35 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/658e486" rel="noreferrer" target="_blank">commit 658e486,</a> built 2026-10-31 05:52 UTC.</div></div>
     </div>
     </body>
 

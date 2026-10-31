@@ -7651,9 +7651,15 @@
 <p>The <code>private_ranges</code> value trusts all private IP ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) and is recommended for most Docker deployments. For specific CIDRs, use a comma-separated list: <code>TRUSTED_PROXIES=172.17.0.0/16,10.0.0.0/8</code>.</p>
 <p>Both <code>X-Forwarded-For</code> and <code>X-Real-IP</code> headers are supported. Your reverse proxy must forward at least one of these headers - see the examples below for proxy-specific configuration.</p>
 <p><code>X-Forwarded-For</code> is read first, so make sure a client cannot supply the header your proxy does not
-set. If the proxy only sets <code>X-Real-IP</code>, clear the incoming <code>X-Forwarded-For</code> (in nginx,
+set. From 4.6.0, set <code>security.client_ip_header</code> (<code>PA_CLIENT_IP_HEADER</code> in Docker) to the one header
+your proxy writes, <code>x-forwarded-for</code> or <code>x-real-ip</code>, and the other is ignored. On older versions, if
+the proxy only sets <code>X-Real-IP</code>, clear the incoming <code>X-Forwarded-For</code> (in nginx,
 <code>proxy_set_header X-Forwarded-For "";</code>), or the client's own value is used. A <code>Client-IP</code> header is
 ignored from 4.5.2 and 4.4.4, because proxies pass it through unchanged.</p>
+<p>From 4.6.0, 4.5.2 and 4.4.4, an <code>X-Forwarded-For</code> entry with a port (<code>203.0.113.7:51234</code>,
+<code>[2001:db8::7]:51234</code>) or in IPv4-mapped form (<code>::ffff:203.0.113.7</code>) is read as the address. An entry
+that is not an address at all, such as the <code>unknown</code> some proxies write, makes Poweradmin use the
+proxy's own address rather than <code>X-Real-IP</code>, which a client could have sent itself.</p>
 <h3 id="two-trust-layers-docker">Two trust layers (Docker)<a class="headerlink" href="#two-trust-layers-docker" title="Permanent link">¶</a></h3>
 <p><code>TRUSTED_PROXIES</code> configures two layers at once. The Docker image (4.5.0 and later) writes the same list to Poweradmin's <code>security.trusted_proxies</code> setting in addition to the Caddy server, so the application also honors forwarded headers from the listed proxies:</p>
 <ul>

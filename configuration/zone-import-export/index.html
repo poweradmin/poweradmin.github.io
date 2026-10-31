@@ -7647,6 +7647,17 @@
 <li>Review the parsed records</li>
 <li>Confirm the import</li>
 </ol>
+<p>When you import into an existing zone, choose what happens to records that are already there:</p>
+<ul>
+<li><strong>Add all</strong>: every record in the file is added; records the zone already has are refused as copies.</li>
+<li><strong>Skip</strong>: a record the zone already holds with the same name, type and content is left out.</li>
+<li><strong>Replace</strong>: each set of records with the same name and type in the file replaces that set in the zone.</li>
+</ul>
+<p>In replace mode, every record of a set is checked before the zone's records of that name and type are
+deleted (4.6.0, 4.5.2 and 4.4.4). If one of them is refused, for example invalid content or a CNAME
+that conflicts with another record, the zone keeps its records for that name and type, and the file's
+records for it are counted as failed. Earlier versions deleted the set first, so one bad line in the
+file could leave the zone without those records.</p>
 <h3 id="record-comments-v460">Record Comments <em>(v4.6.0+)</em><a class="headerlink" href="#record-comments-v460" title="Permanent link">¶</a></h3>
 <p>Zone files can carry Poweradmin record comments, so a zone keeps them when it is exported
 and imported again. Both directions need <code>interface.show_record_comments</code> enabled.</p>
