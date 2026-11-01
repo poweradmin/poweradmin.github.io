@@ -7070,6 +7070,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#secondary-zone-masters-on-update-v452" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secondary zone masters on update (v4.5.2+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#setting-the-serial-policy-on-create-v450" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7672,6 +7683,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#secondary-zone-masters-on-update-v452" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secondary zone masters on update (v4.5.2+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#setting-the-serial-policy-on-create-v450" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8090,17 +8112,32 @@ instance for exploration.</p>
 <code>zone_meta_edit_others</code>), the same gate as the web edit form; record content permissions alone
 return <code>403</code>. A value that matches what is stored is not treated as a change, so clients that
 resend every field on update keep working.</p>
+<h4 id="secondary-zone-masters-on-update-v452">Secondary zone masters on update (v4.5.2+)<a class="headerlink" href="#secondary-zone-masters-on-update-v452" title="Permanent link">¶</a></h4>
+<p><code>PUT /zones/{id}</code> accepts <code>masters</code> the same way <code>POST /zones</code> does: a comma-separated string
+or an array of addresses, each optionally with a port (<code>192.0.2.1:5300</code>, <code>[2001:db8::1]:5300</code>).
+When both are sent, <code>masters</code> wins over <code>master</code>. Before v4.5.2 the update ignored <code>masters</code> and
+still answered "Zone updated successfully".</p>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SLAVE"</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">"masters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"192.0.2.1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"192.0.2.2:5300"</span><span class="p">]</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
+</code></pre></div>
+<p>A SLAVE zone always needs a master. Converting a zone to SLAVE without one, or sending an empty
+<code>masters</code> (or <code>master</code>) for a zone that stays SLAVE, answers <code>400</code> "Master IP address is required
+for SLAVE zones". The master is cleared only together with a change to another type. Any value
+that is not a string, or an array of strings, answers <code>400</code> "Invalid field types in request
+body".</p>
 <p>From v4.5.0, in API backend mode, <code>POST /zones/{id}/owners</code> answers <code>409</code> with "Owners cannot be added to this
 zone: its ID is shared with another zone" when the id belongs to two zones. See
 <a href="../../configuration/powerdns-api/#zone-ids-shared-by-two-zones">Zone IDs Shared by Two Zones</a>.</p>
 <h4 id="setting-the-serial-policy-on-create-v450">Setting the serial policy on create (v4.5.0+)<a class="headerlink" href="#setting-the-serial-policy-on-create-v450" title="Permanent link">¶</a></h4>
 <p><code>POST /zones</code> accepts an optional <code>soa_edit_api</code> string that sets the zone's
 SOA-EDIT-API serial policy:</p>
-<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"example.com"</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MASTER"</span><span class="p">,</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">"soa_edit_api"</span><span class="p">:</span><span class="w"> </span><span class="s2">"INCREASE"</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"example.com"</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MASTER"</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">"soa_edit_api"</span><span class="p">:</span><span class="w"> </span><span class="s2">"INCREASE"</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">}</span>
 </code></pre></div>
 <p>Omit the field, or send an empty string, to apply the <code>dns.soa_edit_api</code>
 configuration default. Send <code>OFF</code> to disable the policy for this zone
@@ -8234,18 +8271,18 @@ get <code>403</code> because the status is not tied to a zone. The endpoint does
 <li><code>501</code> means the PowerDNS API is not configured, <code>503</code> means PowerDNS is not reachable, so a
   monitoring check can rely on the status code alone</li>
 </ul>
-<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Server status retrieved successfully"</span><span class="p">,</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">"running"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">"server_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost"</span><span class="p">,</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">"daemon_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"authoritative"</span><span class="p">,</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4.9.4"</span><span class="p">,</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nt">"uptime_seconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">86400</span><span class="p">,</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="nt">"metrics"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"udp-queries"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1234"</span><span class="p">,</span><span class="w"> </span><span class="nt">"uptime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"86400"</span><span class="w"> </span><span class="p">}</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="p">}</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Server status retrieved successfully"</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">"running"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="nt">"server_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost"</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nt">"daemon_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"authoritative"</span><span class="p">,</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4.9.4"</span><span class="p">,</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">"uptime_seconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">86400</span><span class="p">,</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="nt">"metrics"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"udp-queries"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1234"</span><span class="p">,</span><span class="w"> </span><span class="nt">"uptime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"86400"</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="p">}</span>
 </code></pre></div>
 <h3 id="dynamic-dns">Dynamic DNS<a class="headerlink" href="#dynamic-dns" title="Permanent link">¶</a></h3>
 <table>
@@ -8419,11 +8456,11 @@ the same one. A <code>PUT</code> without <code>comment</code> leaves the stored 
 scope, permissions, change-approval refusal, operation cap and required reason apply as for a real
 call, and the summary comes back with <code>"dry_run": true</code>. No records, comments, PTR records, serial
 change, log entry or change request is kept.</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">     </span>-d<span class="w"> </span><span class="s1">'{"dry_run": true, "comment": "move the web tier", "operations": [</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="s1">           {"action": "create", "name": "www", "type": "A", "content": "192.0.2.10",</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="s1">            "comment": "web server", "create_ptr": true}]}'</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones/42/records/bulk"</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">     </span>-d<span class="w"> </span><span class="s1">'{"dry_run": true, "comment": "move the web tier", "operations": [</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="s1">           {"action": "create", "name": "www", "type": "A", "content": "192.0.2.10",</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="s1">            "comment": "web server", "create_ptr": true}]}'</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones/42/records/bulk"</span>
 </code></pre></div>
 <p>With the SQL backend a dry run executes the operations inside the transaction and rolls it back,
 so the result is exact. In API backend mode it only validates each operation against the zone as
@@ -8504,29 +8541,29 @@ requires, and answers <code>403</code> with "You do not have permission to reass
 <h4 id="permission-template-and-groups-on-reads-v450">Permission template and groups on reads (v4.5.0+)<a class="headerlink" href="#permission-template-and-groups-on-reads-v450" title="Permanent link">¶</a></h4>
 <p>User reads carry the assigned permission template by ID and by name, plus the
 groups the user belongs to:</p>
-<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"svc-acme"</span><span class="p">,</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">"perm_templ"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">"perm_templ_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Zone Manager"</span><span class="p">,</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dns-operators"</span><span class="w"> </span><span class="p">}]</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"svc-acme"</span><span class="p">,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">"perm_templ"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">"perm_templ_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Zone Manager"</span><span class="p">,</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dns-operators"</span><span class="w"> </span><span class="p">}]</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">}</span>
 </code></pre></div>
 <p><code>perm_templ_name</code> is <code>null</code> when the stored template no longer exists or is a
 group template rather than a user template.</p>
 <h4 id="assigning-groups-on-create-v450">Assigning groups on create (v4.5.0+)<a class="headerlink" href="#assigning-groups-on-create-v450" title="Permanent link">¶</a></h4>
 <p><code>POST /users</code> accepts an optional <code>groups</code> array holding integer group IDs,
 exact group names, or a mix of both:</p>
-<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"svc-acme"</span><span class="p">,</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">"perm_templ"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s2">"dns-operators"</span><span class="p">]</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"svc-acme"</span><span class="p">,</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">"perm_templ"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s2">"dns-operators"</span><span class="p">]</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">}</span>
 </code></pre></div>
 <p>The response lists the memberships that were actually created, so a caller does
 not have to assume the request took full effect:</p>
-<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dns-operators"</span><span class="w"> </span><span class="p">}]</span><span class="w"> </span><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="nt">"groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dns-operators"</span><span class="w"> </span><span class="p">}]</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 <p>Rules worth knowing before you script against it:</p>
 <ul>
@@ -8765,17 +8802,17 @@ the v1 endpoint list, and migrate to v2 before upgrading to 4.5.0.</p>
 also take <code>sort</code> and a few filters. Before 4.6.0 only <code>/zones</code> and <code>/users</code> paged, and none
 sorted or filtered. Short lists such as <code>/zones/{id}/owners</code> always come back whole.</p>
 <h3 id="paging">Paging<a class="headerlink" href="#paging" title="Permanent link">¶</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>GET<span class="w"> </span>/api/v2/zones?page<span class="o">=</span><span class="m">2</span><span class="p">&amp;</span><span class="nv">per_page</span><span class="o">=</span><span class="m">50</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>GET<span class="w"> </span>/api/v2/zones?page<span class="o">=</span><span class="m">2</span><span class="p">&amp;</span><span class="nv">per_page</span><span class="o">=</span><span class="m">50</span>
 </code></pre></div>
 <p>Without <code>per_page</code> (or with <code>per_page=0</code>) the whole list comes back and there is no
 <code>pagination</code> object. With it, <code>page</code> starts at 1 (a smaller value is read as 1), <code>per_page</code>
 is capped at 10000, and the response carries a <code>pagination</code> object at the top level, next to
 <code>data</code>:</p>
-<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"zones"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">"per_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="nt">"last_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">}</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"zones"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">"pagination"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nt">"per_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="nt">"last_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="p">}</span>
 </code></pre></div>
 <p>A page past the end returns an empty list together with the <code>pagination</code> object, so a client
 can stop when <code>current_page</code> reaches <code>last_page</code>.</p>
@@ -8790,7 +8827,7 @@ internal API.</p>
 <h3 id="sorting">Sorting<a class="headerlink" href="#sorting" title="Permanent link">¶</a></h3>
 <p><code>sort</code> takes comma-separated field names, each with an optional <code>:asc</code> or <code>:desc</code> suffix
 (ascending by default), up to five fields:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>GET<span class="w"> </span>/api/v2/zones/42/records?sort<span class="o">=</span>type,name:desc
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>GET<span class="w"> </span>/api/v2/zones/42/records?sort<span class="o">=</span>type,name:desc
 </code></pre></div>
 <p>A field the endpoint does not offer, a field given twice, or a direction other than <code>asc</code> or
 <code>desc</code> answers <code>400</code> with a message that lists the allowed fields.</p>
@@ -8885,16 +8922,16 @@ object (<code>per_page</code> 10000, <code>last_page</code> above 1) so the clie
 <code>per_page</code> and <code>page</code>.</p>
 <h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">¶</a></h3>
 <p>The second page of 50 zones, newest id first:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones?sort=id:desc&amp;page=2&amp;per_page=50"</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones?sort=id:desc&amp;page=2&amp;per_page=50"</span>
 </code></pre></div>
 <p>The A records of a zone that mention <code>mail</code>, by name:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones/42/records?type=A&amp;q=mail&amp;sort=name"</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/zones/42/records?type=A&amp;q=mail&amp;sort=name"</span>
 </code></pre></div>
 <p>Group permission templates, ordered by name:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/permission-templates?type=group&amp;sort=name"</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">     </span><span class="s2">"https://poweradmin.example.com/api/v2/permission-templates?type=group&amp;sort=name"</span>
 </code></pre></div>
 <h2 id="related-documentation">Related documentation<a class="headerlink" href="#related-documentation" title="Permanent link">¶</a></h2>
 <ul>
