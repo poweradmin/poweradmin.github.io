@@ -8173,8 +8173,12 @@ id is normally the bundled Administrator template.</p>
   carry it.</li>
 <li>the matched local account does not hold <code>user_is_ueberuser</code>. A superuser account
   is never claimed by email; link it explicitly by subject instead.</li>
+<li>the matched local account is not already linked to another subject at the same
+  provider. An address match never moves an existing link to a new identity.
+  If your provider really did change the subject for a user, delete that user's row
+  for the provider from <code>oidc_user_links</code>; the next login then links by email again.</li>
 </ul>
-<p>Both checks are logged when they block a link, so a login that stops working after
+<p>Each check is logged when it blocks a link, so a login that stops working after
 an upgrade can be traced in the application log.</p>
 <h3 id="requiring-a-verified-address">Requiring a verified address<a class="headerlink" href="#requiring-a-verified-address" title="Permanent link">¶</a></h3>
 <p>Providers are not obliged to send <code>email_verified</code> at all, and an absent claim is
