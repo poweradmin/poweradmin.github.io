@@ -810,6 +810,9 @@
                     },
                     "404": {
                         "description": "Member not found"
+                    },
+                    "409": {
+                        "description": "Removing the member would leave no active super admin"
                     }
                 },
                 "security": [
@@ -1628,6 +1631,9 @@
                     },
                     "404": {
                         "description": "Group not found"
+                    },
+                    "409": {
+                        "description": "The new template would leave no active super admin"
                     }
                 },
                 "security": [
@@ -1696,7 +1702,7 @@
                         "description": "Group not found"
                     },
                     "409": {
-                        "description": "Group still owns zones and confirm was not supplied, or is the last owner of a zone"
+                        "description": "Group still owns zones and confirm was not supplied, is the last owner of a zone, or is all that keeps an active super admin"
                     }
                 },
                 "security": [
@@ -2179,6 +2185,9 @@
                     },
                     "404": {
                         "description": "Permission template not found"
+                    },
+                    "409": {
+                        "description": "Removing user_is_ueberuser would leave no active super admin"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -5855,6 +5864,23 @@
                                                             "zones_linked": {
                                                                 "type": "integer",
                                                                 "example": 3
+                                                            },
+                                                            "groups": {
+                                                                "description": "User groups the template is shared with. A non-owner sees only groups they belong to.",
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer",
+                                                                            "example": 2
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string",
+                                                                            "example": "Operators"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
                                                             }
                                                         },
                                                         "type": "object"
@@ -5919,6 +5945,16 @@
                                         "description": "Whether the template is global (owner=0). Requires ueberuser permission.",
                                         "type": "boolean",
                                         "example": false
+                                    },
+                                    "groups": {
+                                        "description": "Ids of the user groups to share the template with. The owner shares with groups they belong to, a ueberuser with any group; needs zone_templ_edit. Not allowed on a global template. On update, leave it out to keep the current shares; groups the caller may not share with stay as they are.",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            3
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -6035,6 +6071,23 @@
                                                             "type": "boolean",
                                                             "example": false
                                                         },
+                                                        "groups": {
+                                                            "description": "User groups the template is shared with. A non-owner sees only groups they belong to.",
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer",
+                                                                        "example": 2
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string",
+                                                                        "example": "Operators"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        },
                                                         "records": {
                                                             "type": "array",
                                                             "items": {
@@ -6140,6 +6193,16 @@
                                         "description": "Whether the template is global (owner=0). Requires ueberuser permission.",
                                         "type": "boolean",
                                         "example": false
+                                    },
+                                    "groups": {
+                                        "description": "Ids of the user groups to share the template with. The owner shares with groups they belong to, a ueberuser with any group; needs zone_templ_edit. Not allowed on a global template. On update, leave it out to keep the current shares; groups the caller may not share with stay as they are.",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            3
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -6627,7 +6690,7 @@
                                         "example": "customer-42"
                                     },
                                     "template": {
-                                        "description": "Zone template ID to use (get IDs from GET /api/v2/zone-templates). Must be a global template, one owned by the caller, or the caller must be ueberuser.",
+                                        "description": "Zone template ID to use (get IDs from GET /api/v2/zone-templates). Must be a global template, one owned by the caller, one shared with a group the caller belongs to, or the caller must be ueberuser.",
                                         "type": "integer",
                                         "example": 1
                                     },
@@ -8976,6 +9039,29 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Record not found"
+                                        },
+                                        "data": {
+                                            "type": "null"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Another record with the same name, type and content already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "A record with this hostname, type, and content already exists"
                                         },
                                         "data": {
                                             "type": "null"
