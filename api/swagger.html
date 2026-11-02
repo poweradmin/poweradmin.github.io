@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poweradmin API v2 - Swagger UI</title>
+  <!-- Embedded by reference.md in an iframe so Swagger UI's styles stay isolated from the theme. -->
+  <link rel="stylesheet" href="../assets/vendor/swagger-ui/swagger-ui.css">
+  <link rel="stylesheet" href="../assets/vendor/swagger-ui/swagger-ui-dark.css">
+  <style>
+    body { margin: 0; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <div id="swagger-ui"></div>
+  <script src="../assets/vendor/swagger-ui/swagger-ui-bundle.js" charset="UTF-8"></script>
+  <script>
+    (function () {
+      var frame = window.frameElement;
+      var host = frame ? window.parent : null;
+
+      // Follow the site's palette toggle; standalone, follow the system setting.
+      function isDark() {
+        if (host) {
+          return host.document.body.getAttribute("data-md-color-scheme") === "slate";
+        }
+        return window.matchMedia("(prefers-color-scheme: dark)").matches;
+      }
+      function applyScheme() {
+        document.documentElement.classList.toggle("dark-mode", isDark());
+      }
+      applyScheme();
+      if (host) {
+        new MutationObserver(applyScheme).observe(host.document.body, {
+          attributeFilter: ["data-md-color-scheme"]
+        });
+      }
+
+      // Grow the iframe with its content, so the page scrolls instead of the frame.
+      if (frame) {
+        new ResizeObserver(function () {
+          frame.style.height = document.documentElement.scrollHeight + "px";
+        }).observe(document.body);
+      }
+
+      // Keep the authorize dialog in the visible part of the tall frame.
+      function placeModal() {
+        var modal = document.querySelector(".modal-ux");
+        if (!modal || !frame) return;
+        var half = modal.offsetHeight / 2 + 60;
+        var top = host.innerHeight / 2 - frame.getBoundingClientRect().top;
+        top = Math.max(half, Math.min(top, document.body.scrollHeight - half));
+        modal.style.top = top + "px";
+      }
+      if (host) {
+        host.addEventListener("scroll", function () { requestAnimationFrame(placeModal); }, { passive: true });
+        new MutationObserver(placeModal).observe(document.body, { childList: true, subtree: true });
+      }
+
+      window.ui = SwaggerUIBundle({
+        url: "openapi.json",
+        dom_id: "#swagger-ui",
+        presets: [SwaggerUIBundle.presets.apis],
+        docExpansion: "list",
+        filter: false,
+        tryItOutEnabled: false,
+        validatorUrl: null,
+        syntaxHighlight: { theme: "agate" }
+      });
+    })();
+  </script>
+</body>
+</html>
