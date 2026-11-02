@@ -8414,13 +8414,13 @@ claim: a <code>|</code> list or an empty value is a configuration error.</p>
 <tbody>
 <tr>
 <td><code>name</code></td>
-<td>Yes</td>
+<td>No</td>
 <td>Display label for the provider. The provider identifier is the array key, not this field</td>
 </tr>
 <tr>
 <td><code>display_name</code></td>
-<td>Yes</td>
-<td>Text shown on login button</td>
+<td>No</td>
+<td>Text shown on login button. Falls back to <code>name</code>, then to the capitalised provider key</td>
 </tr>
 <tr>
 <td><code>client_id</code></td>
@@ -8441,6 +8441,11 @@ claim: a <code>|</code> list or an empty value is a configuration error.</p>
 <td><code>metadata_url</code></td>
 <td>Conditional</td>
 <td>OpenID Configuration endpoint (if auto_discovery)</td>
+</tr>
+<tr>
+<td><code>emails_url</code></td>
+<td>No</td>
+<td>OAuth 2.0 email list such as GitHub's <code>/user/emails</code>, used to find a verified address (added in 4.6.0)</td>
 </tr>
 <tr>
 <td><code>scopes</code></td>
@@ -8809,6 +8814,11 @@ With <code>require_verified_email</code> on, such a user is not linked to an exi
 <td>picture</td>
 <td>Profile picture URL</td>
 </tr>
+<tr>
+<td><code>subject</code></td>
+<td>sub</td>
+<td>Claim used as the stable subject of the account link; GitHub uses <code>id</code></td>
+</tr>
 </tbody>
 </table>
 <h2 id="docker-configuration">Docker Configuration<a class="headerlink" href="#docker-configuration" title="Permanent link">&para;</a></h2>
@@ -8852,6 +8862,7 @@ With <code>require_verified_email</code> on, such a user is not linked to an exi
 <div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">PA_OIDC_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"team1=Editors|Viewers,team2=Administrators"</span>
 </code></pre></div>
 </blockquote>
+<p>Other global variables: <code>PA_OIDC_LINK_BY_EMAIL</code>, <code>PA_OIDC_REQUIRE_VERIFIED_EMAIL</code>, <code>PA_OIDC_SYNC_USER_INFO</code> and <code>PA_OIDC_ALLOW_SUPERUSER_PROVISIONING</code>.</p>
 <p>For secrets, use the <code>__FILE</code> suffix:</p>
 <div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nt">secrets</span><span class="p">:</span>
 <a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span><span class="nt">oidc_client_secret</span><span class="p">:</span>

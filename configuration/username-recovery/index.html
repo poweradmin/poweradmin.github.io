@@ -7530,7 +7530,7 @@
 <tr>
 <td><code>security.username_recovery.rate_limit_attempts</code></td>
 <td>5</td>
-<td>Maximum recovery attempts per time window</td>
+<td>Maximum recovery attempts per email address and time window</td>
 </tr>
 <tr>
 <td><code>security.username_recovery.rate_limit_window</code></td>
@@ -7540,7 +7540,7 @@
 <tr>
 <td><code>security.username_recovery.min_time_between_requests</code></td>
 <td>60</td>
-<td>Minimum time between requests (seconds)</td>
+<td>Minimum time between requests for the same email address (seconds)</td>
 </tr>
 </tbody>
 </table>
@@ -7575,9 +7575,9 @@
 <h2 id="rate-limiting">Rate Limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h2>
 <p>The rate limiting prevents abuse of the recovery feature:</p>
 <ul>
-<li><strong>Attempts per window</strong>: Maximum 5 attempts (default) per hour</li>
-<li><strong>Minimum interval</strong>: At least 60 seconds between requests</li>
-<li><strong>Per-IP tracking</strong>: Rate limits are tracked per IP address</li>
+<li><strong>Attempts per window</strong>: Maximum 5 attempts (default) per hour, counted per email address</li>
+<li><strong>Minimum interval</strong>: At least 60 seconds between requests for the same email address</li>
+<li><strong>Per-IP cap</strong>: Each source IP address is limited to twice the attempts per window</li>
 </ul>
 <p>If a user exceeds the rate limit, they receive a generic message (to prevent email enumeration).</p>
 <h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">&para;</a></h2>
@@ -7592,7 +7592,7 @@
 <p><strong>Logging</strong>: All recovery attempts are logged for security auditing</p>
 </li>
 <li>
-<p><strong>Email verification</strong>: Only sends to verified email addresses in the system</p>
+<p><strong>Active accounts only</strong>: Only active accounts are matched. If several share the address, all their usernames are listed in one email</p>
 </li>
 </ol>
 <h2 id="user-flow">User Flow<a class="headerlink" href="#user-flow" title="Permanent link">&para;</a></h2>

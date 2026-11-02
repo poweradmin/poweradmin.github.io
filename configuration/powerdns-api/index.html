@@ -8007,7 +8007,7 @@ installation is an open request, tracked in
 <li>Metadata management</li>
 <li>Direct server statistics access</li>
 <li>New zones served at once in SQL mode (v4.6.0+), see below</li>
-<li><strong>Send NOTIFY</strong> and <strong>Retrieve from primary</strong> on the zone edit page in SQL mode (v4.6.0+)</li>
+<li><strong>Send NOTIFY</strong> on the zone edit page of a primary zone, and <strong>Retrieve from primary</strong> on a secondary zone (v4.6.0+; in SQL mode both need <code>pdns_api.url</code> and <code>pdns_api.key</code>)</li>
 </ul>
 <p>The <strong>PowerDNS Server Status</strong> page reports whether the server is reachable, its version, daemon
 type and uptime, and the connectivity of each configured autoprimary. It is shown when
@@ -8059,15 +8059,17 @@ RRset can be fetched instead of a whole zone. See
 <a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="x">    ],</span>
 <a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
 <a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="x">    // Poweradmin's own database (still required)</span>
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="x">    'db_host' =&gt; 'localhost',</span>
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="x">    'db_port' =&gt; 3306,</span>
-<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="x">    'db_user' =&gt; 'poweradmin',</span>
-<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="x">    'db_pass' =&gt; 'password',</span>
-<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="x">    'db_name' =&gt; 'poweradmin',</span>
-<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="x">    'db_type' =&gt; 'mysql',</span>
-<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
-<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="x">    // PowerDNS database settings are NOT needed in API mode</span>
-<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="x">];</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="x">    'database' =&gt; [</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="x">        'host' =&gt; 'localhost',</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="x">        'port' =&gt; '3306',</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="x">        'user' =&gt; 'poweradmin',</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="x">        'password' =&gt; 'password',</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="x">        'name' =&gt; 'poweradmin',</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="x">        'type' =&gt; 'mysql',</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="x">    ],</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="x">    // PowerDNS database settings are NOT needed in API mode</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="x">];</span>
 </code></pre></div>
 <p><strong>Required:</strong> when <code>dns.backend</code> is <code>api</code>, both <code>pdns_api.url</code> and <code>pdns_api.key</code> must be set. Otherwise Poweradmin fails on the first DNS operation with:</p>
 <div class="language-text highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>dns.backend is set to "api" but pdns_api.url and/or pdns_api.key are not configured.
@@ -8117,7 +8119,7 @@ RRset can be fetched instead of a whole zone. See
 <p><strong>What changes at runtime:</strong></p>
 <ul>
 <li>All zone and record writes go through the PowerDNS API, so cache flush and DNSSEC rectify/signing are triggered automatically. In SQL mode these required manual <code>pdns_control cache-flush</code> calls.</li>
-<li>NOTIFY is <em>not</em> sent as a side effect of an API write. PowerDNS only sends one from the explicit <code>PUT /zones/{id}/notify</code> endpoint, which Poweradmin does not call, or from the primary's periodic serial-check loop - which needs <code>primary=yes</code> (formerly <code>master=yes</code>) in <code>pdns.conf</code> and behaves the same way in SQL mode.</li>
+<li>NOTIFY is <em>not</em> sent as a side effect of an API write. From 4.6.0 the <strong>Send NOTIFY</strong> button on a primary zone's edit page calls <code>PUT /zones/{id}/notify</code>; otherwise PowerDNS sends one from the primary's periodic serial-check loop - which needs <code>primary=yes</code> (formerly <code>master=yes</code>) in <code>pdns.conf</code> and behaves the same way in SQL mode.</li>
 <li>The Poweradmin app no longer needs credentials for the PowerDNS database. You can remove <code>pdns_db_*</code> settings and revoke the corresponding database grants.</li>
 <li>When PowerDNS no longer lists more than half of the zones Poweradmin knows, the automatic zone sync changes nothing and logs a warning, because that usually means <code>pdns_api.url</code> points at the wrong or an empty server. An administrator's manual sync on the Forward Zones page applies the changes.</li>
 </ul>

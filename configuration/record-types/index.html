@@ -7680,7 +7680,7 @@
 <h3 id="default-behavior">Default Behavior<a class="headerlink" href="#default-behavior" title="Permanent link">&para;</a></h3>
 <p>By default, both settings are set to <code>null</code>, which means Poweradmin uses its built-in default sets - not every type it knows about:</p>
 <ul>
-<li><strong>Forward zones</strong>: the common types (A, AAAA, CNAME, MX, NS, SOA, SRV, TXT) plus a larger set of less common but valid types (CAA, DNAME, HTTPS, NAPTR, SSHFP, SVCB, TLSA, URI and others). DNSSEC types (DNSKEY, DS, CDS, CDNSKEY, RRSIG, NSEC, NSEC3, NSEC3PARAM, ZONEMD) are merged in only when <code>dnssec.enabled</code> is true.</li>
+<li><strong>Forward zones</strong>: the common types (A, AAAA, CNAME, MX, NS, SOA, SRV, TXT) plus a larger set of less common but valid types (CAA, DNAME, HTTPS, NAPTR, SSHFP, SVCB, TLSA, URI and others). DNSSEC types (DNSKEY, DS, CDS, CDNSKEY, RRSIG, NSEC, NSEC3, NSEC3PARAM, ZONEMD) are merged in only when <code>dnssec.enabled</code> is true. With <code>dnssec.enabled</code> they are also appended to custom <code>domain_record_types</code> and <code>reverse_record_types</code> lists, so you do not need to list them.</li>
 <li><strong>Reverse zones</strong>: only six types - CNAME, LOC, NS, PTR, SOA, TXT.</li>
 </ul>
 <p>Types the connected PowerDNS does not support are filtered out. Only the types whose support
@@ -7764,7 +7764,7 @@ both forms the same way. Long values are fine: a 400-character key saves and is 
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="x">'reverse_record_types' =&gt; ['PTR', 'NS', 'SOA', 'TXT', 'CNAME'],</span>
 </code></pre></div>
 <h2 id="zone-templates">Zone Templates<a class="headerlink" href="#zone-templates" title="Permanent link">&para;</a></h2>
-<p>When editing zone templates, Poweradmin will automatically show the combined list of both <code>domain_record_types</code> and <code>reverse_record_types</code> to ensure all potential record types for template use are available.</p>
+<p>When editing zone templates, Poweradmin will automatically show the combined list of both <code>domain_record_types</code> and <code>reverse_record_types</code> to ensure all potential record types for template use are available. If only one of the two is set, the other contributes only its common default set (not the longer default list).</p>
 <h2 id="pinning-popular-record-types-to-the-top-440">Pinning Popular Record Types to the Top (4.4.0)<a class="headerlink" href="#pinning-popular-record-types-to-the-top-440" title="Permanent link">&para;</a></h2>
 <p>By default, record types appear alphabetically in selectors. If you regularly create the same handful of record types, you can pin them to the top of every record type dropdown using <code>top_record_types</code>:</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">'dns' =&gt; [</span>

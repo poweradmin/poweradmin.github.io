@@ -3329,6 +3329,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v4.6.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#v450" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8425,6 +8436,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v4.6.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#v450" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8715,6 +8737,7 @@ model, and answer regardless of <code>api.enabled</code>. See
 <a href="../../operations/health-checks/">Health Checks</a>.</p>
 <p>API v2 (introduced in v4.1.0) is the current API and is recommended for every integration. API v1 was deprecated in 4.3.0 and removed in 4.5.0; on 4.2.x-4.4.x it is still available for backward compatibility.</p>
 <h3 id="api-v2-endpoints-v410">API v2 Endpoints <em>(v4.1.0+)</em><a class="headerlink" href="#api-v2-endpoints-v410" title="Permanent link">&para;</a></h3>
+<p>The lists below cover the main resources. Zone metadata, DNSSEC, change request, dynamic DNS and server status endpoints, and the write methods on RRsets, are listed in <a href="../../api/endpoints/">API Endpoints</a>.</p>
 <h4 id="zone-management">Zone Management<a class="headerlink" href="#zone-management" title="Permanent link">&para;</a></h4>
 <ul>
 <li><code>GET /api/v2/zones</code> - List all zones</li>
@@ -8890,7 +8913,7 @@ than on a code in the body.</p>
 <h2 id="powerdns-metrics-api-v403">PowerDNS Metrics API <em>(v4.0.3+)</em><a class="headerlink" href="#powerdns-metrics-api-v403" title="Permanent link">&para;</a></h2>
 <p>Poweradmin can integrate with PowerDNS metrics endpoints for monitoring and status information.</p>
 <h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
-<p>Everything lives in the <code>pdns_api</code> section. There is no separate <code>pdns</code> section and no <code>metrics.enabled</code> toggle - the status page is shown by <code>interface.show_pdns_status</code>.</p>
+<p>Everything lives in the <code>pdns_api</code> section. There is no separate <code>pdns</code> section - the PowerDNS status page is shown by <code>interface.show_pdns_status</code>. The unrelated Prometheus endpoint <code>/api/metrics</code> has its own <code>metrics.*</code> settings (added in 4.6.0), see <a href="../../operations/metrics/">Metrics</a>.</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="x">'pdns_api' =&gt; [</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="x">    'url' =&gt; 'http://localhost:8081',</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="x">    'key' =&gt; 'your-powerdns-api-key',</span>
@@ -8939,6 +8962,14 @@ every row.</p>
 <a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="p">}</span>
 </code></pre></div>
 <h2 id="version-history">Version History<a class="headerlink" href="#version-history" title="Permanent link">&para;</a></h2>
+<h3 id="v460">v4.6.0<a class="headerlink" href="#v460" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Added:</strong> <code>api.bulk_max_operations</code> limit for <code>POST /zones/{id}/records/bulk</code></li>
+<li><strong>Added:</strong> Prometheus endpoint <code>GET /api/metrics</code> with the <code>metrics.*</code> settings</li>
+<li><strong>Added:</strong> DNSSEC key import, <code>POST /zones/{id}/dnssec/keys/import</code></li>
+<li><strong>Added:</strong> Change request endpoints under <code>/api/v2/change-requests</code></li>
+<li><strong>Added:</strong> Paging, sorting and filtering on the other v2 list endpoints</li>
+</ul>
 <h3 id="v450">v4.5.0<a class="headerlink" href="#v450" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Removed:</strong> API v1; its paths answer <code>410 Gone</code></li>

@@ -7424,7 +7424,7 @@
 <p>Poweradmin's database settings are configured in the <code>config/settings.php</code> file under the <code>database</code> section. This guide covers the general configuration options. For database-specific setup instructions, refer to the links at the bottom of this page.</p>
 <h2 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>type</strong>: Database type. Options: 'mysql', 'pgsql', 'sqlite'. Default: 'mysql'</li>
+<li><strong>type</strong>: Database type. Options: 'mysql', 'mysqli', 'pgsql', 'sqlite'. Default: 'mysql'</li>
 <li><strong>host</strong>: Database server hostname. Default: 'localhost'</li>
 <li><strong>port</strong>: Database server port. Default: '3306' for MySQL, '5432' for PostgreSQL</li>
 <li><strong>name</strong>: Database name. Default: 'powerdns'</li>
@@ -7433,6 +7433,8 @@
 <li><strong>charset</strong>: Database character set. Default: 'latin1'. Only the literal value <code>utf8</code> affects the connection: on MySQL/MariaDB it appends <code>charset=utf8</code> to the DSN. Any other value, <code>utf8mb4</code> included, leaves the connection on the server's default character set. The installer offers the driver's full charset list (about 38 values for MySQL) and uses that choice when creating the tables, which is a separate thing from the connection charset</li>
 <li><strong>file</strong>: SQLite database file path (only for SQLite)</li>
 <li><strong>debug</strong>: Enable SQL query debugging. Default: <code>false</code></li>
+<li><strong>sqlite_wal</strong>: SQLite only. Switches the database file to WAL journal mode on connect. Default: <code>true</code> (added in v4.6.0). Set <code>false</code> on NFS. <code>false</code> does not convert a file already in WAL; run <code>PRAGMA journal_mode = DELETE</code> once</li>
+<li><strong>ssl</strong>, <strong>ssl_verify</strong>, <strong>ssl_ca</strong>, <strong>ssl_key</strong>, <strong>ssl_cert</strong>: TLS for MySQL/MariaDB and PostgreSQL connections (added in v4.1.0). See the <a href="../../database/mysql-configuration/">MySQL/MariaDB</a> and <a href="../../database/postgresql-configuration/">PostgreSQL</a> setup guides</li>
 <li><strong>pdns_db_name</strong>: Separate database name for PowerDNS (added in v3.8.0). MySQL/MariaDB only - ignored (and rejected by config validation) on PostgreSQL and SQLite. Default: same as 'name'</li>
 </ul>
 <h2 id="example-configuration">Example Configuration<a class="headerlink" href="#example-configuration" title="Permanent link">&para;</a></h2>

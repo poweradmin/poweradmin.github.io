@@ -7613,13 +7613,8 @@
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">];</span>
 </code></pre></div>
 <h2 id="configuration-precedence">Configuration Precedence<a class="headerlink" href="#configuration-precedence" title="Permanent link">&para;</a></h2>
-<p>When using Docker, configuration is loaded in this order (later overrides earlier):</p>
-<ol>
-<li><code>config/settings.defaults.php</code> - Default values</li>
-<li><code>config/settings.php</code> - Your custom settings file</li>
-<li>Environment variables (<code>PA_*</code>) - Docker/container settings</li>
-<li>Docker secrets (<code>PA_*__FILE</code>) - Sensitive values from files</li>
-</ol>
+<p>Poweradmin always layers <code>config/settings.php</code> (or the file named by <code>PA_CONFIG_PATH</code>) over <code>config/settings.defaults.php</code>.</p>
+<p>In Docker, <code>PA_*</code> variables do not override a settings file. If <code>config/settings.php</code> (or the <code>PA_CONFIG_PATH</code> file) exists and is not empty, the container uses it as is and ignores every <code>PA_*</code> variable except <code>PA_CONFIG_PATH</code>. Only when that file is missing or empty does the entrypoint generate it from the <code>PA_*</code> variables, after resolving <code>PA_*__FILE</code> secrets.</p>
 <blockquote>
 <p><strong>Note:</strong> A secret and its plain environment variable are mutually exclusive, not layered. If both <code>PA_FOO</code> and <code>PA_FOO__FILE</code> are set, the container logs an error and exits rather than preferring one over the other.</p>
 </blockquote>
@@ -7787,6 +7782,11 @@ to <code>config/settings.php</code>.</p>
 <td><code>database.pdns_db_name</code></td>
 <td><em>(empty)</em></td>
 <td>Separate PowerDNS database, MySQL/MariaDB only (v3.8.0+)</td>
+</tr>
+<tr>
+<td><code>database.sqlite_wal</code></td>
+<td>true</td>
+<td>SQLite only: switch the file to WAL journal mode on connect; set <code>false</code> on NFS (v4.6.0+)</td>
 </tr>
 </tbody>
 </table>

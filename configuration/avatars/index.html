@@ -7658,12 +7658,13 @@
 <li><strong>oauth</strong>: Check OAuth provider first, fall back to Gravatar</li>
 <li><strong>gravatar</strong>: Check Gravatar first</li>
 </ul>
-<p>The fallback only applies with <code>oauth</code>: if the login supplied no avatar URL, Gravatar is used instead. With <code>gravatar</code>, any user who has an email address gets a Gravatar URL (Gravatar serves a generated default image for unknown addresses), so the OAuth picture is never reached.</p>
+<p>With <code>oauth</code>, Gravatar is used when the login supplied no avatar URL. With <code>gravatar</code>, any user who has an email address gets a Gravatar URL (Gravatar serves a default image for unknown addresses), so the OAuth picture is only used for users without an email address.</p>
 <h2 id="oauth-avatars">OAuth Avatars<a class="headerlink" href="#oauth-avatars" title="Permanent link">&para;</a></h2>
 <p>OAuth avatars are retrieved from identity providers during login:</p>
 <ul>
 <li>Azure AD, Google, Keycloak, etc. provide profile pictures</li>
 <li>The <code>picture</code> claim is mapped automatically</li>
+<li>Microsoft Graph photo URLs are skipped because they need a bearer token, so Azure AD users get the Gravatar fallback or no avatar</li>
 <li>The URL is kept in the session and the image is loaded by the browser straight from the provider</li>
 </ul>
 <h3 id="oidc-configuration">OIDC Configuration<a class="headerlink" href="#oidc-configuration" title="Permanent link">&para;</a></h3>
@@ -7682,7 +7683,7 @@
 </ol>
 <p>Users can set their Gravatar at <a href="https://gravatar.com">gravatar.com</a>.</p>
 <h3 id="gravatar-defaults">Gravatar Defaults<a class="headerlink" href="#gravatar-defaults" title="Permanent link">&para;</a></h3>
-<p>If a user has no Gravatar, a default image is displayed. Gravatar provides several default styles:</p>
+<p>If a user has no Gravatar, Gravatar's <code>mp</code> (mystery person) default image is displayed. Poweradmin always requests <code>mp</code>; the style is not configurable. Gravatar itself offers other styles:</p>
 <ul>
 <li><code>mp</code> - Mystery person silhouette</li>
 <li><code>identicon</code> - Geometric pattern</li>

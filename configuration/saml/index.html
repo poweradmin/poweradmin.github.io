@@ -8147,6 +8147,11 @@
 <td>Sync user info on each login</td>
 </tr>
 <tr>
+<td><code>saml.require_verified_email</code></td>
+<td>false</td>
+<td>Refuse email linking when the assertion carries no <code>email_verified</code> attribute (<code>settings.php</code> only, no Docker variable)</td>
+</tr>
+<tr>
 <td><code>saml.default_permission_template</code></td>
 <td>"Guest"</td>
 <td>Default permission template for new users</td>
@@ -8267,17 +8272,17 @@ applies to linked users, and a malformed setting refuses every SAML login. In Do
 <tr>
 <td><code>sp.entity_id</code></td>
 <td>(auto)</td>
-<td>SP Entity ID (defaults to <code>{base_url}/saml/metadata</code>)</td>
+<td>SP Entity ID (defaults to <code>{interface.application_url}/saml/metadata</code>)</td>
 </tr>
 <tr>
 <td><code>sp.assertion_consumer_service_url</code></td>
 <td>(auto)</td>
-<td>ACS URL (defaults to <code>{base_url}/saml/acs</code>)</td>
+<td>ACS URL (defaults to <code>{interface.application_url}/saml/acs</code>)</td>
 </tr>
 <tr>
 <td><code>sp.single_logout_service_url</code></td>
 <td>(auto)</td>
-<td>SLO URL (defaults to <code>{base_url}/saml/sls</code>)</td>
+<td>SLO URL (defaults to <code>{interface.application_url}/saml/sls</code>)</td>
 </tr>
 <tr>
 <td><code>sp.name_id_format</code></td>
@@ -8313,7 +8318,7 @@ applies to linked users, and a malformed setting refuses every SAML login. In Do
 <p><strong>Note:</strong> The SP entity ID is the bare <code>https://your-poweradmin.com/saml/metadata</code>, with no provider suffix. The query parameter only selects which IdP the generated document is tailored for.</p>
 </blockquote>
 <h2 id="provider-configuration">Provider Configuration<a class="headerlink" href="#provider-configuration" title="Permanent link">&para;</a></h2>
-<p>Each provider requires IdP-specific configuration:</p>
+<p>Each provider requires IdP-specific configuration. The provider key (the array key) may contain only letters, digits and underscores; other keys are rejected with "Invalid SAML provider".</p>
 <table>
 <thead>
 <tr>
@@ -8330,8 +8335,8 @@ applies to linked users, and a malformed setting refuses every SAML login. In Do
 </tr>
 <tr>
 <td><code>display_name</code></td>
-<td>Yes</td>
-<td>Text shown on login button</td>
+<td>No</td>
+<td>Text shown on login button. Falls back to <code>name</code>, then to the provider key</td>
 </tr>
 <tr>
 <td><code>entity_id</code></td>
@@ -8350,13 +8355,13 @@ applies to linked users, and a malformed setting refuses every SAML login. In Do
 </tr>
 <tr>
 <td><code>x509cert</code></td>
-<td>Yes</td>
-<td>IdP X.509 certificate (PEM string, with or without <code>-----BEGIN CERTIFICATE-----</code>/<code>-----END CERTIFICATE-----</code> headers and line breaks)</td>
+<td>Strongly recommended</td>
+<td>IdP X.509 certificate (PEM string, with or without <code>-----BEGIN CERTIFICATE-----</code>/<code>-----END CERTIFICATE-----</code> headers and line breaks). Without it assertions are not signature-checked; the Docker entrypoint refuses to start without it</td>
 </tr>
 <tr>
 <td><code>user_mapping</code></td>
-<td>Yes</td>
-<td>Map SAML attributes to user fields</td>
+<td>No</td>
+<td>Map SAML attributes to user fields. Missing keys default to <code>username</code>, <code>email</code>, <code>firstName</code>, <code>lastName</code>, <code>displayName</code> and <code>groups</code></td>
 </tr>
 <tr>
 <td><code>allow_idp_initiated</code></td>
@@ -8664,6 +8669,7 @@ applies to linked users, and a malformed setting refuses every SAML login. In Do
 <div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nt">PA_SAML_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"team1=Editors|Viewers,team2=Administrators"</span>
 </code></pre></div>
 </blockquote>
+<p>Other variables: <code>PA_SAML_ALLOW_SUPERUSER_PROVISIONING</code>, and per provider <code>PA_SAML_&lt;IDP&gt;_ALLOW_IDP_INITIATED</code> (default <code>false</code>, see <a href="#https-for-the-acs-url-v460">HTTPS for the ACS URL</a>).</p>
 <p>For certificates and keys, use Docker secrets:</p>
 <div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nt">secrets</span><span class="p">:</span>
 <a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">saml_idp_cert</span><span class="p">:</span>
