@@ -8447,8 +8447,10 @@ configured default (<code>dns.ttl_reverse</code> for PTR records in reverse zone
 set, <code>dns.ttl</code> otherwise). See
 <a href="../../configuration/dns-settings/">DNS settings</a> for details. A <code>ttl</code> of <code>0</code>
 is accepted (do not cache) from 4.6.0; on 4.5.x and earlier it is refused with
-<code>400</code> "TTL must be greater than 0". Negative values and fractional strings such as
-<code>"0.5"</code> are refused with <code>400</code> on every release.</p>
+<code>400</code> "TTL must be greater than 0". Negative values are refused with <code>400</code> on
+every release. From 4.6.0 a fractional string such as <code>"1.5"</code> is refused with
+<code>400</code> as well; 4.5.x and earlier truncate it to an integer, so <code>"1.5"</code> is stored
+as <code>1</code> and <code>"0.5"</code> becomes <code>0</code> and is refused.</p>
 <h4 id="internationalised-names-and-duplicates">Internationalised names and duplicates<a class="headerlink" href="#internationalised-names-and-duplicates" title="Permanent link">&para;</a></h4>
 <p>From 4.5.2 and 4.6.0, record names and content written through the API are stored as punycode,
 as the web editor stores them: <code>www.bücher.example</code> is saved as <code>www.xn--bcher-kva.example</code>.
