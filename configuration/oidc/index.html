@@ -2652,6 +2652,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitHub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#generic-oidc-provider" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7912,6 +7923,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitHub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#generic-oidc-provider" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8621,33 +8643,75 @@ URLs, proxy logs, or browser history.</p>
 </code></pre></div>
 </li>
 </ol>
-<h3 id="generic-oidc-provider">Generic OIDC Provider<a class="headerlink" href="#generic-oidc-provider" title="Permanent link">¶</a></h3>
-<p>For providers not listed above, use manual endpoint configuration:</p>
+<h3 id="github">GitHub<a class="headerlink" href="#github" title="Permanent link">¶</a></h3>
+<p>GitHub speaks OAuth 2.0 without OpenID Connect, so there is no discovery and no
+<code>email_verified</code> claim. Poweradmin reads the user's email list from <code>emails_url</code> instead
+and uses the profile email when GitHub reports it verified, otherwise the verified primary
+address. The lookup also finds the address when the profile email is private (added in 4.6.0).</p>
+<ol>
+<li>Create an OAuth App under GitHub Settings &gt; Developer settings &gt; OAuth Apps</li>
+<li>Set the authorization callback URL to <code>https://your-poweradmin.com/oidc/callback</code></li>
+<li>
+<p>Generate a client secret</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="x">'oidc' =&gt; [</span>
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="x">    'enabled' =&gt; true,</span>
 <a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="x">        'custom' =&gt; [</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="x">            'name' =&gt; 'Custom OIDC',</span>
-<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="x">            'display_name' =&gt; 'Sign in with SSO',</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="x">        'github' =&gt; [</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="x">            'name' =&gt; 'GitHub',</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="x">            'display_name' =&gt; 'Sign in with GitHub',</span>
 <a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
 <a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
 <a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="x">            'auto_discovery' =&gt; false,</span>
-<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="x">            'authorize_url' =&gt; 'https://provider.example.com/oauth/authorize',</span>
-<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="x">            'token_url' =&gt; 'https://provider.example.com/oauth/token',</span>
-<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="x">            'userinfo_url' =&gt; 'https://provider.example.com/oauth/userinfo',</span>
-<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="x">            'logout_url' =&gt; 'https://provider.example.com/oauth/logout',</span>
-<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="x">            'scopes' =&gt; 'openid profile email',  // add 'groups' if your provider requires it for group claims</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="x">            'authorize_url' =&gt; 'https://github.com/login/oauth/authorize',</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="x">            'token_url' =&gt; 'https://github.com/login/oauth/access_token',</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="x">            'userinfo_url' =&gt; 'https://api.github.com/user',</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="x">            'emails_url' =&gt; 'https://api.github.com/user/emails',</span>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="x">            'scopes' =&gt; 'read:user user:email',</span>
 <a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="x">                'username' =&gt; 'preferred_username',</span>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="x">                'username' =&gt; 'login',</span>
 <a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="x">                'email' =&gt; 'email',</span>
-<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
-<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
-<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a><span class="x">                'display_name' =&gt; 'name',</span>
-<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="x">                'groups' =&gt; 'groups',</span>
-<a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a><span class="x">            ],</span>
-<a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a><span class="x">        ],</span>
-<a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a><span class="x">    ],</span>
-<a id="__codelineno-19-25" name="__codelineno-19-25" href="#__codelineno-19-25"></a><span class="x">],</span>
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="x">                'display_name' =&gt; 'name',</span>
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a><span class="x">                'subject' =&gt; 'id',</span>
+<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a><span class="x">                'avatar' =&gt; 'avatar_url',</span>
+<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="x">            ],</span>
+<a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a><span class="x">        ],</span>
+<a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a><span class="x">    ],</span>
+<a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a><span class="x">],</span>
+</code></pre></div>
+</li>
+</ol>
+<p>The GitHub login becomes the Poweradmin username. GitHub sends no groups, so new users get
+<code>default_permission_template</code>. Keep <code>user:email</code> in the scopes: without it the email list
+answers 404, the address counts as unverified and a warning naming the HTTP status is logged.
+With <code>require_verified_email</code> on, such a user is not linked to an existing account by email.</p>
+<h3 id="generic-oidc-provider">Generic OIDC Provider<a class="headerlink" href="#generic-oidc-provider" title="Permanent link">¶</a></h3>
+<p>For providers not listed above, use manual endpoint configuration:</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="x">'oidc' =&gt; [</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="x">        'custom' =&gt; [</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="x">            'name' =&gt; 'Custom OIDC',</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="x">            'display_name' =&gt; 'Sign in with SSO',</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="x">            'auto_discovery' =&gt; false,</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="x">            'authorize_url' =&gt; 'https://provider.example.com/oauth/authorize',</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="x">            'token_url' =&gt; 'https://provider.example.com/oauth/token',</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="x">            'userinfo_url' =&gt; 'https://provider.example.com/oauth/userinfo',</span>
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="x">            'logout_url' =&gt; 'https://provider.example.com/oauth/logout',</span>
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="x">            'emails_url' =&gt; '',  // optional OAuth 2.0 email list, as on GitHub (added in 4.6.0)</span>
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="x">            'scopes' =&gt; 'openid profile email',  // add 'groups' if your provider requires it for group claims</span>
+<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="x">                'username' =&gt; 'preferred_username',</span>
+<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="x">                'email' =&gt; 'email',</span>
+<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
+<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
+<a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="x">                'display_name' =&gt; 'name',</span>
+<a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a><span class="x">                'groups' =&gt; 'groups',</span>
+<a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a><span class="x">            ],</span>
+<a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a><span class="x">        ],</span>
+<a id="__codelineno-20-25" name="__codelineno-20-25" href="#__codelineno-20-25"></a><span class="x">    ],</span>
+<a id="__codelineno-20-26" name="__codelineno-20-26" href="#__codelineno-20-26"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="user-mapping">User Mapping<a class="headerlink" href="#user-mapping" title="Permanent link">¶</a></h2>
 <p>The <code>user_mapping</code> array maps OIDC claims to Poweradmin user fields:</p>
@@ -8699,63 +8763,70 @@ URLs, proxy logs, or browser history.</p>
 </table>
 <h2 id="docker-configuration">Docker Configuration<a class="headerlink" href="#docker-configuration" title="Permanent link">¶</a></h2>
 <p>Use environment variables with the <code>PA_OIDC_</code> prefix:</p>
-<p>The entrypoint can generate three OIDC providers: <code>azure</code> (<code>PA_OIDC_AZURE_*</code>), <code>google</code> (<code>PA_OIDC_GOOGLE_*</code>) and <code>generic</code> (<code>PA_OIDC_GENERIC_*</code>). Any other IdP - Keycloak, Authentik, Okta - is configured through the generic provider:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">PA_APPLICATION_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://dns.example.com"</span>
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="nt">PA_OIDC_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span><span class="nt">PA_OIDC_AUTO_PROVISION</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">  </span><span class="nt">PA_OIDC_DEFAULT_PERMISSION_TEMPLATE</span><span class="p">:</span><span class="w"> </span><span class="s">"Guest"</span>
-<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">"Keycloak"</span>
-<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_DISPLAY_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">"Sign</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">Keycloak"</span>
-<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"poweradmin"</span>
-<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">"your-secret"</span>
-<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_AUTO_DISCOVERY</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_METADATA_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://keycloak.example.com/realms/master/.well-known/openid-configuration"</span>
+<p>The entrypoint can generate four providers: <code>azure</code> (<code>PA_OIDC_AZURE_*</code>), <code>google</code> (<code>PA_OIDC_GOOGLE_*</code>), <code>github</code> (<code>PA_OIDC_GITHUB_*</code>, added in 4.6.0) and <code>generic</code> (<code>PA_OIDC_GENERIC_*</code>). Any other IdP - Keycloak, Authentik, Okta - is configured through the generic provider:</p>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">PA_APPLICATION_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://dns.example.com"</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span><span class="nt">PA_OIDC_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span><span class="nt">PA_OIDC_AUTO_PROVISION</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">  </span><span class="nt">PA_OIDC_DEFAULT_PERMISSION_TEMPLATE</span><span class="p">:</span><span class="w"> </span><span class="s">"Guest"</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">"Keycloak"</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_DISPLAY_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">"Sign</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">Keycloak"</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"poweradmin"</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">"your-secret"</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_AUTO_DISCOVERY</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_METADATA_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://keycloak.example.com/realms/master/.well-known/openid-configuration"</span>
 </code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> <code>PA_APPLICATION_URL</code> is required. From 4.2.6, 4.3.5, 4.4.1 and 4.5.0 the container exits at startup if OIDC is enabled without it, because the OAuth <code>redirect_uri</code> cannot be derived from the request. OIDC accepts no alternative source - <code>PA_BASE_URL</code> does not satisfy it. The check runs only when the entrypoint generates the config; a mounted <code>settings.php</code> is used as-is.</p>
-<p><strong>Note:</strong> There are no <code>PA_OIDC_KEYCLOAK_*</code> variables. To run a named Keycloak provider alongside another IdP, configure it in <code>config/settings.php</code> instead - the entrypoint only writes the three providers above.</p>
+<p><strong>Note:</strong> There are no <code>PA_OIDC_KEYCLOAK_*</code> variables. To run a named Keycloak provider alongside another IdP, configure it in <code>config/settings.php</code> instead - the entrypoint only writes the four providers above.</p>
 </blockquote>
+<p>GitHub needs only the OAuth App credentials; the endpoints and scopes are fixed:</p>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="nt">PA_OIDC_GITHUB_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="nt">PA_OIDC_GITHUB_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"your-client-id"</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span><span class="nt">PA_OIDC_GITHUB_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">"your-client-secret"</span>
+</code></pre></div>
+<p>For another OAuth 2.0 provider with a GitHub-style email list, set <code>PA_OIDC_GENERIC_EMAILS_URL</code>.</p>
 <p>To change the groups claim name for the generic OIDC provider, use <code>PA_OIDC_GENERIC_GROUPS_ATTR</code>:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_GROUPS_ATTR</span><span class="p">:</span><span class="w"> </span><span class="s">"roles"</span><span class="w">  </span><span class="c1"># Default: "groups"</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_GROUPS_ATTR</span><span class="p">:</span><span class="w"> </span><span class="s">"roles"</span><span class="w">  </span><span class="c1"># Default: "groups"</span>
 </code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> The <code>permission_template_mapping</code> and <code>group_mapping</code> settings can be configured via environment variables using the <code>=</code> delimiter and comma-separated entries:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nt">PA_OIDC_PERMISSION_TEMPLATE_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"admins=Administrator,editors=Viewer"</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="nt">PA_OIDC_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"admins=Administrators,editors=Editors"</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">PA_OIDC_PERMISSION_TEMPLATE_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"admins=Administrator,editors=Viewer"</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="nt">PA_OIDC_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"admins=Administrators,editors=Editors"</span>
 </code></pre></div>
 <p>Group names containing colons (e.g., SAML URNs) are supported. Whitespace around commas and delimiters is trimmed automatically.</p>
 <p>For 1:n group mappings, separate the Poweradmin groups with a pipe (<code>|</code>) so one OIDC group can grant access to several Poweradmin groups (added in 4.4.0):</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">PA_OIDC_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"team1=Editors|Viewers,team2=Administrators"</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="nt">PA_OIDC_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"team1=Editors|Viewers,team2=Administrators"</span>
 </code></pre></div>
 </blockquote>
 <p>For secrets, use the <code>__FILE</code> suffix:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">secrets</span><span class="p">:</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">oidc_client_secret</span><span class="p">:</span>
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./secrets/oidc_client_secret.txt</span>
-<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>
-<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="nt">services</span><span class="p">:</span>
-<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">  </span><span class="nt">poweradmin</span><span class="p">:</span>
-<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="w">      </span><span class="nt">PA_OIDC_GENERIC_CLIENT_SECRET__FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/oidc_client_secret</span>
-<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="w">    </span><span class="nt">secrets</span><span class="p">:</span>
-<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">oidc_client_secret</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">secrets</span><span class="p">:</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">oidc_client_secret</span><span class="p">:</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./secrets/oidc_client_secret.txt</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="w">  </span><span class="nt">poweradmin</span><span class="p">:</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="w">      </span><span class="nt">PA_OIDC_GENERIC_CLIENT_SECRET__FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/oidc_client_secret</span>
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="w">    </span><span class="nt">secrets</span><span class="p">:</span>
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">oidc_client_secret</span>
 </code></pre></div>
 <h2 id="multiple-providers">Multiple Providers<a class="headerlink" href="#multiple-providers" title="Permanent link">¶</a></h2>
 <p>You can configure multiple OIDC providers. Users will see all enabled providers on the login page:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="x">'oidc' =&gt; [</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="x">        'azure' =&gt; [</span>
-<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="x">            // Azure AD configuration...</span>
-<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="x">        ],</span>
-<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="x">        'google' =&gt; [</span>
-<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="x">            // Google configuration...</span>
-<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="x">        ],</span>
-<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="x">    ],</span>
-<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="x">'oidc' =&gt; [</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="x">        'azure' =&gt; [</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="x">            // Azure AD configuration...</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="x">        ],</span>
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="x">        'google' =&gt; [</span>
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="x">            // Google configuration...</span>
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="x">        ],</span>
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="x">    ],</span>
+<a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">¶</a></h2>
 <ol>
@@ -8796,8 +8867,8 @@ URLs, proxy logs, or browser history.</p>
 </ul>
 <h3 id="provider-discovery-fails-behind-a-web-proxy">Provider discovery fails behind a web proxy<a class="headerlink" href="#provider-discovery-fails-behind-a-web-proxy" title="Permanent link">¶</a></h3>
 <p>If your Poweradmin host can only reach the internet through an HTTP proxy, OIDC discovery (the <code>.well-known/openid-configuration</code> fetch) will time out unless the proxy is exported in the environment. From v4.4.0, the discovery client honors the standard <code>HTTPS_PROXY</code> / <code>http_proxy</code> variables. Set them where PHP can see them - typically in the systemd unit, the FPM pool, or the Docker environment:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://proxy.internal:3128
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="nv">NO_PROXY</span><span class="o">=</span>localhost,127.0.0.1,.internal
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://proxy.internal:3128
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="nv">NO_PROXY</span><span class="o">=</span>localhost,127.0.0.1,.internal
 </code></pre></div>
 <p>Restart the web server (or <code>php-fpm</code>) so the new environment is picked up. Earlier versions ignored these variables and required a manual <code>cURL</code> build with proxy support.</p>
 <h2 id="related-documentation">Related Documentation<a class="headerlink" href="#related-documentation" title="Permanent link">¶</a></h2>
