@@ -7764,20 +7764,20 @@
 <p>For single PTR records:</p>
 <ol>
 <li>Go to the reverse zone's record list (e.g., <code>1.168.192.in-addr.arpa</code>)</li>
-<li>Click "Add Record" at the top of the zone edit page</li>
+<li>Click <strong>Add record</strong> at the top of the zone edit page</li>
 <li>Enter the information:</li>
 <li><strong>Name</strong>: The last octet of the IP address (e.g., <code>42</code> for 192.168.1.42)</li>
 <li><strong>Type</strong>: PTR</li>
 <li><strong>Content</strong>: The fully qualified domain name (FQDN) this IP should resolve to (e.g., <code>host42.example.com.</code>)</li>
 <li><strong>TTL</strong>: Time-to-live value (e.g., 86400 for 1 day)</li>
-<li>Click "Add Record"</li>
+<li>Click <strong>Add records</strong></li>
 </ol>
 <p><img alt="Adding an individual PTR record" src="../../screenshots/ptr-individual-record.png" /></p>
 <h2 id="keeping-ptr-and-aaaaa-records-in-step">Keeping PTR and A/AAAA Records in Step<a class="headerlink" href="#keeping-ptr-and-aaaaa-records-in-step" title="Permanent link">&para;</a></h2>
 <p>Poweradmin can create or move the matching record on the other side when you add or edit an address record. Both options are on by default (<code>interface.add_reverse_record</code> and <code>interface.add_domain_record</code>).</p>
 <p><strong>Adding records.</strong> In a forward zone, the add-record form has an <strong>Add PTR</strong> checkbox for A and AAAA records, which also creates the PTR in the matching reverse zone. In a reverse zone it has an <strong>Add A/AAAA</strong> checkbox, which creates the forward record in the zone that holds the PTR's hostname. Up to 4.5.0 this works for <code>in-addr.arpa</code> zones only; from 4.6.0 a PTR added in an <code>ip6.arpa</code> zone also creates the matching AAAA record.</p>
 <p><strong>Editing records (4.5.0).</strong> The record edit page of a forward zone has an <strong>Update PTR</strong> checkbox. When it is ticked and the record is an A or AAAA record, saving deletes the PTR for the old address and creates one for the new address, name and TTL. If the PTR cannot be written, for example because there is no matching reverse zone, the record is still saved and a warning says why. The v2 API does the same with <code>update_ptr: true</code> on a record update.</p>
-<p><strong>Rules of the other zone (4.6.0).</strong> The PTR, the A/AAAA record and a synced comment are written to a different zone from the one you are editing, so the rules of that zone apply too. If you must file change requests there, Poweradmin skips the matching record and the warning says why; your own record is still saved. <strong>Delete PTR</strong> and <strong>Delete A/AAAA</strong> also leave the matching record in such a zone in place. Through the API, a key restricted to certain zones writes a PTR only into a reverse zone on its list (also in 4.5.2), and the response has <code>ptr_created: false</code> otherwise.</p>
+<p><strong>Rules of the other zone (4.6.0).</strong> The PTR, the A/AAAA record and a synced comment are written to a different zone from the one you are editing, so the rules of that zone apply too. If you must file change requests there, Poweradmin skips the matching record and the warning says why; your own record is still saved. The delete forms' <strong>Also delete corresponding PTR record (if exists)</strong> and <strong>Also delete corresponding A/AAAA record (if exists)</strong> options also leave the matching record in such a zone in place. Through the API, a key restricted to certain zones writes a PTR only into a reverse zone on its list (also in 4.5.2), and the response has <code>ptr_created: false</code> otherwise.</p>
 <p><img alt="Update PTR checkbox" src="../../screenshots/edit-record-update-ptr.png" /></p>
 <h2 id="method-2-using-batch-ptr-records-feature">Method 2: Using Batch PTR Records Feature<a class="headerlink" href="#method-2-using-batch-ptr-records-feature" title="Permanent link">&para;</a></h2>
 <p>For creating multiple PTR records at once:</p>
@@ -7790,8 +7790,9 @@
 <li>
 <p>Complete the form:</p>
 </li>
-<li><strong>IP Version</strong>: Choose IPv4 or IPv6</li>
-<li><strong>Network Prefix</strong>: The network in CIDR notation (e.g., <code>192.168.1.0/24</code> or <code>10.0.0.0/20</code>). The button beside the field picks from the reverse zones you already have.</li>
+<li><strong>IP Version</strong>: Choose <strong>IPv4 network</strong> or <strong>IPv6 (/64 network)</strong></li>
+<li><strong>IPv6 Count</strong>: IPv6 only, how many addresses to create (default 256, at most 1000)</li>
+<li><strong>Network Prefix</strong>: The network in CIDR notation (e.g., <code>192.168.1.0/24</code> or <code>10.0.0.0/20</code>). The prefix length must be between /20 and /30; a bare <code>192.168.1</code> means /24. For IPv6 give a /64 prefix of four groups (e.g., <code>2001:db8:1:1</code>). The button beside the field picks from the reverse zones you already have.</li>
 <li><strong>Host Prefix</strong>: Base name for the hosts (e.g., <code>server</code>). Leave empty to use just the domain.</li>
 <li><strong>Domain</strong>: Domain suffix for PTR records (e.g., <code>example.com</code>)</li>
 <li><strong>Comment</strong>: Optional, stored on each created record</li>
@@ -7844,7 +7845,7 @@
 <li>
 <p><strong>Required User Permissions</strong>:</p>
 </li>
-<li>Either the <code>zone_content_edit_own</code> or <code>zone_content_edit_others</code> permission is required to access this feature</li>
+<li>One of <code>zone_content_edit_own</code>, <code>zone_content_edit_others</code> or <code>zone_content_edit_own_as_client</code> is required to access this feature</li>
 <li>
 <p>When accessed from a specific zone page, you also need ownership of that zone (if using <code>zone_content_edit_own</code>)</p>
 </li>

@@ -7304,6 +7304,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Health endpoints (v4.5.0+)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metrics-added-in-460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics (added in 4.6.0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -7917,6 +7934,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Health endpoints (v4.5.0+)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metrics-added-in-460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics (added in 4.6.0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -8396,19 +8430,30 @@ zone are routed through review, the record write endpoints below answer <code>40
 <td><code>/zones/{id}/rrsets/{name}/{type}</code></td>
 <td>Get a specific RRset</td>
 </tr>
+<tr>
+<td><code>PUT</code>, <code>POST</code>, <code>PATCH</code></td>
+<td><code>/zones/{id}/rrsets</code></td>
+<td>Replace or change RRsets. For an API key this needs the <code>create</code> and <code>update</code> operations, plus <code>delete</code> when the new set has fewer records</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/zones/{id}/rrsets/{name}/{type}</code></td>
+<td>Delete an RRset</td>
+</tr>
 </tbody>
 </table>
 <p>When <code>ttl</code> is omitted on a record create call, Poweradmin applies the
 configured default (<code>dns.ttl_reverse</code> for PTR records in reverse zones when
 set, <code>dns.ttl</code> otherwise). See
 <a href="../../configuration/dns-settings/">DNS settings</a> for details. A <code>ttl</code> of <code>0</code>
-is accepted (do not cache); negative values and fractional strings such as
-<code>"0.5"</code> are refused with <code>400</code>.</p>
+is accepted (do not cache) from 4.6.0; on 4.5.x and earlier it is refused with
+<code>400</code> "TTL must be greater than 0". Negative values and fractional strings such as
+<code>"0.5"</code> are refused with <code>400</code> on every release.</p>
 <h4 id="internationalised-names-and-duplicates">Internationalised names and duplicates<a class="headerlink" href="#internationalised-names-and-duplicates" title="Permanent link">&para;</a></h4>
 <p>From 4.5.2 and 4.6.0, record names and content written through the API are stored as punycode,
 as the web editor stores them: <code>www.bücher.example</code> is saved as <code>www.xn--bcher-kva.example</code>.
 Compare against the punycode form when reading records back.</p>
-<p>From 4.6.0, a create, single or bulk, that would give the zone a second record with the same name,
+<p>From 4.6.0, a create (single or bulk) or an update that would give the zone a second record with the same name,
 type and content answers <code>409</code> with "A record with this hostname, type, and content already
 exists.". On 4.5.x the API still accepts the duplicate.</p>
 <p>Records in <strong>Secondary</strong> and <strong>Consumer</strong> zones are read-only - they replicate
@@ -8443,6 +8488,8 @@ the same one. A <code>PUT</code> without <code>comment</code> leaves the stored 
   That includes a reverse zone outside the API key's zone list and one where the user must file
   change requests: the PTR is skipped there, as with <code>create_ptr</code> and <code>update_ptr</code> on the
   single-record calls.</li>
+<li>A request with more than <code>api.bulk_max_operations</code> operations (default 1000, <code>0</code> for no limit;
+  added in 4.6.0) answers <code>400</code> "Too many operations: at most N per request".</li>
 <li>With the SQL backend the batch is one transaction and the PTR records roll back with it. In API
   backend mode there is no transaction: operations already applied, PTR records included, stay
   when a later operation fails.</li>
@@ -8494,12 +8541,20 @@ PowerDNS's own checks, such as the LUA record gate, are not run.</p>
 <td>Update user</td>
 </tr>
 <tr>
+<td><code>PATCH</code></td>
+<td><code>/users/{id}</code></td>
+<td>Assign a permission template (body: <code>perm_templ</code>; needs the permission to edit permission templates)</td>
+</tr>
+<tr>
 <td><code>DELETE</code></td>
 <td><code>/users/{id}</code></td>
 <td>Delete user</td>
 </tr>
 </tbody>
 </table>
+<p>From 4.6.0, <code>POST /users</code> and <code>PUT /users/{id}</code> also accept <code>max_zones</code>, the number of zones the
+user may own directly (<code>null</code> uses <code>dns.default_max_zones_per_user</code>). Only administrators may
+send it, and user reads return it.</p>
 <p>Writing <code>perm_templ</code> is gated separately from the write itself, and a rejected
 assignment returns <code>403</code>:</p>
 <ul>
@@ -8759,7 +8814,8 @@ readable with <code>zone_master_add</code> or <code>zone_slave_add</code>, match
 templates to anyone who may add a zone. Writing a template still needs the template permissions.</p>
 <h2 id="health-endpoints-v450">Health endpoints (v4.5.0+)<a class="headerlink" href="#health-endpoints-v450" title="Permanent link">&para;</a></h2>
 <p>These sit outside the versioned API and outside the API key model. They take no
-credentials, are <strong>disabled by default</strong>, and return <code>404</code> while disabled. Paths are
+API credentials, are <strong>disabled by default</strong>, and return <code>404</code> while disabled. When <code>health.token</code>
+is set, <code>/api/health</code> also needs it in an <code>X-Health-Token</code> header and answers <code>403</code> without it. Paths are
 absolute, not relative to <code>/api/v2</code>.</p>
 <table>
 <thead>
@@ -8784,6 +8840,10 @@ absolute, not relative to <code>/api/v2</code>.</p>
 </table>
 <p>They are not part of the OpenAPI specification, and they answer regardless of whether
 <code>api.enabled</code> is set. See <a href="../../operations/health-checks/">Health Checks</a>.</p>
+<h3 id="metrics-added-in-460">Metrics (added in 4.6.0)<a class="headerlink" href="#metrics-added-in-460" title="Permanent link">&para;</a></h3>
+<p><code>GET /api/metrics</code> serves Prometheus text-format counts about Poweradmin itself. It is disabled
+by default, and keys restricted to specific zones are refused. See
+<a href="../../operations/metrics/">Metrics</a>.</p>
 <h2 id="api-v1-endpoints">API v1 endpoints<a class="headerlink" href="#api-v1-endpoints" title="Permanent link">&para;</a></h2>
 <p><strong>Removed in 4.5.0.</strong> On 4.5.0 and later, every <code>/api/v1</code> path answers
 <code>410 Gone</code> and points at <code>/api/v2</code>.</p>

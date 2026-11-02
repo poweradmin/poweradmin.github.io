@@ -7666,26 +7666,7 @@ development dependencies. After running the Composer command, you need to create
 </code></pre></div>
 <p><strong>Important:</strong> Ensure proper file permissions and directory location for the SQLite database file.</p>
 <h2 id="updating-poweradmin">Updating Poweradmin<a class="headerlink" href="#updating-poweradmin" title="Permanent link">&para;</a></h2>
-<p>If you installed Poweradmin using <code>composer create-project --no-dev poweradmin/poweradmin</code>, here's how to update it
-later:</p>
-<ol>
-<li>
-<p>Navigate to your project directory in the terminal:</p>
-<div class="language-sh highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>/path/to/poweradmin
-</code></pre></div>
-</li>
-<li>
-<p>If you want to update to a newer version of the Poweradmin package itself, you'll need to modify the version
-   constraint in your <code>composer.json</code> file, then run the update command. For specifically updating just the Poweradmin
-   package:</p>
-</li>
-</ol>
-<div class="language-sh highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>composer<span class="w"> </span>update<span class="w"> </span>poweradmin/poweradmin<span class="w"> </span>--no-dev
-</code></pre></div>
-<p>If the project has specific update instructions, check the documentation or GitHub repository for any additional steps
-that might be required (such as database migrations).</p>
-<p>The <code>--no-dev</code> flag ensures that development dependencies aren't installed, keeping your production environment clean,
-just like when you initially installed the project.</p>
+<p><code>composer create-project</code> makes Poweradmin itself the root package, so there is no dependency to bump with <code>composer update poweradmin/poweradmin</code>. Update a Composer-installed copy the same way as any other source install: follow the <a href="../../upgrading/#general-upgrade-instructions">upgrade guide</a>, replace the application files with the new release, keep your <code>config/settings.php</code>, and apply the database migrations for every version you skip.</p>
 <h2 id="post-installation-steps">Post-Installation Steps<a class="headerlink" href="#post-installation-steps" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Set up the database schema (see <a href="../../database/mysql-configuration/">MySQL/MariaDB</a>, <a href="../../database/postgresql-configuration/">PostgreSQL</a>,
@@ -7698,18 +7679,18 @@ just like when you initially installed the project.</p>
 <p>If you're not using the web installer or prefer to set up your admin user directly in the database, follow these steps:</p>
 <h3 id="1-generate-a-password-hash">1. Generate a password hash<a class="headerlink" href="#1-generate-a-password-hash" title="Permanent link">&para;</a></h3>
 <p>You'll need to create a secure password hash. You can use PHP from the command line to generate one:</p>
-<div class="language-sh highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>php<span class="w"> </span>-r<span class="w"> </span><span class="s1">'echo password_hash("your_secure_password", PASSWORD_BCRYPT, ["cost" =&gt; 12]) . "\n";'</span>
+<div class="language-sh highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>php<span class="w"> </span>-r<span class="w"> </span><span class="s1">'echo password_hash("your_secure_password", PASSWORD_BCRYPT, ["cost" =&gt; 12]) . "\n";'</span>
 </code></pre></div>
 <p>This matches what the web installer does (bcrypt with cost 12). The default cost is configurable via <code>security.password_cost</code> in <code>config/settings.php</code>.</p>
 <p>Copy the resulting hash which will look something like:</p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$2y$10$abcdefghijklmnopqrstuOzxLkPHAUXTCg9vRMf/Q4WrCQI3K.0jK
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$2y$10$abcdefghijklmnopqrstuOzxLkPHAUXTCg9vRMf/Q4WrCQI3K.0jK
 </code></pre></div>
 <h3 id="2-insert-the-admin-user-into-the-database">2. Insert the admin user into the database<a class="headerlink" href="#2-insert-the-admin-user-into-the-database" title="Permanent link">&para;</a></h3>
 <p>The same SQL works for MySQL/MariaDB, PostgreSQL, and SQLite:</p>
-<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">users</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="p">,</span><span class="w"> </span><span class="n">fullname</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="n">description</span><span class="p">,</span><span class="w"> </span><span class="n">perm_templ</span><span class="p">,</span><span class="w"> </span><span class="n">active</span><span class="p">,</span><span class="w"> </span><span class="n">use_ldap</span><span class="p">,</span><span class="w"> </span><span class="n">auth_method</span><span class="p">)</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">VALUES</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="p">(</span><span class="s1">'admin'</span><span class="p">,</span><span class="w"> </span><span class="s1">'THE_PASSWORD_HASH_YOU_GENERATED'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Administrator'</span><span class="p">,</span><span class="w"> </span><span class="s1">'admin@example.com'</span><span class="p">,</span><span class="w"> </span><span class="s1">'System Administrator'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s1">'sql'</span><span class="p">);</span>
+<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">users</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="p">,</span><span class="w"> </span><span class="n">fullname</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="n">description</span><span class="p">,</span><span class="w"> </span><span class="n">perm_templ</span><span class="p">,</span><span class="w"> </span><span class="n">active</span><span class="p">,</span><span class="w"> </span><span class="n">use_ldap</span><span class="p">,</span><span class="w"> </span><span class="n">auth_method</span><span class="p">)</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">VALUES</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="p">(</span><span class="s1">'admin'</span><span class="p">,</span><span class="w"> </span><span class="s1">'THE_PASSWORD_HASH_YOU_GENERATED'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Administrator'</span><span class="p">,</span><span class="w"> </span><span class="s1">'admin@example.com'</span><span class="p">,</span><span class="w"> </span><span class="s1">'System Administrator'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s1">'sql'</span><span class="p">);</span>
 </code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> Administrative rights come from the <code>perm_templ</code> column on the <code>users</code> row, not from a separate join table. Permission template <code>id = 1</code> is the seeded "Administrator template with full rights".</p>

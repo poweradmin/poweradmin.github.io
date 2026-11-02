@@ -7813,7 +7813,7 @@
 <h3 id="1-prepare-the-environment">1. Prepare the Environment<a class="headerlink" href="#1-prepare-the-environment" title="Permanent link">&para;</a></h3>
 <p>Unpack the Poweradmin archive in a location accessible via your web server. Ensure unpacked files are readable by the user that your web server/PHP runs as.</p>
 <h3 id="2-import-database-structure">2. Import Database Structure<a class="headerlink" href="#2-import-database-structure" title="Permanent link">&para;</a></h3>
-<p>Import the Poweradmin database structure as a database superuser. The schema bundles the tables Poweradmin needs alongside the PowerDNS tables your authoritative server already uses.</p>
+<p>Import the Poweradmin database structure as a database superuser. The schema file contains only Poweradmin's own tables. The PowerDNS tables (<code>domains</code>, <code>records</code> and so on) must already exist, for example from PowerDNS itself or from <code>sql/pdns/&lt;version&gt;/schema.*.sql</code>.</p>
 <h4 id="for-mysqlmariadb">For MySQL/MariaDB:<a class="headerlink" href="#for-mysqlmariadb" title="Permanent link">&para;</a></h4>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>root<span class="w"> </span>-p<span class="w"> </span>powerdns<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-mysql-db-structure.sql
 </code></pre></div>
@@ -7861,7 +7861,7 @@
 <h3 id="5-create-configuration-file">5. Create Configuration File<a class="headerlink" href="#5-create-configuration-file" title="Permanent link">&para;</a></h3>
 <p>Create a <code>config/settings.php</code> file using the template below. A full list of configuration options can be found in <code>config/settings.defaults.php</code>.</p>
 <blockquote>
-<p><strong>Warning:</strong> When creating passwords for database, LDAP, or SMTP authentication, avoid using single quotes (<code>'</code>), double quotes (<code>"</code>), backslashes (<code>\</code>), and line breaks. These characters can cause configuration file generation to fail during installation with cryptic PHP syntax errors.</p>
+<p><strong>Warning:</strong> When creating passwords for database, LDAP, or SMTP authentication, escape single quotes (<code>'</code>) and backslashes (<code>\</code>) inside the single-quoted PHP strings below (<code>\'</code> and <code>\\</code>), and avoid line breaks. Unescaped, they cause PHP syntax errors. The web installer escapes them itself from 4.5.0.</p>
 </blockquote>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="sd">/**</span>

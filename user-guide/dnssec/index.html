@@ -7535,8 +7535,8 @@ nothing:</p>
 and the DNSSEC tables present in its schema.</p>
 <h2 id="signing-the-zone">Signing the zone<a class="headerlink" href="#signing-the-zone" title="Permanent link">&para;</a></h2>
 <ol>
-<li>Open the zone, then choose <strong>DNSSEC</strong> from the zone's actions.</li>
-<li>Choose <strong>Secure zone</strong>. PowerDNS generates a key set for you and starts signing.</li>
+<li>Open the zone, then click <strong>Manage DNSSEC</strong>.</li>
+<li>Click <strong>Sign zone</strong>. PowerDNS generates a key set for you and starts signing.</li>
 </ol>
 <p>That is the whole operation for a normal zone. PowerDNS defaults to a single CSK, which is the
 right choice for most deployments - the older advice to split KSK and ZSK does not apply on
@@ -7549,7 +7549,7 @@ activate, export or delete.</p>
 parent zone - normally your registrar - publishes a DS record pointing at your key.</p>
 <p><img alt="DS and DNSKEY records" src="../../screenshots/dnssec-ds-dnskey.png" /></p>
 <ol>
-<li>On the DNSSEC page, open the <strong>DS and DNSKEY records</strong> view.</li>
+<li>On the DNSSEC page, click <strong>Show DS and DNSKEY</strong>.</li>
 <li>Copy the DS record. There is a copy-to-clipboard button, which is worth using: a DS record
    mistyped by one character breaks resolution for the whole zone.</li>
 <li>Give it to your registrar, in whatever form they accept.</li>
@@ -7562,7 +7562,7 @@ fail validation entirely - resolvers will refuse the answers rather than fall ba
 Withdraw the DS at the registrar first, wait for it to expire from caches, then change keys.</p>
 </blockquote>
 <h2 id="adding-and-rolling-keys">Adding and rolling keys<a class="headerlink" href="#adding-and-rolling-keys" title="Permanent link">&para;</a></h2>
-<p><strong>Add key</strong> creates an extra key of a chosen type (KSK, ZSK or CSK) and algorithm. The algorithm
+<p><strong>Add new key</strong> creates an extra key of a chosen type (KSK, ZSK or CSK) and algorithm. The algorithm
 dropdown only lists what the connected PowerDNS actually supports, so anything shown will work;
 <code>ecdsa256</code> and <code>ed25519</code> are the usual modern picks, with <code>rsasha256</code> on older zones.</p>
 <p>The key list shows the type PowerDNS reports, not the one you picked. PowerDNS lists a key as KSK or
@@ -7587,7 +7587,7 @@ its keys - the actions are refused with "This zone is presigned; DNSSEC keys are
 primary server." You can still read the DS and DNSKEY records. Manage the keys at the server that
 signs the zone.</p>
 <h2 id="unsigning">Unsigning<a class="headerlink" href="#unsigning" title="Permanent link">&para;</a></h2>
-<p><strong>Unsecure zone</strong> removes the keys and stops PowerDNS signing.</p>
+<p><strong>Unsign zone</strong> removes the keys and stops PowerDNS signing.</p>
 <p>Do it in the right order or you will break the zone: remove the DS record at your registrar first,
 wait long enough for it to expire from resolver caches, and only then unsign. A zone with a live DS
 in its parent but no signatures of its own fails validation, and resolvers will return SERVFAIL

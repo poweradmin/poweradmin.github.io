@@ -7523,7 +7523,8 @@
 <code>config/settings.php</code> before they can be used; see
 <a href="../../configuration/api/">API Configuration</a> for the settings.</p>
 <p>The health endpoints <code>/api/health</code> and <code>/ping</code> are the exception: they take no
-credentials at all and are disabled by default. See
+API credentials and are disabled by default (<code>/api/health</code> can additionally
+require an <code>X-Health-Token</code> header when <code>health.token</code> is set). See
 <a href="../../operations/health-checks/">Health Checks</a>.</p>
 <h2 id="api-key-authentication">API key authentication<a class="headerlink" href="#api-key-authentication" title="Permanent link">&para;</a></h2>
 <p>API keys are the recommended method for scripts, CI, and any
@@ -7539,6 +7540,8 @@ other clients and they do not expose user passwords.</p>
 </ol>
 <p>A regular user can hold up to <code>api.max_keys_per_user</code> keys (default 5). Admin
 users have no limit.</p>
+<p>The add and edit forms also take an optional <strong>Expires at</strong> date. Once it passes,
+the key is rejected with <code>401</code>, the same as a disabled key.</p>
 <h3 id="using-a-key">Using a key<a class="headerlink" href="#using-a-key" title="Permanent link">&para;</a></h3>
 <p>Send the key in the <code>X-API-Key</code> header:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"X-API-Key: your-api-key-here"</span><span class="w"> </span><span class="se">\</span>
@@ -7547,6 +7550,9 @@ users have no limit.</p>
 </code></pre></div>
 <p><code>Authorization: Bearer your-api-key-here</code> is accepted as an equivalent if your
 client is easier to configure that way.</p>
+<p>A key is also accepted as an <code>api_key</code> query parameter, but do not use it: URLs
+end up in web server, proxy and browser logs, which would leak the key. Send it
+in a header.</p>
 <p>The key inherits the permissions of the user it belongs to. If that user can
 edit zone X in the web UI, the key can edit zone X over the API; if they
 cannot, the key cannot either.</p>
@@ -7586,9 +7592,12 @@ CI job, or a single application.</p>
 <p>Read-only and allowed-operations are checked on every API v2 request. Zone access
 applies to the endpoints that address a zone - zones, records, RRsets, DNSSEC,
 metadata, owners, and a group's zone assignments. Endpoints for users, groups,
-permissions, permission templates and zone templates are not zone-scoped
-resources, so a zone restriction does not narrow them; restrict those with the
-operations list instead. Listing endpoints that can filter, such as a group's
+group members, permissions, permission templates and zone templates are not tied
+to a zone, so a key restricted to specific zones is refused on them with <code>403</code>
+("this API key is restricted to specific zones"). <code>GET /server/status</code> and
+<code>GET /api/metrics</code> behave the same. Use a key without a zone restriction for
+those endpoints, and narrow it with read-only or allowed operations instead.
+Listing endpoints that can filter, such as a group's
 zones, return only the zones in scope rather than refusing the whole request.</p>
 <p>Operations map onto HTTP methods: <code>POST</code> is create, <code>PUT</code> and <code>PATCH</code> are update,
 <code>DELETE</code> is delete, and everything else is view. Endpoints that do more than one
@@ -7694,14 +7703,24 @@ forwarding the header to PHP - see the nginx example in
 <td>Header name, key value, account is active</td>
 </tr>
 <tr>
+<td><code>400 Bad Request</code></td>
+<td>Invalid body or query parameter</td>
+<td>The <code>message</code> field names the problem</td>
+</tr>
+<tr>
 <td><code>403 Forbidden</code></td>
-<td>Authenticated but lacks permission</td>
-<td>The owning user's permission template</td>
+<td>Authenticated but lacks permission, or the API is turned off</td>
+<td>The owning user's permission template, the key's restrictions, and <code>api.enabled</code> (when it is <code>false</code> every <code>/api/v2</code> request answers <code>403</code> "The API feature is disabled in the system configuration.")</td>
 </tr>
 <tr>
 <td><code>404 Not Found</code></td>
 <td>Often a resource that the user cannot see</td>
 <td>Permissions can mask resources as missing</td>
+</tr>
+<tr>
+<td><code>405 Method Not Allowed</code></td>
+<td>The path does not support that HTTP method</td>
+<td>The <code>Allow</code> response header lists the supported methods</td>
 </tr>
 </tbody>
 </table>

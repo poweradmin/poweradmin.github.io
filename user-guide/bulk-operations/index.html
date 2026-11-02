@@ -7577,7 +7577,7 @@
 </code></pre></div>
 <ul>
 <li><strong>name</strong> - hostname relative to the zone, or <code>@</code> for the zone apex</li>
-<li><strong>type</strong> - any supported record type (A, AAAA, CNAME, MX, TXT, SRV, ...)</li>
+<li><strong>type</strong> - a record type offered for the zone (A, AAAA, CNAME, MX, TXT, SRV, ...). Reverse zones and forward zones accept different type lists, filtered by what the connected PowerDNS supports</li>
 <li><strong>content</strong> - the record value</li>
 <li><strong>priority</strong> - for MX/SRV; ignored for record types that have no priority</li>
 <li><strong>ttl</strong> - optional; falls back to the zone or system default</li>
@@ -7599,7 +7599,9 @@
 <ul>
 <li>Quote any value that contains a comma or spaces.</li>
 <li>For CNAME, MX, SRV: end the target with a trailing dot.</li>
-<li>There is no validation pre-pass and no rollback. Lines are processed one at a time, valid ones are written immediately, and only the failing lines are listed back on the form with a warning.</li>
+<li>A submission may hold at most 1000 non-empty lines; a longer list is refused before anything is added.</li>
+<li>Lines that fail validation are skipped and listed back on the form with a warning, while the valid ones are saved. From 4.6.0, on the SQL backend an unexpected write error rolls back the whole list and reports "No records were added". On the API backend lines are written one at a time with no rollback.</li>
+<li>The form has a <strong>Reason for this change</strong> field, stored in the <a href="../record-change-log/#changesets-and-change-reasons">change log</a>. It is required when <code>logging.require_change_comment</code> is on.</li>
 <li>Records exported from a zone via <strong>CSV export</strong> can be re-imported with this form, but delete the header row first - <code>Name,Type,Content,...</code> is parsed as a record and rejected with "Invalid record type". The data rows import as they are.</li>
 </ul>
 <hr />
@@ -7614,9 +7616,9 @@
 <p><img alt="Bulk Registration" src="../../screenshots/bulk-registration.png" /></p>
 <h3 id="form-fields">Form fields<a class="headerlink" href="#form-fields" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Zone names</strong> - one domain per line (e.g. <code>example.com</code>, <code>example.net</code>, ...)</li>
-<li><strong>Zone type</strong> - <code>MASTER</code> or <code>NATIVE</code></li>
-<li><strong>Zone template</strong> - optional; pre-populates SOA, NS, and any template records</li>
+<li><strong>Domains</strong> - one domain per line (e.g. <code>example.com</code>, <code>example.net</code>, ...)</li>
+<li><strong>Zone Type</strong> - <code>MASTER</code> or <code>NATIVE</code></li>
+<li><strong>Template</strong> - optional (<code>none</code> by default); pre-populates SOA, NS, and any template records</li>
 <li><strong>Owner</strong> - user and/or group, subject to the <code>dns.zone_ownership_mode</code> setting (see <a href="../zones/#restricting-ownership-assignment">Zone Management → Restricting Ownership Assignment</a>)</li>
 </ul>
 <h3 id="tips_1">Tips<a class="headerlink" href="#tips_1" title="Permanent link">&para;</a></h3>
@@ -7630,7 +7632,8 @@
 <p>All three features respect the standard permission model:</p>
 <ul>
 <li><strong>Bulk Record Add</strong> requires <code>zone_content_edit_own</code> (on an owned zone) or <code>zone_content_edit_others</code>.</li>
-<li><strong>Batch PTR Records</strong> requires the <code>add_reverse_record</code> feature flag and the same edit permissions as Bulk Record Add.</li>
+<li><strong>Batch PTR Records</strong> requires the <code>add_reverse_record</code> feature flag and one of <code>zone_content_edit_own</code>, <code>zone_content_edit_others</code> or <code>zone_content_edit_own_as_client</code>.</li>
+<li>From 4.6.0, with the <a href="../change-requests/">change approval workflow</a> on, Bulk Record Add and Batch PTR are refused on a zone whose changes need review. Batch PTR without a zone is refused when <code>approval.require_review_for_all</code> is on.</li>
 <li><strong>Bulk Zone Registration</strong> requires <code>zone_master_add</code> (and respects <code>dns.zone_ownership_mode</code>).</li>
 </ul>
 <p>See <a href="../permissions/">Permissions</a> for the full list of permission constants and how to assign them through permission templates.</p>

@@ -7502,6 +7502,7 @@
 <li><code>auth_method</code> was added in Poweradmin 4.1.0. If your install is older, that column may not exist - drop it from the <code>SET</code> clause. The legacy <code>use_ldap</code> column has been present since 2.1.7.</li>
 <li>Resetting both <code>use_ldap = 0</code> and <code>auth_method = 'sql'</code> forces the account back onto local password authentication. Otherwise Poweradmin will continue routing the login through LDAP/SAML/OIDC and ignore the new hash.</li>
 <li>Setting <code>active = 1</code> re-enables the account in case it was disabled.</li>
+<li>If account lockout is enabled (<code>security.account_lockout</code>), also clear the failed attempts, or the account can stay locked: <code>DELETE FROM login_attempts WHERE user_id = (SELECT id FROM users WHERE username = 'admin');</code></li>
 </ul>
 <h2 id="3-clear-mfa-only-if-you-lost-the-device">3. Clear MFA (Only If You Lost the Device)<a class="headerlink" href="#3-clear-mfa-only-if-you-lost-the-device" title="Permanent link">&para;</a></h2>
 <p>If multi-factor authentication is enabled for that user and the second factor is no longer available, disable it before logging in. MFA state lives in the separate <code>user_mfa</code> table:</p>
@@ -7518,7 +7519,7 @@
 <ul>
 <li><strong>"Invalid username or password" after the update.</strong> Confirm you updated the row for the right account (<code>SELECT id, username, active, use_ldap FROM users WHERE username = 'admin';</code>) and that the hash was copied without trailing whitespace or line breaks.</li>
 <li><strong>PHP <code>password_hash</code> not available.</strong> Make sure you are running a supported PHP version: 4.0.x and 4.1.x require PHP 8.1 or newer, and 4.2.0 onwards requires PHP 8.2 or newer.</li>
-<li><strong>Hash starts with <code>$1$</code> or is 32 hex characters.</strong> That is a legacy md5/md5salt hash from an older Poweradmin version. Current releases still verify those hashes at login and re-hash them to the configured algorithm afterwards, so the account is not locked out - only hash generation was removed in 4.3.0. You can still replace it with a bcrypt/argon2 hash using the steps above.</li>
+<li><strong>Hash is 32 hex characters, or 32 hex characters + <code>:</code> + 5 characters.</strong> That is a legacy md5 or md5salt hash from an older Poweradmin version. Current releases still verify those hashes at login and re-hash them to the configured algorithm afterwards, so the account is not locked out - only hash generation was removed in 4.3.0. You can still replace it with a bcrypt/argon2 hash using the steps above.</li>
 </ul>
 
 

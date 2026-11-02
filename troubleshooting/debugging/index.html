@@ -4421,10 +4421,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-dnssec-debugging" class="md-nav__link">
+  <a href="#4-show-errors-in-the-interface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. DNSSEC Debugging
+        4. Show Errors in the Interface
       
     </span>
   </a>
@@ -7480,10 +7480,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-dnssec-debugging" class="md-nav__link">
+  <a href="#4-show-errors-in-the-interface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. DNSSEC Debugging
+        4. Show Errors in the Interface
       
     </span>
   </a>
@@ -7620,18 +7620,17 @@
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="x">    // Other settings...</span>
 <a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="x">];</span>
 </code></pre></div>
-<h3 id="4-dnssec-debugging">4. DNSSEC Debugging<a class="headerlink" href="#4-dnssec-debugging" title="Permanent link">&para;</a></h3>
-<p>Enable or disable DNSSEC debugging to log detailed DNSSEC operations and errors:</p>
+<h3 id="4-show-errors-in-the-interface">4. Show Errors in the Interface<a class="headerlink" href="#4-show-errors-in-the-interface" title="Permanent link">&para;</a></h3>
+<p><code>misc.display_errors</code> (default <code>false</code>) makes error pages and PowerDNS API and DNSSEC errors carry the upstream detail, and turns on strict Twig templates. Use it for troubleshooting only and turn it off again in production:</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">return [</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    // Other settings...</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="x">    'dnssec' =&gt; [</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="x">        // Other DNSSEC settings...</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="x">        'debug' =&gt; true,    // Enable DNSSEC debug logging</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="x">    ],</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="x">    // Other settings...</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="x">];</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="x">    'misc' =&gt; [</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="x">        'display_errors' =&gt; true,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="x">    ],</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="x">    // Other settings...</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="x">];</span>
 </code></pre></div>
 <h3 id="5-ldap-debugging">5. LDAP Debugging<a class="headerlink" href="#5-ldap-debugging" title="Permanent link">&para;</a></h3>
 <p>Enable or disable LDAP debugging to log detailed LDAP operations and errors:</p>
@@ -7662,32 +7661,22 @@
 <p>By enabling these settings, you can gain more insight into the application's behavior and troubleshoot issues more effectively.</p>
 <h2 id="common-configuration-issues">Common Configuration Issues<a class="headerlink" href="#common-configuration-issues" title="Permanent link">&para;</a></h2>
 <h3 id="password-character-issues">Password Character Issues<a class="headerlink" href="#password-character-issues" title="Permanent link">&para;</a></h3>
-<p>If you experience PHP syntax errors when generating configuration files during installation, check your passwords for problematic characters:</p>
-<p><strong>Symptoms:</strong></p>
+<p>Installers before 4.5.0 wrote a broken <code>config/settings.php</code> when a database, LDAP or SMTP password contained a single quote (<code>'</code>) or a backslash (<code>\</code>). From 4.5.0 the web installer escapes both.</p>
+<p><strong>Symptoms (older installers, or a hand-written <code>settings.php</code>):</strong></p>
 <ul>
 <li>Installation fails with PHP parse errors</li>
 <li>Configuration file cannot be parsed</li>
 <li>"Access denied for user" errors after successful installation test</li>
 </ul>
-<p><strong>Solution:</strong>
-Avoid these characters in database, LDAP, and SMTP passwords:</p>
-<ul>
-<li>Single quotes (<code>'</code>)</li>
-<li>Double quotes (<code>"</code>)</li>
-<li>Backslashes (<code>\</code>)</li>
-<li>Line breaks</li>
-</ul>
 <p><strong>Example Error:</strong></p>
 <div class="language-text highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Parse error: syntax error, unexpected 'password' in config/settings.php on line 42
 </code></pre></div>
-<p><strong>Debugging Steps:</strong></p>
-<ol>
-<li>Check your password for the problematic characters listed above</li>
-<li>Use <code>var_dump(ConfigurationManager::getInstance()-&gt;getAll())</code> to inspect parsed configuration values</li>
-<li>Look for missing quotes or escape characters in the output</li>
-<li>Change the password to use only alphanumeric characters and basic symbols</li>
-</ol>
-<p>This issue occurs because the configuration file generator does not properly escape special PHP characters in password values during installation.</p>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>In a hand-written <code>settings.php</code>, write <code>\'</code> for a single quote and <code>\\</code> for a backslash inside single-quoted strings. Double quotes need no escaping there.</li>
+<li>On an installer older than 4.5.0, avoid single quotes, backslashes and line breaks in these passwords, or fix the generated file by hand.</li>
+<li>Use <code>var_dump(ConfigurationManager::getInstance()-&gt;getAll())</code> to inspect parsed configuration values.</li>
+</ul>
 <h3 id="powerdns-answers-refused-for-public-names">PowerDNS Answers REFUSED for Public Names<a class="headerlink" href="#powerdns-answers-refused-for-public-names" title="Permanent link">&para;</a></h3>
 <p>Names inside your zones resolve, but <code>dig @your-server example.com</code> or any other
 public name returns <code>REFUSED</code>. This is how PowerDNS Authoritative Server works:
