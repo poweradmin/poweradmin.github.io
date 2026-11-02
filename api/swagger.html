@@ -36,10 +36,11 @@
         });
       }
 
-      // Grow the iframe with its content, so the page scrolls instead of the frame.
+      // Size the iframe to its content. Measure body, not the root element: the root
+      // never reports less than the frame's own height, so the frame could only grow.
       if (frame) {
         new ResizeObserver(function () {
-          frame.style.height = document.documentElement.scrollHeight + "px";
+          frame.style.height = document.body.scrollHeight + "px";
         }).observe(document.body);
       }
 
