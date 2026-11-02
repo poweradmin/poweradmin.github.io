@@ -7726,7 +7726,7 @@
 <p>Version 4.6.0 adds an opt-in change approval workflow: users with a change request permission file their zone edits for review instead of writing them, and reviewers approve or reject from a new <strong>Change requests</strong> page or through the API. Alongside it, secondary zones can be retrieved from their primary on demand, the SOA serial bump on unchanged saves can be turned off, and every setting is reachable from a Docker environment variable.</p>
 <p>Nothing changes unless you turn the workflow on. See <a href="../../whats-new/v4.6.0/">What's New in 4.6.0</a> for the full list.</p>
 <h2 id="database-schema-update">Database Schema Update<a class="headerlink" href="#database-schema-update" title="Permanent link">&para;</a></h2>
-<p>The 4.6.0 migration adds two tables, four permissions, two columns and one index:</p>
+<p>The 4.6.0 migration adds two tables, four permissions, two columns and one index, and changes one column:</p>
 <table>
 <thead>
 <tr>
@@ -7758,6 +7758,10 @@
 <tr>
 <td>Unique index <code>idx_users_username</code> on <code>users.username</code></td>
 <td>Two accounts can no longer share a username. See <a href="#duplicate-usernames">Duplicate usernames</a></td>
+</tr>
+<tr>
+<td>Column <code>password_reset_tokens.expires_at</code> becomes <code>DATETIME</code> (MySQL/MariaDB only)</td>
+<td>Reset link expiry is stored in UTC, which a <code>TIMESTAMP</code> column would shift by the session time zone. All three scripts also mark unused reset links as used (#1850)</td>
 </tr>
 </tbody>
 </table>
@@ -7854,6 +7858,7 @@
 <ul>
 <li>SQL backend with <code>pdns_api</code> configured: zone create and delete and record changes call the PowerDNS cache flush API, so a new zone is served at once. A failed flush is logged as a warning and does not stop the save. See <a href="../../configuration/powerdns-api/#new-zones-and-the-powerdns-zone-cache">PowerDNS API</a>.</li>
 <li>PHP session strict mode is on, so a session id the server never issued is refused and replaced with a new one.</li>
+<li>Password reset links are checked in UTC. Links sent before the upgrade stop working; users who were mid-reset request a new link (#1850).</li>
 <li>SQLite: Poweradmin opens the database in WAL mode. The database gains <code>-wal</code> and <code>-shm</code> files next to it, must stay on local storage (not NFS or SMB), and needs the <code>.backup</code> command from Step 1 for backups. See <a href="../../database/sqlite/#write-ahead-logging">Write-ahead logging</a>.</li>
 </ul>
 <p>The rest of the changes are listed in <a href="../../whats-new/v4.6.0/#also-in-this-release">What's New in 4.6.0</a>.</p>

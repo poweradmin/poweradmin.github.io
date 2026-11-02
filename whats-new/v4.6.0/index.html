@@ -7990,6 +7990,16 @@ With the <code>last_writer_wins</code> strategy a stale form is saved as before.
 <td><a href="../../configuration/oidc/#github">OIDC Authentication</a></td>
 </tr>
 <tr>
+<td>Sign-in only with matching claims</td>
+<td><code>oidc.required_claims</code> and <code>saml.required_attributes</code> admit only users whose provider sends the configured values, such as membership of a <code>dns-admins</code> group. The check also applies to accounts that are already linked. Docker: <code>PA_OIDC_REQUIRED_CLAIMS</code>, <code>PA_SAML_REQUIRED_ATTRIBUTES</code> (#1822)</td>
+<td><a href="../../configuration/oidc/#requiring-claims-v460">OIDC Authentication</a></td>
+</tr>
+<tr>
+<td>Password reset links across clock changes</td>
+<td>Reset link expiry is stored and checked in UTC, so a link no longer expires at once, or works again after expiring, in the hour the clock goes back. Links issued before the upgrade stop working (#1850)</td>
+<td><a href="../../upgrading/v4.6.0/#defaults">Upgrading to 4.6.0</a></td>
+</tr>
+<tr>
 <td>SAML sign-in tied to the browser</td>
 <td>A SAML response is accepted only as the answer to a sign-in started from the same browser, so an unsolicited or replayed response no longer signs anyone in. Needs HTTPS; <code>allow_idp_initiated</code> on a provider restores the old behaviour</td>
 <td><a href="../../configuration/saml/#https-for-the-acs-url-v460">SAML Authentication</a></td>

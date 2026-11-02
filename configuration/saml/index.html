@@ -2519,6 +2519,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#requiring-attributes-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requiring attributes (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7745,6 +7756,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#requiring-attributes-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requiring attributes (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -8129,6 +8151,11 @@
 <td>"Guest"</td>
 <td>Default permission template for new users</td>
 </tr>
+<tr>
+<td><code>saml.required_attributes</code></td>
+<td><code>[]</code></td>
+<td>Only admit logins whose attributes match (v4.6.0+). See <a href="#requiring-attributes-v460">Requiring attributes</a></td>
+</tr>
 </tbody>
 </table>
 <h3 id="superuser-rights-are-never-provisioned-from-an-identity-provider">Superuser rights are never provisioned from an identity provider<a class="headerlink" href="#superuser-rights-are-never-provisioned-from-an-identity-provider" title="Permanent link">&para;</a></h3>
@@ -8164,16 +8191,30 @@ id is normally the bundled Administrator template.</p>
 an upgrade can be traced in the application log. Since 4.6.0 a link made without an
 <code>email_verified</code> claim is also logged as a warning; set <code>saml.require_verified_email</code>
 to refuse such links.</p>
+<h3 id="requiring-attributes-v460">Requiring attributes <em>(v4.6.0+)</em><a class="headerlink" href="#requiring-attributes-v460" title="Permanent link">&para;</a></h3>
+<p><code>saml.required_attributes</code> admits only users whose assertion carries the given attribute
+values. SAML sends every attribute as a list, so the configured value must be one of its
+entries. Use the attribute names your IdP sends, the same ones <code>user_mapping</code> uses:</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="x">'saml' =&gt; [</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="x">    'required_attributes' =&gt; [</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="x">        'department' =&gt; 'it',</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="x">    ],</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="x">],</span>
+</code></pre></div>
+<p>The rules are the same as for <a href="../oidc/#requiring-claims-v460">OIDC required claims</a>: values
+are compared whole and case matters, the check runs before the account lookup so it also
+applies to linked users, and a malformed setting refuses every SAML login. In Docker, set
+<code>PA_SAML_REQUIRED_ATTRIBUTES=department=it</code>.</p>
 <h2 id="permission-template-mapping">Permission Template Mapping<a class="headerlink" href="#permission-template-mapping" title="Permanent link">&para;</a></h2>
 <p>Map SAML groups/roles to Poweradmin permission templates:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="x">'saml' =&gt; [</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="x">    'permission_template_mapping' =&gt; [</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="x">        'poweradmin-admins' =&gt; 'Administrator',</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="x">        'dns-operators' =&gt; 'DNS Operator',</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="x">        'dns-viewers' =&gt; 'Read Only',</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="x">    ],</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">'saml' =&gt; [</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">    'permission_template_mapping' =&gt; [</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="x">        'poweradmin-admins' =&gt; 'Administrator',</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="x">        'dns-operators' =&gt; 'DNS Operator',</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="x">        'dns-viewers' =&gt; 'Read Only',</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="x">    ],</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="group-membership-mapping">Group Membership Mapping<a class="headerlink" href="#group-membership-mapping" title="Permanent link">&para;</a></h2>
 <p>From 4.6.0, sign-in sync never demotes or removes the last active super admin. It skips that change and logs a warning on every login until another super admin exists. See <a href="../../user-guide/users-roles/#understanding-uberuser-status">Users and Roles</a>.</p>
@@ -8183,23 +8224,23 @@ to refuse such links.</p>
 <li><code>permission_template_mapping</code> assigns <strong>one</strong> permission template per user</li>
 <li><code>group_mapping</code> assigns <strong>multiple</strong> Poweradmin groups per user</li>
 </ul>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">'saml' =&gt; [</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">    'group_mapping' =&gt; [</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="x">        'external-admins' =&gt; 'Administrators',</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="x">        'dns-managers' =&gt; 'Zone Managers',</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="x">        'dns-editors' =&gt; 'Editors',</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="x">        'dns-viewers' =&gt; 'Viewers',</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="x">        'dns-guests' =&gt; 'Guests',</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="x">    ],</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="x">'saml' =&gt; [</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="x">    'group_mapping' =&gt; [</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="x">        'external-admins' =&gt; 'Administrators',</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="x">        'dns-managers' =&gt; 'Zone Managers',</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="x">        'dns-editors' =&gt; 'Editors',</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="x">        'dns-viewers' =&gt; 'Viewers',</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="x">        'dns-guests' =&gt; 'Guests',</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="x">    ],</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="x">],</span>
 </code></pre></div>
 <p>A single SAML group can also be mapped to multiple Poweradmin groups by giving an array as the value (added in 4.4.0). The user is added to every Poweradmin group listed:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="x">'group_mapping' =&gt; [</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="x">    'team1' =&gt; ['Editors', 'Viewers'],</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="x">    'team2' =&gt; ['Editors'],</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="x">    'platform-admins' =&gt; 'Administrators', // single-value form still works</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="x">'group_mapping' =&gt; [</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="x">    'team1' =&gt; ['Editors', 'Viewers'],</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="x">    'team2' =&gt; ['Editors'],</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="x">    'platform-admins' =&gt; 'Administrators', // single-value form still works</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="x">],</span>
 </code></pre></div>
 <p>Predefined Poweradmin groups:</p>
 <ul>
@@ -8255,17 +8296,17 @@ to refuse such links.</p>
 </tr>
 </tbody>
 </table>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="x">'saml' =&gt; [</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="x">    'sp' =&gt; [</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="x">        'entity_id' =&gt; 'https://poweradmin.example.com/saml/metadata',</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="x">        'name_id_format' =&gt; 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="x">    ],</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="x">'saml' =&gt; [</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="x">    'sp' =&gt; [</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="x">        'entity_id' =&gt; 'https://poweradmin.example.com/saml/metadata',</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="x">        'name_id_format' =&gt; 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="x">    ],</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="sp-metadata">SP Metadata<a class="headerlink" href="#sp-metadata" title="Permanent link">&para;</a></h2>
 <p>Poweradmin can generate SP metadata for your identity provider. Access it at:</p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>https://your-poweradmin.com/saml/metadata?provider={provider-id}
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>https://your-poweradmin.com/saml/metadata?provider={provider-id}
 </code></pre></div>
 <p>For example: <code>https://your-poweradmin.com/saml/metadata?provider=azure</code>. With no <code>provider</code> parameter the first configured provider is used.</p>
 <blockquote>
@@ -8333,27 +8374,27 @@ to refuse such links.</p>
 <li>Set Reply URL (ACS): <code>https://your-poweradmin.com/saml/acs</code></li>
 <li>
 <p>Download the Certificate (Base64)</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="x">'saml' =&gt; [</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="x">        'azure' =&gt; [</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="x">            'name' =&gt; 'Microsoft Azure AD',</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Microsoft',</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="x">            'entity_id' =&gt; 'https://sts.windows.net/{tenant-id}/',</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="x">            'sso_url' =&gt; 'https://login.microsoftonline.com/{tenant-id}/saml2',</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="x">            'slo_url' =&gt; 'https://login.microsoftonline.com/{tenant-id}/saml2',</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="x">            'x509cert' =&gt; 'MIICnTCCAYUCBgF...', // Base64 cert body, or a full PEM string</span>
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="x">                'username' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',</span>
-<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="x">                'email' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',</span>
-<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="x">                'first_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',</span>
-<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="x">                'last_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',</span>
-<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="x">                'display_name' =&gt; 'http://schemas.microsoft.com/identity/claims/displayname',</span>
-<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="x">                'groups' =&gt; 'http://schemas.microsoft.com/ws/2008/06/identity/claims/groups',</span>
-<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="x">            ],</span>
-<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="x">        ],</span>
-<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="x">    ],</span>
-<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="x">'saml' =&gt; [</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="x">        'azure' =&gt; [</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="x">            'name' =&gt; 'Microsoft Azure AD',</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Microsoft',</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="x">            'entity_id' =&gt; 'https://sts.windows.net/{tenant-id}/',</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="x">            'sso_url' =&gt; 'https://login.microsoftonline.com/{tenant-id}/saml2',</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="x">            'slo_url' =&gt; 'https://login.microsoftonline.com/{tenant-id}/saml2',</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="x">            'x509cert' =&gt; 'MIICnTCCAYUCBgF...', // Base64 cert body, or a full PEM string</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="x">                'username' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="x">                'email' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="x">                'first_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="x">                'last_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="x">                'display_name' =&gt; 'http://schemas.microsoft.com/identity/claims/displayname',</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="x">                'groups' =&gt; 'http://schemas.microsoft.com/ws/2008/06/identity/claims/groups',</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="x">            ],</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="x">        ],</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="x">    ],</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="x">],</span>
 </code></pre></div>
 </li>
 </ol>
@@ -8366,26 +8407,26 @@ to refuse such links.</p>
 <li>Configure attribute statements</li>
 <li>
 <p>Download the IdP metadata or certificate</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="x">'saml' =&gt; [</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="x">        'okta' =&gt; [</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="x">            'name' =&gt; 'Okta',</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Okta',</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="x">            'entity_id' =&gt; 'http://www.okta.com/{app-id}',</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="x">            'sso_url' =&gt; 'https://{domain}.okta.com/app/{app-name}/{app-id}/sso/saml',</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="x">            'slo_url' =&gt; 'https://{domain}.okta.com/app/{app-name}/{app-id}/slo/saml',</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="x">            'x509cert' =&gt; 'MIIDpDCCAoygAwIBAgIGAX...', // Certificate</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="x">                'username' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',</span>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="x">                'email' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',</span>
-<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="x">                'first_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',</span>
-<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="x">                'last_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',</span>
-<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="x">                'groups' =&gt; 'http://schemas.xmlsoap.org/claims/Group',</span>
-<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="x">            ],</span>
-<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="x">        ],</span>
-<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="x">    ],</span>
-<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="x">'saml' =&gt; [</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="x">        'okta' =&gt; [</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="x">            'name' =&gt; 'Okta',</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Okta',</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="x">            'entity_id' =&gt; 'http://www.okta.com/{app-id}',</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="x">            'sso_url' =&gt; 'https://{domain}.okta.com/app/{app-name}/{app-id}/sso/saml',</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="x">            'slo_url' =&gt; 'https://{domain}.okta.com/app/{app-name}/{app-id}/slo/saml',</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="x">            'x509cert' =&gt; 'MIIDpDCCAoygAwIBAgIGAX...', // Certificate</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="x">                'username' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name',</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="x">                'email' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="x">                'first_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="x">                'last_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="x">                'groups' =&gt; 'http://schemas.xmlsoap.org/claims/Group',</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="x">            ],</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="x">        ],</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="x">    ],</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="x">],</span>
 </code></pre></div>
 </li>
 </ol>
@@ -8396,26 +8437,26 @@ to refuse such links.</p>
 <li>Configure SAML settings</li>
 <li>
 <p>Download IdP metadata</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="x">'saml' =&gt; [</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="x">        'auth0' =&gt; [</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="x">            'name' =&gt; 'Auth0',</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Auth0',</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="x">            'entity_id' =&gt; 'urn:auth0:{tenant}:{connection}',</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="x">            'sso_url' =&gt; 'https://{tenant}.auth0.com/samlp/{client-id}',</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="x">            'slo_url' =&gt; 'https://{tenant}.auth0.com/samlp/{client-id}/logout',</span>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="x">            'x509cert' =&gt; 'MIIDDTCCAfWgAwIBAgIJAP...', // Certificate</span>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="x">                'username' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier',</span>
-<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="x">                'email' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',</span>
-<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="x">                'first_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',</span>
-<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="x">                'last_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',</span>
-<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="x">                'groups' =&gt; 'http://schemas.auth0.com/roles',</span>
-<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="x">            ],</span>
-<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="x">        ],</span>
-<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="x">    ],</span>
-<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="x">'saml' =&gt; [</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="x">        'auth0' =&gt; [</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="x">            'name' =&gt; 'Auth0',</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Auth0',</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="x">            'entity_id' =&gt; 'urn:auth0:{tenant}:{connection}',</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="x">            'sso_url' =&gt; 'https://{tenant}.auth0.com/samlp/{client-id}',</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="x">            'slo_url' =&gt; 'https://{tenant}.auth0.com/samlp/{client-id}/logout',</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="x">            'x509cert' =&gt; 'MIIDDTCCAfWgAwIBAgIJAP...', // Certificate</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="x">                'username' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier',</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="x">                'email' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="x">                'first_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="x">                'last_name' =&gt; 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname',</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="x">                'groups' =&gt; 'http://schemas.auth0.com/roles',</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="x">            ],</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="x">        ],</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="x">    ],</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="x">],</span>
 </code></pre></div>
 </li>
 </ol>
@@ -8426,69 +8467,69 @@ to refuse such links.</p>
 <li>Set Client ID: <code>https://your-poweradmin.com/saml/metadata</code> (Keycloak uses the client ID as the SP entity ID, so it must carry no provider suffix)</li>
 <li>
 <p>Configure endpoints and download certificate</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="x">'saml' =&gt; [</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="x">        'keycloak' =&gt; [</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="x">            'name' =&gt; 'Keycloak',</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Keycloak',</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="x">            'entity_id' =&gt; 'https://keycloak.example.com/realms/{realm}',</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="x">            'sso_url' =&gt; 'https://keycloak.example.com/realms/{realm}/protocol/saml',</span>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="x">            'slo_url' =&gt; 'https://keycloak.example.com/realms/{realm}/protocol/saml',</span>
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="x">            'x509cert' =&gt; 'MIIClTCCAX0CBgF...', // Certificate</span>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="x">                'username' =&gt; 'username',</span>
-<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="x">                'email' =&gt; 'email',</span>
-<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="x">                'first_name' =&gt; 'firstName',</span>
-<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="x">                'last_name' =&gt; 'lastName',</span>
-<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="x">                'display_name' =&gt; 'name',</span>
-<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="x">                'groups' =&gt; 'groups',</span>
-<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="x">            ],</span>
-<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="x">        ],</span>
-<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="x">    ],</span>
-<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="x">'saml' =&gt; [</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="x">        'keycloak' =&gt; [</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="x">            'name' =&gt; 'Keycloak',</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Keycloak',</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="x">            'entity_id' =&gt; 'https://keycloak.example.com/realms/{realm}',</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="x">            'sso_url' =&gt; 'https://keycloak.example.com/realms/{realm}/protocol/saml',</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="x">            'slo_url' =&gt; 'https://keycloak.example.com/realms/{realm}/protocol/saml',</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="x">            'x509cert' =&gt; 'MIIClTCCAX0CBgF...', // Certificate</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="x">                'username' =&gt; 'username',</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="x">                'email' =&gt; 'email',</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="x">                'first_name' =&gt; 'firstName',</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="x">                'last_name' =&gt; 'lastName',</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="x">                'display_name' =&gt; 'name',</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="x">                'groups' =&gt; 'groups',</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="x">            ],</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="x">        ],</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="x">    ],</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="x">],</span>
 </code></pre></div>
 </li>
 </ol>
 <h3 id="generic-saml-provider">Generic SAML Provider<a class="headerlink" href="#generic-saml-provider" title="Permanent link">&para;</a></h3>
 <p>For other SAML identity providers:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="x">'saml' =&gt; [</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="x">        'custom' =&gt; [</span>
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="x">            'name' =&gt; 'Custom SAML IdP',</span>
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="x">            'display_name' =&gt; 'Sign in with SSO',</span>
-<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="x">            'entity_id' =&gt; 'https://idp.example.com/metadata',</span>
-<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="x">            'sso_url' =&gt; 'https://idp.example.com/sso',</span>
-<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="x">            'slo_url' =&gt; 'https://idp.example.com/slo',</span>
-<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="x">            'x509cert' =&gt; 'MIIDpDCCAoygAwIBAgIGAX...',</span>
-<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="x">                'username' =&gt; 'uid',</span>
-<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="x">                'email' =&gt; 'email',</span>
-<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="x">                'first_name' =&gt; 'firstName',</span>
-<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="x">                'last_name' =&gt; 'lastName',</span>
-<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="x">                'display_name' =&gt; 'displayName',</span>
-<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="x">                'groups' =&gt; 'groups',</span>
-<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="x">            ],</span>
-<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="x">            'security' =&gt; [</span>
-<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="x">                'wantAssertionsSigned' =&gt; true,</span>
-<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="x">                'wantNameId' =&gt; true,</span>
-<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="x">            ],</span>
-<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="x">        ],</span>
-<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="x">    ],</span>
-<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="x">'saml' =&gt; [</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="x">        'custom' =&gt; [</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="x">            'name' =&gt; 'Custom SAML IdP',</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="x">            'display_name' =&gt; 'Sign in with SSO',</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="x">            'entity_id' =&gt; 'https://idp.example.com/metadata',</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="x">            'sso_url' =&gt; 'https://idp.example.com/sso',</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="x">            'slo_url' =&gt; 'https://idp.example.com/slo',</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="x">            'x509cert' =&gt; 'MIIDpDCCAoygAwIBAgIGAX...',</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="x">                'username' =&gt; 'uid',</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="x">                'email' =&gt; 'email',</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="x">                'first_name' =&gt; 'firstName',</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="x">                'last_name' =&gt; 'lastName',</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="x">                'display_name' =&gt; 'displayName',</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="x">                'groups' =&gt; 'groups',</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="x">            ],</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="x">            'security' =&gt; [</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="x">                'wantAssertionsSigned' =&gt; true,</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="x">                'wantNameId' =&gt; true,</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="x">            ],</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="x">        ],</span>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="x">    ],</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="user-mapping">User Mapping<a class="headerlink" href="#user-mapping" title="Permanent link">&para;</a></h2>
 <p>SAML attributes are mapped to Poweradmin user fields. Common attribute formats:</p>
 <p><strong>XML URI Format</strong> (Azure AD, Okta, Auth0):</p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname
 </code></pre></div>
 <p><strong>Simple Format</strong> (Keycloak):</p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>email
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>firstName
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>lastName
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>email
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>firstName
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>lastName
 </code></pre></div>
 <table>
 <thead>
@@ -8526,18 +8567,18 @@ to refuse such links.</p>
 </table>
 <h2 id="security-settings">Security Settings<a class="headerlink" href="#security-settings" title="Permanent link">&para;</a></h2>
 <p>Configure security options per provider:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="x">'security' =&gt; [</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="x">    'nameIdEncrypted' =&gt; false,</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="x">    'authnRequestsSigned' =&gt; false,</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="x">    'logoutRequestSigned' =&gt; false,</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="x">    'logoutResponseSigned' =&gt; false,</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="x">    'signMetadata' =&gt; false,</span>
-<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="x">    'wantAssertionsSigned' =&gt; true,</span>
-<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="x">    'wantNameId' =&gt; true,</span>
-<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="x">    'wantAssertionsEncrypted' =&gt; false,</span>
-<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="x">    'signatureAlgorithm' =&gt; 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',</span>
-<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="x">    'digestAlgorithm' =&gt; 'http://www.w3.org/2001/04/xmlenc#sha256',</span>
-<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="x">'security' =&gt; [</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="x">    'nameIdEncrypted' =&gt; false,</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="x">    'authnRequestsSigned' =&gt; false,</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="x">    'logoutRequestSigned' =&gt; false,</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="x">    'logoutResponseSigned' =&gt; false,</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="x">    'signMetadata' =&gt; false,</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="x">    'wantAssertionsSigned' =&gt; true,</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="x">    'wantNameId' =&gt; true,</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="x">    'wantAssertionsEncrypted' =&gt; false,</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="x">    'signatureAlgorithm' =&gt; 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256',</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="x">    'digestAlgorithm' =&gt; 'http://www.w3.org/2001/04/xmlenc#sha256',</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="x">],</span>
 </code></pre></div>
 <p>Anything you set here overrides the derived defaults below.</p>
 <table>
@@ -8589,69 +8630,69 @@ to refuse such links.</p>
 <p>Signing therefore switches on by itself once you configure an SP key and certificate, and assertion signing is required as soon as the provider has an IdP certificate configured.</p>
 <h2 id="sp-signing-optional">SP Signing (Optional)<a class="headerlink" href="#sp-signing-optional" title="Permanent link">&para;</a></h2>
 <p>For IdPs that require signed requests, generate a certificate and key:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-nodes<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span>-newkey<span class="w"> </span>rsa:2048<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span>-keyout<span class="w"> </span>sp-private.key<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span>-out<span class="w"> </span>sp-certificate.crt<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span>-subj<span class="w"> </span><span class="s2">"/CN=poweradmin-sp"</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>openssl<span class="w"> </span>req<span class="w"> </span>-x509<span class="w"> </span>-nodes<span class="w"> </span>-days<span class="w"> </span><span class="m">365</span><span class="w"> </span>-newkey<span class="w"> </span>rsa:2048<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span>-keyout<span class="w"> </span>sp-private.key<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span>-out<span class="w"> </span>sp-certificate.crt<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span>-subj<span class="w"> </span><span class="s2">"/CN=poweradmin-sp"</span>
 </code></pre></div>
 <p>Configure in settings:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="x">'saml' =&gt; [</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="x">    'sp' =&gt; [</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="x">        'x509cert' =&gt; file_get_contents('/path/to/sp-certificate.crt'),</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="x">        'private_key' =&gt; file_get_contents('/path/to/sp-private.key'),</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="x">    ],</span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="x">'saml' =&gt; [</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="x">    'sp' =&gt; [</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="x">        'x509cert' =&gt; file_get_contents('/path/to/sp-certificate.crt'),</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="x">        'private_key' =&gt; file_get_contents('/path/to/sp-private.key'),</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="x">    ],</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="docker-configuration">Docker Configuration<a class="headerlink" href="#docker-configuration" title="Permanent link">&para;</a></h2>
 <p>Use environment variables with the <code>PA_SAML_</code> prefix:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nt">PA_APPLICATION_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://dns.example.com"</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span><span class="nt">PA_SAML_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span><span class="nt">PA_SAML_AUTO_PROVISION</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">  </span><span class="nt">PA_SAML_AZURE_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">  </span><span class="nt">PA_SAML_AZURE_ENTITY_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"https://sts.windows.net/tenant-id/"</span>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">  </span><span class="nt">PA_SAML_AZURE_SSO_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://login.microsoftonline.com/tenant-id/saml2"</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">PA_APPLICATION_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://dns.example.com"</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="nt">PA_SAML_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span><span class="nt">PA_SAML_AUTO_PROVISION</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span><span class="nt">PA_SAML_AZURE_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">  </span><span class="nt">PA_SAML_AZURE_ENTITY_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"https://sts.windows.net/tenant-id/"</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">  </span><span class="nt">PA_SAML_AZURE_SSO_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://login.microsoftonline.com/tenant-id/saml2"</span>
 </code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> SAML needs a URL source. From 4.2.6, 4.3.5, 4.4.1 and 4.5.0 the container exits at startup unless one of <code>PA_APPLICATION_URL</code>, <code>PA_BASE_URL</code>, or all three of <code>PA_SAML_SP_ENTITY_ID</code>, <code>PA_SAML_SP_ACS_URL</code> and <code>PA_SAML_SP_SLS_URL</code> is set. At least one provider must also be enabled - <code>PA_SAML_AZURE_ENABLED</code> above - or startup fails with "SAML is enabled but no SAML providers are configured". Both checks run only when the entrypoint generates the config.</p>
 <p><strong>Note:</strong> The <code>permission_template_mapping</code> and <code>group_mapping</code> settings can be configured via environment variables using the <code>=</code> delimiter and comma-separated entries:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">PA_SAML_PERMISSION_TEMPLATE_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"admins=Administrator,editors=Viewer"</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">PA_SAML_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"admins=Administrators,editors=Editors"</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">PA_SAML_PERMISSION_TEMPLATE_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"admins=Administrator,editors=Viewer"</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="nt">PA_SAML_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"admins=Administrators,editors=Editors"</span>
 </code></pre></div>
 <p>Group names containing colons (e.g., SAML URNs) are supported. Whitespace around commas and delimiters is trimmed automatically.</p>
 <p>For 1:n group mappings, separate the Poweradmin groups with a pipe (<code>|</code>) so one SAML group can grant access to several Poweradmin groups (added in 4.4.0):</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">PA_SAML_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"team1=Editors|Viewers,team2=Administrators"</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nt">PA_SAML_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"team1=Editors|Viewers,team2=Administrators"</span>
 </code></pre></div>
 </blockquote>
 <p>For certificates and keys, use Docker secrets:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nt">secrets</span><span class="p">:</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">saml_idp_cert</span><span class="p">:</span>
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./secrets/idp-certificate.crt</span>
-<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span><span class="nt">saml_sp_key</span><span class="p">:</span>
-<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./secrets/sp-private.key</span>
-<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>
-<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="nt">services</span><span class="p">:</span>
-<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">  </span><span class="nt">poweradmin</span><span class="p">:</span>
-<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">      </span><span class="nt">PA_SAML_AZURE_X509_CERT__FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/saml_idp_cert</span>
-<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">      </span><span class="nt">PA_SAML_SP_PRIVATE_KEY__FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/saml_sp_key</span>
-<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">    </span><span class="nt">secrets</span><span class="p">:</span>
-<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">saml_idp_cert</span>
-<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">saml_sp_key</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nt">secrets</span><span class="p">:</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">saml_idp_cert</span><span class="p">:</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./secrets/idp-certificate.crt</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span><span class="nt">saml_sp_key</span><span class="p">:</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./secrets/sp-private.key</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">  </span><span class="nt">poweradmin</span><span class="p">:</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">      </span><span class="nt">PA_SAML_AZURE_X509_CERT__FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/saml_idp_cert</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">      </span><span class="nt">PA_SAML_SP_PRIVATE_KEY__FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/saml_sp_key</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="w">    </span><span class="nt">secrets</span><span class="p">:</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">saml_idp_cert</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">saml_sp_key</span>
 </code></pre></div>
 <h2 id="multiple-providers">Multiple Providers<a class="headerlink" href="#multiple-providers" title="Permanent link">&para;</a></h2>
 <p>Configure multiple SAML providers:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="x">'saml' =&gt; [</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="x">        'azure' =&gt; [</span>
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="x">            // Azure AD configuration...</span>
-<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="x">        ],</span>
-<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="x">        'okta' =&gt; [</span>
-<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="x">            // Okta configuration...</span>
-<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="x">        ],</span>
-<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="x">    ],</span>
-<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="x">'saml' =&gt; [</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="x">        'azure' =&gt; [</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="x">            // Azure AD configuration...</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="x">        ],</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="x">        'okta' =&gt; [</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="x">            // Okta configuration...</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="x">        ],</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="x">    ],</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <h3 id="invalid-signature-error">"Invalid signature" error<a class="headerlink" href="#invalid-signature-error" title="Permanent link">&para;</a></h3>
@@ -8680,7 +8721,7 @@ to refuse such links.</p>
 <p>The response did not come with the sign-in cookie Poweradmin set when the login started. Common causes: Poweradmin is served over plain HTTP (the cookie needs HTTPS), the sign-in was started from the identity provider's portal, or more than 10 minutes passed at the identity provider. Serve Poweradmin over HTTPS, or set <code>allow_idp_initiated</code> on the provider (see <a href="#https-for-the-acs-url-v460">HTTPS for the ACS URL</a>). The log names the provider and, at the start of the sign-in, warns when the ACS URL is not HTTPS.</p>
 <h3 id="response-received-at-the-wrong-url">Response "received at" the wrong URL<a class="headerlink" href="#response-received-at-the-wrong-url" title="Permanent link">&para;</a></h3>
 <p>The log shows an error like:</p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>The response was received at http://host/saml/acs instead of http://host:8089/saml/acs
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>The response was received at http://host/saml/acs instead of http://host:8089/saml/acs
 </code></pre></div>
 <p>PHP saw the request on a different port or host than the one advertised to the identity provider, typically a plain-HTTP container published with a port mapping such as Docker <code>-p 8089:80</code>. Before 4.5.2 and 4.6.0 every response was refused this way. Upgrade, and set <code>interface.application_url</code> (or the explicit <code>sp</code> URLs) to the address users reach, here <code>http://host:8089</code>. On 4.6.0 a plain-HTTP host other than <code>localhost</code> also needs <code>allow_idp_initiated</code>, see <a href="#https-for-the-acs-url-v460">HTTPS for the ACS URL</a>.</p>
 <h3 id="redirect-loop">Redirect loop<a class="headerlink" href="#redirect-loop" title="Permanent link">&para;</a></h3>
