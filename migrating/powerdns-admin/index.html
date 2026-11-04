@@ -7819,9 +7819,10 @@ endpoints, see <a href="../../user-guide/ddns/overview/">Dynamic DNS</a>:</p>
   Poweradmin username and password.</li>
 <li><code>POST /api/v2/dynamic-dns</code>, authenticated with an API key.</li>
 </ul>
-<p>Change the URL in each client. Users who authenticate with a password need their new Poweradmin password. The
-example Caddy configuration (<code>caddy.conf.example</code>) already rewrites <code>/nic/update</code> to <code>/dynamic_update.php</code>; with
-another web server, add the same rewrite if you want to keep the old path.</p>
+<p>Users who authenticate with a password need their new Poweradmin password. From 4.6.0, the Docker image, the
+shipped <code>.htaccess</code> and the example nginx and Caddy configurations accept <code>/nic/update</code>, so clients only need the new
+host name. On older versions, or with your own web server configuration, change the URL to <code>/dynamic_update.php</code> or
+add the rewrite shown in <a href="../../user-guide/ddns/client-setup/#using-ddclient-dyndns2-protocol">Client Setup</a>.</p>
 <p>The two endpoints behave differently in a few ways:</p>
 <table>
 <thead>
@@ -7835,7 +7836,7 @@ another web server, add the same rewrite if you want to keep the old path.</p>
 <tr>
 <td>No IP address sent</td>
 <td>Uses the client's address</td>
-<td>Refused with <code>dnserr</code>. Send <code>myip</code>, or <code>myip=whatismyip</code> to use the client's address</td>
+<td>Uses the client's address (4.6.0+); earlier versions refuse it with <code>dnserr</code>, send <code>myip=whatismyip</code> instead</td>
 </tr>
 <tr>
 <td>IPv6</td>

@@ -7777,6 +7777,12 @@
 <p>You can use <code>whatismyip</code> for the IP parameters to automatically detect your address:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span><span class="s2">"https://dns.example.com/dynamic_update.php?hostname=host.example.com&amp;myip=whatismyip&amp;verbose=1"</span>
 </code></pre></div>
+<p>From 4.6.0, a request that sends none of <code>myip</code>, <code>ip</code>, <code>myip6</code> or <code>ip6</code> does the same: the record is set to the
+address the request came from. With <code>dualstack_update=1</code> it is still refused with <code>dnserr</code>, since the missing family
+would have its records deleted. Earlier versions answer <code>dnserr</code> to any request without an address.</p>
+<p>The detected address is the one Poweradmin sees. Behind a reverse proxy or load balancer with a public address, list
+it in <code>security.trusted_proxies</code>, otherwise every client is detected as the proxy. Proxies on private and loopback
+addresses are trusted without configuration.</p>
 <h3 id="multiple-ip-management">Multiple IP Management<a class="headerlink" href="#multiple-ip-management" title="Permanent link">&para;</a></h3>
 <p>The system supports managing multiple IP addresses per host:</p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Update multiple IPv4 addresses</span>
@@ -7817,6 +7823,8 @@
 <p><img alt="Basic Auth Setup" src="../../../screenshots/dynamic_update06.png" /></p>
 <h2 id="using-ddclient-dyndns2-protocol">Using <code>ddclient</code> (dyndns2 protocol)<a class="headerlink" href="#using-ddclient-dyndns2-protocol" title="Permanent link">&para;</a></h2>
 <p><code>ddclient</code> and other dyndns2 clients expect the update endpoint at <code>/nic/update</code>. Poweradmin exposes the endpoint at <code>/dynamic_update.php</code>, so you need a small web-server rewrite to make stock clients work.</p>
+<p>From 4.6.0 the rewrite is already in the Docker image, the shipped <code>.htaccess</code>, <code>nginx.conf.example</code> and
+<code>caddy.conf.example</code>. Add it yourself only for an older version or your own web server configuration.</p>
 <h3 id="apache">Apache<a class="headerlink" href="#apache" title="Permanent link">&para;</a></h3>
 <p>Add to your virtual host (or <code>.htaccess</code> if rewrites are enabled):</p>
 <div class="language-apache highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">RewriteEngine</span><span class="w"> </span><span class="k">On</span>
