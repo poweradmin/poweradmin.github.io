@@ -7780,6 +7780,8 @@
 <p>From 4.6.0, a request that sends none of <code>myip</code>, <code>ip</code>, <code>myip6</code> or <code>ip6</code> does the same: the record is set to the
 address the request came from. With <code>dualstack_update=1</code> it is still refused with <code>dnserr</code>, since the missing family
 would have its records deleted. Earlier versions answer <code>dnserr</code> to any request without an address.</p>
+<p><code>myip=whatismyip</code> detects either family from 4.6.0: an IPv6 client updates its AAAA record. Earlier versions fill
+only the IPv4 side from <code>myip</code>, so an IPv6 client must send <code>myip6=whatismyip</code>.</p>
 <p>The detected address is the one Poweradmin sees. Behind a reverse proxy or load balancer with a public address, list
 it in <code>security.trusted_proxies</code>, otherwise every client is detected as the proxy. Proxies on private and loopback
 addresses are trusted without configuration.</p>
