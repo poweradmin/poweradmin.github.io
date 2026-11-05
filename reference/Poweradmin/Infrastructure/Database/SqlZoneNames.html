@@ -110,11 +110,40 @@ and a zone has one row per owner. Type and master are left to the API sync, whic
 them fresh.</p></p>        </div>
             
         
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                            private
+                                                                                ZONE_KEYED_COLUMNS
+                                    </td>
+                <td class="last">
+                    <p><em><p>Columns besides zones, grants and API key restrictions that hold a zone id.</p></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
     
     
             <h2>Methods</h2>
 
             <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_dropUnusedSyncCopy">dropUnusedSyncCopy</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, string $domainsTable, int $domainId)
+        
+                                            <p><p>Remove a named row the API backend's zone sync added for this zone before 4.6.0, when
+nothing uses it, so the zone's own rows can take the name back. Before 4.6.0 the SQL
+backend stored no names, so the sync added each zone again as a new, ownerless row keyed
+by its own id. A row with an owner, template or comment, or with other zones rows, group
+grants or API key restrictions on its id, is kept. Logs, template links and change
+requests on its id move to the zone. The 4.6.0 update scripts do the same, but only for
+a zone that has zones rows of its own.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
                     <div class="row">
                 <div class="col-md-2 type">
                     static&nbsp;void
@@ -144,8 +173,67 @@ for groups only has. Without it a switch to the API backend gives the zone a new
 
             <div id="method-details">
                     <div class="method-item">
+                    <h3 id="method_dropUnusedSyncCopy">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Database/SqlZoneNames.php#L60">at line 60</a></div>
+        <code>        static            void
+    <strong>dropUnusedSyncCopy</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, string $domainsTable, int $domainId)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Remove a named row the API backend's zone sync added for this zone before 4.6.0, when
+nothing uses it, so the zone's own rows can take the name back. Before 4.6.0 the SQL
+backend stored no names, so the sync added each zone again as a new, ownerless row keyed
+by its own id. A row with an owner, template or comment, or with other zones rows, group
+grants or API key restrictions on its id, is kept. Logs, template links and change
+requests on its id move to the zone. The 4.6.0 update scripts do the same, but only for
+a zone that has zones rows of its own.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a></td>
+                <td>$db</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$domainsTable</td>
+                <td><p>The PowerDNS domains table, prefixed when pdns_db_name is set</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_ensureNamedAfterOwnerRemoval">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Database/SqlZoneNames.php#L44">at line 44</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Database/SqlZoneNames.php#L97">at line 97</a></div>
         <code>        static            void
     <strong>ensureNamedAfterOwnerRemoval</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, string $domainsTable, int $domainId)
         </code>
@@ -200,7 +288,7 @@ for groups only has. Without it a switch to the API backend gives the zone a new
             </div>
                     <div class="method-item">
                     <h3 id="method_ensureNamed">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Database/SqlZoneNames.php#L64">at line 64</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Database/SqlZoneNames.php#L117">at line 117</a></div>
         <code>        static            void
     <strong>ensureNamed</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, string $domainsTable, int $domainId, bool $createRow = false)
         </code>
@@ -261,7 +349,7 @@ its id survive a switch to the API backend</p></td>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/4780709" rel="noreferrer" target="_blank">commit 4780709,</a> built 2026-11-04 14:31 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/46df8d3" rel="noreferrer" target="_blank">commit 46df8d3,</a> built 2026-11-05 07:24 UTC.</div></div>
     </div>
     </body>
 
