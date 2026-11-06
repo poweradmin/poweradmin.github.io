@@ -4748,6 +4748,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#custom-themes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom themes
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7638,6 +7649,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#custom-themes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom themes
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7825,11 +7847,11 @@
 <p>If you have <code>pdns_db_name</code> set (PowerDNS tables in a separate database), first open the script and set <code>@pdns_db</code> near the end to that database name:</p>
 <div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">SET</span><span class="w"> </span><span class="o">@</span><span class="n">pdns_db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'pdns'</span><span class="p">;</span>
 </code></pre></div>
-<p>Your MySQL user needs <code>SELECT</code> on that database. If the <code>domains</code> table is not found there, the script prints <code>PowerDNS domains table not found, zone name backfill skipped</code> (and a second notice for ownerless rows) and still applies everything else. The zone names only matter if you later switch to the API backend.</p>
+<p>Your MySQL user needs <code>SELECT</code> on that database. If the <code>domains</code> table is not found there, the script prints notices starting with <code>PowerDNS domains table not found</code> and skips that whole block: the zone name backfill, the removal of the ownerless rows the API zone sync added before 4.6.0, and clearing the mark the API backend left. Everything else is applied. On a database that once ran the API backend, 4.6.0 then refuses the SQL backend until you set <code>@pdns_db</code> and run the script again.</p>
 <p><strong>PostgreSQL:</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-pgsql-update-to-4.6.0.sql
 </code></pre></div>
-<p>The zone names are read from the <code>domains</code> table on the search path. When it is not there (API backend, or PowerDNS tables in another database), psql shows <code>NOTICE: PowerDNS domains table not found, zone name backfill skipped</code>, and everything else is applied.</p>
+<p>The zone names are read from the <code>domains</code> table on the search path. When it is not there (API backend), psql shows <code>NOTICE: PowerDNS domains table not found, zone name backfill skipped</code>, and everything else is applied.</p>
 <p><strong>SQLite:</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-sqlite-update-to-4.6.0.sql
 </code></pre></div>
@@ -7853,6 +7875,9 @@
 <li><strong>Disable MFA</strong> and <strong>Regenerate Recovery Codes</strong> ask for a current code from the authenticator app, an email code or a recovery code. 4.5.2 makes the same change.</li>
 <li>A super admin who edits another user's private zone template without ticking <strong>Global template</strong> no longer becomes its owner; the owner stays. Before, the edit moved the template to the super admin.</li>
 <li><code>DELETE /api/v2/zones/{id}/rrsets/{name}/{type}</code> with an unknown record type answers <code>400 Invalid record type.</code> instead of <code>404</code>.</li>
+<li>SAML sign-in now needs HTTPS (or <code>localhost</code>) and refuses responses that do not answer a sign-in started from the same browser, including IdP-initiated SSO. Set <code>'allow_idp_initiated' =&gt; true</code> on a provider (<code>PA_SAML_&lt;PROVIDER&gt;_ALLOW_IDP_INITIATED=true</code> in Docker) to keep the old behaviour for it. See <a href="../../configuration/saml/#https-for-the-acs-url-v460">SAML Authentication</a>.</li>
+<li><code>POST /zones/{id}/records/bulk</code> refuses more than 1000 operations per request with <code>400 Too many operations: at most 1000 per request</code>. Raise or remove the limit with <code>api.bulk_max_operations</code> (<code>0</code> = no limit).</li>
+<li>Switching from the API backend back to the SQL backend is refused once the API backend has written zones to the database: zone ids written in API mode would point at other zones. The web pages show the error, the API answers <code>503</code>, and the command line and dynamic DNS updates stop. If a database that never used the API backend is refused, set the <code>backend.zone_ids</code> row in <code>app_settings</code> to <code>sql</code>; a zone deleted outside Poweradmin and created again under the same name can look like API use. See <a href="../../configuration/powerdns-api/#migrating-from-sql-to-api-backend">Migrating from SQL to API Backend</a>.</li>
 </ul>
 <h3 id="defaults">Defaults<a class="headerlink" href="#defaults" title="Permanent link">&para;</a></h3>
 <ul>
@@ -7860,7 +7885,13 @@
 <li>PHP session strict mode is on, so a session id the server never issued is refused and replaced with a new one.</li>
 <li>Password reset links are checked in UTC. Links sent before the upgrade stop working; users who were mid-reset request a new link (#1850).</li>
 <li>SQLite: Poweradmin opens the database in WAL mode. The database gains <code>-wal</code> and <code>-shm</code> files next to it, must stay on local storage (not NFS or SMB), and needs the <code>.backup</code> command from Step 1 for backups. See <a href="../../database/sqlite/#write-ahead-logging">Write-ahead logging</a>.</li>
+<li>Every page sends <code>X-Frame-Options: DENY</code> and <code>Content-Security-Policy: frame-ancestors 'none'</code>, so Poweradmin can no longer be shown in a frame on another site. List the sites that may frame it in <code>interface.frame_ancestors</code> (<code>PA_FRAME_ANCESTORS</code> in Docker). See <a href="../../installation/reverse-proxy/#framing-and-response-headers-v460">Framing and Response Headers</a>.</li>
+<li>API v2 <code>500</code> responses carry only the message for the failed action, for example <code>Failed to replace RRSet</code>. The underlying error is written to the log instead of the response.</li>
+<li>The zone file export built from the database (SQL backend without <code>pdns_api</code>, or with <strong>Include comments</strong> ticked) leaves out disabled records. Before, it wrote them as active records.</li>
+<li>Docker image: PHP runs with <code>php.ini-production</code>, and OPcache does not re-check files, so restart the container after editing bind-mounted PHP files. The web server caps request bodies at <code>20MiB</code> (<code>REQUEST_BODY_MAX_SIZE</code>). See <a href="../../installation/docker/">Docker</a>.</li>
 </ul>
+<h3 id="custom-themes">Custom themes<a class="headerlink" href="#custom-themes" title="Permanent link">&para;</a></h3>
+<p>If you run a theme forked from the 4.5 templates, <code>header.html</code> should test <code>nav.batch_ptr</code> instead of <code>can_batch_ptr</code> for the Batch PTR link. <code>can_batch_ptr</code> is no longer passed, so the link disappears, and with <code>misc.display_errors</code> on the page fails in Twig strict mode. See <a href="../../configuration/ui/themes/#creating-custom-themes">Themes</a>.</p>
 <p>The rest of the changes are listed in <a href="../../whats-new/v4.6.0/#also-in-this-release">What's New in 4.6.0</a>.</p>
 <h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">&para;</a></h2>
 <h3 id="change-approval-workflow">Change Approval Workflow<a class="headerlink" href="#change-approval-workflow" title="Permanent link">&para;</a></h3>
@@ -7890,13 +7921,10 @@
 <li>API backend mode: the API v2 zone list and <code>GET /zones/{id}</code> now also return <code>canonical_id</code>, equal to <code>id</code>. The zone id change, the one-time move of API key zone restrictions and the new-zone id rule shipped in 4.5.0; when upgrading from 4.4.x or earlier, read <a href="../v4.5.0/#zone-ids-in-api-backend-mode">Zone ids in API backend mode</a> first.</li>
 <li>Group assignments made through the API before 4.5.0 hold the zone list's row id. The database consistency check lists those whose id now names no zone, so they can be assigned again.</li>
 <li>The database consistency check's <strong>Fix</strong> for zones without an SOA now writes the same SOA a new zone gets, from <code>dns.ns1</code>, <code>dns.hostmaster</code>, the SOA timers and <code>dns.ttl</code>; before it wrote <code>ns1.&lt;zone&gt; hostmaster.&lt;zone&gt;</code> with fixed timers and a TTL of 86400.</li>
-<li>Switching from the API backend back to the SQL backend is refused once the API backend has written zones to the database: zone ids written in API mode would point at other zones. The web pages show the error, the API answers <code>503</code>, and the command line and dynamic DNS updates stop. See <a href="../../configuration/powerdns-api/#migrating-from-sql-to-api-backend">Migrating from SQL to API Backend</a>.</li>
 <li>The SQL backend now stores the zone name whenever it writes a zone row, and the <a href="../../maintenance/consistency-check/">Database Consistency Check</a> lists zones that still lack one, so a later switch to the API backend keeps every zone's owners.</li>
 <li>In API backend mode the automatic zone sync changes nothing when PowerDNS no longer lists more than half of the known zones, which usually means <code>pdns_api.url</code> points at the wrong server; the manual sync on the Forward Zones page still applies the changes.</li>
 <li>With <code>approval.enabled</code> on before the 4.6.0 update script has run, the Change requests entry and the pending counts are hidden and an error is logged, instead of every page failing. Filing a request still fails until the script has run.</li>
 <li>SAML responses are checked against the advertised ACS URL and logout requests against the SLS URL, so a port mapping in front of PHP no longer refuses every response (also in 4.5.2). See <a href="../../configuration/saml/#response-received-at-the-wrong-url">SAML Authentication</a>.</li>
-<li>SAML sign-in now needs HTTPS (or <code>localhost</code>) and refuses responses that do not answer a sign-in started from the same browser, including IdP-initiated SSO. Set <code>'allow_idp_initiated' =&gt; true</code> on a provider (<code>PA_SAML_&lt;PROVIDER&gt;_ALLOW_IDP_INITIATED=true</code> in Docker) to keep the old behaviour for it. See <a href="../../configuration/saml/#https-for-the-acs-url-v460">SAML Authentication</a>.</li>
-<li><code>POST /zones/{id}/records/bulk</code> refuses more than 1000 operations per request with <code>400 Too many operations: at most 1000 per request</code>. Raise or remove the limit with <code>api.bulk_max_operations</code> (<code>0</code> = no limit).</li>
 <li><code>interface.session_max_lifetime</code> is new and off by default.</li>
 </ul>
 <h2 id="rollback">Rollback<a class="headerlink" href="#rollback" title="Permanent link">&para;</a></h2>
