@@ -7722,10 +7722,13 @@ configuration problem. See the
   <code>pdns.conf</code>) or it cannot expand the target. See
   <a href="https://doc.powerdns.com/authoritative/guides/alias.html">the ALIAS guide</a>.</li>
 <li><strong><code>LUA</code></strong> records execute a Lua expression on the DNS server at query time. PowerDNS ignores them
-  unless the zone carries the <code>ENABLE-LUA-RECORDS</code> metadata, which is neither readable nor writable
-  over the API - set it with <code>pdnsutil</code> or in the database. Because they run code on the server,
-  Poweradmin also restricts them: users limited to <code>zone_content_edit_own_as_client</code> cannot create
-  or edit them, and seeding one into a zone template needs full edit rights. In API backend mode
+  unless <code>enable-lua-records=yes</code> is set in <code>pdns.conf</code> or the zone carries the <code>ENABLE-LUA-RECORDS</code>
+  metadata, which is neither readable nor writable over the API - set it with <code>pdnsutil</code> or in the
+  database. Because they run code on the server, Poweradmin also restricts them: users limited to
+  <code>zone_content_edit_own_as_client</code> cannot create or edit them, and seeding one into a zone template
+  needs full edit rights. Anyone with <code>zone_content_edit_own</code> or a broader edit permission can still
+  write them, so where PowerDNS runs LUA records, grant those permissions only to users you trust to
+  run code on the DNS server, or remove <code>LUA</code> from the enabled record types. In API backend mode
   on PowerDNS 5.1 and later, PowerDNS also refuses LUA writes unless <code>enable-lua-record-updates=yes</code>
   is set (<a href="../powerdns-api/#known-issue-lua-records-refused-on-powerdns-auth-51">details</a>). See
   <a href="https://doc.powerdns.com/authoritative/lua-records/index.html">LUA records</a>.</li>
