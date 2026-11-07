@@ -166,7 +166,7 @@
                     string
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_generateSecretKey">generateSecretKey</a>(int $length = 16)
+                    <a href="#method_generateSecretKey">generateSecretKey</a>(int $length = 32)
         
                                             <p><p>Generate a new secret key for authenticator app-based MFA</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -577,7 +577,7 @@
                     <h3 id="method_generateSecretKey">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L163">at line 163</a></div>
         <code>                    string
-    <strong>generateSecretKey</strong>(int $length = 16)
+    <strong>generateSecretKey</strong>(int $length = 32)
         </code>
     </h3>
     <div class="details">    
@@ -597,7 +597,7 @@ and other TOTP apps</p></p>
                     <tr>
                 <td>int</td>
                 <td>$length</td>
-                <td><p>Length of the secret key in bytes (16 is standard)</p></td>
+                <td><p>Base32 characters; 32 is 160 bits, above the 112 bits NIST SP 800-63B asks for</p></td>
             </tr>
             </table>
 
@@ -745,7 +745,7 @@ use with TOTP authenticator apps (proper Base32 encoding)</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_disableMfa">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L236">at line 236</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L231">at line 231</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Model/UserMfa.html"><abbr title="Poweradmin\Domain\Model\UserMfa">UserMfa</abbr></a>|null
     <strong>disableMfa</strong>(int $userId)
         </code>
@@ -788,7 +788,7 @@ use with TOTP authenticator apps (proper Base32 encoding)</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_consumeRecoveryCode">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L255">at line 255</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L250">at line 250</a></div>
         <code>                    bool
     <strong>consumeRecoveryCode</strong>(int $userId, string $code)
         </code>
@@ -837,7 +837,7 @@ may check it before any lockout gate.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_verifyCode">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L280">at line 280</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L275">at line 275</a></div>
         <code>                    bool
     <strong>verifyCode</strong>(int $userId, string $code)
         </code>
@@ -885,7 +885,7 @@ may check it before any lockout gate.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_invalidatePendingEmailCode">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L397">at line 397</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L392">at line 392</a></div>
         <code>                    void
     <strong>invalidatePendingEmailCode</strong>(int $userId)
         </code>
@@ -930,7 +930,7 @@ the same code would still be live when the lockout lifts.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_generateQrCodeSvg">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L420">at line 420</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L415">at line 415</a></div>
         <code>                    string
     <strong>generateQrCodeSvg</strong>(string $email, string $secret)
         </code>
@@ -978,7 +978,7 @@ the same code would still be live when the lockout lifts.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_sendEmailVerificationCode">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L448">at line 448</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L443">at line 443</a></div>
         <code>                    string
     <strong>sendEmailVerificationCode</strong>(int $userId, string $email)
         </code>
@@ -1037,7 +1037,7 @@ The code is temporary and should be regenerated for each verification attempt.</
             </div>
                     <div class="method-item">
                     <h3 id="method_refreshEmailVerificationCodeIfNeeded">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L546">at line 546</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L541">at line 541</a></div>
         <code>                    string|null
     <strong>refreshEmailVerificationCodeIfNeeded</strong>(int $userId, string $email)
         </code>
@@ -1095,7 +1095,7 @@ after their previous code has expired.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isMfaEnforced">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L618">at line 618</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L613">at line 613</a></div>
         <code>                    bool
     <strong>isMfaEnforced</strong>(int $userId, object $db, string|null $authMethod = null)
         </code>
@@ -1154,7 +1154,7 @@ after their previous code has expired.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isMfaSetupRequired">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L694">at line 694</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L689">at line 689</a></div>
         <code>                    bool
     <strong>isMfaSetupRequired</strong>(int $userId, object $db, string|null $authMethod = null)
         </code>
@@ -1207,7 +1207,7 @@ after their previous code has expired.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isMfaEnabled">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L708">at line 708</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L703">at line 703</a></div>
         <code>                    bool
     <strong>isMfaEnabled</strong>(int $userId)
         </code>
@@ -1250,7 +1250,7 @@ after their previous code has expired.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getMfaType">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L723">at line 723</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L718">at line 718</a></div>
         <code>                    string|null
     <strong>getMfaType</strong>(int $userId)
         </code>
@@ -1293,7 +1293,7 @@ after their previous code has expired.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getRecoveryCodes">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L738">at line 738</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L733">at line 733</a></div>
         <code>                    array
     <strong>getRecoveryCodes</strong>(int $userId)
         </code>
@@ -1336,7 +1336,7 @@ after their previous code has expired.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_regenerateRecoveryCodes">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L747">at line 747</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/MfaService.php#L753">at line 753</a></div>
         <code>                    array
     <strong>regenerateRecoveryCodes</strong>(int $userId)
         </code>
@@ -1430,7 +1430,7 @@ For app-based MFA: Preserves the existing secret (must not change or app codes w
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/75415c0" rel="noreferrer" target="_blank">commit 75415c0,</a> built 2026-11-07 18:54 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/2a516cb" rel="noreferrer" target="_blank">commit 2a516cb,</a> built 2026-11-07 19:59 UTC.</div></div>
     </div>
     </body>
 

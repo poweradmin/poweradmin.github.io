@@ -428,6 +428,18 @@ holders. Pass the record and zone names (FQDN) to enable that exemption.</p></p>
                     bool
                 </div>
                 <div class="col-md-8">
+                    <a href="#method_canRequestZoneRecord">canRequestZoneRecord</a>(int $userId, int $domainId, string $recordType, string|null $recordName = null, string|null $zoneName = null)
+        
+                                            <p><p>canEditZoneRecord()'s record-type rule for filing a change request: SOA/NS/LUA
+need an edit grant above own_as_client or a request level that covers the
+zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
                     <a href="#method_canEditZoneMeta">canEditZoneMeta</a>(int $userId, int $domainId)
         
                                             <p><p>Zone metadata (name, type, primaries): meta_edit_others (or admin), or meta_edit_own on an owned zone.</p></p>                </div>
@@ -1743,8 +1755,73 @@ holders. Pass the record and zone names (FQDN) to enable that exemption.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_canRequestZoneRecord">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L418">at line 418</a></div>
+        <code>                    bool
+    <strong>canRequestZoneRecord</strong>(int $userId, int $domainId, string $recordType, string|null $recordName = null, string|null $zoneName = null)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>canEditZoneRecord()'s record-type rule for filing a change request: SOA/NS/LUA
+need an edit grant above own_as_client or a request level that covers the
+zone, except subzone NS records for zone_content_edit_ns_subzone holders.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$userId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$domainId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$recordType</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$recordName</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$zoneName</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_canEditZoneMeta">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L416">at line 416</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L437">at line 437</a></div>
         <code>                    bool
     <strong>canEditZoneMeta</strong>(int $userId, int $domainId)
         </code>
@@ -1792,7 +1869,7 @@ holders. Pass the record and zone names (FQDN) to enable that exemption.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_canViewZoneMetadata">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L424">at line 424</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L445">at line 445</a></div>
         <code>                    bool
     <strong>canViewZoneMetadata</strong>(int $userId, int $domainId)
         </code>
@@ -1841,7 +1918,7 @@ holders. Pass the record and zone names (FQDN) to enable that exemption.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_canViewZoneOwnership">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L432">at line 432</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L453">at line 453</a></div>
         <code>                    bool
     <strong>canViewZoneOwnership</strong>(int $userId, int $domainId)
         </code>
@@ -1890,7 +1967,7 @@ holders. Pass the record and zone names (FQDN) to enable that exemption.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_templateGrantsUberuser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L440">at line 440</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L461">at line 461</a></div>
         <code>                    bool
     <strong>templateGrantsUberuser</strong>(int $permTemplId)
         </code>
@@ -1934,7 +2011,7 @@ holders. Pass the record and zone names (FQDN) to enable that exemption.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_checkPermissionTemplateAssignment">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L450">at line 450</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L471">at line 471</a></div>
         <code>                    string|null
     <strong>checkPermissionTemplateAssignment</strong>(int $actorId, int|null $targetUserId, int $permTemplId)
         </code>
@@ -1988,7 +2065,7 @@ when allowed. Echoing back an unchanged ordinary template is not a change.</p></
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneLogPermissionLevel">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L492">at line 492</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L513">at line 513</a></div>
         <code>                    string
     <strong>getZoneLogPermissionLevel</strong>(int $userId)
         </code>
@@ -2031,7 +2108,7 @@ when allowed. Echoing back an unchanged ordinary template is not a change.</p></
             </div>
                     <div class="method-item">
                     <h3 id="method_getChangeRequestPermissionLevel">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L501">at line 501</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L522">at line 522</a></div>
         <code>                    string
     <strong>getChangeRequestPermissionLevel</strong>(int $userId)
         </code>
@@ -2075,7 +2152,7 @@ whether the user may file a change request instead of editing directly.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getChangeApprovePermissionLevel">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L510">at line 510</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L531">at line 531</a></div>
         <code>                    string
     <strong>getChangeApprovePermissionLevel</strong>(int $userId)
         </code>
@@ -2119,7 +2196,7 @@ additionally requires the edit permission, see ChangeApprovalPolicy::canReview()
             </div>
                     <div class="method-item">
                     <h3 id="method_getChangeRequestPermissionLevelForZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L521">at line 521</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L542">at line 542</a></div>
         <code>                    string
     <strong>getChangeRequestPermissionLevelForZone</strong>(int $userId, int $domainId)
         </code>
@@ -2168,7 +2245,7 @@ when the zone is owned directly or via any group.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getChangeApprovePermissionLevelForZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L532">at line 532</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L553">at line 553</a></div>
         <code>                    string
     <strong>getChangeApprovePermissionLevelForZone</strong>(int $userId, int $domainId)
         </code>
@@ -2217,7 +2294,7 @@ when the zone is owned directly or via any group.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getPermissionFlags">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L569">at line 569</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L590">at line 590</a></div>
         <code>                    array
     <strong>getPermissionFlags</strong>(int $userId, array $permissionNames)
         </code>
@@ -2265,7 +2342,7 @@ when the zone is owned directly or via any group.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getDeletePermissionLevel">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L585">at line 585</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L606">at line 606</a></div>
         <code>                    string
     <strong>getDeletePermissionLevel</strong>(int $userId)
         </code>
@@ -2308,7 +2385,7 @@ when the zone is owned directly or via any group.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_canDeleteZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L597">at line 597</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L618">at line 618</a></div>
         <code>                    bool
     <strong>canDeleteZone</strong>(int $userId, bool $isOwner)
         </code>
@@ -2356,7 +2433,7 @@ when the zone is owned directly or via any group.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_canDeleteZoneById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L613">at line 613</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Auth/PermissionService.php#L634">at line 634</a></div>
         <code>                    bool
     <strong>canDeleteZoneById</strong>(int $userId, int $domainId)
         </code>
@@ -2407,7 +2484,7 @@ their delete level depends on it.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/75415c0" rel="noreferrer" target="_blank">commit 75415c0,</a> built 2026-11-07 18:54 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/2a516cb" rel="noreferrer" target="_blank">commit 2a516cb,</a> built 2026-11-07 19:59 UTC.</div></div>
     </div>
     </body>
 
