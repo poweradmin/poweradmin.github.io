@@ -7754,7 +7754,8 @@ configuration problem. See the
 <li><strong><code>LUA</code></strong> records execute a Lua expression on the DNS server at query time. PowerDNS ignores them
   unless <code>enable-lua-records=yes</code> is set in <code>pdns.conf</code> or the zone carries the <code>ENABLE-LUA-RECORDS</code>
   metadata, which is neither readable nor writable over the API - set it with <code>pdnsutil</code> or in the
-  database. Because they run code on the server, Poweradmin also restricts them: users limited to
+  database. They run code on the server, and functions such as <code>ifurlup</code> and <code>ifportup</code> make the
+  DNS server connect to any address the record names. Poweradmin therefore restricts them: users limited to
   <code>zone_content_edit_own_as_client</code> cannot create or edit them, and seeding one into a zone template
   needs full edit rights. Anyone with <code>zone_content_edit_own</code> or a broader edit permission can still
   write them, so where PowerDNS runs LUA records, grant those permissions only to users you trust to
