@@ -2782,6 +2782,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Password Security Settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bcrypt-and-long-passwords" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bcrypt and long passwords
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended Settings
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -7379,6 +7407,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Password Security Settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bcrypt-and-long-passwords" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bcrypt and long passwords
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended Settings
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -7435,7 +7491,7 @@ configurations, including password policies, are now configured in a single <cod
 <h2 id="password-rules">Password Rules<a class="headerlink" href="#password-rules" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>enable_password_rules</strong>: Enable or disable password rules enforcement. Default: <code>true</code>.</li>
-<li><strong>min_length</strong>: Minimum length of the password. Default: <code>6</code>.</li>
+<li><strong>min_length</strong>: Minimum length of the password, counted in characters (from 4.6.0; earlier versions count bytes, so a non-ASCII letter counts as two or more). Default: <code>6</code>.</li>
 <li><strong>require_uppercase</strong>: Require at least one uppercase letter. Default: <code>true</code>.</li>
 <li><strong>require_lowercase</strong>: Require at least one lowercase letter. Default: <code>true</code>.</li>
 <li><strong>require_numbers</strong>: Require at least one numeric digit. Default: <code>true</code>.</li>
@@ -7452,6 +7508,18 @@ configurations, including password policies, are now configured in a single <cod
 <p><strong>password_cost</strong>: Cost factor for bcrypt algorithm. Default: <code>12</code>.</p>
 </li>
 </ul>
+<h3 id="bcrypt-and-long-passwords">bcrypt and long passwords<a class="headerlink" href="#bcrypt-and-long-passwords" title="Permanent link">&para;</a></h3>
+<p>bcrypt only uses the first 72 bytes of a password and ignores the rest. A non-ASCII letter takes two or more bytes, so the limit is reached with fewer characters. From 4.6.0, while <code>password_encryption</code> is <code>bcrypt</code>, a new password longer than 72 bytes is refused when it is set, changed or reset. Login is not affected, so users who already have a longer password keep signing in with it.</p>
+<p>argon2i and argon2id have no such limit. You can switch <code>password_encryption</code> to <code>argon2id</code> at any time: existing bcrypt hashes keep working and each one is rehashed with argon2id at the user's next successful login. Check that your PHP build includes Argon2 first (<code>php -r 'var_dump(defined("PASSWORD_ARGON2ID"));'</code> prints <code>bool(true)</code>); the official Docker image does.</p>
+<h2 id="recommended-settings">Recommended Settings<a class="headerlink" href="#recommended-settings" title="Permanent link">&para;</a></h2>
+<p>The defaults are kept for compatibility with existing installs. Current guidance from <a href="https://pages.nist.gov/800-63-3/sp800-63b.html#sec5">NIST SP 800-63B</a> and <a href="https://learn.microsoft.com/en-us/microsoft-365/admin/misc/password-policy-recommendations">Microsoft</a> favours length over character rules:</p>
+<ul>
+<li><strong>Length over complexity.</strong> Set <code>min_length</code> to at least <code>8</code>, or <code>15</code> for accounts that sign in with a password alone. Turn off <code>require_uppercase</code>, <code>require_lowercase</code>, <code>require_numbers</code> and <code>require_special</code>: forced character mixes lead to predictable passwords such as <code>Password1!</code>.</li>
+<li><strong>No forced rotation.</strong> Do not make users change passwords on a schedule. Ask for a change only when a password may have been exposed.</li>
+<li><strong>Limit failed logins.</strong> Enable <a href="../security-policies/#account-lockout">account lockout</a>.</li>
+<li><strong>Add a second factor.</strong> Enable <a href="../security-policies/#multi-factor-authentication-mfa">multi-factor authentication</a>; it does more than any password rule.</li>
+<li><strong>Use argon2id</strong> for <code>password_encryption</code> (see above).</li>
+</ul>
 <h2 id="not-implemented">Not implemented<a class="headerlink" href="#not-implemented" title="Permanent link">&para;</a></h2>
 <p>Poweradmin has no password expiration and no password reuse prevention. There are no
 configuration keys for either - nothing in <code>config/settings.defaults.php</code> corresponds to them, so
@@ -7463,24 +7531,27 @@ adding keys of your own has no effect.</p>
 and authenticate through <a href="../ldap/">LDAP</a>, <a href="../oidc/">OIDC</a> or <a href="../saml/">SAML</a> rather than local
 passwords.</p>
 <h2 id="example-configuration">Example Configuration<a class="headerlink" href="#example-configuration" title="Permanent link">&para;</a></h2>
-<p>To enable password rules with custom settings, add the following configuration to your <code>config/settings.php</code>:</p>
+<p>The recommended settings above, in <code>config/settings.php</code>:</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">&lt;?php</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">return</span> <span class="p">[</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="s1">'security'</span> <span class="o">=&gt;</span> <span class="p">[</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="s1">'password_encryption'</span> <span class="o">=&gt;</span> <span class="s1">'bcrypt'</span><span class="p">,</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="s1">'password_cost'</span> <span class="o">=&gt;</span> <span class="mi">12</span><span class="p">,</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="s1">'password_policy'</span> <span class="o">=&gt;</span> <span class="p">[</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>            <span class="s1">'enable_password_rules'</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>            <span class="s1">'min_length'</span> <span class="o">=&gt;</span> <span class="mi">8</span><span class="p">,</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>            <span class="s1">'require_special'</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="p">],</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="p">],</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="p">];</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="s1">'password_encryption'</span> <span class="o">=&gt;</span> <span class="s1">'argon2id'</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="s1">'password_policy'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>            <span class="s1">'enable_password_rules'</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>            <span class="s1">'min_length'</span> <span class="o">=&gt;</span> <span class="mi">12</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>            <span class="s1">'require_uppercase'</span> <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>            <span class="s1">'require_lowercase'</span> <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>            <span class="s1">'require_numbers'</span> <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>            <span class="s1">'require_special'</span> <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="p">],</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="s1">'account_lockout'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>            <span class="s1">'enable_lockout'</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="p">],</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="p">],</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">];</span>
 </code></pre></div>
-<p>When <code>enable_password_rules</code> is set to <code>true</code>, passwords will be validated according to the configured rules. In this
-example, passwords must be at least 8 characters long and include special characters, along with the default
-requirements for uppercase letters, lowercase letters, and numbers.</p>
+<p>Settings you leave out keep their defaults, so the four <code>require_*</code> keys must be set to <code>false</code> explicitly.</p>
 
 
 
