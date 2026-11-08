@@ -7973,6 +7973,30 @@
 <p>For secure LDAP (LDAPS), use the following configuration:</p>
 <div class="language-php highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="x">'uri' =&gt; 'ldaps://domaincontroller.example.com',</span>
 </code></pre></div>
+<p>The server certificate is checked by the OpenLDAP client library that PHP's LDAP extension uses,
+not by Poweradmin. If your directory uses a certificate from a private CA, tell that library where
+the CA certificate is (see <code>man ldap.conf</code>):</p>
+<ul>
+<li>In the system <code>ldap.conf</code> (<code>/etc/ldap/ldap.conf</code> on Debian and Ubuntu, <code>/etc/openldap/ldap.conf</code>
+  on Alpine and RHEL):</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>TLS_CACERT /etc/ssl/certs/company-ca.pem
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>TLS_REQCERT demand
+</code></pre></div>
+<ul>
+<li>Or through the environment of the PHP process: <code>LDAPTLS_CACERT=/path/to/ca.pem</code>. In the Docker
+  image, mount the CA file and set the variable on the container:</li>
+</ul>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">LDAPTLS_CACERT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/ssl/certs/company-ca.pem</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./company-ca.pem:/etc/ssl/certs/company-ca.pem:ro</span>
+</code></pre></div>
+<p>PHP-FPM clears the environment of its workers by default (<code>clear_env = yes</code>), so with FPM use
+  <code>ldap.conf</code> instead.</p>
+<p>Keep <code>TLS_REQCERT demand</code> (the default). <code>never</code> turns certificate checks off and lets anyone on
+the network read the passwords. Poweradmin does not support StartTLS on port 389 yet; use <code>ldaps://</code>
+on port 636.</p>
 <h3 id="user-attribute-mapping">User Attribute Mapping<a class="headerlink" href="#user-attribute-mapping" title="Permanent link">&para;</a></h3>
 <p>Configure how Poweradmin maps LDAP attributes to user properties:</p>
 <ul>
@@ -7981,63 +8005,63 @@
 </ul>
 <h2 id="example-directory-configurations">Example Directory Configurations<a class="headerlink" href="#example-directory-configurations" title="Permanent link">&para;</a></h2>
 <h3 id="active-directory">Active Directory<a class="headerlink" href="#active-directory" title="Permanent link">&para;</a></h3>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">return [</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    'ldap' =&gt; [</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">        'enabled' =&gt; true,</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="x">        'uri' =&gt; 'ldap://ad.company.com',</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="x">        'base_dn' =&gt; 'DC=company,DC=com',</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="x">        'bind_dn' =&gt; 'CN=ServiceAccount,OU=Users,DC=company,DC=com',</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="x">        'bind_password' =&gt; 'password',</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="x">        'user_attribute' =&gt; 'sAMAccountName',</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="x">        'search_filter' =&gt; '(objectClass=user)',</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="x">    ],</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="x">];</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="x">return [</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="x">    'ldap' =&gt; [</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="x">        'enabled' =&gt; true,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="x">        'uri' =&gt; 'ldap://ad.company.com',</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="x">        'base_dn' =&gt; 'DC=company,DC=com',</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="x">        'bind_dn' =&gt; 'CN=ServiceAccount,OU=Users,DC=company,DC=com',</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="x">        'bind_password' =&gt; 'password',</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="x">        'user_attribute' =&gt; 'sAMAccountName',</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="x">        'search_filter' =&gt; '(objectClass=user)',</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="x">    ],</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="x">];</span>
 </code></pre></div>
 <h3 id="openldap">OpenLDAP<a class="headerlink" href="#openldap" title="Permanent link">&para;</a></h3>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="x">return [</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="x">    'ldap' =&gt; [</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="x">        'enabled' =&gt; true,</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="x">        'uri' =&gt; 'ldap://ldap.company.com',</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="x">        'base_dn' =&gt; 'ou=users,dc=company,dc=com',</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="x">        'bind_dn' =&gt; 'cn=admin,dc=company,dc=com',</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="x">        'bind_password' =&gt; 'password',</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="x">        'user_attribute' =&gt; 'uid',</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="x">        'search_filter' =&gt; '(objectClass=posixAccount)',</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="x">    ],</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="x">];</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="x">return [</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="x">    'ldap' =&gt; [</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="x">        'enabled' =&gt; true,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="x">        'uri' =&gt; 'ldap://ldap.company.com',</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="x">        'base_dn' =&gt; 'ou=users,dc=company,dc=com',</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="x">        'bind_dn' =&gt; 'cn=admin,dc=company,dc=com',</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="x">        'bind_password' =&gt; 'password',</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="x">        'user_attribute' =&gt; 'uid',</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="x">        'search_filter' =&gt; '(objectClass=posixAccount)',</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="x">    ],</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="x">];</span>
 </code></pre></div>
 <h2 id="user-info-sync-auto-provisioning-and-group-mapping-v450">User Info Sync, Auto-Provisioning and Group Mapping (v4.5.0+)<a class="headerlink" href="#user-info-sync-auto-provisioning-and-group-mapping-v450" title="Permanent link">&para;</a></h2>
 <p>Since 4.5.0, LDAP can drive user identity, permissions and group membership the same way OIDC/SAML do. All features are off by default, preserving the classic "admin pre-creates the account" workflow.</p>
 <h3 id="syncing-name-and-email">Syncing name and email<a class="headerlink" href="#syncing-name-and-email" title="Permanent link">&para;</a></h3>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="x">'ldap' =&gt; [</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="x">    // ...</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="x">    'sync_user_info' =&gt; true,</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="x">    'fullname_attribute' =&gt; 'displayName',  // 'cn' for OpenLDAP</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="x">    'email_attribute' =&gt; 'mail',</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="x">'ldap' =&gt; [</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="x">    // ...</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="x">    'sync_user_info' =&gt; true,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="x">    'fullname_attribute' =&gt; 'displayName',  // 'cn' for OpenLDAP</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="x">    'email_attribute' =&gt; 'mail',</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="x">],</span>
 </code></pre></div>
 <p>On every (non-cached) login, the user's fullname and email are refreshed from the directory. Empty attributes never blank existing values. With this enabled, the profile fields stay read-only in Poweradmin and the directory is the source of truth.</p>
 <h3 id="auto-provisioning-users">Auto-provisioning users<a class="headerlink" href="#auto-provisioning-users" title="Permanent link">&para;</a></h3>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="x">'ldap' =&gt; [</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="x">    // ...</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="x">    'auto_provision' =&gt; true,</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="x">    'default_permission_template' =&gt; 'Guest',</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="x">'ldap' =&gt; [</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="x">    // ...</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="x">    'auto_provision' =&gt; true,</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="x">    'default_permission_template' =&gt; 'Guest',</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="x">],</span>
 </code></pre></div>
 <p>A user who authenticates successfully against LDAP but has no Poweradmin account gets one created automatically (with <code>use_ldap</code> enabled). The permission template comes from <code>permission_template_mapping</code> when a group matches, otherwise from <code>default_permission_template</code>. Provisioning fails if the username is already taken by a local (non-LDAP) account.</p>
 <h3 id="mapping-ldap-groups">Mapping LDAP groups<a class="headerlink" href="#mapping-ldap-groups" title="Permanent link">&para;</a></h3>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="x">'ldap' =&gt; [</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="x">    // ...</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="x">    'groups_attribute' =&gt; 'memberOf',</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="x">    'permission_template_mapping' =&gt; [</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="x">        'cn=dns-admins,ou=groups,dc=example,dc=com' =&gt; 'Administrator',</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="x">        'cn=dns-operators,ou=groups,dc=example,dc=com' =&gt; 'Viewer',</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="x">    ],</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="x">    'group_mapping' =&gt; [</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="x">        'cn=dns-admins,ou=groups,dc=example,dc=com' =&gt; 'Administrators',</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="x">        'cn=dns-operators,ou=groups,dc=example,dc=com' =&gt; ['Zone Managers', 'Editors'],  // 1:n mapping</span>
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="x">    ],</span>
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="x">'ldap' =&gt; [</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="x">    // ...</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="x">    'groups_attribute' =&gt; 'memberOf',</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="x">    'permission_template_mapping' =&gt; [</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="x">        'cn=dns-admins,ou=groups,dc=example,dc=com' =&gt; 'Administrator',</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="x">        'cn=dns-operators,ou=groups,dc=example,dc=com' =&gt; 'Viewer',</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="x">    ],</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="x">    'group_mapping' =&gt; [</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="x">        'cn=dns-admins,ou=groups,dc=example,dc=com' =&gt; 'Administrators',</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="x">        'cn=dns-operators,ou=groups,dc=example,dc=com' =&gt; ['Zone Managers', 'Editors'],  // 1:n mapping</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="x">    ],</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="x">],</span>
 </code></pre></div>
 <p>Mapping keys must match a group value exactly. When <code>groups_attribute</code> returns DNs (as <code>memberOf</code> does), the key has to be the full DN: <code>dns-admins</code> does <strong>not</strong> match <code>cn=dns-admins,ou=groups,dc=example,dc=com</code>. Matching on the first RDN alone would discard the OU and DC that distinguish two identically named groups, so it is deliberately not supported. Semantics mirror the <a href="../oidc/">OIDC</a> settings:</p>
 <ul>
@@ -8051,24 +8075,24 @@
 </blockquote>
 <h3 id="granting-access-to-an-active-directory-group-without-pre-creating-users">Granting access to an Active Directory group without pre-creating users<a class="headerlink" href="#granting-access-to-an-active-directory-group-without-pre-creating-users" title="Permanent link">&para;</a></h3>
 <p>A common request: everyone in an AD group (say <code>PA_users</code>) should be able to use Poweradmin, without an admin creating each account by hand. Combine auto-provisioning with a <code>search_filter</code> that gates login on group membership:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="x">'ldap' =&gt; [</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="x">    'uri' =&gt; 'ldaps://ad.company.com',</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="x">    'base_dn' =&gt; 'DC=company,DC=com',</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="x">    'bind_dn' =&gt; 'CN=ServiceAccount,OU=Users,DC=company,DC=com',</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="x">    'bind_password' =&gt; 'password',</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="x">    'user_attribute' =&gt; 'sAMAccountName',</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="x">    // only PA_users members may log in</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="x">    'search_filter' =&gt; '(memberOf=cn=PA_users,ou=groups,dc=company,dc=com)',</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="x">    'auto_provision' =&gt; true,</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="x">    // mapping keys are the full DN as returned by memberOf, not the group name</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="x">    'permission_template_mapping' =&gt; [</span>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="x">        'cn=PA_users,ou=groups,dc=company,dc=com' =&gt; 'Administrator',</span>
-<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="x">    ],</span>
-<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="x">    'group_mapping' =&gt; [</span>
-<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="x">        'cn=PA_users,ou=groups,dc=company,dc=com' =&gt; 'DNS Admins',</span>
-<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="x">    ],</span>
-<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="x">'ldap' =&gt; [</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="x">    'uri' =&gt; 'ldaps://ad.company.com',</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="x">    'base_dn' =&gt; 'DC=company,DC=com',</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="x">    'bind_dn' =&gt; 'CN=ServiceAccount,OU=Users,DC=company,DC=com',</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="x">    'bind_password' =&gt; 'password',</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="x">    'user_attribute' =&gt; 'sAMAccountName',</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="x">    // only PA_users members may log in</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="x">    'search_filter' =&gt; '(memberOf=cn=PA_users,ou=groups,dc=company,dc=com)',</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="x">    'auto_provision' =&gt; true,</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="x">    // mapping keys are the full DN as returned by memberOf, not the group name</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="x">    'permission_template_mapping' =&gt; [</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="x">        'cn=PA_users,ou=groups,dc=company,dc=com' =&gt; 'Administrator',</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="x">    ],</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="x">    'group_mapping' =&gt; [</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="x">        'cn=PA_users,ou=groups,dc=company,dc=com' =&gt; 'DNS Admins',</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="x">    ],</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="x">],</span>
 </code></pre></div>
 <p>Group members are created in Poweradmin on their first login with the mapped permission template and group memberships; nobody outside <code>PA_users</code> can authenticate. On Active Directory, nested groups can be matched in the login filter with the matching-rule-in-chain syntax: <code>(memberOf:1.2.840.113556.1.4.1941:=cn=PA_users,ou=groups,dc=company,dc=com)</code> (the mapping arrays still only see direct <code>memberOf</code> values).</p>
 <blockquote>
