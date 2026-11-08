@@ -7906,8 +7906,9 @@ nothing; turn them on after checking the notes below.</p>
 <li><strong>app_enabled</strong>: Enable the authenticator app option (TOTP). Default: <code>true</code>. Setting it to <code>false</code> hides the option and refuses the setup request. It is ignored while email verification is unusable - disabled, or with no mail transport configured - so that disabling both methods cannot leave an enforced user with no way to complete setup.</li>
 <li><strong>email_enabled</strong>: Enable email verification codes. Default: <code>true</code>. NIST SP 800-63B does not accept email as a second factor, because whoever can read the mailbox gets the code. Where you follow NIST, set it to <code>false</code> and use an authenticator app.</li>
 <li><strong>recovery_codes</strong>: Number of recovery codes to generate. Default: <code>8</code></li>
-<li><strong>recovery_code_length</strong>: Length of recovery codes in characters. Default: <code>10</code>. From 4.6.0, shorter values are raised to 10.</li>
+<li><strong>recovery_code_length</strong>: Length of recovery codes in characters. Default: <code>10</code>. From 4.6.0, shorter values are raised to 10 and longer ones are capped at 72.</li>
 </ul>
+<p>From 4.6.0, recovery codes are stored as salted bcrypt hashes, as NIST SP 800-63B asks for look-up secrets this short, and each code works once. Codes created by earlier versions keep working and are re-stored the first time a code is entered. A user who is locked out after too many wrong codes has to wait until the lockout ends; a recovery code does not lift it.</p>
 <h2 id="password-reset">Password Reset<a class="headerlink" href="#password-reset" title="Permanent link">&para;</a></h2>
 <p>Secure password reset functionality with rate limiting:</p>
 <ul>
