@@ -7901,7 +7901,7 @@ nothing; turn them on after checking the notes below.</p>
 <p>Poweradmin supports multi-factor authentication to add an extra layer of security:</p>
 <ul>
 <li><strong>enabled</strong>: Enable MFA functionality. Default: <code>false</code></li>
-<li><strong>enforced</strong>: Enforce MFA for users who hold the <code>user_enforce_mfa</code> permission. Default: <code>false</code></li>
+<li><strong>enforced</strong>: Enforce MFA for users who hold the <code>user_enforce_mfa</code> permission. Default: <code>false</code>. Until such a user has set up MFA, web pages redirect to the setup page, but internal API calls (<code>/api/</code> paths) still go through unless <code>strict_session_gates</code> is <code>true</code>.</li>
 <li><strong>skip_for_external_auth</strong>: Skip MFA enforcement for LDAP, OIDC, SAML and web server logins, where the identity provider is trusted to enforce it. Default: <code>false</code> (added in 4.5.0)</li>
 <li><strong>app_enabled</strong>: Enable the authenticator app option (TOTP). Default: <code>true</code>. Setting it to <code>false</code> hides the option and refuses the setup request. It is ignored while email verification is unusable - disabled, or with no mail transport configured - so that disabling both methods cannot leave an enforced user with no way to complete setup.</li>
 <li><strong>email_enabled</strong>: Enable email verification codes. Default: <code>true</code>. NIST SP 800-63B does not accept email as a second factor, because whoever can read the mailbox gets the code. Where you follow NIST, set it to <code>false</code> and use an authenticator app.</li>
