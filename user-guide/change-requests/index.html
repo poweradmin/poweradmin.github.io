@@ -8103,7 +8103,8 @@ restores them as disabled records; when those lines would push the file past the
 limit below, the copy leaves the disabled records out. The copy is visible to the requester,
 to reviewers and to users who may view the zone, and is skipped when it exceeds 60000
 bytes.</p>
-<p>Deleting several zones at once from the zone list stays direct-only.</p>
+<p>Deleting several zones at once from the zone list cannot file a request. Under
+<code>require_review_for_all</code> it is refused; delete each zone from its own page instead.</p>
 <h3 id="following-your-own-requests">Following your own requests<a class="headerlink" href="#following-your-own-requests" title="Permanent link">&para;</a></h3>
 <p>The edit page shows a <strong>Pending change requests</strong> card to everyone who can edit or request
 changes to the zone, with the requester, age, number of changes and reason of each open
@@ -8408,7 +8409,11 @@ keep <code>require_review_for_all</code> off for installations that rely on DDNS
 <li>A request carries the record itself only: the "Add PTR", "Add A/AAAA" and "Update PTR"
   companion options are not offered in request mode. File the reverse record separately.</li>
 <li>Zone creation is not reviewed.</li>
-<li>Deleting several zones at once from the zone list is not reviewed and keeps no snapshot.</li>
+<li>Deleting several zones at once from the zone list cannot file a request. It is refused under
+  <code>require_review_for_all</code> and keeps no snapshot.</li>
+<li>DNSSEC signing and keys, zone metadata, zone owners and groups, and catalog membership are
+  not reviewed. They need their own permissions, which a requester does not hold, and apply
+  directly even under <code>require_review_for_all</code>.</li>
 <li>Self-approval is allowed unless <code>approval.allow_self_approval</code> is <code>false</code>.</li>
 <li>Stale requests warn but can still be approved.</li>
 <li>Requests are kept indefinitely. Prune the <code>zone_change_requests</code> table on your own
