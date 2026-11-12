@@ -7975,12 +7975,15 @@ validator message.</p>
 <li><strong>Placeholders are resolved against a sample zone before validation</strong>, so a record is judged on
   whether it could be valid, not against this install's nameserver configuration.</li>
 </ul>
-<p>The check is deliberately lenient in three places, so the following are not bugs:</p>
+<p>The check is deliberately lenient in two places, so the following are not bugs:</p>
 <ul>
 <li>A short SOA rdata is completed with default timers for the check.</li>
 <li>An unquoted TXT value is quoted for the check only, and stored exactly as you typed it.</li>
-<li>A record containing a placeholder Poweradmin does not recognise is stored without checking.</li>
 </ul>
+<p>From 4.6.0 a record containing a placeholder Poweradmin does not recognise is checked as it will be
+stored, so an unknown <code>[TOKEN]</code> in a name or an address is refused; inside a quoted TXT value it is
+plain text and passes. Before 4.6.0 such a record skipped the check, and 4.4.x and 4.5.x still only
+check its TTL and priority.</p>
 <p>Existing template records are only validated when saved. Applying a template to a zone, viewing
 it, and deleting a record are unaffected.</p>
 <h3 id="saving-an-existing-zone-as-a-template">Saving an existing zone as a template<a class="headerlink" href="#saving-an-existing-zone-as-a-template" title="Permanent link">&para;</a></h3>

@@ -116,7 +116,7 @@
                     
                 </div>
                 <div class="col-md-8">
-                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
+                    <a href="#method___construct">__construct</a>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null $backendProvider = null)
         
                                             <p class="no-description">No description</p>
                                     </div>
@@ -187,7 +187,7 @@
                     int
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getUnsyncedZoneCount">getUnsyncedZoneCount</a>(int $templateId)
+                    <a href="#method_getUnsyncedZoneCount">getUnsyncedZoneCount</a>(int $templateId, int|null $zoneOwnerId = null)
         
                                             <p><p>Get count of zones needing sync for a template</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -197,7 +197,7 @@
                     array
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_getTemplateSyncStatus">getTemplateSyncStatus</a>(int|null $userId = null)
+                    <a href="#method_getTemplateSyncStatus">getTemplateSyncStatus</a>(int|null $userId = null, int|null $zoneOwnerId = null)
         
                                             <p><p>Get sync status for all templates</p></p>                </div>
                 <div class="col-md-2"></div>
@@ -210,9 +210,9 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L38">at line 38</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L40">at line 40</a></div>
         <code>                    
-    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config)
+    <strong>__construct</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, <a href="../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null $backendProvider = null)
         </code>
     </h3>
     <div class="details">    
@@ -238,6 +238,11 @@
                 <td>$config</td>
                 <td></td>
             </tr>
+                    <tr>
+                <td><a href="../../../Poweradmin/Domain/Port/DnsBackendProviderInterface.html"><abbr title="Poweradmin\Domain\Port\DnsBackendProviderInterface">DnsBackendProviderInterface</abbr></a>|null</td>
+                <td>$backendProvider</td>
+                <td></td>
+            </tr>
             </table>
 
             
@@ -250,7 +255,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_markTemplateAsModified">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L47">at line 47</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L69">at line 69</a></div>
         <code>                    void
     <strong>markTemplateAsModified</strong>(int $templateId)
         </code>
@@ -293,7 +298,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_markZoneAsSynced">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L62">at line 62</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L84">at line 84</a></div>
         <code>                    void
     <strong>markZoneAsSynced</strong>(int $zoneId, int $templateId)
         </code>
@@ -341,7 +346,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_markZonesAsSynced">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L95">at line 95</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L117">at line 117</a></div>
         <code>                    void
     <strong>markZonesAsSynced</strong>(array $zoneIds, int $templateId)
         </code>
@@ -389,7 +394,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_createSyncRecord">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L134">at line 134</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L156">at line 156</a></div>
         <code>                    void
     <strong>createSyncRecord</strong>(int $zoneId, int $templateId)
         </code>
@@ -437,7 +442,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_removeStaleSyncRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L185">at line 185</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L207">at line 207</a></div>
         <code>                    void
     <strong>removeStaleSyncRecords</strong>(int $zoneId, int $keepTemplateId)
         </code>
@@ -485,7 +490,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_cleanupZoneSyncRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L201">at line 201</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L223">at line 223</a></div>
         <code>                    void
     <strong>cleanupZoneSyncRecords</strong>(int $zoneId)
         </code>
@@ -528,9 +533,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getUnsyncedZoneCount">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L212">at line 212</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L234">at line 234</a></div>
         <code>                    int
-    <strong>getUnsyncedZoneCount</strong>(int $templateId)
+    <strong>getUnsyncedZoneCount</strong>(int $templateId, int|null $zoneOwnerId = null)
         </code>
     </h3>
     <div class="details">    
@@ -549,6 +554,11 @@
                 <td>int</td>
                 <td>$templateId</td>
                 <td></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$zoneOwnerId</td>
+                <td><p>Count only the zones this user owns (null counts every zone)</p></td>
             </tr>
             </table>
 
@@ -571,9 +581,9 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getTemplateSyncStatus">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L229">at line 229</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbZoneTemplateSyncRepository.php#L252">at line 252</a></div>
         <code>                    array
-    <strong>getTemplateSyncStatus</strong>(int|null $userId = null)
+    <strong>getTemplateSyncStatus</strong>(int|null $userId = null, int|null $zoneOwnerId = null)
         </code>
     </h3>
     <div class="details">    
@@ -591,7 +601,12 @@
                     <tr>
                 <td>int|null</td>
                 <td>$userId</td>
-                <td></td>
+                <td><p>Limit to the templates this user may see</p></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$zoneOwnerId</td>
+                <td><p>Count only the zones this user owns (null counts every zone)</p></td>
             </tr>
             </table>
 
@@ -616,7 +631,7 @@
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/f753eb7" rel="noreferrer" target="_blank">commit f753eb7,</a> built 2026-11-11 07:06 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/2893c3b" rel="noreferrer" target="_blank">commit 2893c3b,</a> built 2026-11-12 14:48 UTC.</div></div>
     </div>
     </body>
 
