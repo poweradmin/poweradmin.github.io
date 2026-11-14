@@ -2671,7 +2671,10 @@ so a zone written straight to the database is served without waiting.</p></dd><d
 <abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr>::fetchZoneKeys</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a></em></dt>
                     <dd><p>Get the DNSSEC keys of a zone, telling a failed request apart from a zone without keys.</p></dd><dt><a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html#method_fetchZoneSecured">
 <abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr>::fetchZoneSecured</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a></em></dt>
-                    <dd><p>Check if a zone is secured with DNSSEC, telling a failed request apart from an unsigned zone</p></dd><dt><a href="Poweradmin/Infrastructure/Database/SharedZoneIds.html#method_forget">
+                    <dd><p>Check if a zone is secured with DNSSEC, telling a failed request apart from an unsigned zone</p></dd><dt><a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html#method_findRrset">
+<abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr>::findRrset</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Api/PowerdnsApiClient.html"><abbr title="Poweradmin\Infrastructure\Api\PowerdnsApiClient">PowerdnsApiClient</abbr></a></em></dt>
+                    <dd><p>Pick an RRset out of a zone answer. PowerDNS returns names in their stored case,
+so an exact match wins and a case-insensitive one is the fallback.</p></dd><dt><a href="Poweradmin/Infrastructure/Database/SharedZoneIds.html#method_forget">
 <abbr title="Poweradmin\Infrastructure\Database\SharedZoneIds">SharedZoneIds</abbr>::forget</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Database/SharedZoneIds.html"><abbr title="Poweradmin\Infrastructure\Database\SharedZoneIds">SharedZoneIds</abbr></a></em></dt>
                     <dd></dd><dt><a href="Poweradmin/Infrastructure/Database/SharedZoneIds.html#method_filterOwned">
 <abbr title="Poweradmin\Infrastructure\Database\SharedZoneIds">SharedZoneIds</abbr>::filterOwned</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Database/SharedZoneIds.html"><abbr title="Poweradmin\Infrastructure\Database\SharedZoneIds">SharedZoneIds</abbr></a></em></dt>
@@ -5306,8 +5309,9 @@ grants keyed by it cannot tell the zones apart and are not honoured.</p></dd><dt
 zone_content_edit_ns_subzone permission unlocks only subzone NS records.</p></dd><dt><a href="Poweradmin/Domain/Service/Auth/ZoneAccessPolicy.html#method_isRecordLocked">
 <abbr title="Poweradmin\Domain\Service\Auth\ZoneAccessPolicy">ZoneAccessPolicy</abbr>::isRecordLocked</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Auth/ZoneAccessPolicy.html"><abbr title="Poweradmin\Domain\Service\Auth\ZoneAccessPolicy">ZoneAccessPolicy</abbr></a></em></dt>
                     <dd><p>A locked record renders read-only in the zone edit table: replicated
-(slave/consumer) zones entirely, SOA for non-&quot;all&quot; editors, and NS
-records caught by the own_as_client apex rule.</p></dd><dt><a href="Poweradmin/Domain/Service/Auth/ZoneListPermissionService.html#method_index">
+(slave/consumer) zones entirely, SOA for own_as_client and no-edit callers
+(zone owners may edit and delete their SOA), and NS records caught by the
+own_as_client apex rule.</p></dd><dt><a href="Poweradmin/Domain/Service/Auth/ZoneListPermissionService.html#method_index">
 <abbr title="Poweradmin\Domain\Service\Auth\ZoneListPermissionService">ZoneListPermissionService</abbr>::index</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/Auth/ZoneListPermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\ZoneListPermissionService">ZoneListPermissionService</abbr></a></em></dt>
                     <dd></dd><dt><a href="Poweradmin/Domain/Service/DnsValidation/DnsCommonValidator.html#method_isValidPriority">
 <abbr title="Poweradmin\Domain\Service\DnsValidation\DnsCommonValidator">DnsCommonValidator</abbr>::isValidPriority</a>() &mdash; <em>Method in class <a href="Poweradmin/Domain/Service/DnsValidation/DnsCommonValidator.html"><abbr title="Poweradmin\Domain\Service\DnsValidation\DnsCommonValidator">DnsCommonValidator</abbr></a></em></dt>
@@ -6436,7 +6440,9 @@ backend's zone list keeps only these zones for a shared id.</p></dd><dt><a href=
 <abbr title="Poweradmin\Infrastructure\Repository\DbZoneTemplateRepository">DbZoneTemplateRepository</abbr>::ownedZoneCondition</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Repository/DbZoneTemplateRepository.html"><abbr title="Poweradmin\Infrastructure\Repository\DbZoneTemplateRepository">DbZoneTemplateRepository</abbr></a></em></dt>
                     <dd><p>AND-condition limiting a zones row (aliased $alias) to those the user owns directly
 or through a group. Takes two placeholders bound to the same user id, since native
-MySQL prepares cannot reuse one.</p></dd><dt><a href="Poweradmin/Infrastructure/Utility/SortHelper.html#method_orderBy">
+MySQL prepares cannot reuse one.</p></dd><dt><a href="Poweradmin/Infrastructure/Utility/ResultPaginator.html#method_offset">
+<abbr title="Poweradmin\Infrastructure\Utility\ResultPaginator">ResultPaginator</abbr>::offset</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Utility/ResultPaginator.html"><abbr title="Poweradmin\Infrastructure\Utility\ResultPaginator">ResultPaginator</abbr></a></em></dt>
+                    <dd><p>Row offset of a 1-based page, kept an int so a huge page number reads past the end instead of overflowing.</p></dd><dt><a href="Poweradmin/Infrastructure/Utility/SortHelper.html#method_orderBy">
 <abbr title="Poweradmin\Infrastructure\Utility\SortHelper">SortHelper</abbr>::orderBy</a>() &mdash; <em>Method in class <a href="Poweradmin/Infrastructure/Utility/SortHelper.html"><abbr title="Poweradmin\Infrastructure\Utility\SortHelper">SortHelper</abbr></a></em></dt>
                     <dd><p>ORDER BY for an API list sorted in SQL, from the keys ListSort::fields() returns.</p></dd>        </dl><h2 id="letterP">P</h2>
         <dl id="indexP"><dt><a href="Poweradmin/Application/Console/Arguments.html#method_parse">
@@ -10405,7 +10411,7 @@ open a repository for an answer it will not use.</p></dd><dt><a href="Poweradmin
                     <dd></dd><dt><a href="Poweradmin/Module/ZoneImportExport/Service/ParsedZoneFile.html#method___construct">
 <abbr title="Poweradmin\Module\ZoneImportExport\Service\ParsedZoneFile">ParsedZoneFile</abbr>::__construct</a>() &mdash; <em>Method in class <a href="Poweradmin/Module/ZoneImportExport/Service/ParsedZoneFile.html"><abbr title="Poweradmin\Module\ZoneImportExport\Service\ParsedZoneFile">ParsedZoneFile</abbr></a></em></dt>
                     <dd></dd>        </dl></div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/2893c3b" rel="noreferrer" target="_blank">commit 2893c3b,</a> built 2026-11-12 14:48 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/4bcd496" rel="noreferrer" target="_blank">commit 4bcd496,</a> built 2026-11-14 18:01 UTC.</div></div>
     </div>
     </body>
 
