@@ -8211,7 +8211,9 @@ set <code>interface.application_url</code> for the link to be right.</p>
 the mailbox, an escaped dot in it stays a dot, and the rest becomes the domain, so
 <code>hostmaster.example.com.</code> is mailed as <code>hostmaster@example.com</code>. It is off by default
 (<code>PA_NOTIFICATION_CHANGE_REQUEST_SOA_CONTACT</code> in Docker) because that mailbox may belong to
-someone outside the installation. A mail failure never undoes the
+someone outside the installation. Anyone who may edit the zone's SOA record decides that
+address, and the mail carries the requester's comment, so turn it on only where zone owners
+are trusted to keep the SOA contact pointing at the right people. A mail failure never undoes the
 request or the decision; it is logged and the workflow continues.</p>
 <p>Templates are <code>templates/emails/change-request-filed.*.twig</code> and
 <code>change-request-decided.*.twig</code>; see <a href="../../configuration/mail/">Mail Configuration</a>.</p>

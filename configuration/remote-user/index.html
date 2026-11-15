@@ -7969,6 +7969,7 @@
 </ul>
 <h3 id="nginx">nginx<a class="headerlink" href="#nginx" title="Permanent link">&para;</a></h3>
 <p>nginx fills <code>$remote_user</code> from any client's <code>Authorization</code> header, whether or not the password was checked. Pass <code>REMOTE_USER</code> to PHP only in locations protected by <code>auth_basic</code>.</p>
+<p>The same applies to every other location you exempt from <code>auth_basic</code>, such as <code>/nic/update</code> and <code>/dynamic_update.php</code> for dynamic DNS clients, the SAML ACS (<code>/saml/acs</code>) or <code>/api/health</code>: set <code>fastcgi_param REMOTE_USER "";</code> there as the <code>/api/v2/</code> example does.</p>
 <p>This pattern comes from the Poweradmin devcontainer. <code>auth_basic</code> covers the whole site and hands the checked user to PHP. <code>/api/v2/</code> is exempted in a prefix <code>location</code>, which nginx matches on the normalised path, so <code>/api/v2/../index.php</code> cannot slip past <code>auth_basic</code>. Do not key the exemption on <code>$request_uri</code>, which is not normalised.</p>
 <div class="language-nginx highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kn">auth_basic</span><span class="w"> </span><span class="s">"Poweradmin"</span><span class="p">;</span>

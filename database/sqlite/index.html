@@ -7741,6 +7741,12 @@
 <h3 id="option-2-using-the-automated-script">Option 2: Using the Automated Script<a class="headerlink" href="#option-2-using-the-automated-script" title="Permanent link">&para;</a></h3>
 <p>You can use the provided script from the Poweradmin repository:
 https://github.com/poweradmin/poweradmin-scripts/blob/master/create_sqlite_db.sh</p>
+<p>Clone it as <code>scripts/</code> inside your Poweradmin directory and run it from there:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>./scripts/create_sqlite_db.sh<span class="w"> </span>/path/to/your/poweradmin.sqlite
+</code></pre></div>
+<p>It creates one database file holding both the PowerDNS schema (the newest one under <code>sql/pdns/</code> by default; pass
+a version such as <code>47</code> as a second argument to pick another) and the Poweradmin tables. It refuses to overwrite an
+existing file. Give the web server user write access to the file and its directory afterwards, as in Option 1.</p>
 <h3 id="running-the-installer">Running the Installer<a class="headerlink" href="#running-the-installer" title="Permanent link">&para;</a></h3>
 <p>After creating your SQLite database, run the Poweradmin installer and select SQLite as the database type in step 4, then provide the full path to your database file:</p>
 <p><img alt="Database configuration step" src="../../screenshots/install-step4-database.png" /></p>
@@ -7761,7 +7767,7 @@ and carries on rather than failing to start.</p>
 database, and a long-lived PowerDNS connection means that file is never fully
 folded back in. Copying the <code>.sqlite</code> file alone can therefore miss the most
 recent commits. Back up with:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sqlite3<span class="w"> </span>/path/to/your/poweradmin.sqlite<span class="w"> </span><span class="s2">".backup '/path/to/backup.sqlite'"</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sqlite3<span class="w"> </span>/path/to/your/poweradmin.sqlite<span class="w"> </span><span class="s2">".backup '/path/to/backup.sqlite'"</span>
 </code></pre></div>
 <p>or stop both services and copy the <code>.sqlite</code>, <code>-wal</code> and <code>-shm</code> files together.</p>
 <h3 id="network-filesystems">Network filesystems<a class="headerlink" href="#network-filesystems" title="Permanent link">&para;</a></h3>
@@ -7769,7 +7775,7 @@ recent commits. Back up with:</p>
 coordinates readers and writers through shared memory, which those filesystems do
 not provide reliably, and SQLite cannot detect them, so the switch appears to
 succeed. Keep the database on local storage, or force the old journal mode:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sqlite3<span class="w"> </span>/path/to/your/poweradmin.sqlite<span class="w"> </span><span class="s2">"PRAGMA journal_mode = DELETE;"</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sqlite3<span class="w"> </span>/path/to/your/poweradmin.sqlite<span class="w"> </span><span class="s2">"PRAGMA journal_mode = DELETE;"</span>
 </code></pre></div>
 <p>From 4.6.0 Poweradmin switches the file to WAL on every connection. To keep the old
 mode, also set <code>database.sqlite_wal</code> to <code>false</code> (<code>DB_SQLITE_WAL=false</code> in Docker). The
