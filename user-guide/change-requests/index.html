@@ -8081,9 +8081,9 @@ review. Everything that writes many records at once stays direct-only and is hid
 requester on the edit page: <strong>Bulk add</strong>, <strong>Multi-record mode</strong>, <strong>Delete record(s)</strong> for a
 selection, the DNS wizards, zone <strong>Import</strong> into an existing zone, PTR generation, and applying
 a zone template.
-Opening any of these pages by URL, or editing the zone comment on its own page, is refused
-with "This zone requires approval for changes; use the zone editor to submit a change
-request." The same refusal applies to editors under <code>require_review_for_all</code>, so the only
+Opening any of these pages by URL, editing the zone comment on its own page, or changing the
+zone's type or primary servers is refused with "This zone requires approval for changes; use
+the zone editor to submit a change request." The same refusal applies to editors under <code>require_review_for_all</code>, so the only
 way to change a reviewed zone is a change request.</p>
 <p>Zone creation is not reviewed. A user who may add zones still adds them directly, with
 <code>require_review_for_all</code> on or off. This includes the records a new zone starts with: those
@@ -8398,7 +8398,10 @@ refuse instead of writing:</p>
 </code></pre></div>
 <p>The status is <code>403</code>. This applies to <code>POST</code>, <code>PUT</code> and <code>DELETE</code> on
 <code>/api/v2/zones/{id}/records</code>, <code>/api/v2/zones/{id}/records/bulk</code>, the RRset endpoints, the
-dynamic DNS endpoint, and to <code>DELETE /api/v2/zones/{id}</code> under <code>require_review_for_all</code>.
+dynamic DNS endpoint, to <code>PUT /api/v2/zones/{id}</code> when it changes the zone's type, primaries
+or description, and to <code>DELETE /api/v2/zones/{id}</code> under <code>require_review_for_all</code>. A <code>PUT</code>
+that resends the zone's stored values unchanged is accepted, so a client that sends every
+field on each update is not refused when nothing changes.
 A client that gets this answer files a change request instead.</p>
 <h2 id="dynamic-dns">Dynamic DNS<a class="headerlink" href="#dynamic-dns" title="Permanent link">&para;</a></h2>
 <p>A dynamic DNS client cannot file a change request, so an update from a user whose changes
@@ -8409,8 +8412,8 @@ keep <code>require_review_for_all</code> off for installations that rely on DDNS
 <h2 id="limitations-of-this-version">Limitations of this version<a class="headerlink" href="#limitations-of-this-version" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Bulk add, multi-record mode, deleting a selection of records, applying a zone template,
-  the DNS wizards, zone import, PTR generation and the zone comment page cannot file a
-  request; they are refused for a reviewed zone.</li>
+  the DNS wizards, zone import, PTR generation, the zone comment page and changing a zone's
+  type or primary servers cannot file a request; they are refused for a reviewed zone.</li>
 <li>A request carries the record itself only: the "Add PTR", "Add A/AAAA" and "Update PTR"
   companion options are not offered in request mode. File the reverse record separately.</li>
 <li>Zone creation is not reviewed.</li>
