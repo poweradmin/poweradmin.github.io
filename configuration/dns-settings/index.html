@@ -7776,13 +7776,13 @@
 <tr>
 <td>dns.sync_zone_owner_to_account</td>
 <td>false</td>
-<td>Mirror the zone owner's username into the PowerDNS <code>account</code> field on zone creation and ownership changes. With multiple owners, the oldest owner is used; a zone left without a direct owner gets an empty account. When enabled, this overwrites account values set through the API or external tools whenever ownership changes.</td>
+<td>Mirror the zone owner's username into the PowerDNS <code>account</code> field on zone creation and ownership changes. With multiple owners, the oldest owner is used; a zone left without a direct owner gets an empty account. When enabled, this overwrites account values set through the API or external tools whenever ownership changes. From 4.6.0, deleting a user also re-syncs the zones they leave behind, and renaming a user moves the account to the new name.</td>
 <td>4.4.0</td>
 </tr>
 <tr>
 <td>dns.adopt_zone_owner_from_account</td>
 <td>false</td>
-<td>Give an ownerless zone, such as one an autoprimary created, to the user whose username exactly matches its PowerDNS <code>account</code> field. Applied by the zone sync in API backend mode and by the "zones without owners" repair in the consistency check. Never replaces an existing owner, and skips a user at their <a href="../../user-guide/users-roles/#zone-limits">zone limit</a>. See <a href="../../user-guide/supermasters/">Supermasters and Autoprimaries</a>.</td>
+<td>Give an ownerless zone, such as one an autoprimary created, to the user whose username exactly matches its PowerDNS <code>account</code> field. Applied by the zone sync in API backend mode and by the "zones without owners" repair in the consistency check. Never replaces an existing owner, and skips a user at their <a href="../../user-guide/users-roles/#zone-limits">zone limit</a>. Renaming a user moves accounts that carry the old username to the new one, so a later user with the old name does not adopt those zones; with <code>sync_zone_owner_to_account</code> on, deleting a user clears or re-syncs the account of the zones they leave behind. See <a href="../../user-guide/supermasters/">Supermasters and Autoprimaries</a>.</td>
 <td>4.6.0</td>
 </tr>
 <tr>

@@ -137,9 +137,23 @@
                     void
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_syncZoneAccount">syncZoneAccount</a>(int $domainId)
+                    <a href="#method_syncZoneAccount">syncZoneAccount</a>(int $domainId, int|null $excludeUserId = null)
         
                                             <p><p>Update the zone's PowerDNS account field with the oldest owner's username</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_followRenamedUsername">followRenamedUsername</a>(string $oldUsername, string $newUsername)
+        
+                                            <p><p>Replace a username that was just renamed away on every zone still carrying it. With
+the owner sync on the oldest owner is pushed, else the new name (a renamed user is not
+a removed one); with it off the new name is written straight over the old. Zones with
+another account, set by hand, stay as they are. A failing zone does not stop the rest;
+the first failure is rethrown at the end.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -151,7 +165,8 @@
         
                                             <p><p>Push a resolved owner username to the backend, for callers with their
 own ownership lookup. Zones without a direct owner get an empty account
-so removed users don't linger.</p></p>                </div>
+so removed users don't linger; a renamed user is not a removed one, see
+followRenamedUsername().</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
             </div>
@@ -240,9 +255,9 @@ so removed users don't linger.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_syncZoneAccount">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneAccountSyncService.php#L59">at line 59</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneAccountSyncService.php#L60">at line 60</a></div>
         <code>                    void
-    <strong>syncZoneAccount</strong>(int $domainId)
+    <strong>syncZoneAccount</strong>(int $domainId, int|null $excludeUserId = null)
         </code>
     </h3>
     <div class="details">    
@@ -261,6 +276,63 @@ so removed users don't linger.</p></p>                </div>
                 <td>int</td>
                 <td>$domainId</td>
                 <td><p>Domain ID</p></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$excludeUserId</td>
+                <td><p>A user to leave out, for a zone about to lose them as an owner</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_followRenamedUsername">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneAccountSyncService.php#L76">at line 76</a></div>
+        <code>                    void
+    <strong>followRenamedUsername</strong>(string $oldUsername, string $newUsername)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>Replace a username that was just renamed away on every zone still carrying it. With
+the owner sync on the oldest owner is pushed, else the new name (a renamed user is not
+a removed one); with it off the new name is written straight over the old. Zones with
+another account, set by hand, stay as they are. A failing zone does not stop the rest;
+the first failure is rethrown at the end.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$oldUsername</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$newUsername</td>
+                <td></td>
             </tr>
             </table>
 
@@ -283,7 +355,7 @@ so removed users don't linger.</p></p>                </div>
             </div>
                     <div class="method-item">
                     <h3 id="method_pushZoneAccount">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneAccountSyncService.php#L76">at line 76</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneAccountSyncService.php#L108">at line 108</a></div>
         <code>                    void
     <strong>pushZoneAccount</strong>(int $domainId, string|null $username)
         </code>
@@ -296,7 +368,8 @@ so removed users don't linger.</p></p>                </div>
         <div class="method-description">
                             <p><p>Push a resolved owner username to the backend, for callers with their
 own ownership lookup. Zones without a direct owner get an empty account
-so removed users don't linger.</p></p>                        
+so removed users don't linger; a renamed user is not a removed one, see
+followRenamedUsername().</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -335,7 +408,7 @@ so removed users don't linger.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/e5ed0b1" rel="noreferrer" target="_blank">commit e5ed0b1,</a> built 2026-11-19 05:44 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/11bc5c4" rel="noreferrer" target="_blank">commit 11bc5c4,</a> built 2026-11-19 19:08 UTC.</div></div>
     </div>
     </body>
 
