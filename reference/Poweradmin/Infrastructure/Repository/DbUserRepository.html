@@ -199,7 +199,7 @@ are excluded so a directory account cannot be logged into with a local hash.</p>
                     bool
                 </div>
                 <div class="col-md-8">
-                    <a href="#method_hasActiveLdapUser">hasActiveLdapUser</a>(string $username)
+                    <a href="#method_hasActiveLdapUser">hasActiveLdapUser</a>(string $username, int|null $userId = null)
         
                                             <p><p>Whether the account is still active and still LDAP-enabled, re-checked on
 every request so a disabled account loses a cached LDAP bind at once.</p></p>                </div>
@@ -1073,7 +1073,7 @@ are excluded so a directory account cannot be logged into with a local hash.</p>
                     <h3 id="method_hasActiveLdapUser">
         <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L167">at line 167</a></div>
         <code>                    bool
-    <strong>hasActiveLdapUser</strong>(string $username)
+    <strong>hasActiveLdapUser</strong>(string $username, int|null $userId = null)
         </code>
     </h3>
     <div class="details">    
@@ -1083,7 +1083,7 @@ are excluded so a directory account cannot be logged into with a local hash.</p>
 
         <div class="method-description">
                             <p><p>Whether the account is still active and still LDAP-enabled, re-checked on
-every request so a disabled account loses a cached LDAP bind at once.</p></p>                        
+every request so a disabled account loses a cached LDAP bind at once.</p></p>                <p><p>With $userId the row must carry that id as well as the username.</p></p>        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -1092,6 +1092,11 @@ every request so a disabled account loses a cached LDAP bind at once.</p></p>
                     <tr>
                 <td>string</td>
                 <td>$username</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int|null</td>
+                <td>$userId</td>
                 <td></td>
             </tr>
             </table>
@@ -1115,7 +1120,7 @@ every request so a disabled account loses a cached LDAP bind at once.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isActiveUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L177">at line 177</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L181">at line 181</a></div>
         <code>                    bool
     <strong>isActiveUser</strong>(int $userId, string|null $username = null)
         </code>
@@ -1165,7 +1170,7 @@ still belong to that account, so a reused id does not carry the session over.</p
             </div>
                     <div class="method-item">
                     <h3 id="method_findBasicAuthUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L189">at line 189</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L193">at line 193</a></div>
         <code>                    array|null
     <strong>findBasicAuthUser</strong>(string $username)
         </code>
@@ -1208,7 +1213,7 @@ still belong to that account, so a reused id does not carry the session over.</p
             </div>
                     <div class="method-item">
                     <h3 id="method_findAuthMethodRow">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L198">at line 198</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L202">at line 202</a></div>
         <code>                    array|null
     <strong>findAuthMethodRow</strong>(string $username)
         </code>
@@ -1252,7 +1257,7 @@ distinguishable from an account with no auth_method set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_updatePassword">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L209">at line 209</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L213">at line 213</a></div>
         <code>                    bool
     <strong>updatePassword</strong>(int $userId, string $hashedPassword)
         </code>
@@ -1300,7 +1305,7 @@ distinguishable from an account with no auth_method set.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_rehashPassword">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L219">at line 219</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L223">at line 223</a></div>
         <code>                    bool
     <strong>rehashPassword</strong>(int $userId, string $hashedPassword)
         </code>
@@ -1349,7 +1354,7 @@ change at login). Unlike updatePassword() it leaves pending reset links alone.</
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L252">at line 252</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L256">at line 256</a></div>
         <code>                    array|null
     <strong>getUserById</strong>(int $userId)
         </code>
@@ -1392,7 +1397,7 @@ change at login). Unlike updatePassword() it leaves pending reset links alone.</
             </div>
                     <div class="method-item">
                     <h3 id="method_getFullNameById">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L269">at line 269</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L273">at line 273</a></div>
         <code>                    string|null
     <strong>getFullNameById</strong>(int $userId)
         </code>
@@ -1435,7 +1440,7 @@ change at login). Unlike updatePassword() it leaves pending reset links alone.</
             </div>
                     <div class="method-item">
                     <h3 id="method_getFullNameByUsername">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L277">at line 277</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L281">at line 281</a></div>
         <code>                    string|null
     <strong>getFullNameByUsername</strong>(string $username)
         </code>
@@ -1478,7 +1483,7 @@ change at login). Unlike updatePassword() it leaves pending reset links alone.</
             </div>
                     <div class="method-item">
                     <h3 id="method_getZoneOwnerFullNames">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L286">at line 286</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L290">at line 290</a></div>
         <code>                    string
     <strong>getZoneOwnerFullNames</strong>(int $domainId)
         </code>
@@ -1521,7 +1526,7 @@ change at login). Unlike updatePassword() it leaves pending reset links alone.</
             </div>
                     <div class="method-item">
                     <h3 id="method_userOwnsZone">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L320">at line 320</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L324">at line 324</a></div>
         <code>                    bool
     <strong>userOwnsZone</strong>(int $userId, int $domainId)
         </code>
@@ -1569,7 +1574,7 @@ change at login). Unlike updatePassword() it leaves pending reset links alone.</
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserGroupIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L352">at line 352</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L356">at line 356</a></div>
         <code>                    array
     <strong>getUserGroupIds</strong>(int $userId)
         </code>
@@ -1613,7 +1618,7 @@ change at login). Unlike updatePassword() it leaves pending reset links alone.</
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserOwnedZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L366">at line 366</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L370">at line 370</a></div>
         <code>                    array
     <strong>getUserOwnedZoneIds</strong>(int $userId)
         </code>
@@ -1657,7 +1662,7 @@ change at login). Unlike updatePassword() it leaves pending reset links alone.</
             </div>
                     <div class="method-item">
                     <h3 id="method_getDirectlyOwnedZoneIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L386">at line 386</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L390">at line 390</a></div>
         <code>                    array
     <strong>getDirectlyOwnedZoneIds</strong>(int $userId)
         </code>
@@ -1701,7 +1706,7 @@ change at login). Unlike updatePassword() it leaves pending reset links alone.</
             </div>
                     <div class="method-item">
                     <h3 id="method_countDirectlyOwnedZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L398">at line 398</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L402">at line 402</a></div>
         <code>                    array
     <strong>countDirectlyOwnedZones</strong>(array $userIds)
         </code>
@@ -1744,7 +1749,7 @@ change at login). Unlike updatePassword() it leaves pending reset links alone.</
             </div>
                     <div class="method-item">
                     <h3 id="method_findZoneLimits">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L425">at line 425</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L429">at line 429</a></div>
         <code>                    array
     <strong>findZoneLimits</strong>(array $userIds)
         </code>
@@ -1787,7 +1792,7 @@ change at login). Unlike updatePassword() it leaves pending reset links alone.</
             </div>
                     <div class="method-item">
                     <h3 id="method_lockForZoneLimit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L446">at line 446</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L450">at line 450</a></div>
         <code>                    void
     <strong>lockForZoneLimit</strong>(int $userId)
         </code>
@@ -1831,7 +1836,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_findZoneLimit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L455">at line 455</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L459">at line 459</a></div>
         <code>                    int|null
     <strong>findZoneLimit</strong>(int $userId)
         </code>
@@ -1875,7 +1880,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_setZoneLimit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L465">at line 465</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L469">at line 469</a></div>
         <code>                    bool
     <strong>setZoneLimit</strong>(int $userId, int|null $limit)
         </code>
@@ -1923,7 +1928,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserPermissions">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L480">at line 480</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L484">at line 484</a></div>
         <code>                    array
     <strong>getUserPermissions</strong>(int $userId)
         </code>
@@ -1966,7 +1971,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_hasAdminPermission">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L527">at line 527</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L531">at line 531</a></div>
         <code>                    bool
     <strong>hasAdminPermission</strong>(int $userId)
         </code>
@@ -2009,7 +2014,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUsersList">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L569">at line 569</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L573">at line 573</a></div>
         <code>                    array
     <strong>getUsersList</strong>(int $offset, int $limit, string|null $search = null, array $sort = [])
         </code>
@@ -2067,7 +2072,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUsersWithZoneCounts">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L633">at line 633</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L637">at line 637</a></div>
         <code>                    array
     <strong>getUsersWithZoneCounts</strong>()
         </code>
@@ -2100,7 +2105,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserDetailList">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L718">at line 718</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L722">at line 722</a></div>
         <code>                    array
     <strong>getUserDetailList</strong>(bool $ldapUse, int|null $restrictToUserId, int|null $specific = null, int|null $limit = null, int|null $offset = null, string|null $search = null)
         </code>
@@ -2168,7 +2173,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getTotalUserCount">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L894">at line 894</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L898">at line 898</a></div>
         <code>                    int
     <strong>getTotalUserCount</strong>(int|null $restrictToUserId = null, string|null $search = null)
         </code>
@@ -2216,7 +2221,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_deleteUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L927">at line 927</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L931">at line 931</a></div>
         <code>                    bool
     <strong>deleteUser</strong>(int $userId, int|null $sharedTemplateHeir = null)
         </code>
@@ -2264,7 +2269,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1084">at line 1084</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1088">at line 1088</a></div>
         <code>                    array
     <strong>getUserZones</strong>(int $userId)
         </code>
@@ -2307,7 +2312,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_transferUserZones">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1102">at line 1102</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1106">at line 1106</a></div>
         <code>                    bool
     <strong>transferUserZones</strong>(int $fromUserId, int $toUserId)
         </code>
@@ -2355,7 +2360,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_countUberusers">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1220">at line 1220</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1224">at line 1224</a></div>
         <code>                    int
     <strong>countUberusers</strong>()
         </code>
@@ -2388,7 +2393,7 @@ this user run one at a time</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_countUberusersAfter">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1284">at line 1284</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1288">at line 1288</a></div>
         <code>                    int
     <strong>countUberusersAfter</strong>(<a href="../../../Poweradmin/Domain/Model/UberuserChange.html"><abbr title="Poweradmin\Domain\Model\UberuserChange">UberuserChange</abbr></a> $change)
         </code>
@@ -2432,7 +2437,7 @@ transaction it locks the active super admin rows first, as isLastUberuser() does
             </div>
                     <div class="method-item">
                     <h3 id="method_holdsUberuserThroughGroup">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1304">at line 1304</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1308">at line 1308</a></div>
         <code>                    bool
     <strong>holdsUberuserThroughGroup</strong>(int $userId)
         </code>
@@ -2476,7 +2481,7 @@ the user's own template cannot take it away.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isLastUberuser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1326">at line 1326</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1330">at line 1330</a></div>
         <code>                    bool
     <strong>isLastUberuser</strong>(int $userId)
         </code>
@@ -2519,7 +2524,7 @@ the user's own template cannot take it away.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isUberuser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1353">at line 1353</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1357">at line 1357</a></div>
         <code>                    bool
     <strong>isUberuser</strong>(int $userId)
         </code>
@@ -2562,7 +2567,7 @@ the user's own template cannot take it away.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getAdminUserIds">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1361">at line 1361</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1365">at line 1365</a></div>
         <code>                    array
     <strong>getAdminUserIds</strong>()
         </code>
@@ -2595,7 +2600,7 @@ the user's own template cannot take it away.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_templateGrantsUberuser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1387">at line 1387</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1391">at line 1391</a></div>
         <code>                    bool
     <strong>templateGrantsUberuser</strong>(int $permTemplId)
         </code>
@@ -2638,7 +2643,7 @@ the user's own template cannot take it away.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getTemplatePermissionNames">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1400">at line 1400</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1404">at line 1404</a></div>
         <code>                    array
     <strong>getTemplatePermissionNames</strong>(int $permTemplId)
         </code>
@@ -2681,7 +2686,7 @@ the user's own template cannot take it away.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_findPermissionTemplateIdByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1412">at line 1412</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1416">at line 1416</a></div>
         <code>                    int|null
     <strong>findPermissionTemplateIdByName</strong>(string $name)
         </code>
@@ -2725,7 +2730,7 @@ IdP-asserted claim cannot map to a look-alike template.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getPermissionIdsByName">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1422">at line 1422</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1426">at line 1426</a></div>
         <code>                    array
     <strong>getPermissionIdsByName</strong>(string $name)
         </code>
@@ -2769,7 +2774,7 @@ all of them grant the permission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_createUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1431">at line 1431</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1435">at line 1435</a></div>
         <code>                    int|null
     <strong>createUser</strong>(<a href="../../../Poweradmin/Domain/Service/User/CreateUserCommand.html"><abbr title="Poweradmin\Domain\Service\User\CreateUserCommand">CreateUserCommand</abbr></a> $user)
         </code>
@@ -2812,7 +2817,7 @@ all of them grant the permission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_createProvisionedUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1465">at line 1465</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1469">at line 1469</a></div>
         <code>                    int
     <strong>createProvisionedUser</strong>(array $userData)
         </code>
@@ -2864,7 +2869,7 @@ all of them grant the permission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_updateProvisionedUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1492">at line 1492</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1496">at line 1496</a></div>
         <code>                    void
     <strong>updateProvisionedUser</strong>(int $userId, array $fields)
         </code>
@@ -2912,7 +2917,7 @@ all of them grant the permission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserByUsername">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1525">at line 1525</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1529">at line 1529</a></div>
         <code>                    array|null
     <strong>getUserByUsername</strong>(string $username)
         </code>
@@ -2955,7 +2960,7 @@ all of them grant the permission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getUserByEmail">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1539">at line 1539</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1543">at line 1543</a></div>
         <code>                    array|null
     <strong>getUserByEmail</strong>(string $email)
         </code>
@@ -2998,7 +3003,7 @@ all of them grant the permission.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_findActiveUserIdByEmail">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1554">at line 1554</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1558">at line 1558</a></div>
         <code>                    int|null
     <strong>findActiveUserIdByEmail</strong>(string $email)
         </code>
@@ -3042,7 +3047,7 @@ look-alike address from an identity provider cannot resolve to another account.<
             </div>
                     <div class="method-item">
                     <h3 id="method_findInactiveUserIdByEmail">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1564">at line 1564</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1568">at line 1568</a></div>
         <code>                    int|null
     <strong>findInactiveUserIdByEmail</strong>(string $email)
         </code>
@@ -3086,7 +3091,7 @@ as findActiveUserIdByEmail().</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_getProvisioningProfile">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1574">at line 1574</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1578">at line 1578</a></div>
         <code>                    array
     <strong>getProvisioningProfile</strong>(int $userId)
         </code>
@@ -3129,7 +3134,7 @@ as findActiveUserIdByEmail().</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_hasLocalPassword">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1582">at line 1582</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1586">at line 1586</a></div>
         <code>                    bool
     <strong>hasLocalPassword</strong>(int $userId)
         </code>
@@ -3172,7 +3177,7 @@ as findActiveUserIdByEmail().</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_countUsersByEmail">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1593">at line 1593</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1597">at line 1597</a></div>
         <code>                    int
     <strong>countUsersByEmail</strong>(string $email)
         </code>
@@ -3215,7 +3220,7 @@ as findActiveUserIdByEmail().</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_emailUsedByOtherUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1603">at line 1603</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1607">at line 1607</a></div>
         <code>                    bool
     <strong>emailUsedByOtherUser</strong>(int $userId, string $email)
         </code>
@@ -3264,7 +3269,7 @@ compared the way countUsersByEmail() does.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_updateUser">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1621">at line 1621</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1625">at line 1625</a></div>
         <code>                    bool
     <strong>updateUser</strong>(int $userId, <a href="../../../Poweradmin/Domain/Service/User/UpdateUserCommand.html"><abbr title="Poweradmin\Domain\Service\User\UpdateUserCommand">UpdateUserCommand</abbr></a> $changes)
         </code>
@@ -3312,7 +3317,7 @@ compared the way countUsersByEmail() does.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_assignPermissionTemplate">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1704">at line 1704</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1708">at line 1708</a></div>
         <code>                    bool
     <strong>assignPermissionTemplate</strong>(int $userId, int $permTemplId)
         </code>
@@ -3360,7 +3365,7 @@ compared the way countUsersByEmail() does.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_permissionTemplateExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1717">at line 1717</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Infrastructure/Repository/DbUserRepository.php#L1721">at line 1721</a></div>
         <code>                    bool
     <strong>permissionTemplateExists</strong>(int $permTemplId, string|null $templateType = null)
         </code>
@@ -3410,7 +3415,7 @@ compared the way countUsersByEmail() does.</p></p>
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/11bc5c4" rel="noreferrer" target="_blank">commit 11bc5c4,</a> built 2026-11-19 19:53 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/3d65867" rel="noreferrer" target="_blank">commit 3d65867,</a> built 2026-11-20 05:49 UTC.</div></div>
     </div>
     </body>
 
