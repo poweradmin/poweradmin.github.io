@@ -7694,7 +7694,7 @@ fail2ban skips them.</p>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># Match credential failures and MFA brute force.</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Deliberately excludes operation:login_error (backend/IdP outages) and</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># operation:login_locked (already throttled at the application layer).</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="na">failregex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">^.*\bpoweradmin\b.*client_ip:&lt;HOST&gt; .*operation:(login_failed|mfa_failed)\b</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="na">failregex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">^.*\bpoweradmin(?:\[\d+\])?: client_ip:&lt;HOST&gt; user:\S* operation:(login_failed|mfa_failed)\b</span>
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="na">ignoreregex</span><span class="w"> </span><span class="o">=</span>
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
@@ -7704,8 +7704,13 @@ fail2ban skips them.</p>
 <p>The <code>&lt;HOST&gt;</code> token tells fail2ban which capture group is the client IP.
 The regex anchors on:</p>
 <ul>
-<li><code>\bpoweradmin\b</code> - the syslog identity, so unrelated lines on the same
-  file don't match.</li>
+<li><code>poweradmin:</code> (optionally <code>poweradmin[pid]:</code>) - the syslog identity, so
+  unrelated lines on the same file don't match.</li>
+<li><code>client_ip:&lt;HOST&gt; user:\S* operation:</code> - the leading fields, in the order
+  Poweradmin writes them. Anchoring on them means text inside a logged value,
+  such as record content, cannot supply the address or the operation. Use
+  this form rather than a <code>.*</code> between the fields, which an older version of
+  this page showed.</li>
 <li><code>operation:(login_failed|mfa_failed)</code> - the credential-side events
   only.</li>
 </ul>
