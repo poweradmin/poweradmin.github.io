@@ -7568,9 +7568,9 @@ every release in between: you install 4.4.x and run the update scripts it ships,
 <li>
 <p>Add the <code>zone_content_edit_own_as_client</code> permission if it is missing. Databases created by
    2.1.7 or older, or loaded from the SQL files instead of the installer (MySQL files before
-   2.2.1, all 2.x PostgreSQL and SQLite files), do not have it, and no
-   update script before 4.6.0 adds it. Without it, the Editor templates cannot edit records.
-   Check first with <code>SELECT id FROM perm_items WHERE name = 'zone_content_edit_own_as_client';</code>
+   2.2.1, all 2.x PostgreSQL and SQLite files), do not have it. Without it, the Editor templates
+   cannot edit records. The <code>4.4.0</code> script of 4.4.4 and later adds it; with the scripts of 4.4.3 or
+   older, add it by hand. Check first with <code>SELECT id FROM perm_items WHERE name = 'zone_content_edit_own_as_client';</code>
    and run the following only if that returns nothing:</p>
 <div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">perm_items</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">descr</span><span class="p">)</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">'zone_content_edit_own_as_client'</span><span class="p">,</span><span class="w"> </span><span class="s1">'User is allowed to edit record, but not SOA and NS.'</span><span class="p">);</span>
@@ -7584,9 +7584,9 @@ every release in between: you install 4.4.x and run the update scripts it ships,
 </code></pre></div>
 </li>
 <li>
-<p>PostgreSQL only, and only if <code>SELECT id FROM perm_items WHERE name = 'zone_content_edit_own';</code>
+<p>PostgreSQL only, with the scripts of 4.4.3 or older, and only if <code>SELECT id FROM perm_items WHERE name = 'zone_content_edit_own';</code>
    returns something other than 44: the database was loaded from the 2.x PostgreSQL SQL file,
-   which numbers the permissions 1-21 instead of 41-61. The 4.4.x copy of the 4.1.0 script grants
+   which numbers the permissions 1-21 instead of 41-61. The 4.1.0 script of 4.4.3 and older grants
    the new delete permissions by those fixed numbers, so templates that could edit zones do not
    get the matching delete permission. Re-grant <strong>zone_delete_own</strong> and <strong>zone_delete_others</strong> to
    such templates under <strong>Access &gt; List templates</strong>.</p>
