@@ -376,12 +376,36 @@ returned value for the intended wildcard positions.</p></p>                </div
                     static&nbsp;string
                 </div>
                 <div class="col-md-8">
+                    <a href="#method_fieldCondition">fieldCondition</a>(string $column, string $field, string $value, array $params, string $prefix)
+        
+                                            <p><p>A condition matching the audit-line field <code>&lt;field&gt;:&lt;value&gt;</code> as a whole field: at the
+start, in the middle or at the end of the event, so <code>password_reset</code> does not match
+<code>password_reset_request</code>, <code>user:alice</code> does not match <code>target_user:alice</code>, and a field
+that ends its line (<code>operation:logout</code>) is found. Binds four patterns named
+<code>:&lt;prefix&gt;0</code> to <code>:&lt;prefix&gt;3</code> into $params as [value, PDO type]. The value is escaped
+here; a caller encoding it for the line (AuditLineValue::user) does so first.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_fieldConditionForExpression">fieldConditionForExpression</a>(string $dbType, string $column, string $field, string $escapedValueSql)
+        
+                                            <p><p>The same whole-field match as fieldCondition() for a value that is an SQL expression
+(a column), already escaped for LIKE with <code>!</code>. Binds nothing.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string
+                </div>
+                <div class="col-md-8">
                     <a href="#method_operationFieldCondition">operationFieldCondition</a>(string $column, string $operation, array $params, string $prefix = &#039;op&#039;)
         
-                                            <p><p>A condition matching the audit-line field <code>operation:&lt;name&gt;</code> as a whole field: at the
-start, in the middle or at the end of the event, so <code>password_reset</code> does not match
-<code>password_reset_request</code> and <code>logout</code> (which ends its line) is found. Binds four
-patterns named <code>:&lt;prefix&gt;0</code> to <code>:&lt;prefix&gt;3</code> into $params as [value, PDO type].</p></p>                </div>
+                                            <p><p>The operation field as a whole field; see fieldCondition(). Placeholders are
+<code>:&lt;prefix&gt;0</code> to <code>:&lt;prefix&gt;3</code>.</p></p>                </div>
                 <div class="col-md-2"></div>
             </div>
                     <div class="row">
@@ -1230,8 +1254,135 @@ returned value for the intended wildcard positions.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_fieldCondition">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L406">at line 406</a></div>
+        <code>        static            string
+    <strong>fieldCondition</strong>(string $column, string $field, string $value, array $params, string $prefix)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>A condition matching the audit-line field <code>&lt;field&gt;:&lt;value&gt;</code> as a whole field: at the
+start, in the middle or at the end of the event, so <code>password_reset</code> does not match
+<code>password_reset_request</code>, <code>user:alice</code> does not match <code>target_user:alice</code>, and a field
+that ends its line (<code>operation:logout</code>) is found. Binds four patterns named
+<code>:&lt;prefix&gt;0</code> to <code>:&lt;prefix&gt;3</code> into $params as [value, PDO type]. The value is escaped
+here; a caller encoding it for the line (AuditLineValue::user) does so first.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$column</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$field</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$value</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$params</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$prefix</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_fieldConditionForExpression">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L423">at line 423</a></div>
+        <code>        static            string
+    <strong>fieldConditionForExpression</strong>(string $dbType, string $column, string $field, string $escapedValueSql)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The same whole-field match as fieldCondition() for a value that is an SQL expression
+(a column), already escaped for LIKE with <code>!</code>. Binds nothing.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$dbType</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$column</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$field</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$escapedValueSql</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_operationFieldCondition">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L404">at line 404</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L446">at line 446</a></div>
         <code>        static            string
     <strong>operationFieldCondition</strong>(string $column, string $operation, array $params, string $prefix = &#039;op&#039;)
         </code>
@@ -1242,10 +1393,8 @@ returned value for the intended wildcard positions.</p></p>
             
 
         <div class="method-description">
-                            <p><p>A condition matching the audit-line field <code>operation:&lt;name&gt;</code> as a whole field: at the
-start, in the middle or at the end of the event, so <code>password_reset</code> does not match
-<code>password_reset_request</code> and <code>logout</code> (which ends its line) is found. Binds four
-patterns named <code>:&lt;prefix&gt;0</code> to <code>:&lt;prefix&gt;3</code> into $params as [value, PDO type].</p></p>                        
+                            <p><p>The operation field as a whole field; see fieldCondition(). Placeholders are
+<code>:&lt;prefix&gt;0</code> to <code>:&lt;prefix&gt;3</code>.</p></p>                        
         </div>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -1292,7 +1441,7 @@ patterns named <code>:&lt;prefix&gt;0</code> to <code>:&lt;prefix&gt;3</code> in
             </div>
                     <div class="method-item">
                     <h3 id="method_binaryCollation">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L430">at line 430</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L464">at line 464</a></div>
         <code>        static            string
     <strong>binaryCollation</strong>(string|null $db_type)
         </code>
@@ -1340,7 +1489,7 @@ byte-exact by default and need no clause.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_accentSensitiveEquals">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L453">at line 453</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L487">at line 487</a></div>
         <code>        static            string
     <strong>accentSensitiveEquals</strong>(string|null $db_type, string $column, string $placeholder = &#039;?&#039;)
         </code>
@@ -1400,7 +1549,7 @@ the fix is a no-op there because they were never affected.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_binaryCompare">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L472">at line 472</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L506">at line 506</a></div>
         <code>        static            string
     <strong>binaryCompare</strong>(string|null $db_type, string $column)
         </code>
@@ -1451,7 +1600,7 @@ which binaryCollation() cannot promise on a latin1 or utf8mb3 column.</p></p>   
             </div>
                     <div class="method-item">
                     <h3 id="method_distinctAllowsOrderByExpression">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L488">at line 488</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L522">at line 522</a></div>
         <code>        static            bool
     <strong>distinctAllowsOrderByExpression</strong>(string|null $db_type)
         </code>
@@ -1496,7 +1645,7 @@ expressions must appear in select list&quot;); MySQL and SQLite allow it.</p></p
             </div>
                     <div class="method-item">
                     <h3 id="method_caseInsensitiveEquals">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L502">at line 502</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L536">at line 536</a></div>
         <code>        static            string
     <strong>caseInsensitiveEquals</strong>(string|null $db_type, string $column, string $placeholder = &#039;?&#039;)
         </code>
@@ -1550,7 +1699,7 @@ like email addresses where User@x and user@x are one identity.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isMissingColumn">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L514">at line 514</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L548">at line 548</a></div>
         <code>        static            bool
     <strong>isMissingColumn</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDOException">PDOException</a> $e)
         </code>
@@ -1593,7 +1742,7 @@ like email addresses where User@x and user@x are one identity.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_isMissingTable">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L524">at line 524</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L558">at line 558</a></div>
         <code>        static            bool
     <strong>isMissingTable</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDOException">PDOException</a> $e)
         </code>
@@ -1637,7 +1786,7 @@ PHP code was deployed before its SQL update ran. Covers MySQL, PostgreSQL and SQ
             </div>
                     <div class="method-item">
                     <h3 id="method_tableExists">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L541">at line 541</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Database/DbCompat.php#L575">at line 575</a></div>
         <code>        static            bool
     <strong>tableExists</strong>(<a target="_blank" rel="noopener" href="https://www.php.net/PDO">PDO</a> $db, string $table)
         </code>
@@ -1688,7 +1837,7 @@ PHP code was deployed before its SQL update ran. Covers MySQL, PostgreSQL and SQ
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/ae37dff" rel="noreferrer" target="_blank">commit ae37dff,</a> built 2026-11-21 08:25 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/cf814db" rel="noreferrer" target="_blank">commit cf814db,</a> built 2026-11-21 16:45 UTC.</div></div>
     </div>
     </body>
 
