@@ -7670,9 +7670,12 @@ the key is rejected with <code>401</code>, the same as a disabled key.</p>
 </code></pre></div>
 <p><code>Authorization: Bearer your-api-key-here</code> is accepted as an equivalent if your
 client is easier to configure that way.</p>
-<p>A key is also accepted as an <code>api_key</code> query parameter, but do not use it: URLs
-end up in web server, proxy and browser logs, which would leak the key. Send it
-in a header.</p>
+<p>A key is also accepted as an <code>api_key</code> query parameter, but this is deprecated
+in 4.6.0 and may be removed in a later release. URLs end up in web server,
+proxy and browser logs, which would leak the key. Poweradmin logs a warning
+(never the key) once per request that authenticates this way, and the OpenAPI
+spec marks the parameter as deprecated. Send the key in the <code>X-API-Key</code> header
+instead.</p>
 <p>The key inherits the permissions of the user it belongs to. If that user can
 edit zone X in the web UI, the key can edit zone X over the API; if they
 cannot, the key cannot either.</p>

@@ -2615,6 +2615,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#id-token-verification-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ID token verification (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#response-mode-response_mode" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7994,6 +8005,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#id-token-verification-v460" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ID token verification (v4.6.0+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#response-mode-response_mode" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8321,6 +8343,11 @@
 <td>Sync user info (name, email) on each login</td>
 </tr>
 <tr>
+<td><code>oidc.verify_id_token</code></td>
+<td>false</td>
+<td>Verify the ID token's signature and claims (v4.6.0+; Docker: <code>PA_OIDC_VERIFY_ID_TOKEN</code>). See <a href="#id-token-verification-v460">ID token verification</a></td>
+</tr>
+<tr>
 <td><code>oidc.default_permission_template</code></td>
 <td>"Guest"</td>
 <td>Default permission template for new users</td>
@@ -8602,6 +8629,21 @@ claim: a <code>|</code> list or an empty value is a configuration error.</p>
 <td>Provider logout endpoint</td>
 </tr>
 <tr>
+<td><code>verify_id_token</code></td>
+<td>No</td>
+<td>Overrides <code>oidc.verify_id_token</code> for this provider (v4.6.0+)</td>
+</tr>
+<tr>
+<td><code>jwks_url</code></td>
+<td>Conditional</td>
+<td>Signing keys (JWKS) URL. Needed with verification when <code>auto_discovery</code> is off; with discovery it is read from <code>jwks_uri</code> unless set here (v4.6.0+)</td>
+</tr>
+<tr>
+<td><code>issuer</code></td>
+<td>Conditional</td>
+<td>Expected <code>iss</code> of the ID token. Needed with verification when <code>auto_discovery</code> is off; with discovery it is read from <code>issuer</code> unless set here (v4.6.0+)</td>
+</tr>
+<tr>
 <td><code>response_mode</code></td>
 <td>No</td>
 <td>How the provider returns the authorization code: <code>query</code> (default) or <code>form_post</code></td>
@@ -8613,12 +8655,66 @@ claim: a <code>|</code> list or an empty value is a configuration error.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="id-token-verification-v460">ID token verification <em>(v4.6.0+)</em><a class="headerlink" href="#id-token-verification-v460" title="Permanent link">&para;</a></h3>
+<p>By default Poweradmin reads the claims of the ID token without checking its signature,
+because the token arrives straight from the provider's token endpoint over TLS. Turn on
+<code>oidc.verify_id_token</code> to check it as the OpenID Connect specification describes:</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="x">'oidc' =&gt; [</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="x">    'verify_id_token' =&gt; true,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="x">        'keycloak' =&gt; [</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="x">            // with auto_discovery the issuer and signing keys URL come from the metadata</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="x">            'auto_discovery' =&gt; true,</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="x">            'metadata_url' =&gt; 'https://keycloak.example.com/realms/master/.well-known/openid-configuration',</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="x">        ],</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="x">        'custom' =&gt; [</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="x">            'auto_discovery' =&gt; false,</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="x">            'jwks_url' =&gt; 'https://idp.example.com/keys',</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="x">            'issuer' =&gt; 'https://idp.example.com',</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="x">            // ...</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="x">        ],</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="x">        'github' =&gt; [</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="x">            'verify_id_token' =&gt; false,   // OAuth 2.0 only, sends no ID token</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="x">            // ...</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="x">        ],</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="x">    ],</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="x">],</span>
+</code></pre></div>
+<p>With verification on:</p>
+<ul>
+<li>The authorization request carries a random <code>nonce</code>, and the ID token must return it.
+  The nonce works once per login.</li>
+<li>The token response must contain an ID token. It must be signed with RS256, RS384,
+  RS512, ES256 or ES384 by a key from the provider's JWKS (tokens with <code>alg</code> set to
+  <code>none</code> or an HMAC algorithm are refused).</li>
+<li><code>iss</code> must equal the issuer, <code>aud</code> must contain the provider's <code>client_id</code> (with several
+  audiences <code>azp</code> must also equal it), <code>exp</code> must be in the future and <code>iat</code> not in the
+  future, each with 60 seconds of clock tolerance.</li>
+<li>The token must carry a <code>sub</code>, and the userinfo response's <code>sub</code> must be the same, or the login is refused.</li>
+<li>Claims such as groups are taken only from a token that passed these checks.</li>
+<li>Any failure refuses the login with the usual generic error. The reason is written to the
+  Poweradmin log, without the token.</li>
+</ul>
+<p>Notes:</p>
+<ul>
+<li>A provider's own <code>verify_id_token</code> wins over the global setting. Set it to <code>false</code> for
+  OAuth 2.0 providers such as GitHub that send no ID token, or the login is refused.</li>
+<li>A configured <code>issuer</code> or <code>jwks_url</code> is used instead of the value from discovery, and a warning is logged when it differs from the advertised one. The issuer must match the token's <code>iss</code> exactly, including any trailing slash.</li>
+<li>Redirects on the JWKS request are followed over HTTPS only.</li>
+<li>With Docker, <code>PA_OIDC_VERIFY_ID_TOKEN=true</code> turns on the global setting; the generated providers have no <code>jwks_url</code> or <code>issuer</code>, so use it with <code>PA_OIDC_GENERIC_AUTO_DISCOVERY=true</code>, and note it applies to the GitHub provider too, which sends no ID token.</li>
+<li>Without <code>auto_discovery</code>, a provider with verification on needs both <code>jwks_url</code> and
+  <code>issuer</code>, otherwise its login button is hidden.</li>
+<li>The key set is cached for an hour under <code>var/cache/oidc</code>. An ID token signed with an
+  unknown key id triggers one refetch, at most once a minute, so key rotation needs no action.
+  The directory must be writable by the web server; without it keys are fetched on every login.</li>
+<li>The JWKS request uses the same HTTP client and proxy settings as the token request.</li>
+</ul>
 <h3 id="response-mode-response_mode">Response mode (<code>response_mode</code>)<a class="headerlink" href="#response-mode-response_mode" title="Permanent link">&para;</a></h3>
 <p>By default the provider returns the authorization code in the callback URL query
 string (<code>response_mode</code> = <code>query</code>). Setting <code>response_mode</code> to <code>form_post</code> asks the
 provider to return the code in an HTTP POST body instead, so it never appears in
 URLs, proxy logs, or browser history.</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="x">'response_mode' =&gt; 'form_post',</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="x">'response_mode' =&gt; 'form_post',</span>
 </code></pre></div>
 <p>Notes:</p>
 <ul>
@@ -8636,7 +8732,7 @@ URLs, proxy logs, or browser history.</p>
 <h3 id="scopes-scopes">Scopes (<code>scopes</code>)<a class="headerlink" href="#scopes-scopes" title="Permanent link">&para;</a></h3>
 <p>Each provider's <code>scopes</code> string controls which OAuth scopes Poweradmin requests at login. The default is <code>openid profile email</code>, which does <strong>not</strong> include group information.</p>
 <p>If you use <code>group_mapping</code> or <code>permission_template_mapping</code>, the provider must return a groups claim, and many providers only include it when a <code>groups</code> scope is requested explicitly. Add it to that provider's <code>scopes</code>:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="x">'scopes' =&gt; 'openid profile email groups',</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="x">'scopes' =&gt; 'openid profile email groups',</span>
 </code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> <code>groups</code> is not a universal scope. SimpleSAML, Keycloak, and Okta expose group membership through it, but Azure AD and Google do not - they surface groups/roles via provider-specific configuration (see their sections below). The scope name is also independent of the claim name, which you set with <code>user_mapping.groups</code> (default <code>groups</code>).</p>
@@ -8648,30 +8744,30 @@ URLs, proxy logs, or browser history.</p>
 <li>Create a client secret</li>
 <li>
 <p>Configure optional claims for groups if needed</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="x">'oidc' =&gt; [</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="x">        'azure' =&gt; [</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="x">            'name' =&gt; 'Microsoft Azure AD',</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Microsoft',</span>
-<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
-<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
-<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="x">            'tenant' =&gt; 'your-tenant-id',  // or 'common' for multi-tenant</span>
-<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="x">            'auto_discovery' =&gt; true,</span>
-<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="x">            'metadata_url' =&gt; 'https://login.microsoftonline.com/{tenant}/v2.0/.well-known/openid-configuration',</span>
-<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="x">            'logout_url' =&gt; 'https://login.microsoftonline.com/{tenant}/oauth2/v2.0/logout',</span>
-<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="x">            'scopes' =&gt; 'openid profile email',</span>
-<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="x">                'username' =&gt; 'email',</span>
-<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="x">                'email' =&gt; 'email',</span>
-<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
-<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
-<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="x">                'display_name' =&gt; 'name',</span>
-<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="x">                'groups' =&gt; 'groups',</span>
-<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="x">            ],</span>
-<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="x">        ],</span>
-<a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="x">    ],</span>
-<a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="x">'oidc' =&gt; [</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="x">        'azure' =&gt; [</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="x">            'name' =&gt; 'Microsoft Azure AD',</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Microsoft',</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="x">            'tenant' =&gt; 'your-tenant-id',  // or 'common' for multi-tenant</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="x">            'auto_discovery' =&gt; true,</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="x">            'metadata_url' =&gt; 'https://login.microsoftonline.com/{tenant}/v2.0/.well-known/openid-configuration',</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="x">            'logout_url' =&gt; 'https://login.microsoftonline.com/{tenant}/oauth2/v2.0/logout',</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="x">            'scopes' =&gt; 'openid profile email',</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="x">                'username' =&gt; 'email',</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="x">                'email' =&gt; 'email',</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="x">                'display_name' =&gt; 'name',</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="x">                'groups' =&gt; 'groups',</span>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="x">            ],</span>
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="x">        ],</span>
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="x">    ],</span>
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a><span class="x">],</span>
 </code></pre></div>
 </li>
 </ol>
@@ -8682,28 +8778,28 @@ URLs, proxy logs, or browser history.</p>
 <li>Create an OAuth 2.0 Client ID</li>
 <li>
 <p>Add authorized redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="x">'oidc' =&gt; [</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="x">        'google' =&gt; [</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="x">            'name' =&gt; 'Google',</span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Google',</span>
-<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="x">            'client_id' =&gt; 'your-client-id.apps.googleusercontent.com',</span>
-<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
-<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="x">            'auto_discovery' =&gt; true,</span>
-<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="x">            'metadata_url' =&gt; 'https://accounts.google.com/.well-known/openid-configuration',</span>
-<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="x">            'logout_url' =&gt; 'https://accounts.google.com/logout',</span>
-<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="x">            'scopes' =&gt; 'openid profile email',</span>
-<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="x">                'username' =&gt; 'email',</span>
-<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="x">                'email' =&gt; 'email',</span>
-<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
-<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
-<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="x">                'display_name' =&gt; 'name',</span>
-<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="x">            ],</span>
-<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="x">        ],</span>
-<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="x">    ],</span>
-<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="x">'oidc' =&gt; [</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="x">        'google' =&gt; [</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="x">            'name' =&gt; 'Google',</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Google',</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="x">            'client_id' =&gt; 'your-client-id.apps.googleusercontent.com',</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="x">            'auto_discovery' =&gt; true,</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="x">            'metadata_url' =&gt; 'https://accounts.google.com/.well-known/openid-configuration',</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="x">            'logout_url' =&gt; 'https://accounts.google.com/logout',</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="x">            'scopes' =&gt; 'openid profile email',</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="x">                'username' =&gt; 'email',</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="x">                'email' =&gt; 'email',</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="x">                'display_name' =&gt; 'name',</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a><span class="x">            ],</span>
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="x">        ],</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a><span class="x">    ],</span>
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a><span class="x">],</span>
 </code></pre></div>
 </li>
 </ol>
@@ -8714,31 +8810,31 @@ URLs, proxy logs, or browser history.</p>
 <li>Add valid redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></li>
 <li>
 <p>Enable "groups" scope if using group mapping</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="x">'oidc' =&gt; [</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="x">        'keycloak' =&gt; [</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="x">            'name' =&gt; 'Keycloak',</span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Keycloak',</span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="x">            'client_id' =&gt; 'poweradmin',</span>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
-<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="x">            'base_url' =&gt; 'https://keycloak.example.com',</span>
-<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="x">            'realm' =&gt; 'master',</span>
-<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="x">            'auto_discovery' =&gt; true,</span>
-<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="x">            'metadata_url' =&gt; '{base_url}/realms/{realm}/.well-known/openid-configuration',</span>
-<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="x">            'logout_url' =&gt; '{base_url}/realms/{realm}/protocol/openid-connect/logout',</span>
-<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="x">            'scopes' =&gt; 'openid profile email groups',</span>
-<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="x">                'username' =&gt; 'preferred_username',</span>
-<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="x">                'email' =&gt; 'email',</span>
-<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
-<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
-<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="x">                'display_name' =&gt; 'name',</span>
-<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a><span class="x">                'groups' =&gt; 'groups',</span>
-<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a><span class="x">            ],</span>
-<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a><span class="x">        ],</span>
-<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a><span class="x">    ],</span>
-<a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="x">'oidc' =&gt; [</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="x">        'keycloak' =&gt; [</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="x">            'name' =&gt; 'Keycloak',</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Keycloak',</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="x">            'client_id' =&gt; 'poweradmin',</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="x">            'base_url' =&gt; 'https://keycloak.example.com',</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="x">            'realm' =&gt; 'master',</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="x">            'auto_discovery' =&gt; true,</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="x">            'metadata_url' =&gt; '{base_url}/realms/{realm}/.well-known/openid-configuration',</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="x">            'logout_url' =&gt; '{base_url}/realms/{realm}/protocol/openid-connect/logout',</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="x">            'scopes' =&gt; 'openid profile email groups',</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="x">                'username' =&gt; 'preferred_username',</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="x">                'email' =&gt; 'email',</span>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="x">                'display_name' =&gt; 'name',</span>
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="x">                'groups' =&gt; 'groups',</span>
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="x">            ],</span>
+<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a><span class="x">        ],</span>
+<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a><span class="x">    ],</span>
+<a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a><span class="x">],</span>
 </code></pre></div>
 </li>
 </ol>
@@ -8748,30 +8844,30 @@ URLs, proxy logs, or browser history.</p>
 <li>Set Sign-in redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></li>
 <li>
 <p>Note your Okta domain (e.g., your-org.okta.com)</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="x">'oidc' =&gt; [</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="x">        'okta' =&gt; [</span>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="x">            'name' =&gt; 'Okta',</span>
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Okta',</span>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
-<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="x">            'domain' =&gt; 'your-org.okta.com',</span>
-<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="x">            'auto_discovery' =&gt; true,</span>
-<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="x">            'metadata_url' =&gt; 'https://{domain}/.well-known/openid-configuration',</span>
-<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="x">            'logout_url' =&gt; 'https://{domain}/oauth2/v1/logout',</span>
-<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="x">            'scopes' =&gt; 'openid profile email groups',</span>
-<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="x">                'username' =&gt; 'preferred_username',</span>
-<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="x">                'email' =&gt; 'email',</span>
-<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
-<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
-<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="x">                'display_name' =&gt; 'name',</span>
-<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="x">                'groups' =&gt; 'groups',</span>
-<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="x">            ],</span>
-<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="x">        ],</span>
-<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a><span class="x">    ],</span>
-<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="x">'oidc' =&gt; [</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="x">        'okta' =&gt; [</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="x">            'name' =&gt; 'Okta',</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Okta',</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="x">            'domain' =&gt; 'your-org.okta.com',</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="x">            'auto_discovery' =&gt; true,</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="x">            'metadata_url' =&gt; 'https://{domain}/.well-known/openid-configuration',</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="x">            'logout_url' =&gt; 'https://{domain}/oauth2/v1/logout',</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="x">            'scopes' =&gt; 'openid profile email groups',</span>
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="x">                'username' =&gt; 'preferred_username',</span>
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="x">                'email' =&gt; 'email',</span>
+<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
+<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
+<a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="x">                'display_name' =&gt; 'name',</span>
+<a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="x">                'groups' =&gt; 'groups',</span>
+<a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="x">            ],</span>
+<a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="x">        ],</span>
+<a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="x">    ],</span>
+<a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="x">],</span>
 </code></pre></div>
 </li>
 </ol>
@@ -8781,31 +8877,31 @@ URLs, proxy logs, or browser history.</p>
 <li>Create an Application linked to the provider</li>
 <li>
 <p>Add redirect URI: <code>https://your-poweradmin.com/oidc/callback</code></p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="x">'oidc' =&gt; [</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="x">        'authentik' =&gt; [</span>
-<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="x">            'name' =&gt; 'Authentik',</span>
-<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Authentik',</span>
-<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
-<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
-<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="x">            'base_url' =&gt; 'https://authentik.example.com',</span>
-<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="x">            'application_slug' =&gt; 'poweradmin',</span>
-<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="x">            'auto_discovery' =&gt; true,</span>
-<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="x">            'metadata_url' =&gt; '{base_url}/application/o/{application_slug}/.well-known/openid-configuration',</span>
-<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="x">            'logout_url' =&gt; '{base_url}/application/o/{application_slug}/end-session/',</span>
-<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="x">            'scopes' =&gt; 'openid profile email',</span>
-<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="x">                'username' =&gt; 'preferred_username',</span>
-<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="x">                'email' =&gt; 'email',</span>
-<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
-<a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
-<a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="x">                'display_name' =&gt; 'name',</span>
-<a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="x">                'groups' =&gt; 'groups',</span>
-<a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="x">            ],</span>
-<a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="x">        ],</span>
-<a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="x">    ],</span>
-<a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="x">'oidc' =&gt; [</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="x">        'authentik' =&gt; [</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="x">            'name' =&gt; 'Authentik',</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Authentik',</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="x">            'base_url' =&gt; 'https://authentik.example.com',</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="x">            'application_slug' =&gt; 'poweradmin',</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="x">            'auto_discovery' =&gt; true,</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="x">            'metadata_url' =&gt; '{base_url}/application/o/{application_slug}/.well-known/openid-configuration',</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="x">            'logout_url' =&gt; '{base_url}/application/o/{application_slug}/end-session/',</span>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="x">            'scopes' =&gt; 'openid profile email',</span>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="x">                'username' =&gt; 'preferred_username',</span>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="x">                'email' =&gt; 'email',</span>
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
+<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a><span class="x">                'display_name' =&gt; 'name',</span>
+<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="x">                'groups' =&gt; 'groups',</span>
+<a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a><span class="x">            ],</span>
+<a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a><span class="x">        ],</span>
+<a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a><span class="x">    ],</span>
+<a id="__codelineno-19-25" name="__codelineno-19-25" href="#__codelineno-19-25"></a><span class="x">],</span>
 </code></pre></div>
 </li>
 </ol>
@@ -8815,30 +8911,30 @@ URLs, proxy logs, or browser history.</p>
 <li>Set Application Type to "Regular Web Application"</li>
 <li>
 <p>Add callback URL: <code>https://your-poweradmin.com/oidc/callback</code></p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="x">'oidc' =&gt; [</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="x">        'auth0' =&gt; [</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="x">            'name' =&gt; 'Auth0',</span>
-<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Auth0',</span>
-<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
-<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
-<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="x">            'domain' =&gt; 'your-tenant.auth0.com',</span>
-<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="x">            'auto_discovery' =&gt; true,</span>
-<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="x">            'metadata_url' =&gt; 'https://{domain}/.well-known/openid-configuration',</span>
-<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="x">            'logout_url' =&gt; 'https://{domain}/v2/logout',</span>
-<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="x">            'scopes' =&gt; 'openid profile email',</span>
-<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="x">                'username' =&gt; 'nickname',</span>
-<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="x">                'email' =&gt; 'email',</span>
-<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
-<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
-<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a><span class="x">                'display_name' =&gt; 'name',</span>
-<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a><span class="x">                'groups' =&gt; 'groups',</span>
-<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="x">            ],</span>
-<a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a><span class="x">        ],</span>
-<a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a><span class="x">    ],</span>
-<a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="x">'oidc' =&gt; [</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="x">        'auth0' =&gt; [</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="x">            'name' =&gt; 'Auth0',</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="x">            'display_name' =&gt; 'Sign in with Auth0',</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="x">            'domain' =&gt; 'your-tenant.auth0.com',</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="x">            'auto_discovery' =&gt; true,</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="x">            'metadata_url' =&gt; 'https://{domain}/.well-known/openid-configuration',</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="x">            'logout_url' =&gt; 'https://{domain}/v2/logout',</span>
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="x">            'scopes' =&gt; 'openid profile email',</span>
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="x">                'username' =&gt; 'nickname',</span>
+<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="x">                'email' =&gt; 'email',</span>
+<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
+<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
+<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="x">                'display_name' =&gt; 'name',</span>
+<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="x">                'groups' =&gt; 'groups',</span>
+<a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="x">            ],</span>
+<a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a><span class="x">        ],</span>
+<a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a><span class="x">    ],</span>
+<a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a><span class="x">],</span>
 </code></pre></div>
 </li>
 </ol>
@@ -8852,30 +8948,30 @@ address. The lookup also finds the address when the profile email is private (ad
 <li>Set the authorization callback URL to <code>https://your-poweradmin.com/oidc/callback</code></li>
 <li>
 <p>Generate a client secret</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="x">'oidc' =&gt; [</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="x">        'github' =&gt; [</span>
-<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="x">            'name' =&gt; 'GitHub',</span>
-<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="x">            'display_name' =&gt; 'Sign in with GitHub',</span>
-<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
-<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
-<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="x">            'auto_discovery' =&gt; false,</span>
-<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="x">            'authorize_url' =&gt; 'https://github.com/login/oauth/authorize',</span>
-<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="x">            'token_url' =&gt; 'https://github.com/login/oauth/access_token',</span>
-<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="x">            'userinfo_url' =&gt; 'https://api.github.com/user',</span>
-<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="x">            'emails_url' =&gt; 'https://api.github.com/user/emails',</span>
-<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="x">            'scopes' =&gt; 'read:user user:email',</span>
-<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="x">                'username' =&gt; 'login',</span>
-<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="x">                'email' =&gt; 'email',</span>
-<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="x">                'display_name' =&gt; 'name',</span>
-<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="x">                'subject' =&gt; 'id',</span>
-<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="x">                'avatar' =&gt; 'avatar_url',</span>
-<a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="x">            ],</span>
-<a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a><span class="x">        ],</span>
-<a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a><span class="x">    ],</span>
-<a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="x">'oidc' =&gt; [</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="x">        'github' =&gt; [</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="x">            'name' =&gt; 'GitHub',</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="x">            'display_name' =&gt; 'Sign in with GitHub',</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="x">            'auto_discovery' =&gt; false,</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="x">            'authorize_url' =&gt; 'https://github.com/login/oauth/authorize',</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="x">            'token_url' =&gt; 'https://github.com/login/oauth/access_token',</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="x">            'userinfo_url' =&gt; 'https://api.github.com/user',</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="x">            'emails_url' =&gt; 'https://api.github.com/user/emails',</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="x">            'scopes' =&gt; 'read:user user:email',</span>
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="x">                'username' =&gt; 'login',</span>
+<a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a><span class="x">                'email' =&gt; 'email',</span>
+<a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a><span class="x">                'display_name' =&gt; 'name',</span>
+<a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a><span class="x">                'subject' =&gt; 'id',</span>
+<a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a><span class="x">                'avatar' =&gt; 'avatar_url',</span>
+<a id="__codelineno-21-21" name="__codelineno-21-21" href="#__codelineno-21-21"></a><span class="x">            ],</span>
+<a id="__codelineno-21-22" name="__codelineno-21-22" href="#__codelineno-21-22"></a><span class="x">        ],</span>
+<a id="__codelineno-21-23" name="__codelineno-21-23" href="#__codelineno-21-23"></a><span class="x">    ],</span>
+<a id="__codelineno-21-24" name="__codelineno-21-24" href="#__codelineno-21-24"></a><span class="x">],</span>
 </code></pre></div>
 </li>
 </ol>
@@ -8885,32 +8981,32 @@ answers 404, the address counts as unverified and a warning naming the HTTP stat
 With <code>require_verified_email</code> on, such a user is not linked to an existing account by email.</p>
 <h3 id="generic-oidc-provider">Generic OIDC Provider<a class="headerlink" href="#generic-oidc-provider" title="Permanent link">&para;</a></h3>
 <p>For providers not listed above, use manual endpoint configuration:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="x">'oidc' =&gt; [</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="x">        'custom' =&gt; [</span>
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="x">            'name' =&gt; 'Custom OIDC',</span>
-<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="x">            'display_name' =&gt; 'Sign in with SSO',</span>
-<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
-<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
-<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="x">            'auto_discovery' =&gt; false,</span>
-<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="x">            'authorize_url' =&gt; 'https://provider.example.com/oauth/authorize',</span>
-<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="x">            'token_url' =&gt; 'https://provider.example.com/oauth/token',</span>
-<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="x">            'userinfo_url' =&gt; 'https://provider.example.com/oauth/userinfo',</span>
-<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="x">            'logout_url' =&gt; 'https://provider.example.com/oauth/logout',</span>
-<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="x">            'emails_url' =&gt; '',  // optional OAuth 2.0 email list, as on GitHub (added in 4.6.0)</span>
-<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="x">            'scopes' =&gt; 'openid profile email',  // add 'groups' if your provider requires it for group claims</span>
-<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="x">            'user_mapping' =&gt; [</span>
-<a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a><span class="x">                'username' =&gt; 'preferred_username',</span>
-<a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a><span class="x">                'email' =&gt; 'email',</span>
-<a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
-<a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
-<a id="__codelineno-21-21" name="__codelineno-21-21" href="#__codelineno-21-21"></a><span class="x">                'display_name' =&gt; 'name',</span>
-<a id="__codelineno-21-22" name="__codelineno-21-22" href="#__codelineno-21-22"></a><span class="x">                'groups' =&gt; 'groups',</span>
-<a id="__codelineno-21-23" name="__codelineno-21-23" href="#__codelineno-21-23"></a><span class="x">            ],</span>
-<a id="__codelineno-21-24" name="__codelineno-21-24" href="#__codelineno-21-24"></a><span class="x">        ],</span>
-<a id="__codelineno-21-25" name="__codelineno-21-25" href="#__codelineno-21-25"></a><span class="x">    ],</span>
-<a id="__codelineno-21-26" name="__codelineno-21-26" href="#__codelineno-21-26"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="x">'oidc' =&gt; [</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="x">        'custom' =&gt; [</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="x">            'name' =&gt; 'Custom OIDC',</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="x">            'display_name' =&gt; 'Sign in with SSO',</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="x">            'client_id' =&gt; 'your-client-id',</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="x">            'client_secret' =&gt; 'your-client-secret',</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="x">            'auto_discovery' =&gt; false,</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="x">            'authorize_url' =&gt; 'https://provider.example.com/oauth/authorize',</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="x">            'token_url' =&gt; 'https://provider.example.com/oauth/token',</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="x">            'userinfo_url' =&gt; 'https://provider.example.com/oauth/userinfo',</span>
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="x">            'logout_url' =&gt; 'https://provider.example.com/oauth/logout',</span>
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="x">            'emails_url' =&gt; '',  // optional OAuth 2.0 email list, as on GitHub (added in 4.6.0)</span>
+<a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="x">            'scopes' =&gt; 'openid profile email',  // add 'groups' if your provider requires it for group claims</span>
+<a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="x">            'user_mapping' =&gt; [</span>
+<a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a><span class="x">                'username' =&gt; 'preferred_username',</span>
+<a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="x">                'email' =&gt; 'email',</span>
+<a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a><span class="x">                'first_name' =&gt; 'given_name',</span>
+<a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a><span class="x">                'last_name' =&gt; 'family_name',</span>
+<a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a><span class="x">                'display_name' =&gt; 'name',</span>
+<a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a><span class="x">                'groups' =&gt; 'groups',</span>
+<a id="__codelineno-22-23" name="__codelineno-22-23" href="#__codelineno-22-23"></a><span class="x">            ],</span>
+<a id="__codelineno-22-24" name="__codelineno-22-24" href="#__codelineno-22-24"></a><span class="x">        ],</span>
+<a id="__codelineno-22-25" name="__codelineno-22-25" href="#__codelineno-22-25"></a><span class="x">    ],</span>
+<a id="__codelineno-22-26" name="__codelineno-22-26" href="#__codelineno-22-26"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="user-mapping">User Mapping<a class="headerlink" href="#user-mapping" title="Permanent link">&para;</a></h2>
 <p>The <code>user_mapping</code> array maps OIDC claims to Poweradmin user fields:</p>
@@ -8968,70 +9064,70 @@ With <code>require_verified_email</code> on, such a user is not linked to an exi
 <h2 id="docker-configuration">Docker Configuration<a class="headerlink" href="#docker-configuration" title="Permanent link">&para;</a></h2>
 <p>Use environment variables with the <code>PA_OIDC_</code> prefix:</p>
 <p>The entrypoint can generate four providers: <code>azure</code> (<code>PA_OIDC_AZURE_*</code>), <code>google</code> (<code>PA_OIDC_GOOGLE_*</code>), <code>github</code> (<code>PA_OIDC_GITHUB_*</code>, added in 4.6.0) and <code>generic</code> (<code>PA_OIDC_GENERIC_*</code>). Any other IdP - Keycloak, Authentik, Okta - is configured through the generic provider:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="nt">PA_APPLICATION_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://dns.example.com"</span>
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="nt">PA_OIDC_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span><span class="nt">PA_OIDC_AUTO_PROVISION</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">  </span><span class="nt">PA_OIDC_DEFAULT_PERMISSION_TEMPLATE</span><span class="p">:</span><span class="w"> </span><span class="s">"Guest"</span>
-<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">"Keycloak"</span>
-<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_DISPLAY_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">"Sign</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">Keycloak"</span>
-<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"poweradmin"</span>
-<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">"your-secret"</span>
-<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_AUTO_DISCOVERY</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_METADATA_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://keycloak.example.com/realms/master/.well-known/openid-configuration"</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">PA_APPLICATION_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://dns.example.com"</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span><span class="nt">PA_OIDC_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span><span class="nt">PA_OIDC_AUTO_PROVISION</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span><span class="nt">PA_OIDC_DEFAULT_PERMISSION_TEMPLATE</span><span class="p">:</span><span class="w"> </span><span class="s">"Guest"</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">"Keycloak"</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_DISPLAY_NAME</span><span class="p">:</span><span class="w"> </span><span class="s">"Sign</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">Keycloak"</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"poweradmin"</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">"your-secret"</span>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_AUTO_DISCOVERY</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_METADATA_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://keycloak.example.com/realms/master/.well-known/openid-configuration"</span>
 </code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> <code>PA_APPLICATION_URL</code> is required. From 4.2.6, 4.3.5, 4.4.1 and 4.5.0 the container exits at startup if OIDC is enabled without it, because the OAuth <code>redirect_uri</code> cannot be derived from the request. OIDC accepts no alternative source - <code>PA_BASE_URL</code> does not satisfy it. The check runs only when the entrypoint generates the config; a mounted <code>settings.php</code> is used as-is.</p>
 <p><strong>Note:</strong> There are no <code>PA_OIDC_KEYCLOAK_*</code> variables. To run a named Keycloak provider alongside another IdP, configure it in <code>config/settings.php</code> instead - the entrypoint only writes the four providers above.</p>
 </blockquote>
 <p>GitHub needs only the OAuth App credentials; the endpoints and scopes are fixed:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">PA_OIDC_GITHUB_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span><span class="nt">PA_OIDC_GITHUB_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"your-client-id"</span>
-<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span><span class="nt">PA_OIDC_GITHUB_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">"your-client-secret"</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">PA_OIDC_GITHUB_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span><span class="nt">PA_OIDC_GITHUB_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"your-client-id"</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">  </span><span class="nt">PA_OIDC_GITHUB_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">"your-client-secret"</span>
 </code></pre></div>
 <p>For another OAuth 2.0 provider with a GitHub-style email list, set <code>PA_OIDC_GENERIC_EMAILS_URL</code>.</p>
 <p>To change the groups claim name for the generic OIDC provider, use <code>PA_OIDC_GENERIC_GROUPS_ATTR</code>:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_GROUPS_ATTR</span><span class="p">:</span><span class="w"> </span><span class="s">"roles"</span><span class="w">  </span><span class="c1"># Default: "groups"</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span><span class="nt">PA_OIDC_GENERIC_GROUPS_ATTR</span><span class="p">:</span><span class="w"> </span><span class="s">"roles"</span><span class="w">  </span><span class="c1"># Default: "groups"</span>
 </code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> The <code>permission_template_mapping</code> and <code>group_mapping</code> settings can be configured via environment variables using the <code>=</code> delimiter and comma-separated entries:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="nt">PA_OIDC_PERMISSION_TEMPLATE_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"admins=Administrator,editors=Viewer"</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="nt">PA_OIDC_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"admins=Administrators,editors=Editors"</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">PA_OIDC_PERMISSION_TEMPLATE_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"admins=Administrator,editors=Viewer"</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="nt">PA_OIDC_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"admins=Administrators,editors=Editors"</span>
 </code></pre></div>
 <p>Group names containing colons (e.g., SAML URNs) are supported. Whitespace around commas and delimiters is trimmed automatically.</p>
 <p>For 1:n group mappings, separate the Poweradmin groups with a pipe (<code>|</code>) so one OIDC group can grant access to several Poweradmin groups (added in 4.4.0):</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">PA_OIDC_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"team1=Editors|Viewers,team2=Administrators"</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nt">PA_OIDC_GROUP_MAPPING</span><span class="p">:</span><span class="w"> </span><span class="s">"team1=Editors|Viewers,team2=Administrators"</span>
 </code></pre></div>
 </blockquote>
 <p>Other global variables: <code>PA_OIDC_LINK_BY_EMAIL</code>, <code>PA_OIDC_REQUIRE_VERIFIED_EMAIL</code>, <code>PA_OIDC_SYNC_USER_INFO</code> and <code>PA_OIDC_ALLOW_SUPERUSER_PROVISIONING</code>.</p>
 <p>For secrets, use the <code>__FILE</code> suffix:</p>
-<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nt">secrets</span><span class="p">:</span>
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span><span class="nt">oidc_client_secret</span><span class="p">:</span>
-<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./secrets/oidc_client_secret.txt</span>
-<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>
-<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="nt">services</span><span class="p">:</span>
-<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="w">  </span><span class="nt">poweradmin</span><span class="p">:</span>
-<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="w">      </span><span class="nt">PA_OIDC_GENERIC_CLIENT_SECRET__FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/oidc_client_secret</span>
-<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="w">    </span><span class="nt">secrets</span><span class="p">:</span>
-<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">oidc_client_secret</span>
+<div class="language-yaml highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nt">secrets</span><span class="p">:</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">  </span><span class="nt">oidc_client_secret</span><span class="p">:</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./secrets/oidc_client_secret.txt</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="w">  </span><span class="nt">poweradmin</span><span class="p">:</span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="w">      </span><span class="nt">PA_OIDC_GENERIC_CLIENT_SECRET__FILE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/secrets/oidc_client_secret</span>
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="w">    </span><span class="nt">secrets</span><span class="p">:</span>
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">oidc_client_secret</span>
 </code></pre></div>
 <h2 id="multiple-providers">Multiple Providers<a class="headerlink" href="#multiple-providers" title="Permanent link">&para;</a></h2>
 <p>You can configure multiple OIDC providers. Users will see all enabled providers on the login page:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="x">'oidc' =&gt; [</span>
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="x">    'enabled' =&gt; true,</span>
-<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="x">    'providers' =&gt; [</span>
-<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="x">        'azure' =&gt; [</span>
-<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="x">            // Azure AD configuration...</span>
-<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="x">        ],</span>
-<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="x">        'google' =&gt; [</span>
-<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="x">            // Google configuration...</span>
-<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="x">        ],</span>
-<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="x">    ],</span>
-<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="x">],</span>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="x">'oidc' =&gt; [</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="x">    'enabled' =&gt; true,</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="x">    'providers' =&gt; [</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="x">        'azure' =&gt; [</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="x">            // Azure AD configuration...</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="x">        ],</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="x">        'google' =&gt; [</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="x">            // Google configuration...</span>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="x">        ],</span>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="x">    ],</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="x">],</span>
 </code></pre></div>
 <h2 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">&para;</a></h2>
 <ol>
@@ -9040,6 +9136,7 @@ With <code>require_verified_email</code> on, such a user is not linked to an exi
 <li><strong>Validate redirect URIs</strong>: Configure exact redirect URIs in your identity provider</li>
 <li><strong>PKCE</strong>: Poweradmin uses PKCE (Proof Key for Code Exchange) automatically for enhanced security</li>
 <li><strong>State validation</strong>: CSRF protection via state parameter is enabled by default</li>
+<li><strong>ID token verification</strong>: Turn on <code>oidc.verify_id_token</code> to check the token signature, issuer, audience, expiry and a per-login nonce. See <a href="#id-token-verification-v460">ID token verification</a></li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <h3 id="login-redirects-fail">Login redirects fail<a class="headerlink" href="#login-redirects-fail" title="Permanent link">&para;</a></h3>
@@ -9072,8 +9169,8 @@ With <code>require_verified_email</code> on, such a user is not linked to an exi
 </ul>
 <h3 id="provider-discovery-fails-behind-a-web-proxy">Provider discovery fails behind a web proxy<a class="headerlink" href="#provider-discovery-fails-behind-a-web-proxy" title="Permanent link">&para;</a></h3>
 <p>If your Poweradmin host can only reach the internet through an HTTP proxy, OIDC discovery (the <code>.well-known/openid-configuration</code> fetch) will time out unless the proxy is exported in the environment. From v4.4.0, the discovery client honors the standard <code>HTTPS_PROXY</code> / <code>http_proxy</code> variables. Set them where PHP can see them - typically in the systemd unit, the FPM pool, or the Docker environment:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://proxy.internal:3128
-<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="nv">NO_PROXY</span><span class="o">=</span>localhost,127.0.0.1,.internal
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://proxy.internal:3128
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="nv">NO_PROXY</span><span class="o">=</span>localhost,127.0.0.1,.internal
 </code></pre></div>
 <p>Restart the web server (or <code>php-fpm</code>) so the new environment is picked up. Earlier versions ignored these variables and required a manual <code>cURL</code> build with proxy support.</p>
 <h2 id="related-documentation">Related Documentation<a class="headerlink" href="#related-documentation" title="Permanent link">&para;</a></h2>
