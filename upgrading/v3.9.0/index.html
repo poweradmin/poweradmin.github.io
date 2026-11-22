@@ -7786,31 +7786,16 @@
 </code></pre></div>
 <ol>
 <li>
-<p>Add the following new configuration options to your <code>inc/config.inc.php</code> file:</p>
-<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">'security' =&gt; [</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">    // ... existing security configuration ...</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">    'login_token_validation' =&gt; true,        // Enable token validation for login form</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="x">    'global_token_validation' =&gt; true,       // Enable token validation for all forms</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="x">],</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="x">'interface' =&gt; [</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="x">    // ... existing interface configuration ...</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="x">    'show_record_id' =&gt; true,             // Show record ID column in edit mode</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="x">    'position_record_form_top' =&gt; false,  // Position the "Add record" form at the top of the page</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="x">    'position_save_button_top' =&gt; false,  // Position the "Save changes" button at the top of the page</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="x">    'show_record_comments' =&gt; false,      // Show or hide record comments</span>
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="x">],</span>
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="x">'logging' =&gt; [</span>
-<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="x">    // ... existing logging configuration ...</span>
-<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="x">    'type' =&gt; 'null',                     // Options: 'null', 'native'</span>
-<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="x">    'level' =&gt; 'info',                    // Options: 'debug', 'info', 'notice', 'warning', 'error', 'critical', 'alert', 'emergency'</span>
-<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="x">],</span>
-<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
-<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="x">'misc' =&gt; [</span>
-<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="x">    // ... existing misc configuration ...</span>
-<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="x">    'record_comments_sync' =&gt; false,      // Enable bidirectional comment sync between A and PTR records</span>
-<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="x">],</span>
+<p>New options in this release. All new options have defaults in <code>inc/config-defaults.inc.php</code>, so add them only to change a default. <code>inc/config.inc.php</code> uses plain PHP variables, not the 4.x array format:</p>
+<div class="language-php highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">$login_token_validation = true;       // Enable token validation for the login form</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="x">$global_token_validation = true;      // Enable token validation for all forms</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="x">$iface_edit_show_id = true;           // Show the record ID column in edit mode</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="x">$iface_edit_add_record_top = false;   // Put the "Add record" form at the top of the page</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="x">$iface_edit_save_changes_top = false; // Put the "Save changes" button at the top of the page</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="x">$iface_record_comments = false;       // Show or hide record comments</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="x">$logger_type = 'null';                // 'null' or 'native'</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="x">$logger_level = 'info';               // debug, info, notice, warning, error, critical, alert, emergency</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="x">$record_comments_sync = false;        // Bidirectional comment sync between A and PTR records</span>
 </code></pre></div>
 </li>
 </ol>

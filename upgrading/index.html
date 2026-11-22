@@ -7365,6 +7365,56 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#quick-path-to-a-supported-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Path to a Supported Version
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Path to a Supported Version">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#within-3x-to-3914" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Within 3.x (to 3.9.14)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-3x-to-443" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From 3.x to 4.4.3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-40-43-to-443" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From 4.0 - 4.3 to 4.4.3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#unsupported-versions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7432,10 +7482,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#recommended-path-from-200-to-451" class="md-nav__link">
+  <a href="#step-by-step-path-from-200" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Recommended Path from 2.0.0 to 4.5.1
+        Step-by-Step Path from 2.0.0
       
     </span>
   </a>
@@ -7541,6 +7591,185 @@
 is available through <a href="https://www.poweradmin.org/p/support-and-sponsorship">Support &amp; Sponsorship</a>,
 or write to <a href="mailto:support@poweradmin.org">support@poweradmin.org</a>.</p>
 </blockquote>
+<h2 id="quick-path-to-a-supported-version">Quick Path to a Supported Version<a class="headerlink" href="#quick-path-to-a-supported-version" title="Permanent link">&para;</a></h2>
+<p>Find the version you run and follow its row. 4.4.x and 3.9.x are LTS until December 2027; see
+<a href="../getting-started/lifecycle/">Version Support</a>.</p>
+<table>
+<thead>
+<tr>
+<th>You run</th>
+<th>Upgrade to</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.x</td>
+<td>4.4.3</td>
+<td><a href="from-2x/">Upgrading from 2.x</a></td>
+</tr>
+<tr>
+<td>3.0.0 - 3.9.13</td>
+<td>3.9.14 (stay on 3.x)</td>
+<td><a href="#within-3x-to-3914">Within 3.x</a></td>
+</tr>
+<tr>
+<td>3.x</td>
+<td>4.4.3</td>
+<td><a href="#from-3x-to-443">From 3.x to 4.4.3</a></td>
+</tr>
+<tr>
+<td>4.0.0 - 4.3.x</td>
+<td>4.4.3</td>
+<td><a href="#from-40-43-to-443">From 4.0 - 4.3 to 4.4.3</a></td>
+</tr>
+<tr>
+<td>4.4.0 - 4.4.2</td>
+<td>4.4.3</td>
+<td><a href="#patch-version-upgrades-eg-44x-44y">Patch upgrade</a>: replace the files, no SQL</td>
+</tr>
+</tbody>
+</table>
+<p>What each target needs:</p>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>PHP</th>
+<th>Configuration file</th>
+<th>URL rewriting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.9.14</td>
+<td>8.1 or later</td>
+<td><code>inc/config.inc.php</code></td>
+<td>not needed</td>
+</tr>
+<tr>
+<td>4.4.3</td>
+<td>8.2 or later</td>
+<td><code>config/settings.php</code></td>
+<td>required (shipped <code>.htaccess</code> with <code>AllowOverride All</code>, or <code>nginx.conf.example</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>3.3.x ran on PHP 7.2 and 3.4.x on PHP 7.4, so on those versions upgrade PHP first.</p>
+<p>Run each update script with the client for your database, in the order listed, and stop at the
+first error. Most scripts are not wrapped in a transaction, so if one stops halfway, restore the
+backup, fix the cause and run the scripts again from that point:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># MySQL / MariaDB</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mysql<span class="w"> </span>-u<span class="w"> </span>poweradmin<span class="w"> </span>-p<span class="w"> </span>poweradmin<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-mysql-update-to-X.sql
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># PostgreSQL (ON_ERROR_STOP makes psql stop and exit non-zero on an error)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>psql<span class="w"> </span>-v<span class="w"> </span><span class="nv">ON_ERROR_STOP</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>-U<span class="w"> </span>poweradmin<span class="w"> </span>-d<span class="w"> </span>poweradmin<span class="w"> </span>-f<span class="w"> </span>sql/poweradmin-pgsql-update-to-X.sql
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># SQLite</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>sqlite3<span class="w"> </span>/path/to/pdns.db<span class="w"> </span>&lt;<span class="w"> </span>sql/poweradmin-sqlite-update-to-X.sql
+</code></pre></div>
+<p>After copying the new files, delete the <code>install/</code> directory. Both 3.9.14 and 4.4.3 refuse to
+show the login page while it exists.</p>
+<h3 id="within-3x-to-3914">Within 3.x (to 3.9.14)<a class="headerlink" href="#within-3x-to-3914" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Back up the database and the installation directory.</li>
+<li>Replace the files with the <a href="https://github.com/poweradmin/poweradmin/releases/tag/v3.9.14">3.9.14 release</a>,
+   restore your <code>inc/config.inc.php</code>, merge any changes of your own into the shipped <code>.htaccess</code>,
+   and delete <code>install/</code>. The configuration format does not change within 3.x, and options added
+   in later 3.x releases have defaults in <code>inc/config-defaults.inc.php</code>; add one to your
+   <code>inc/config.inc.php</code> only to change its default.</li>
+<li>Run the update scripts from the 3.9.14 <code>sql/</code> directory for your starting version:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>You run</th>
+<th>Scripts, in order</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.0.x - 3.1.x</td>
+<td>3.2.0, 3.9.0, 3.9.7</td>
+</tr>
+<tr>
+<td>3.2.0 - 3.8.x</td>
+<td>3.9.0, 3.9.7</td>
+</tr>
+<tr>
+<td>3.9.0 - 3.9.6</td>
+<td>3.9.7</td>
+</tr>
+<tr>
+<td>3.9.7 - 3.9.13</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<h3 id="from-3x-to-443">From 3.x to 4.4.3<a class="headerlink" href="#from-3x-to-443" title="Permanent link">&para;</a></h3>
+<p>4.1.0 and later no longer read <code>inc/config.inc.php</code> and do not ship the converter, so the
+configuration is converted with a 4.0.x release on the way. You do not need to install 4.1, 4.2
+or 4.3 in between.</p>
+<ol>
+<li>Back up the database and the installation directory.</li>
+<li>Run the 3.x scripts from the <a href="#within-3x-to-3914">table above</a> for your starting version
+   (take <code>3.9.7</code> from the 3.9.14 archive).</li>
+<li>Unpack the <a href="https://github.com/poweradmin/poweradmin/releases/tag/v4.0.12">4.0.12 release</a>,
+   copy your <code>inc/config.inc.php</code> into it and run <code>php config/migrate-config.php</code> there
+   (see <a href="v4.0.0/#configuration-migration">v4.0.0</a>). Keep the resulting <code>config/settings.php</code>.</li>
+<li>Run its <code>4.0.0</code>, <code>4.0.2</code> and <code>4.0.5</code> scripts.</li>
+<li>Install the <a href="https://github.com/poweradmin/poweradmin/releases/tag/v4.4.3">4.4.3 release</a> with
+   the <code>config/settings.php</code> from step 3, delete <code>install/</code>, and make sure URL rewriting works.</li>
+<li>Run its <code>4.1.0</code>, <code>4.2.0</code>, <code>4.3.0</code> and <code>4.4.0</code> scripts. On SQLite with the PowerDNS tables in
+   the same file, also run <code>4.3.0-backfill</code> after <code>4.3.0</code> if you may later use API backend mode.</li>
+</ol>
+<p>This route was tested in November 2026 on MySQL, PostgreSQL and SQLite with 3.3.0 and 3.9.7
+databases and a converted 3.9.x configuration. A configuration from an older 3.x release may
+use options the converter does not know; check <code>config/settings.php</code> afterwards.</p>
+<p>Read <a href="v4.1.0/">v4.1.0</a> and <a href="v4.2.0/">v4.2.0</a> before step 6: 4.1.0 adds zone deletion
+permissions to templates, and 4.2.0 renames the stock templates to Editor, Viewer and Guest.</p>
+<h3 id="from-40-43-to-443">From 4.0 - 4.3 to 4.4.3<a class="headerlink" href="#from-40-43-to-443" title="Permanent link">&para;</a></h3>
+<p>Install the <a href="https://github.com/poweradmin/poweradmin/releases/tag/v4.4.3">4.4.3 release</a>, keep
+your <code>config/settings.php</code>, delete <code>install/</code>, and run the scripts for your starting version.
+Take the scripts from the 4.4.3 <code>sql/</code> directory, not from the archive of each intermediate
+release: on PostgreSQL the 4.1.0 and 4.2.0 scripts in the 4.1.0 and 4.2.0 archives fail with a
+duplicate key error (see <a href="v4.2.0/#postgresql-duplicate-key-in-the-420-script">v4.2.0</a>).
+The <code>4.0.5</code> script is only in the 4.0.x archives; take it from
+<a href="https://github.com/poweradmin/poweradmin/releases/tag/v4.0.12">4.0.12</a>.</p>
+<table>
+<thead>
+<tr>
+<th>You run</th>
+<th>Scripts, in order</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4.0.0 - 4.0.1</td>
+<td>4.0.2, 4.0.5, 4.1.0, 4.2.0, 4.3.0, 4.4.0</td>
+</tr>
+<tr>
+<td>4.0.2 - 4.0.4</td>
+<td>4.0.5, 4.1.0, 4.2.0, 4.3.0, 4.4.0</td>
+</tr>
+<tr>
+<td>4.0.5 - 4.0.12</td>
+<td>4.1.0, 4.2.0, 4.3.0, 4.4.0</td>
+</tr>
+<tr>
+<td>4.1.x</td>
+<td>4.2.0, 4.3.0, 4.4.0</td>
+</tr>
+<tr>
+<td>4.2.x</td>
+<td>4.3.0, 4.4.0</td>
+</tr>
+<tr>
+<td>4.3.x</td>
+<td>4.4.0</td>
+</tr>
+</tbody>
+</table>
+<p>Coming from 4.0.x or 4.1.x, PHP 8.2 is needed from 4.2.0 on, and 4.1.0 and later need URL
+rewriting. On SQLite, run <code>4.3.0-backfill</code> after <code>4.3.0</code> if you may later use API backend mode.</p>
 <h2 id="unsupported-versions">Unsupported Versions<a class="headerlink" href="#unsupported-versions" title="Permanent link">&para;</a></h2>
 <p>Only the lines listed in <a href="../getting-started/lifecycle/">Version Support</a> get security fixes.
 Poweradmin 2.x is the most exposed of the unsupported versions: its forms have no CSRF protection,
@@ -7552,15 +7781,17 @@ off the public internet and follow <a href="from-2x/">Upgrading from 2.x</a>, wh
 <ol>
 <li><strong>Backup your database</strong> - This is critical before any upgrade</li>
 <li><strong>Backup your existing files</strong> - Make a complete backup of your current installation</li>
-<li><strong>Replace files</strong> - Replace all files with the new version's files</li>
+<li><strong>Check PHP</strong> - 3.5.0 to 4.1.x need PHP 8.1 or later, 4.2.0 and later need PHP 8.2 or later</li>
+<li><strong>Replace files</strong> - Replace all files with the new version's files, merge your own changes into the shipped <code>.htaccess</code>, then delete the <code>install/</code> directory</li>
 <li><strong>Restore configuration</strong> - Depending on your version:</li>
-<li>For versions &lt; 4.x: Restore <code>inc/config.inc.php</code> from your backup, then convert it to <code>config/settings.php</code> with <code>php config/migrate-config.php</code>, which ships only in 4.0.x (see <a href="v4.0.0/#configuration-migration">v4.0.0</a>)</li>
-<li>For versions ≥ 4.x: Restore <code>config/settings.php</code> from your backup</li>
-<li><strong>Update database structure</strong> - If required by the specific version upgrade</li>
+<li>Staying on 3.x: restore <code>inc/config.inc.php</code> from your backup; nothing has to be converted</li>
+<li>Moving from 3.x to 4.x: convert <code>inc/config.inc.php</code> with <code>php config/migrate-config.php</code>, which ships only in 4.0.x (see <a href="#from-3x-to-443">From 3.x to 4.4.3</a>)</li>
+<li>Already on 4.x: restore <code>config/settings.php</code> from your backup</li>
+<li><strong>Update database structure</strong> - Run the update scripts the target version needs, in order (see the <a href="#quick-path-to-a-supported-version">Quick Path</a>)</li>
 <li><strong>Test functionality</strong> - Verify all features work correctly after upgrade</li>
 </ol>
 <h2 id="patch-version-upgrades-eg-44x-44y">Patch Version Upgrades (e.g., 4.4.x → 4.4.y)<a class="headerlink" href="#patch-version-upgrades-eg-44x-44y" title="Permanent link">&para;</a></h2>
-<p>For patch releases within the same minor version (e.g., 4.4.0 → 4.4.2, or 4.4.1 → 4.4.2), the upgrade process is straightforward:</p>
+<p>For patch releases within the same minor version (e.g., 4.4.0 → 4.4.3, or 4.4.2 → 4.4.3), the upgrade process is straightforward:</p>
 <ol>
 <li><strong>Backup your database and files</strong> - Always a good practice</li>
 <li><strong>Replace all application files</strong> - Extract the new release over your existing installation</li>
@@ -7568,9 +7799,9 @@ off the public internet and follow <a href="from-2x/">Upgrading from 2.x</a>, wh
 <li><strong>Check release notes for SQL updates</strong> - Only run database migration scripts if explicitly mentioned in the release notes for that version</li>
 <li>
 <p><strong>Clear PHP opcache</strong> - If your environment uses opcache, restart PHP-FPM or your web server to clear cached bytecode:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>php-fpm
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># or</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>php-fpm
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># or</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
 </code></pre></div>
 </li>
 <li>
@@ -7586,47 +7817,48 @@ off the public internet and follow <a href="from-2x/">Upgrading from 2.x</a>, wh
 </ul>
 <p><strong>Alternative: Symlink Strategy</strong></p>
 <p>For easier rollbacks, consider using symlinks:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Extract new version to versioned directory</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>tar<span class="w"> </span>-xzf<span class="w"> </span>v4.4.2.tar.gz<span class="w"> </span>-C<span class="w"> </span>/var/www/
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Update symlink to point to new version</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>ln<span class="w"> </span>-sfn<span class="w"> </span>/var/www/poweradmin-4.4.2<span class="w"> </span>/var/www/poweradmin
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Keep config outside versioned directories</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>ln<span class="w"> </span>-s<span class="w"> </span>/etc/poweradmin/settings.php<span class="w"> </span>/var/www/poweradmin/config/settings.php
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Extract new version to versioned directory</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>tar<span class="w"> </span>-xzf<span class="w"> </span>v4.4.3.tar.gz<span class="w"> </span>-C<span class="w"> </span>/var/www/
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Update symlink to point to new version</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>ln<span class="w"> </span>-sfn<span class="w"> </span>/var/www/poweradmin-4.4.3<span class="w"> </span>/var/www/poweradmin
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Keep config outside versioned directories</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>ln<span class="w"> </span>-s<span class="w"> </span>/etc/poweradmin/settings.php<span class="w"> </span>/var/www/poweradmin/config/settings.php
 </code></pre></div>
 <p>This allows quick rollback by simply changing the symlink back to the previous version.</p>
 <h2 id="upgrading-a-docker-or-docker-compose-deployment">Upgrading a Docker or Docker Compose Deployment<a class="headerlink" href="#upgrading-a-docker-or-docker-compose-deployment" title="Permanent link">&para;</a></h2>
 <p>The official image does not migrate an existing database. On startup the entrypoint loads the Poweradmin schema only into an empty database; a database created by an older version is left as it is. Upgrading a container therefore means: back up, switch the image tag, restart, and run the release's migration script yourself. The image ships the <code>sql/</code> directory together with the <code>psql</code>, <code>mysql</code> and <code>sqlite3</code> clients, and the <code>DB_*</code> variables are already in the container's environment, so the script can be run from inside the new container.</p>
-<p>The examples below assume the Compose service names <code>poweradmin</code> and <code>postgres</code> (or <code>mysql</code>) and an upgrade from 4.3.x to 4.4.2. Adjust the names and the script version to your setup.</p>
+<p>The examples below assume the Compose service names <code>poweradmin</code> and <code>postgres</code> (or <code>mysql</code>) and an upgrade from 4.3.x to 4.4.3. Adjust the names and the script version to your setup.</p>
 <ol>
 <li>
 <p><strong>Back up the database:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># PostgreSQL</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>postgres<span class="w"> </span>pg_dump<span class="w"> </span>-U<span class="w"> </span>poweradmin<span class="w"> </span>poweradmin<span class="w"> </span>&gt;<span class="w"> </span>poweradmin-before-4.4.sql
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># MySQL / MariaDB</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>mysql<span class="w"> </span>mysqldump<span class="w"> </span>-u<span class="w"> </span>poweradmin<span class="w"> </span>-p<span class="w"> </span>poweradmin<span class="w"> </span>&gt;<span class="w"> </span>poweradmin-before-4.4.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># PostgreSQL</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>postgres<span class="w"> </span>pg_dump<span class="w"> </span>-U<span class="w"> </span>poweradmin<span class="w"> </span>poweradmin<span class="w"> </span>&gt;<span class="w"> </span>poweradmin-before-4.4.sql
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># MySQL / MariaDB</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>mysql<span class="w"> </span>mysqldump<span class="w"> </span>-u<span class="w"> </span>poweradmin<span class="w"> </span>-p<span class="w"> </span>poweradmin<span class="w"> </span>&gt;<span class="w"> </span>poweradmin-before-4.4.sql
 </code></pre></div>
 </li>
 <li>
-<p><strong>Switch the image tag</strong> in your Compose file (for example <code>poweradmin/poweradmin:4.4.2</code>), then pull and recreate only the application container:</p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>pull<span class="w"> </span>poweradmin
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>poweradmin
+<p><strong>Switch the image tag</strong> in your Compose file (for example <code>poweradmin/poweradmin:4.4.3</code>), then pull and recreate only the application container:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>pull<span class="w"> </span>poweradmin
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>poweradmin
 </code></pre></div>
 </li>
 <li>
 <p><strong>Run the migration script from inside the new container:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># PostgreSQL</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>poweradmin<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'PGPASSWORD="$DB_PASS" psql -h "$DB_HOST" ${DB_PORT:+-p "$DB_PORT"} -U "$DB_USER" -d "$DB_NAME" -v ON_ERROR_STOP=1 -f /app/sql/poweradmin-pgsql-update-to-4.4.0.sql'</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># MySQL / MariaDB</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>poweradmin<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'mysql -h "$DB_HOST" ${DB_PORT:+-P "$DB_PORT"} -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" &lt; /app/sql/poweradmin-mysql-update-to-4.4.0.sql'</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># SQLite (database file on the volume)</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>poweradmin<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'sqlite3 "${DB_FILE:-/db/pdns.db}" &lt; /app/sql/poweradmin-sqlite-update-to-4.4.0.sql'</span>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># PostgreSQL</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>poweradmin<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'PGPASSWORD="$DB_PASS" psql -h "$DB_HOST" ${DB_PORT:+-p "$DB_PORT"} -U "$DB_USER" -d "$DB_NAME" -v ON_ERROR_STOP=1 -f /app/sql/poweradmin-pgsql-update-to-4.4.0.sql'</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># MySQL / MariaDB</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>poweradmin<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'mysql -h "$DB_HOST" ${DB_PORT:+-P "$DB_PORT"} -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" &lt; /app/sql/poweradmin-mysql-update-to-4.4.0.sql'</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># SQLite (database file on the volume)</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>poweradmin<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">'sqlite3 "${DB_FILE:-/db/pdns.db}" &lt; /app/sql/poweradmin-sqlite-update-to-4.4.0.sql'</span>
 </code></pre></div>
 <p>If the password is supplied through a Docker secret (<code>DB_PASS__FILE</code>), <code>$DB_PASS</code> is not set in the <code>exec</code> shell; use <code>$(cat "$DB_PASS__FILE")</code> in its place.</p>
+<p>The image's MariaDB client requires TLS by default. If your database server does not offer TLS, the MySQL command stops with <code>TLS/SSL error: SSL is required, but the server does not support it</code>; add <code>--skip-ssl</code>.</p>
 </li>
 <li>
 <p><strong>Check the application</strong> - log in and open the zone templates and add zone pages.</p>
@@ -7635,10 +7867,10 @@ off the public internet and follow <a href="from-2x/">Upgrading from 2.x</a>, wh
 <p>Notes:</p>
 <ul>
 <li>Run one script per version, in order, and never skip a version. Coming from 4.2.x, run the 4.3.0 script before the 4.4.0 one. On SQLite with the PowerDNS tables in the same file, also run <code>sql/poweradmin-sqlite-update-to-4.3.0-backfill.sql</code> right after the 4.3.0 script if you may later switch the database to API backend mode; it fills in the zone names that mode reads.</li>
-<li>The <code>stable</code> and <code>latest</code> tags move between release lines at this release: <code>stable</code> now follows 4.4.x (it followed 4.3.x before) and <code>latest</code> follows 4.5.x. A Compose file on either tag jumps a minor version on the next pull and must run the update script for every minor version it crosses. Pin a version tag such as <code>4.4</code> or <code>4.4.2</code> to decide when you upgrade.</li>
+<li>The <code>stable</code> and <code>latest</code> tags move between release lines at this release: <code>stable</code> now follows 4.4.x (it followed 4.3.x before) and <code>latest</code> follows 4.5.x. A Compose file on either tag jumps a minor version on the next pull and must run the update script for every minor version it crosses. Pin a version tag such as <code>4.4</code> or <code>4.4.3</code> to decide when you upgrade.</li>
 <li>Between the container restart and the migration, pages that read the new schema fail with "An error occurred while processing the request" (which pages depends on the release; for the 4.4.0 script, zone templates and add zone). The rest of the application keeps working, so the window is short but real; run the script right after the restart.</li>
 <li>Run each script once. The scripts are not idempotent: a second run stops with an error such as <code>column "is_default" of relation "zone_templ" already exists</code>, which is harmless but means the script was already applied.</li>
-<li>Patch releases (4.4.1 to 4.4.2) need no script unless their release notes say otherwise; switching the tag and restarting is enough.</li>
+<li>Patch releases (4.4.2 to 4.4.3) need no script unless their release notes say otherwise; switching the tag and restarting is enough.</li>
 <li>A volume-mounted <code>config/settings.php</code> is left untouched. Check the release notes for new settings or container variables you may want to set.</li>
 </ul>
 <h2 id="important-considerations">Important Considerations<a class="headerlink" href="#important-considerations" title="Permanent link">&para;</a></h2>
@@ -7652,8 +7884,8 @@ off the public internet and follow <a href="from-2x/">Upgrading from 2.x</a>, wh
 <li>Report any bugs or issues you encounter during the upgrade process</li>
 </ul>
 <h2 id="upgrade-path">Upgrade Path<a class="headerlink" href="#upgrade-path" title="Permanent link">&para;</a></h2>
-<p>If you're upgrading across multiple major versions, it's often safest to upgrade incrementally through each major version rather than jumping directly to the latest version.</p>
-<h3 id="recommended-path-from-200-to-451">Recommended Path from 2.0.0 to 4.5.1<a class="headerlink" href="#recommended-path-from-200-to-451" title="Permanent link">&para;</a></h3>
+<p>The <a href="#quick-path-to-a-supported-version">Quick Path</a> above covers 2.x, 3.x and 4.x installs in fewer steps. The list below shows every release with structural changes, for reference or for installs older than 2.1.7.</p>
+<h3 id="step-by-step-path-from-200">Step-by-Step Path from 2.0.0<a class="headerlink" href="#step-by-step-path-from-200" title="Permanent link">&para;</a></h3>
 <p>From 2.1.7 through 2.2.2, the shorter route in <a href="from-2x/">Upgrading from 2.x</a> installs 4.4.x
 directly and runs the update scripts in order; it was tested from 2.1.7. For older versions
 (e.g., 2.0.0), we recommend the following path:</p>
@@ -7836,17 +8068,17 @@ which script to run first. Then run every later script in order.</p>
 </tbody>
 </table>
 <p>To check a column or table:</p>
-<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">-- MySQL/MariaDB</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">SHOW</span><span class="w"> </span><span class="n">COLUMNS</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">zones</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">'zone_name'</span><span class="p">;</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">SHOW</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">'log_api'</span><span class="p">;</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1">-- PostgreSQL (psql)</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="err">\</span><span class="n">d</span><span class="w"> </span><span class="n">zones</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="err">\</span><span class="n">dt</span><span class="w"> </span><span class="n">log_api</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1">-- SQLite</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">PRAGMA</span><span class="w"> </span><span class="n">table_info</span><span class="p">(</span><span class="n">zones</span><span class="p">);</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="p">.</span><span class="n">tables</span><span class="w"> </span><span class="n">log_api</span>
+<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">-- MySQL/MariaDB</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">SHOW</span><span class="w"> </span><span class="n">COLUMNS</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">zones</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">'zone_name'</span><span class="p">;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">SHOW</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">'log_api'</span><span class="p">;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1">-- PostgreSQL (psql)</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="err">\</span><span class="n">d</span><span class="w"> </span><span class="n">zones</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="err">\</span><span class="n">dt</span><span class="w"> </span><span class="n">log_api</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1">-- SQLite</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="n">PRAGMA</span><span class="w"> </span><span class="n">table_info</span><span class="p">(</span><span class="n">zones</span><span class="p">);</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="p">.</span><span class="n">tables</span><span class="w"> </span><span class="n">log_api</span>
 </code></pre></div>
 <p>Do not re-run a script whose marker is already present. Scripts up to 4.0.0
 have no <code>IF NOT EXISTS</code> guards and stop at the first duplicate column or table,

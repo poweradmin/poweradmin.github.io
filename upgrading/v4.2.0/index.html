@@ -5000,6 +5000,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Step 3: Run Database Updates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-duplicate-key-in-the-420-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PostgreSQL: duplicate key in the 4.2.0 script
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -7872,6 +7889,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Step 3: Run Database Updates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-duplicate-key-in-the-420-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PostgreSQL: duplicate key in the 4.2.0 script
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -8150,15 +8184,35 @@
 <div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mysql<span class="w"> </span>-u<span class="w"> </span>username<span class="w"> </span>-p<span class="w"> </span>poweradmin_db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-mysql-update-to-4.2.0.sql
 </code></pre></div>
 <p><strong>PostgreSQL:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>psql<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-pgsql-update-to-4.2.0.sql
+<p>Take this script from 4.2.8, 4.3.7, 4.4.3 or 4.5.0 and later, not from the 4.2.0 archive, and
+stop at the first error:</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span>/tmp
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>wget<span class="w"> </span>https://github.com/poweradmin/poweradmin/archive/refs/tags/v4.4.3.tar.gz
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>tar<span class="w"> </span>-xzf<span class="w"> </span>v4.4.3.tar.gz
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>psql<span class="w"> </span>-v<span class="w"> </span><span class="nv">ON_ERROR_STOP</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-d<span class="w"> </span>poweradmin_db<span class="w"> </span>-f<span class="w"> </span>/tmp/poweradmin-4.4.3/sql/poweradmin-pgsql-update-to-4.2.0.sql
+</code></pre></div>
+<h4 id="postgresql-duplicate-key-in-the-420-script">PostgreSQL: duplicate key in the 4.2.0 script<a class="headerlink" href="#postgresql-duplicate-key-in-the-420-script" title="Permanent link">&para;</a></h4>
+<p>The 4.1.0 and 4.2.0 PostgreSQL scripts in every archive before 4.2.8, 4.3.7, 4.4.3 and 4.5.0
+insert permissions without resyncing the id sequences. Coming from 4.0.x, the 4.2.0 script then stops
+with <code>duplicate key value violates unique constraint "perm_items_pkey"</code>, and without
+<code>ON_ERROR_STOP</code> psql carries on and exits 0. The <code>user_enforce_mfa</code> permission is then missing
+and the next permission insert fails again. The copies in 4.2.8, 4.3.7, 4.4.3 and 4.5.0 and later
+resync the sequences first.</p>
+<p>If you already ran an older copy, repair the database:</p>
+<div class="language-sql highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">setval</span><span class="p">(</span><span class="s1">'perm_items_id_seq'</span><span class="p">,</span><span class="w"> </span><span class="k">COALESCE</span><span class="p">((</span><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">perm_items</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">setval</span><span class="p">(</span><span class="s1">'perm_templ_id_seq'</span><span class="p">,</span><span class="w"> </span><span class="k">COALESCE</span><span class="p">((</span><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">perm_templ</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">setval</span><span class="p">(</span><span class="s1">'perm_templ_items_id_seq'</span><span class="p">,</span><span class="w"> </span><span class="k">COALESCE</span><span class="p">((</span><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">perm_templ_items</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">perm_items</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">descr</span><span class="p">)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">SELECT</span><span class="w"> </span><span class="s1">'user_enforce_mfa'</span><span class="p">,</span><span class="w"> </span><span class="s1">'User is required to use multi-factor authentication.'</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">perm_items</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'user_enforce_mfa'</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>SQLite:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-sqlite-update-to-4.2.0.sql
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sqlite3<span class="w"> </span>/path/to/poweradmin.db<span class="w"> </span>&lt;<span class="w"> </span>/var/www/poweradmin/sql/poweradmin-sqlite-update-to-4.2.0.sql
 </code></pre></div>
 <h3 id="step-4-clear-cache-and-restart">Step 4: Clear Cache and Restart<a class="headerlink" href="#step-4-clear-cache-and-restart" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>php-fpm
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># or</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>php-fpm
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># or</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>apache2
 </code></pre></div>
 <h3 id="step-5-verify">Step 5: Verify<a class="headerlink" href="#step-5-verify" title="Permanent link">&para;</a></h3>
 <ol>
