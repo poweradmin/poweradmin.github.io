@@ -7992,7 +7992,7 @@
 <ul>
 <li>Enable the feature only when PHP cannot be reached except through the authenticating server or proxy. Do not publish the PHP-FPM port or the container port directly.</li>
 <li>The server variable must be set by the web server itself. Names starting with <code>HTTP_</code> or <code>PHP_AUTH_</code> (and Apache's <code>REDIRECT_</code> copies of them) are refused, because a client can set them.</li>
-<li>A proxy header is believed only when the request comes from an address in <code>remote_user.trusted_proxies</code>. The list is explicit and nothing is trusted implicitly. Addresses are compared as PHP sees them, so <code>::ffff:10.0.0.5</code> does not match <code>10.0.0.5</code>.</li>
+<li>A proxy header is believed only when the request comes from an address in <code>remote_user.trusted_proxies</code>. The list is explicit and nothing is trusted implicitly. A plain address entry such as <code>10.0.0.5</code> also matches the IPv4-mapped form <code>::ffff:10.0.0.5</code>. CIDR and wildcard entries are compared against the address as PHP sees it, so <code>10.0.0.0/8</code> and <code>10.0.0.*</code> do not match a peer that arrives as <code>::ffff:10.0.0.5</code>.</li>
 <li>The proxy must overwrite the header on every request, not append to it.</li>
 <li>Exclude <code>/api/v2</code> from the web server's authentication. API v2 uses API keys (or Basic auth) as before and is not affected by this feature.</li>
 <li><code>/api/internal</code> must stay protected like the rest of the web interface.</li>
@@ -8239,7 +8239,7 @@
 <p>In header mode, check that the proxy address, as PHP sees it, is in <code>trusted_proxies</code>. With debug logging you will see:</p>
 <div class="language-text highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Ignoring the remote_user header from 10.0.0.5, which is not in remote_user.trusted_proxies
 </code></pre></div>
-<p>Behind a Docker network the address is the proxy container's address. IPv4-mapped IPv6 (<code>::ffff:10.0.0.5</code>) does not match <code>10.0.0.5</code>.</p>
+<p>Behind a Docker network the address is the proxy container's address. A peer that arrives as IPv4-mapped IPv6 (<code>::ffff:10.0.0.5</code>) matches a plain <code>10.0.0.5</code> entry but not a CIDR or wildcard entry such as <code>10.0.0.0/8</code>.</p>
 </li>
 <li>
 <p>Check that the web server really sets the variable. Names starting with <code>HTTP_</code> or <code>PHP_AUTH_</code> are refused, with this log line:</p>

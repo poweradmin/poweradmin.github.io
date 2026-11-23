@@ -7624,13 +7624,24 @@
 
 
 <h1 id="brute-force-protection-with-fail2ban">Brute-Force Protection with fail2ban<a class="headerlink" href="#brute-force-protection-with-fail2ban" title="Permanent link">&para;</a></h1>
-<p>Poweradmin logs every authentication and MFA event in a single structured
+<p>Poweradmin logs web sign-in and MFA events in a single structured
 format that <a href="https://www.fail2ban.org/">fail2ban</a> can consume. This page
 documents the log format, shows the filter and jail you need, and explains
 the trade-offs between the different event types.</p>
 <p>This complements the built-in <a href="../../configuration/security-policies/">account lockout</a>
 (which throttles attempts against a single account) by letting fail2ban
 escalate to <strong>IP-level bans</strong> at the firewall.</p>
+<div class="admonition note">
+<p class="admonition-title">API Basic auth and dynamic DNS</p>
+<p>From 4.6.0, 4.5.2 and 4.4.4, failed API Basic auth and dynamic DNS
+(<code>dynamic_update.php</code>) requests write the same <code>login_failed</code> line, so the
+filter below covers them. On earlier versions only web, LDAP and SAML
+sign-in failures are logged. Guessing against API Basic auth (when enabled)
+or <code>dynamic_update.php</code> does not reach this log, and only the
+<a href="../../configuration/security-policies/">account lockout</a>, which is off by
+default, limits it. Failed API key requests are written to the API log in
+the database, not to syslog, on every version.</p>
+</div>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ol>
 <li>

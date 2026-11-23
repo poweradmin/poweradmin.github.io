@@ -8816,6 +8816,7 @@ come from a config file or command-line arguments. The example above mounts a
 <a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="na">webserver-address</span><span class="o">=</span><span class="s">0.0.0.0</span>
 <a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="na">webserver-allow-from</span><span class="o">=</span><span class="s">0.0.0.0/0</span>
 </code></pre></div>
+<p>This file does not publish the PowerDNS API port, so it is reachable only from the compose network. Keep it that way. If you copy this config elsewhere, do not publish the port, and narrow <code>webserver-address</code> and <code>webserver-allow-from</code> to the networks that need the API.</p>
 <p>The example also relies on <code>./init.sql</code> to prepare MySQL on first startup: it
 must create both databases and users, and load the PowerDNS schema into the
 <code>pdns</code> database. Start with:</p>
@@ -9117,7 +9118,7 @@ empty, that file is used and the variables below are ignored. See
 <tr>
 <td><code>PA_LOCKOUT_BLACKLIST_IPS</code></td>
 <td>-</td>
-<td>Comma-separated IPs, CIDRs or wildcards that are always blocked (v4.6.0+)</td>
+<td>Comma-separated IPs, CIDRs or wildcards whose password and second-factor logins are refused as locked. For the password stage this only applies with <code>PA_LOCKOUT_ENABLED=true</code>. It is not an access control (v4.6.0+)</td>
 </tr>
 </tbody>
 </table>

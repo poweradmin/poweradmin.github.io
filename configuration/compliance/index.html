@@ -7515,7 +7515,7 @@ until the file is regenerated (see <a href="../../installation/docker/">Docker</
 </thead>
 <tbody>
 <tr>
-<td>PCI DSS 8.3.4: lock after at most 10 failed attempts, for at least 30 minutes</td>
+<td>PCI DSS 8.3.4: lock after at most 10 failed attempts, for at least 30 minutes (see the note below the table)</td>
 <td><code>security.account_lockout.enable_lockout = true</code>, <code>lockout_attempts = 10</code> or lower, <code>lockout_duration = 30</code> (<code>PA_LOCKOUT_ENABLED</code>, <code>PA_LOCKOUT_ATTEMPTS</code>, <code>PA_LOCKOUT_DURATION</code>). PCI counts per user ID: either set <code>track_ip_address = false</code>, or keep it on and set <code>username_attempts = 10</code> (<code>PA_LOCKOUT_TRACK_IP</code>, <code>PA_LOCKOUT_USERNAME_ATTEMPTS</code>; 4.6.0 and later).</td>
 </tr>
 <tr>
@@ -7532,7 +7532,7 @@ until the file is regenerated (see <a href="../../installation/docker/">Docker</
 </tr>
 <tr>
 <td>PCI DSS 8.4, CIS 6.3/6.5: MFA for administrative access</td>
-<td><code>security.mfa.enabled = true</code>, <code>enforced = true</code>, <code>email_enabled = false</code>, <code>skip_for_external_auth = false</code> (<code>PA_MFA_ENABLED</code>, <code>PA_MFA_ENFORCED</code>, <code>PA_MFA_EMAIL_ENABLED</code>, <code>PA_MFA_SKIP_FOR_EXTERNAL_AUTH</code>). Then give the Administrator permission template the <strong><code>user_enforce_mfa</code></strong> permission: enforcement applies only to users who hold it, and super admin rights do not imply it. Keep <code>api.basic_auth_enabled = false</code> (<code>PA_API_BASIC_AUTH_ENABLED</code>), since HTTP Basic auth on the API does not ask for a second factor.</td>
+<td><code>security.mfa.enabled = true</code>, <code>enforced = true</code>, <code>email_enabled = false</code>, <code>skip_for_external_auth = false</code> (<code>PA_MFA_ENABLED</code>, <code>PA_MFA_ENFORCED</code>, <code>PA_MFA_EMAIL_ENABLED</code>, <code>PA_MFA_SKIP_FOR_EXTERNAL_AUTH</code>). Then give the Administrator permission template the <strong><code>user_enforce_mfa</code></strong> permission: enforcement applies only to users who hold it, and super admin rights do not imply it. Keep <code>api.basic_auth_enabled = false</code> (<code>PA_API_BASIC_AUTH_ENABLED</code>), since HTTP Basic auth on the API does not ask for a second factor. Also set <code>security.strict_session_gates = true</code>: with the default <code>false</code>, a user who has not yet set up enforced MFA is not redirected on paths containing <code>/api/</code>, such as <code>/settings/api/logs</code> and <code>/api/internal/*</code>, and keeps first-factor-only access there.</td>
 </tr>
 <tr>
 <td>CIS 6.7: centralised authentication</td>
@@ -7552,6 +7552,7 @@ until the file is regenerated (see <a href="../../installation/docker/">Docker</
 </tr>
 </tbody>
 </table>
+<p><code>lockout_duration</code> is a rolling window, not a fixed lock length (see <a href="../security-policies/#account-lockout">Account Lockout</a>). Failures spread over time give a shorter lock than the configured value. Treat the 30 minute minimum in PCI DSS 8.3.4 as met only for a burst of failures, not as a guaranteed lock time.</p>
 <h2 id="not-covered-yet">Not covered yet<a class="headerlink" href="#not-covered-yet" title="Permanent link">&para;</a></h2>
 <p>These requirements cannot be met with a setting today:</p>
 <ul>

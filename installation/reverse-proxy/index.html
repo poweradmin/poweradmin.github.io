@@ -8043,6 +8043,7 @@ that every request arrives over HTTPS. Set it there once HTTPS works for all use
 <h2 id="health-endpoints-v450">Health endpoints <em>(v4.5.0+)</em><a class="headerlink" href="#health-endpoints-v450" title="Permanent link">&para;</a></h2>
 <p>If you enable the health endpoints, restrict them at the proxy. They answer without a
 session and without an API key, so anyone who can reach the path can call them.</p>
+<p>nginx uses the first regex location that matches. Put the nginx block before any <code>location ~ ^/api</code> block, or <code>/api/health</code> is served by that block and the allow and deny lines never apply.</p>
 <div class="language-nginx highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">location</span><span class="w"> </span><span class="p">~</span><span class="w"> </span><span class="sr">^/(ping|api/health)$</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="kn">allow</span><span class="w"> </span><span class="mi">10</span><span class="s">.0.0.0/8</span><span class="p">;</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="kn">deny</span><span class="w"> </span><span class="s">all</span><span class="p">;</span>
