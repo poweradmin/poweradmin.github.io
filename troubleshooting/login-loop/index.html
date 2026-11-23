@@ -7589,6 +7589,7 @@
 </ul>
 <h2 id="3-several-poweradmin-instances-without-shared-sessions">3. Several Poweradmin instances without shared sessions<a class="headerlink" href="#3-several-poweradmin-instances-without-shared-sessions" title="Permanent link">&para;</a></h2>
 <p>Behind a load balancer, the login request and the next request can land on different instances. With file-based sessions each instance only knows its own sessions. Enable sticky sessions on the load balancer, or point every instance at shared session storage (for example a common Redis or Memcached through PHP's <code>session.save_handler</code>).</p>
+<p>Shared session storage must lock sessions, as PHP's file handler does. Redis and Memcached do not lock by default: turn it on with <code>redis.session.locking_enabled = 1</code> (phpredis) or <code>memcached.sess_locking = On</code> (the default in the memcached extension, keep it on). Without locking, a request that was already running when a user signed out can write the old session back, so the session stays valid after logout.</p>
 <h2 id="4-the-address-changes-between-requests">4. The address changes between requests<a class="headerlink" href="#4-the-address-changes-between-requests" title="Permanent link">&para;</a></h2>
 <p>Cookies belong to one host name. If the login form is served from one name (<code>poweradmin.example.com</code>) and the redirect after login goes to another (<code>www.poweradmin.example.com</code> or an IP address), the browser does not send the cookie.</p>
 <ul>
