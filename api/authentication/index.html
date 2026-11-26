@@ -7736,6 +7736,11 @@ TTL, only needs <code>create</code> and <code>update</code>.</p>
 <code>POST /zones/{id}/dnssec</code>, <code>POST /zones/{id}/dnssec/keys</code> and
 <code>POST /zones/{id}/dnssec/keys/import</code>. Removing a key with
 <code>DELETE /zones/{id}/dnssec/keys/{key_id}</code> needs <code>update</code> and <code>delete</code>.</p>
+<p>Endpoints that change who can reach a zone follow the same rule from 4.6.0.
+<code>POST /zones/{id}/owners</code> and <code>POST /groups/{id}/zones</code> need <code>update</code>, and
+<code>DELETE /zones/{id}/owners/{user_id}</code> and <code>DELETE /groups/{id}/zones/{zone_id}</code>
+need <code>update</code> and <code>delete</code>. Filing a change request with
+<code>POST /zones/{id}/change-requests</code> needs <code>update</code>, whatever the actions in it.</p>
 <p>Restrictions only narrow access - they never widen it. A read-only key belonging to
 a user with no zone permissions still cannot read anything.</p>
 <p>Existing keys are unrestricted after an upgrade, so nothing changes until you
