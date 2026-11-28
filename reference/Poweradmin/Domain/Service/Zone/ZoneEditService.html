@@ -148,6 +148,26 @@ and stops holding.</p></p>                </div>
             </div>
                     <div class="row">
                 <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_auditAddedRecord">auditAddedRecord</a>(int $zoneId, string $type, string $name, string $content, int|string $ttl, int|string $prio)
+        
+                                            <p><p>The audit line of a record an approved change request added, held like the edit lines.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    void
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_auditDeletedRecord">auditDeletedRecord</a>(int $zoneId, array $record)
+        
+                                            <p><p>The audit line of a record an approved change request deleted, from the row as it was.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
                     <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneSaveResult.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneSaveResult">ZoneSaveResult</abbr></a>
                 </div>
                 <div class="col-md-8">
@@ -200,7 +220,7 @@ line, and the record comment with its PTR/A sync when comments are shown.</p></p
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method___construct">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L63">at line 63</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L65">at line 65</a></div>
         <code>                    
     <strong>__construct</strong>(<a href="../../../../Poweradmin/Domain/Config/ConfigurationInterface.html"><abbr title="Poweradmin\Domain\Config\ConfigurationInterface">ConfigurationInterface</abbr></a> $config, <a href="../../../../Poweradmin/Domain/Service/Auth/PermissionService.html"><abbr title="Poweradmin\Domain\Service\Auth\PermissionService">PermissionService</abbr></a> $permissions, <a href="../../../../Poweradmin/Domain/Repository/ZoneRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\ZoneRepositoryInterface">ZoneRepositoryInterface</abbr></a> $zones, <a href="../../../../Poweradmin/Domain/Repository/DomainRepositoryInterface.html"><abbr title="Poweradmin\Domain\Repository\DomainRepositoryInterface">DomainRepositoryInterface</abbr></a> $domains, <a href="../../../../Poweradmin/Domain/Repository/RecordLookupInterface.html"><abbr title="Poweradmin\Domain\Repository\RecordLookupInterface">RecordLookupInterface</abbr></a> $records, <a href="../../../../Poweradmin/Domain/Service/Dns/RecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordManagerInterface">RecordManagerInterface</abbr></a> $recordManager, <a href="../../../../Poweradmin/Domain/Service/Dns/SOARecordManagerInterface.html"><abbr title="Poweradmin\Domain\Service\Dns\SOARecordManagerInterface">SOARecordManagerInterface</abbr></a> $soaRecords, <a href="../../../../Poweradmin/Domain/Port/RecordCommentEditorInterface.html"><abbr title="Poweradmin\Domain\Port\RecordCommentEditorInterface">RecordCommentEditorInterface</abbr></a> $comments, <a href="../../../../Poweradmin/Domain/Port/RecordCommentSyncInterface.html"><abbr title="Poweradmin\Domain\Port\RecordCommentSyncInterface">RecordCommentSyncInterface</abbr></a> $commentSync, <a href="../../../../Poweradmin/Domain/Port/AuditLoggerInterface.html"><abbr title="Poweradmin\Domain\Port\AuditLoggerInterface">AuditLoggerInterface</abbr></a> $audit, bool $recordCommentsEnabled, bool $zoneCommentsEnabled, <a href="../../../../Poweradmin/Domain/Port/TransactionInterface.html"><abbr title="Poweradmin\Domain\Port\TransactionInterface">TransactionInterface</abbr></a>|null $transaction = null)
         </code>
@@ -296,7 +316,7 @@ without it a save never moves records into each other's place</p></td>
             </div>
                     <div class="method-item">
                     <h3 id="method_holdAudit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L84">at line 84</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L86">at line 86</a></div>
         <code>                    void
     <strong>holdAudit</strong>()
         </code>
@@ -330,7 +350,7 @@ lines of a save that is rolled back never reach the log.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_releaseAudit">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L93">at line 93</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L95">at line 95</a></div>
         <code>                    void
     <strong>releaseAudit</strong>(bool $committed)
         </code>
@@ -373,8 +393,124 @@ and stops holding.</p></p>
 
             </div>
                     <div class="method-item">
+                    <h3 id="method_auditAddedRecord">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L109">at line 109</a></div>
+        <code>                    void
+    <strong>auditAddedRecord</strong>(int $zoneId, string $type, string $name, string $content, int|string $ttl, int|string $prio)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The audit line of a record an approved change request added, held like the edit lines.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$type</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$content</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int|string</td>
+                <td>$ttl</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>int|string</td>
+                <td>$prio</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_auditDeletedRecord">
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L119">at line 119</a></div>
+        <code>                    void
+    <strong>auditDeletedRecord</strong>(int $zoneId, array $record)
+        </code>
+    </h3>
+    <div class="details">    
+            
+    
+            
+
+        <div class="method-description">
+                            <p><p>The audit line of a record an approved change request deleted, from the row as it was.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$zoneId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$record</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>void</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
                     <h3 id="method_save">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L104">at line 104</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L141">at line 141</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneSaveResult.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneSaveResult">ZoneSaveResult</abbr></a>
     <strong>save</strong>(<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditSubmission">ZoneEditSubmission</abbr></a> $submission)
         </code>
@@ -418,7 +554,7 @@ and stops holding.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_vacatedRecords">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L293">at line 293</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L335">at line 335</a></div>
         <code>                    array
     <strong>vacatedRecords</strong>(array $changes)
         </code>
@@ -465,7 +601,7 @@ no such overlap gets an empty set and keeps saving row by row.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_diffRow">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L420">at line 420</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L462">at line 462</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditRowChange.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditRowChange">ZoneEditRowChange</abbr></a>|null
     <strong>diffRow</strong>(<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditSubmission">ZoneEditSubmission</abbr></a> $submission, <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditRow.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditRow">ZoneEditRow</abbr></a> $row)
         </code>
@@ -513,7 +649,7 @@ no such overlap gets an empty set and keeps saving row by row.</p></p>
             </div>
                     <div class="method-item">
                     <h3 id="method_writeRow">
-        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L460">at line 460</a></div>
+        <div class="location"><a href="https://github.com/poweradmin/poweradmin/blob/master/lib/Domain/Service/Zone/ZoneEditService.php#L502">at line 502</a></div>
         <code>                    <a href="../../../../Poweradmin/Domain/Service/Dns/RecordWriteResult.html"><abbr title="Poweradmin\Domain\Service\Dns\RecordWriteResult">RecordWriteResult</abbr></a>
     <strong>writeRow</strong>(<a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditSubmission.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditSubmission">ZoneEditSubmission</abbr></a> $submission, <a href="../../../../Poweradmin/Domain/Service/Zone/ZoneEditRowChange.html"><abbr title="Poweradmin\Domain\Service\Zone\ZoneEditRowChange">ZoneEditRowChange</abbr></a> $change, array $vacated = [])
         </code>
@@ -569,7 +705,7 @@ line, and the record comment with its PTR/A sync when comments are shown.</p></p
 
     
 </div><div id="footer">
-        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/2f68351" rel="noreferrer" target="_blank">commit 2f68351,</a> built 2026-11-26 10:42 UTC.</div></div>
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.            <br/>Poweradmin 4.6.0, master branch, <a href="https://github.com/poweradmin/poweradmin/commit/c9aba8a" rel="noreferrer" target="_blank">commit c9aba8a,</a> built 2026-11-28 13:10 UTC.</div></div>
     </div>
     </body>
 
